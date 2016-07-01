@@ -8,199 +8,99 @@ dl, dd, ol, ul, figure {
     padding: 0;
 }
 
-
-
-/**
- * Basic styling
- */
-body {
-    font: $base-font-weight #{$base-font-size}/#{$base-line-height} $base-font-family;
-    color: $text-color;
-    background-color: $background-color;
-    -webkit-text-size-adjust: 100%;
-    -webkit-font-feature-settings: "kern" 1;
-    -moz-font-feature-settings: "kern" 1;
-    -o-font-feature-settings: "kern" 1;
-    font-feature-settings: "kern" 1;
-    font-kerning: normal;
-}
-
-
-
-/**
- * Set `margin-bottom` to maintain vertical rhythm
- */
-h1, h2, h3, h4, h5, h6,
-p, blockquote, pre,
-ul, ol, dl, figure,
-%vertical-rhythm {
-    margin-bottom: $spacing-unit / 2;
-}
-
-
-
-/**
- * Images
- */
-img {
-    max-width: 100%;
-    vertical-align: middle;
-}
-
-
-
-/**
- * Figures
- */
-figure > img {
-    display: block;
-}
-
-figcaption {
-    font-size: $small-font-size;
-}
-
-
-
-/**
- * Lists
- */
-ul, ol {
-    margin-left: $spacing-unit;
-}
-
-li {
-    > ul,
-    > ol {
-         margin-bottom: 0;
-    }
-}
-
-
-
-/**
- * Headings
- */
-h1, h2, h3, h4, h5, h6 {
-    font-weight: $base-font-weight;
-}
-
-
-
-/**
- * Links
- */
-a {
-    color: $brand-color;
-    text-decoration: none;
-
-    &:visited {
-        color: darken($brand-color, 15%);
-    }
-
-    &:hover {
-        color: $text-color;
-        text-decoration: underline;
-    }
-}
-
-
-
-/**
- * Blockquotes
- */
-blockquote {
-    color: $grey-color;
-    border-left: 4px solid $grey-color-light;
-    padding-left: $spacing-unit / 2;
-    font-size: 18px;
-    letter-spacing: -1px;
-    font-style: italic;
-
-    > :last-child {
-        margin-bottom: 0;
-    }
-}
-
-
-
-/**
- * Code formatting
- */
-pre,
-code {
-    font-size: 15px;
-    border: 1px solid $grey-color-light;
-    border-radius: 3px;
-    background-color: #eef;
-}
-
-code {
-    padding: 1px 5px;
-}
-
-pre {
-    padding: 8px 12px;
-    overflow-x: auto;
-
-    > code {
-        border: 0;
-        padding-right: 0;
-        padding-left: 0;
-    }
-}
-
-
-
-/**
- * Wrapper
- */
 .wrapper {
-    max-width: -webkit-calc(#{$content-width} - (#{$spacing-unit} * 2));
-    max-width:         calc(#{$content-width} - (#{$spacing-unit} * 2));
-    margin-right: auto;
-    margin-left: auto;
-    padding-right: $spacing-unit;
-    padding-left: $spacing-unit;
-    @extend %clearfix;
-
-    @include media-query($on-laptop) {
-        max-width: -webkit-calc(#{$content-width} - (#{$spacing-unit}));
-        max-width:         calc(#{$content-width} - (#{$spacing-unit}));
-        padding-right: $spacing-unit / 2;
-        padding-left: $spacing-unit / 2;
-    }
+  @include outer-container();
 }
 
+.centered-header {
+  @include fill-parent();
+  height: 50px;
 
+  .brand {
+    @include span-columns(2);
+    display: inline-block;
+    font-family: 'Raleway', sans-serif;
+    font-size: $base-font-size + 0.25;
+    letter-spacing: 1.2px;
+    font-weight: 900;
+    margin: 0;
+    padding: 12px 0px 0px 20px;
 
-/**
- * Clearfix
- */
-%clearfix {
-
-    &:after {
-        content: "";
-        display: table;
-        clear: both;
+    .unfocus {
+      color: lighten($text-color, 45%);
     }
+
+  }
+
+  .menu {
+    @include span-columns(8);
+    text-align: center;
+
+    ul {
+      display: inline-flex;;
+      list-style: none;
+      li {
+        display: list-item;
+      }
+    }
+
+    a {
+      color: $text-color;
+      display: inline-block;
+      font-size: 12px;
+      font-family: 'Raleway', sans-serif;
+      font-weight: 200;
+      letter-spacing: 2px;
+      padding: 25px;
+      text-transform: uppercase;
+    }
+  }
 }
 
+.hello-container {
+  @include span-columns(12);
 
+  margin-top: 25%;
+  margin-bottom: auto;
 
-/**
- * Icons
- */
-.icon {
+  .highlighted {
+    font-weight: bold;
+  }
 
-    > svg {
-        display: inline-block;
-        width: 16px;
-        height: 16px;
-        vertical-align: middle;
+}
 
-        path {
-            fill: $grey-color;
-        }
-    }
+.name-box {
+  @include span-columns(12);
+  @include omega();
+  text-align: center;
+
+  h1 {
+    font-family: 'Raleway', sans-serif;
+
+    font-size: $base-font-size * 3;
+    font-weight: 900;
+  }
+
+  &::after {
+    content: ' ';
+    display: block;
+    height: 5px;
+    width: 30px;
+    background: #CCCCCC;
+    margin: 10px auto 40px auto;
+  }
+
+}
+
+.gentleman-separator {
+  @include span-columns(12);
+  @include omega();
+}
+
+.description-box {
+  @include span-columns(7);
+  @include shift(3);
+  @include omega();
+  font-family: 'Josefin Sans', sans-serif;
+
 }
