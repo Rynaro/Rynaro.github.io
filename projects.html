@@ -1,0 +1,23 @@
+---
+layout: default
+---
+
+<div class="main-content-container">
+
+  <h1 class="main-heading">Blueprints to glory!</h1>
+
+  <ul class="project-list">
+    {% for project in site.data.projects %}
+      <a href="{{ project.url }}" target="_blank">
+        <li class="project-item">
+          <div class="project-title">{{ project.title }}</div>
+          <div class="project-separator">//</div>
+          <div class="project-description">{{ project.description }}</div>
+          <div class="project-separator"><></div>
+          <div class="project-langs">{{ project.languages }}</div>
+        </li>
+      </a>
+    {% endfor %}
+  </ul>
+
+</div>

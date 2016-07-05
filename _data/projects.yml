@@ -1,0 +1,9 @@
+- title: 'This Blog!'
+  url: 'https://github.com/Rynaro/Rynaro.github.io'
+  description: 'This wonderful blog!'
+  languages: 'html5, css3, ruby, yaml'
+
+- title: 'Snowflakes'
+  url: 'https://github.com/Rynaro/Snowflakes'
+  description: 'A simple snow simulator'
+  languages: 'processing'
