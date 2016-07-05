@@ -8,7 +8,8 @@
 # Site settings
 title: Henrique A. Lavezzo
 email: henlavezzo@gmail.com
-description: > # Hello, I'm a fullstack developer who lives in Brazil.
+description: > #
+      Hello, I'm a fullstack developer who lives in Brazil.
       I'm focused on web and mobile technologies. Actually in love with Ruby, and Javascript languages.
       Functional paradigm enthusiast, bleeding edge technologies user survivalist, and a unstoppable book reader.
 baseurl: "" # the subpath of your site, e.g. /blog
