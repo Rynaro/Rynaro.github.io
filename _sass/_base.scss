@@ -133,12 +133,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .hello-cardboard {
+  @include span-columns(12);
   position: absolute;
   top: 20%;
   transform: translate(-50%);
 
   @include media(min-width 750px) {
-    left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
   }
@@ -170,11 +170,7 @@ h1, h2, h3, h4, h5, h6 {
   @include span-columns(12);
   @include omega();
   font-family: 'Josefin Sans', sans-serif;
-
-  @include media(min-width 750px) {
-    @include span-columns(7);
-    @include shift(3);
-  }
+  text-align: center;
 }
 
 .main-content-container {
@@ -338,7 +334,7 @@ h1, h2, h3, h4, h5, h6 {
   display: inline-block;
   margin-top: 5px !important;
   margin-right: 3px !important;
-  max-height: 200px;
+  height: 220px;
   padding: 10px;
   transition: all 0.25s ease-in-out;
   -moz-transition: all 0.25s ease-in-out;
