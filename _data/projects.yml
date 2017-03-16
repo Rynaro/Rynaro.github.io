@@ -22,3 +22,8 @@
   url: 'https://github.com/Rynaro/TicTacToe'
   description: 'Tic Tac Toe in Ruby. PvP.'
   languages: 'ruby'
+
+- title: 'FipExtractor'
+  url: 'https://github.com/Rynaro/FipExtractor'
+  description: 'FipExtractor is a easy-to-use translator of the FIPE API.'
+  languages: 'ruby'
