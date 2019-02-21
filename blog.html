@@ -4,6 +4,14 @@ layout: common
 
 <section class="section">
   <div class="container">
+    <div class="columns">
+      <div class="column">
+        <h1 class="title has-text-centered">
+          <i class="fas fa-book-open"></i>
+        </h1>
+        <h1 class="title has-text-centered">My notebook</h1>
+      </div>
+    </div>
     <div class="columns is-multiline">
       {% for post in site.posts %}
         <a class="column is-one-third" href="{{ post.url | prepend: site.baseurl }}">

@@ -3,39 +3,22 @@ layout: common
 ---
 
 <div class="container post">
-  <div class="columns is-centered">
-    <div class="column is-four-fifths">
-      <div class="columns">
-        <div class="column">
-          <h1 class="title has-text-centered">{{ page.title }}</h1>
-          <h6 class="subtitle has-text-centered">
-            {{ page.date | date: "%b %-d, %Y, %H:%M h" }}
-          </h6>
+  <article>
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="columns">
+          <header class="column">
+            <h1 class="title has-text-centered">{{ page.title }}</h1>
+            <h6 class="subtitle has-text-centered">
+              {{ page.date | date: "%b %-d, %Y, %H:%M h" }}
+            </h6>
+          </header>
         </div>
+        <div class="post content">{{ content }}</div>
       </div>
-      <div class="post content">{{ content }}</div>
     </div>
-  </div>
+  </article>
   {% if page.comments %}
-    <div class="container post">
-      <div class="columns is-centered">
-        <div class="column is-four-fifths">
-          <div id="disqus_thread"></div>
-        </div>
-      </div>
-    </div>
-    <script>
-      var disqus_config = function () {
-        this.page.url = "https://hlavezzo.run{{ page.url }}";
-        this.page.identifier = "{{ page.id }}";
-      };
-      (function() {
-      var d = document, s = d.createElement('script');
-      s.src = 'https://hlavezzo.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', +new Date());
-      (d.head || d.body).appendChild(s);
-      })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    {% include disqus.html %}
   {% endif %}
 </div>
