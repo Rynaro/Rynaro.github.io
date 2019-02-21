@@ -4,15 +4,24 @@ layout: common
 
 <section class="section">
   <div class="container">
-    {% for post in site.posts %}
-      <a href="{{ post.url | prepend: site.baseurl }}">
-        <div class="box">
-          <div class="columns">
-            <h2 class="title">{{ post.title }}</h2>
-            <h3 class="subtitle">{{ post.date | date: "%b %-d, %Y" }}</h3>
+    <div class="columns is-multiline">
+      {% for post in site.posts %}
+        <a class="column is-one-third" href="{{ post.url | prepend: site.baseurl }}">
+          <div class="box">
+            <div class="content">
+              <h4 class="title">{{ post.title }}</h4>
+              <h6 class="subtitle has-text-grey">
+                {{ post.date | date: "%b %-d, %Y" }}
+              </h6>
+              <div class="tags are-small">
+                {% for tech in post.categories %}
+                  <span class="tag is-purple">{{tech}}</span>
+                {% endfor %}
+              </div>
+            </div>
           </div>
-        </div>
-      </a>
-    {% endfor %}
+        </a>
+      {% endfor %}
+    </div>
   </div>
 </section>

@@ -3,7 +3,7 @@ html {
   font-family: 'Lato', sans-serif;
 }
 
-h1, h2, h3, h4, h5 {
+h1, h2, h3, h4, h5, h6 {
   font-family: 'Quicksand', sans-serif;
 }
 
@@ -107,15 +107,36 @@ h1, h2, h3, h4, h5 {
   .tags {
     height: 65px;
     min-height: 65px;
-
-    .is-purple {
-      background: #A5668B;
-      color: $white-ter;
-    }
   }
 
   .time {
     color: $grey-light;
     font-style: italic;
+  }
+}
+
+.tags {
+  .is-purple {
+    background: #A5668B;
+    color: $white-ter;
+  }
+}
+
+.container {
+  &.post {
+    margin-top: 25px;
+  }
+}
+
+.post {
+  &.content {
+    font-family: 'Lato', sans-serif;
+
+    pre {
+      background: #DFDFDF;
+      border: 1px solid #A5668B;
+      border-radius: 3px;
+      text-align: left;
+    }
   }
 }
