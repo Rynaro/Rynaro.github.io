@@ -1,0 +1,36 @@
+---
+layout: common
+---
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column">
+        <h1 class="title has-text-centered">
+          <i class="fas fa-flask"></i>
+        </h1>
+        <h1 class="title has-text-centered">Laboratory</h1>
+      </div>
+    </div>
+    <div class="columns is-multiline">
+      {% for project in site.data.projects %}
+        <div class="column is-one-third">
+          <div class="box project-box">
+            <div class="content">
+              <a href="{{ project.url }}" target="_blank">
+                <h4 class="title link-to-go">{{ project.title }}</h4>
+              </a>
+              <h6 class="subtitle has-text-grey">
+                {{ project.description }}
+              </h6>
+              <div class="github-holder">
+                <a class="github-button gh-btn" href="{{ project.url }}" data-size="large" data-show-count="true" aria-label="Star {{ project.title }} on GitHub">Star</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>

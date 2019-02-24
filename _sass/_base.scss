@@ -80,6 +80,10 @@ h1, h2, h3, h4, h5, h6 {
     }
   }
 
+  .section-header {
+    margin: 4% auto;
+  }
+
   .social {
     font-size: 1.7em;
     margin-right: 10px;
@@ -138,5 +142,24 @@ h1, h2, h3, h4, h5, h6 {
       border-radius: 3px;
       text-align: left;
     }
+  }
+}
+
+.project-box {
+  height: 100%;
+  position: relative;
+
+  .link-to-go {
+    color: #A5668B;
+
+    &:hover {
+      color: #540D6E;
+    }
+  }
+
+  .github-holder {
+    position: absolute;
+    right: 12px;
+    top: 7px;
   }
 }
