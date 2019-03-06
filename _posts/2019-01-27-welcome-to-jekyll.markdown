@@ -1,27 +1,21 @@
 ---
 layout: post
-title:  "Welcome to Jekyll!"
-resume: "A new era to blog posts!"
-date:   2019-01-27 02:46:52 -0200
+title:  "My notebook !"
+resume: "Welcome to my memories!"
+date:   2019-03-06 13:44:00 -0200
 comments: true
-categories: jekyll update
+categories: jekyll rebranding
 ---
-You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run `jekyll serve`, which launches a web server and auto-regenerates your site when a file is updated.
 
-To add new posts, simply add a file in the `_posts` directory that follows the convention `YYYY-MM-DD-name-of-post.ext` and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.
+Recently I’ve decided to return in my open source life. And this decision has direct
+impact in this blog, because open source isn’t only about code, or metrics.
+For me it’s about ideas, knowledge sharing, and good networking.
 
-Jekyll also offers powerful support for code snippets:
+In this “notebook”, I will write (when I have a break) about my routine inside the
+codes, inside the books (I really like to talk about J.R.R Tolkien books), and
+whatever I want. :D
 
 {% highlight ruby %}
-def print_hi(name)
-  puts "Hi, #{name}"
-end
-print_hi('Tom')
-#=> prints 'Hi, Tom' to STDOUT.
+puts 'later! :)'
+#=> prints 'later! :)' to STDOUT.
 {% endhighlight %}
-
-Check out the [Jekyll docs][jekyll-docs] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll’s GitHub repo][jekyll-gh]. If you have questions, you can ask them on [Jekyll Talk][jekyll-talk].
-
-[jekyll-docs]: https://jekyllrb.com/docs/home
-[jekyll-gh]:   https://github.com/jekyll/jekyll
-[jekyll-talk]: https://talk.jekyllrb.com/
