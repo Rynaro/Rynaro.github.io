@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  "Welcome to Jekyll!"
+resume: "A new era to blog posts!"
 date:   2019-01-27 02:46:52 -0200
 comments: true
 categories: jekyll update

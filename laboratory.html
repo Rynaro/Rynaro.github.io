@@ -18,8 +18,11 @@ layout: common
         <div class="column is-one-third">
           <div class="box project-box">
             <div class="content">
-              <a href="{{ project.url }}" target="_blank">
-                <h4 class="title link-to-go">{{ project.title }}</h4>
+              <a href="{{ project.url }}" class="linkable" target="_blank">
+                <h4 class="title link-to-go">
+                  {{ project.title }}
+                  <i class="fas fa-arrow-right go-arrow"></i>
+                </h4>
               </a>
               <h6 class="subtitle has-text-grey">
                 {{ project.description }}

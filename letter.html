@@ -1,3 +1,39 @@
 ---
 layout: common
 ---
+
+<section class="section contact">
+  <div class="container">
+    <div class="columns">
+      <div class="column">
+        <h1 class="title has-text-centered">
+          <i class="fas fa-envelope"></i>
+        </h1>
+        <h1 class="title has-text-centered">Send a letter to me</h1>
+      </div>
+    </div>
+    <form action="https://formspree.io/me@hlavezzo.run" method="POST">
+      <div class="columns is-multiline">
+        <div class="column is-three-fifths is-offset-one-fifth">
+          <div class="field">
+            <div class="control has-icons-left">
+              <input name="_replyto" class="input is-medium" type="email" placeholder="Your email address..." />
+              <span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <textarea name="message" class="textarea" placeholder="Your message..." rows="10"></textarea>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+                <button type="submit" class="button is-pulled-right is-purple">Send Letter !</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <input type="text" style="visibility: hidden;" name="_gotcha" />
+    </form>
+  </div>
+</section>
