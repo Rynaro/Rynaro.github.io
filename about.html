@@ -1,0 +1,136 @@
+---
+layout: common
+---
+
+<section class="section curriculum" id="curriculum">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-full-mobile has-text-centered">
+        <h1 class="title">Henrique Aparecido Lavezzo</h1>
+        <h2 class="subtitle">Code Alchemist</h2>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="columns">
+      <div class="column has-text-centered">
+        <a href="https://www.linkedin.com/in/hlavezzo" target="_blank">
+          <i class="fab fa-linkedin social in"></i>
+        </a>
+        <a href="https://github.com/Rynaro" target="_blank">
+          <i class="fab fa-github social gh"></i>
+        </a>
+        <a href="https://stackoverflow.com/story/hlavezzo" target="_blank">
+          <i class="fab fa-stack-overflow social so"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="columns">
+      <div class="column is-half detail has-text-centered">
+        <i class="fas fa-envelope"></i><span>me@hlavezzo.run</span>
+      </div>
+      <div class="column is-half detail has-text-centered">
+        <i class="fas fa-city"></i><span>São Paulo</span>
+      </div>
+    </div>
+    <div class="columns">
+      <div class="column is-offset-half is-half detail has-text-centered">
+        <i class="fas fa-user-graduate"></i><span>Bachelor Degree in Computer Science</span>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="columns section-header">
+      <div class="column is-full-mobile is-full">
+        <h1 class="title has-text-centered"><i class="fa fa-star"></i></h1>
+        <h2 class="subtitle has-text-centered">Skill Highlights</h2>
+      </div>
+    </div>
+    <div class="columns">
+      <div class="column is-half is-full-mobile">
+        <canvas id="skill-radar"></canvas>
+      </div>
+      <div class="column is-half is-full-mobile">
+        <p class="has-text-justified">
+          A code alchemist always seek knowledge to transmutate ideas, and spread to others.
+        </p>
+        <p class="has-text-justified">
+          As alchemist, I'm always curious about game development, and web technologies.
+          Ruby always is my favorite language, because its elegant, and flexible. And its my main language nowadays.
+        </p>
+        <p class="has-text-justified">
+          And actually looking closer into Go, and Elixir languages to empowering my grimoire, and transmutation elements
+        </p>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column is-half is-full-mobile">
+        <p class="has-text-justified">
+          Tooling is a important part inside a alchemist lab. We can do better work with right tools.
+        </p>
+        <p class="has-text-justified">
+          Linux is part of my life over than 10 years, because of this, my system administration skill are very accurated.
+          And I can do "magic" with Wine to run most of Windows games in Linux based OS.
+        </p>
+        <p class="has-text-justified">
+          I'm in love with Vagrant since 2012, and because of this. It's one of my most used tools to isolate environments.
+        </p>
+        <p class="has-text-justified">
+          And a alchemist is always able to use the ancient SQL even necessary over than modern ORM frameworks.
+          I really think, this skill is one of more important that I have in my hands.
+        </p>
+      </div>
+      <div class="column is-half is-full-mobile">
+        <canvas id="tooling-radar"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="columns section-header">
+      <div class="column is-full-mobile is-full">
+        <h1 class="title has-text-centered"><i class="fa fa-language"></i></h1>
+        <h2 class="subtitle has-text-centered">Languages</h2>
+      </div>
+    </div>
+    <div class="columns">
+      <div class="column is-offset-one-quarter is-half is-full-mobile">
+        <canvas id="language-bar"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="columns section-header">
+      <div class="column is-full">
+        <h1 class="title has-text-centered"><i class="fa fa-briefcase"></i></h1>
+        <h2 class="subtitle has-text-centered">Job Career</h2>
+      </div>
+    </div>
+    <div class="jobs columns is-multiline">
+      {% for job in site.data.jobs %}
+        <div class="column is-one-third is-full-mobile">
+          <div class="box">
+            <div class="media-content">
+              <div class="content">
+                <h2 class="title">{{job.title}}</h2>
+                <h4 class="subtitle">{{job.company}}</h4>
+                <h5 class="subtitle time">{{job.begin_at}} - {{job.ended_at}}</h5>
+                <p class="description">{{job.description}}</p>
+                <div class="tags are-small">
+                  {% for tech in job.techs %}
+                    <span class="tag is-purple">{{tech}}</span>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<script src="{{'/vendor/js/Chart.min.js' | prepend: site.baseurl}}"></script>
+<script src="{{'/assets/js/curriculum.js' | prepend: site.baseurl}}"></script>
