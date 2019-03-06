@@ -6,7 +6,7 @@ class BubbleBuilder {
     this.bubbles = [];
     window.setInterval(() => {
       this.bubbles.push(new Bubble());
-    }.bind(this), 1000);
+    }, 1000, this);
   }
 
   update() {
