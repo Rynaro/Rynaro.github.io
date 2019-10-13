@@ -106,6 +106,26 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+.skill-section {
+  .skill-group {
+    margin-top: 35px;
+  }
+
+  .highlighted {
+    color: #F1AC21;
+  }
+
+  .fa-heart {
+    color: #B20020;
+  }
+}
+
+.language-section {
+  .lang {
+    color: #0081AF;
+  }
+}
+
 .jobs {
   .description {
     height: 150px;
