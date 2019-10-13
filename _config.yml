@@ -18,4 +18,4 @@ sass:
     - _sass
     - vendor/css
 
-exclude: []
+exclude: ['vendor']
