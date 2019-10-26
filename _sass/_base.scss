@@ -145,7 +145,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .tags {
   .is-purple {
-    background: #A5668B;
+    background: $own-pastel-purple;
     color: $white-ter;
   }
 }
@@ -157,12 +157,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .post {
+  .header {
+    border-bottom: 1px dashed $own-purple;
+  }
+
   &.content {
     font-family: 'Lato', sans-serif;
+    padding-bottom: 16px;
 
     pre {
-      background: #DFDFDF;
-      border: 1px solid #A5668B;
+      background: $white;
+      border: 1px dashed $own-pastel-purple;
       border-radius: 3px;
       text-align: left;
     }
@@ -175,7 +180,7 @@ h1, h2, h3, h4, h5, h6 {
 
   .linkable {
     h4 {
-      color: #A5668B;
+      color: $own-pastel-purple;
     }
 
     .go-arrow {
@@ -187,10 +192,10 @@ h1, h2, h3, h4, h5, h6 {
 
     &:hover{
       > h4 {
-        color: #540D6E;
+        color: $own-purple;
 
         > .go-arrow {
-          color: #540D6E;
+          color: $own-purple;
         }
       }
     }
@@ -207,8 +212,10 @@ h1, h2, h3, h4, h5, h6 {
 .notebook-pages {
   .page-marker {
     transition: background 0.2s ease-in;
+
     &:hover {
-      background: rgb(243, 228, 241);
+      background: $own-lighten-pastel-purple;
+      box-shadow: 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px $own-pastel-purple;
     }
   }
 
@@ -219,15 +226,32 @@ h1, h2, h3, h4, h5, h6 {
   .date {
     font-size: 0.9em;
   }
+
+  .recents {
+    .post-item {
+      border-bottom: 1px solid $grey-light;
+      padding-bottom: 5px;
+      transition: background 0.2s ease-in;
+
+      &:hover {
+        background: $own-lighten-pastel-purple;
+        border-bottom-color: $own-pastel-purple;
+
+        > h4 {
+          color: $own-purple !important;
+        }
+      }
+    }
+  }
 }
 
 .contact {
   .is-purple {
-      background: #540D6E;
+      background: $own-purple;
       color: #FFFFFF;
 
       &:hover {
-        background: lighten($color: #540D6E, $amount: 12);
+        background: lighten($color: $own-purple, $amount: 12);
       }
   }
 }

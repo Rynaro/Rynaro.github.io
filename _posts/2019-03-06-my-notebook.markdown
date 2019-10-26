@@ -1,10 +1,12 @@
 ---
 layout: post
+author: Henrique A. Lavezzo
 title:  "My notebook !"
 resume: "Welcome to my memories!"
 date:   2019-03-06 13:44:00 -0200
 comments: true
-categories: jekyll rebranding
+categories: hobby
+tags: jekyll rebranding
 ---
 
 Recently I’ve decided to return in my open source life. And this decision has direct

@@ -8,6 +8,7 @@ url: "https://hlavezzo.run"
 twitter_username: jekyllrb
 github_username:  rynaro
 
+permalink: /:year/:month/:day/:title
 markdown: kramdown
 plugins:
   - jekyll-feed

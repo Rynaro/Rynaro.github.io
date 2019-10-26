@@ -5,12 +5,12 @@ layout: common
 <div class="container post">
   <article>
     <div class="columns is-centered">
-      <div class="column is-four-fifths">
-        <div class="columns">
+      <div class="column is-three-quarters">
+        <div class="columns header">
           <header class="column">
             <h1 class="title has-text-centered">{{ page.title }}</h1>
-            <h6 class="subtitle has-text-centered">
-              {{ page.date | date: "%b %-d, %Y, %H:%M h" }}
+            <h6 class="subtitle is-6 has-text-grey has-text-centered">
+              {{ page.author }} at {{ page.date | date: "%b %-d, %Y, %H:%Mh" }}
             </h6>
           </header>
         </div>
@@ -18,7 +18,11 @@ layout: common
       </div>
     </div>
   </article>
-  {% if page.comments %}
-    {% include disqus.html %}
-  {% endif %}
+  <div class="columns">
+    <div class="column is-three-quarters">
+      {% if page.comments %}
+        {% include disqus.html %}
+      {% endif %}
+      </div>
+    </div>
 </div>

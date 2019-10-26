@@ -1,0 +1,14 @@
+
+<div class="recents columns is-multiline">
+  <div class="column">
+    <h4 class="title is-4 has-text-centered">Recents</h4>
+    {% for post in include.posts offset: 0 limit: 5 %}
+      <a class="column post-item" href="{{ post.url | prepend: site.baseurl }}">
+        <h4 class="title has-text-grey is-4">{{ post.title }}</h4>
+        <h5 class="date is-5 has-text-grey">
+          {{ post.date | date: "%b %-d, %Y" }}
+        </h5>
+      </a>
+    {% endfor %}
+  </div>
+</div>
