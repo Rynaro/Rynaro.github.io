@@ -1,0 +1,20 @@
+{% for post in include.posts %}
+  <a class="column is-one-third" href="{{ post.url | prepend: site.baseurl }}">
+    <div class="box page-marker">
+      <div class="content">
+        <h4 class="title">{{ post.title }}</h4>
+        <h6 class="date has-text-grey">
+          {{ post.date | date: "%b %-d, %Y" }}
+        </h6>
+        <h6 class="subtitle has-text-grey">
+          {{ post.resume }}
+        </h6>
+        <div class="tags are-small">
+          {% for tech in post.tags %}
+          <span class="tag is-purple">{{ tech }}</span>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </a>
+{% endfor %}

@@ -1,0 +1,19 @@
+---
+layout: common
+---
+
+<section class="section notebook-pages">
+  <div class="container">
+    <div class="columns">
+      <div class="column">
+        <h1 class="title has-text-centered">
+          <i class="fas fa-code"></i>
+        </h1>
+        <h1 class="title has-text-centered">Tech Journal</h1>
+      </div>
+    </div>
+    <div class="columns is-multiline">
+      {% include posts/box_item.html posts=site.categories.tech %}
+    </div>
+  </div>
+</section>
