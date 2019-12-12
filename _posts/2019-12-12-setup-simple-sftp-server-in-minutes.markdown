@@ -17,7 +17,7 @@ I've one FTP server in company that I work. It's a simple FTP server, developed 
 
 But recently, we get a specific trait from new partner, we need to expose an sftp server. In a quick search, `pyftpdlib` does not support sftp protocol. After this, I go to aws services, to see how much cost the use of **AWS Transfer**. It's easy to use service, but expensive for a small startup, and I don't think we need an entire service for this. In other situation, our monthly invoice will be affected by third-party factor, and one mistake made by our partner, could increase the invoice numbers.
 
-With these factors, I decided to build a simple sftp from scratch.
+Given the above factors, I decided to build a simple sftp from scratch.
 
 ## DIY Setup
 
@@ -139,4 +139,4 @@ Connection to your-sftp-server closed.
 
 After this, you can send the **partner** credentials to **Partner**. :joy:
 
-This "tutorial" has purpose to show a simple way to build an sftp server using only Linux resources. As you can see, this "tutorial" doesn't go deep inside security major efforts. But, you can easily enforce your security, using Linux resources too, or using the service providers (aws, Digital Ocean, etc) tools.
+This "tutorial" has the purpose to show a simple way to build an sftp server using only Linux resources. As you can see, this "tutorial" doesn't go deep inside major security efforts. But, you can easily enforce your security, using Linux resources too, or using the service providers (aws, Digital Ocean, etc) tools.
