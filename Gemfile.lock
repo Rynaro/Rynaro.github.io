@@ -253,6 +253,7 @@ DEPENDENCIES
   github-pages
   jekyll-babel
   jekyll-feed (~> 0.6)
+  jemoji
   minima (~> 2.0)
   rake
   tzinfo-data

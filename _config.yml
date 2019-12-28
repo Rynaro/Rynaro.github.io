@@ -13,6 +13,7 @@ markdown: kramdown
 plugins:
   - jekyll-feed
   - jekyll-babel
+  - jemoji
 
 sass:
   load_paths:
