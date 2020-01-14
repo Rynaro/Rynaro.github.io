@@ -27,7 +27,7 @@ I've go into service sources, and tests, to learn and get new brand resources to
 
 The service return the REST pattern, an 200 code with body when data cames from API. And a 404 code when API does not returns nothing. When I receives a 200, its easy to return a map with contents to user, with `cheshire`.
 
-_(Note: When you call `parse-string`, to convert all keys to symbol-like in clojure. You need to fill a argument/parameter with `true`. I really don't like it. Does not sound idiomatic.)_
+_(Note: When you call `parse-string`, to convert the json into map, all keys cames as string too. If you want to get symbol-like a in clojure. You need to fill a argument/parameter with `true`. I really don't like it. Does not sound idiomatic.)_
 
 But when you get a 404 from service, `clj-http` raises a exception. The odds is always with us, we can perfectly handle this problem with `slingshot`, creating a custom catch for 404 code. I really like to throw exceptions, it's more than a error for me. We can express unexpected behaviors, and handle with a situation without a cascade of conditionals (Let the destiny defines what you do).
 And I chose to throw an custom exception for user, but more idiomatic. (`:type ::nothing-returned`)
