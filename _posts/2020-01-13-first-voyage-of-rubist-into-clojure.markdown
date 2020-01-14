@@ -30,7 +30,7 @@ The service return the REST pattern, an 200 code with body when data cames from 
 _(Note: When you call `parse-string`, to convert the json into map, all keys cames as string too. If you want to get symbol-like a in clojure. You need to fill a argument/parameter with `true`. I really don't like it. Does not sound idiomatic.)_
 
 But when you get a 404 from service, `clj-http` raises a exception. The odds is always with us, we can perfectly handle this problem with `slingshot`, creating a custom catch for 404 code. I really like to throw exceptions, it's more than a error for me. We can express unexpected behaviors, and handle with a situation without a cascade of conditionals (Let the destiny defines what you do).
-And I chose to throw an custom exception for user, but more idiomatic. (`:type ::nothing-returned`)
+And I choose to throw an custom exception for user, but more idiomatic. (`:type ::nothing-returned`)
 
 Alongside this code flow, I built the tests, for sure. And I really like the `clojure.test`, it's simple and get the job done. One of the points what I really like, is the use of `with-redefs`. I could do mock all `clj-http` client requests, and set responses without problem, and everything is core builted in language. And I write tests to cover all critical points of the simple "clojar".
 
