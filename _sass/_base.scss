@@ -7,9 +7,9 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Quicksand', sans-serif;
 }
 
-.container {
+.container.main {
   @media screen and (max-width: $tablet) {
-    padding-left: 35px;
+    padding-top: 65px;
   }
 }
 
@@ -24,7 +24,7 @@ h1, h2, h3, h4, h5, h6 {
   height: 100%;
 }
 
-.leftbar {
+.actionsbar {
   background: $sidebar-background;
   position: fixed;
   left: 0;
@@ -32,13 +32,29 @@ h1, h2, h3, h4, h5, h6 {
   height: 100vh;
   z-index: 10;
 
+  @media screen and (max-width: $tablet) {
+    width: 100%;
+    height: 60px;
+  }
+
   .menu-bar {
     list-style: none;
     padding-top: 10px;
 
+    @media screen and (max-width: $tablet) {
+      display: inline-flex;
+      justify-content: center;
+      margin-left: 8px;
+      width: 100%;
+    }
+
     .menu-item {
       text-align: center;
       padding-top: 5px;
+
+      @media screen and (max-width: $tablet) {
+        padding: 0px 8px 0px 0px;
+      }
 
       a {
         background: $sidebar-background;
@@ -61,6 +77,11 @@ h1, h2, h3, h4, h5, h6 {
   padding-right: 25px;
   position: fixed;
   z-index: 10;
+
+  @media screen and (max-width: $tablet) {
+    height: 32px;
+    padding-right: 12px;
+  }
 
   .signature {
     color: $white-ter;
@@ -158,11 +179,12 @@ h1, h2, h3, h4, h5, h6 {
 
 .post {
   .header {
-    border-bottom: 1px dashed $own-purple;
+    border-bottom: 2px dashed $own-purple;
   }
 
   &.content {
     font-family: 'Lato', sans-serif;
+    font-size: 19px;
     padding-bottom: 16px;
 
     pre {
