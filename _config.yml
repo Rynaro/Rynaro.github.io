@@ -1,11 +1,10 @@
 title: Henrique A. Lavezzo
 author: Henrique A. Lavezzo
-email: me@hlavezzo.run
+email: hi@hlavezzo.me
 description: >-
   A code alchemist, that loves to write novels, and code transmutation circles.
 baseurl: ""
-url: "https://hlavezzo.run"
-twitter_username: jekyllrb
+url: "https://hlavezzo.me"
 github_username:  rynaro
 
 permalink: /:year/:month/:day/:title
