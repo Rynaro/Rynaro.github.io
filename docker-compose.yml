@@ -1,0 +1,12 @@
+version: "3.3"
+
+services:
+  application:
+    container_name: hlavezzo-jekyll
+    build:
+      context: .
+    volumes:
+      - .:/opt/application
+    ports:
+      - "4000:4000"
+    command: "bundle exec rake serve"
