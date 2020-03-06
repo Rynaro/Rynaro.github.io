@@ -2,13 +2,13 @@ var skillElement = document.getElementById("skill-radar");
 var codingSkills = new Chart(skillElement, {
   type: 'radar',
   data: {
-    labels: ['Ruby', 'Elixir', 'Java', 'Go', 'PHP', 'Python', 'Javascript'],
+    labels: ['Ruby', 'Elixir', 'Java', 'Go', 'PHP', 'Python', 'Javascript', 'Clojure'],
     datasets: [{
       label: 'Languages Knowledge',
       backgroundColor: "rgba(84, 13, 110, 0.2)",
       borderColor: "rgb(84, 13, 110)",
       fill: true,
-      data: [95, 65, 90, 45, 70, 85, 90]
+      data: [95, 65, 90, 45, 70, 85, 90, 80]
     }]
   },
   options: {
