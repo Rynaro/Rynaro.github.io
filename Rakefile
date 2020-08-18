@@ -3,7 +3,7 @@ task :serve do
 end
 
 task :prepare_assets do
-  js_assets = %w(chart.js/dist/Chart.min.js pixi.js/dist/pixi.min.js)
+  js_assets = %w(chart.js/dist/Chart.min.js phaser/dist/phaser.min.js)
   style_assets = %w(bulma)
 
   root = Dir.pwd
