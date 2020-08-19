@@ -4,10 +4,10 @@ gem "rake"
 gem "minima", "~> 2.0"
 
 group :jekyll_plugins do
-  gem 'github-pages'
-  gem "jekyll-feed", "~> 0.6"
-  gem 'jekyll-babel'
-  gem 'jemoji'
+  gem 'github-pages', '~> 207'
+  gem 'jekyll-feed', '~> 0.13.0'
+  gem 'jekyll-babel', '~> 1.1'
+  gem 'jemoji', '~> 0.11.1'
 end
 
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
