@@ -18,6 +18,6 @@ class StartButton extends Phaser.GameObjects.Text {
   }
 
   _action() {
-    alert("triggered")
+    this.scene.scene.start('LevelScene');
   }
 }

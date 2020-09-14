@@ -10,7 +10,8 @@ window.onload = function() {
     height: window.innerHeight,
     parent: "board",
     transparent: true,
-    scene: IntroScene
+    physics: { default: "arcade" },
+    scene: [ IntroScene, LevelScene ]
   };
 
   game = new Phaser.Game(gameConfig);

@@ -20,9 +20,8 @@ class IntroScene extends Phaser.Scene {
   }
 
   create() {
-    let { width, height } = this.sys.game.canvas;
     this.potionRows = this._generatePotions();
-    // this.startButton = new StartButton(this, 87, height - 50, "PLAY !");
+    this.startButton = new StartButton(this, 87, this.screenHeight - 50, "PLAY !");
     // SOON youll be able to play a minigame here
   }
 
@@ -31,14 +30,13 @@ class IntroScene extends Phaser.Scene {
   }
 
   _generatePotions() {
-    let { width, height } = this.sys.game.canvas;
-    let rows = Math.ceil(height / 48) - 3;
+    let rows = Math.ceil(this.screenHeight / 48) - 3;
     let yPointer = 48;
     let actualRow = 0;
     let potionsRows = [];
 
     while(actualRow < rows) {
-      potionsRows.push(this._drawLine(width, yPointer));
+      potionsRows.push(this._drawLine(this.screenWidth, yPointer));
       yPointer += 48;
       actualRow += 1;
     }
@@ -86,18 +84,24 @@ class IntroScene extends Phaser.Scene {
   }
 
   _translocatePotionsFrom(row, direction) {
-    let { width, _height } = this.sys.game.canvas;
 
     row.forEach(potion => {
       direction ? potion.moveLeft() : potion.moveRight();
       if(this._checkPotionOutBoundaries(potion.x, direction)) {
-        potion.setX(direction ? width : 0);
+        potion.setX(direction ? this.screenWidth : 0);
       }
     });
   }
 
   _checkPotionOutBoundaries(potionPositionX, direction) {
-    let { width, _height } = this.sys.game.canvas;
-    return ((potionPositionX > width && !direction) || (potionPositionX < 0 && direction));
+    return ((potionPositionX > this.screenWidth && !direction) || (potionPositionX < 0 && direction));
+  }
+
+  get screenWidth() {
+    return this.sys.game.canvas.width;
+  }
+
+  get screenHeight(){
+    return this.sys.game.canvas.height;
   }
 }
