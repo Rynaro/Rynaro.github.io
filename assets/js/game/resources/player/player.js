@@ -8,7 +8,6 @@ class Player extends Phaser.GameObjects.Sprite {
 
     this._type = type;
     this._movementSpeed = 250;
-
     this.angle = 245;
 
     scene.physics.world.enable(this);
@@ -23,9 +22,12 @@ class Player extends Phaser.GameObjects.Sprite {
     this.body.setVelocityX(movementRule);
   }
 
-  stoppingMovement() {
-    this.body.setVelocityX(0);
-    this.body.setVelocityY(0);
+  stoppingHorizontalMovement() {
+    this._horizontalMovement(0);
+  }
+
+  stoppingVerticalMovement() {
+    this._verticalMovement(0);
   }
 
   moveUp() {
