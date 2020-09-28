@@ -16,9 +16,6 @@ class LevelScene extends Phaser.Scene {
     this._player = new Player(this, 'commonGlove');
     this._controller = new Gamepad(this);
 
-    // this._stuff = new StrayStuff(this, 300, 300, 'greenPotion');
-    // this.collider = new Collider(this, this._stuff);
-
     this._stuffPopulationManager = new StuffPopulation(this);
   }
 

@@ -7,7 +7,7 @@ class StaticStuff extends CommonStuff {
     super(scene, targetY, targetX, 'greenBottle');
   }
 
-  movementPattern() {
+  startMove() {
     return;
   }
 }

@@ -10,6 +10,19 @@ class Collider {
   }
 
   effect() {
-    this._scene.physics.add.collider(this._player, this._stuff, () => { console.log('collided'); });
+    this._scene.physics.add.collider(this._player, this._stuff, () => { this._triggerEvent(); });
+  }
+
+  _triggerEvent() {
+    this._expireStuff();
+    this._calculateScorePoint();
+  }
+
+  _expireStuff() {
+    this._stuff.expire();
+  }
+
+  _calculateScorePoint() {
+    return
   }
 }

@@ -9,14 +9,14 @@ class IntroScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('red_potion', 'assets/game/icons/32x32/potion_03a.png');
-    this.load.image('blue_potion', 'assets/game/icons/32x32/potion_03b.png');
-    this.load.image('green_potion', 'assets/game/icons/32x32/potion_03c.png');
-    this.load.image('black_potion', 'assets/game/icons/32x32/potion_03d.png');
-    this.load.image('purple_potion', 'assets/game/icons/32x32/potion_03e.png');
-    this.load.image('orange_potion', 'assets/game/icons/32x32/potion_03f.png');
-    this.load.image('pink_potion', 'assets/game/icons/32x32/potion_03g.png');
-    this.load.image('white_potion', 'assets/game/icons/32x32/potion_03h.png');
+    this.load.image('redPotion', 'assets/game/icons/32x32/potion_03a.png');
+    this.load.image('bluePotion', 'assets/game/icons/32x32/potion_03b.png');
+    this.load.image('greenPotion', 'assets/game/icons/32x32/potion_03c.png');
+    this.load.image('blackPotion', 'assets/game/icons/32x32/potion_03d.png');
+    this.load.image('purplePotion', 'assets/game/icons/32x32/potion_03e.png');
+    this.load.image('orangePotion', 'assets/game/icons/32x32/potion_03f.png');
+    this.load.image('pinkPotion', 'assets/game/icons/32x32/potion_03g.png');
+    this.load.image('whitePotion', 'assets/game/icons/32x32/potion_03h.png');
   }
 
   create() {
@@ -51,7 +51,7 @@ class IntroScene extends Phaser.Scene {
 
     while (xPointer <= screenWidth) {
       latestPotion = this._safeRandomPotions(latestPotion);
-      potions.push(this._generatePotion(xPointer, yPointer, `${latestPotion}_potion`));
+      potions.push(this._generatePotion(xPointer, yPointer, `${latestPotion}Potion`));
       xPointer += 64;
     }
 

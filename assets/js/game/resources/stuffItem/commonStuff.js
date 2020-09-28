@@ -1,28 +1,31 @@
 ---
 ---
 
-class CommonStuff extends Phaser.GameObjects.Sprite {
+class CommonStuff extends Phaser.GameObjects.PathFollower {
 
   constructor(scene, targetY, targetX, asset) {
-    super(scene, targetY, targetX, 'emptyBottle');
+    super(scene, null, targetY, targetX, 'emptyBottle');
 
     this._asset = asset;
+    this._movementPattern = this._defineMovementPattern();
     this.setTexture(this._asset);
-
+    this.setPath(this._movementPattern);
 
     this._lifespan = 7000; // in milliseconds
+    this._pathFollowDuration = 9000; // in milliseconds
     this._expired = false;
     this._pointEvaluation = 1;
-    this._movementSpeed = 250;
 
     scene.physics.world.enable(this);
     scene.add.existing(this);
+
     this._activateEvents();
     this._activateCollision();
   }
 
   _activateEvents() {
     new LifespanEvent(this).activate();
+    this.startMove();
   }
 
   _activateCollision() {
@@ -33,44 +36,16 @@ class CommonStuff extends Phaser.GameObjects.Sprite {
     this._expired = true;
   }
 
-  move() {
-    this._movementPattern();
+  startMove() {
+    this.startFollow({
+      duration: this._pathFollowDuration,
+      repeat: -1,
+      ease: 'Linear'
+    });
   }
 
-  _verticalMovement(movementRule) {
-    this.body.setVelocityY(movementRule);
-  }
-
-  _horizontalMovement(movementRule) {
-    this.body.setVelocityX(movementRule);
-  }
-
-  _stoppingHorizontalMovement() {
-    this._horizontalMovement(0);
-  }
-
-  _stoppingVerticalMovement() {
-    this._verticalMovement(0);
-  }
-
-  _moveUp() {
-    this._verticalMovement(this._movementSpeed * -1);
-  }
-
-  _moveDown() {
-    this._verticalMovement(this._movementSpeed);
-  }
-
-  _moveRight() {
-    this._horizontalMovement(this._movementSpeed);
-  }
-
-  _moveLeft() {
-    this._horizontalMovement(this._movementSpeed * -1);
-  }
-
-  _movementPattern() {
-    return;
+  _defineMovementPattern() {
+    return; // signature method
   }
 
   get expired() {
@@ -79,13 +54,5 @@ class CommonStuff extends Phaser.GameObjects.Sprite {
 
   get lifespan() {
     return this._lifespan;
-  }
-
-  set movementSpeed(value) {
-    this._movementSpeed = value;
-  }
-
-  get movementSpeed() {
-    return this._movementSpeed;
   }
 }
