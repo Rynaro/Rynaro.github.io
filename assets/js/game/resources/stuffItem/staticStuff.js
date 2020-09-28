@@ -3,8 +3,8 @@
 
 class StaticStuff extends CommonStuff {
 
-  constructor(scene, targetY, targetX, _asset) {
-    super(scene, targetY, targetX, 'greenBottle');
+  constructor(scene, targetY, targetX, kind) {
+    super(scene, targetY, targetX, kind);
   }
 
   startMove() {

@@ -6,6 +6,7 @@ class LevelScene extends Phaser.Scene {
   constructor() {
     super("LevelScene");
     this._assetManager = new AssetLoader(this);
+    this._score = new Score();
   }
 
   preload() {
@@ -22,6 +23,11 @@ class LevelScene extends Phaser.Scene {
   update() {
     this._controller.watchPlayerControls();
     this._stuffPopulationManager.watchPopulation();
+    console.log(this._score.points);
+  }
+
+  get score() {
+    return this._score;
   }
 
   get player() {

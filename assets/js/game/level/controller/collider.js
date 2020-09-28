@@ -23,6 +23,12 @@ class Collider {
   }
 
   _calculateScorePoint() {
-    return
+    let scoreEffect = this._stuff.kind.scoreEffect();
+
+    if (scoreEffect.operation === 'increase') {
+      this._scene.score.increasePoints(scoreEffect.amount);
+    } else if(scoreEffect.operation === 'decrease') {
+      this._scene.score.decreasePoints(scoreEffect.amount);
+    }
   }
 }

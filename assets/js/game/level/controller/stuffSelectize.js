@@ -2,23 +2,26 @@
 ---
 
 class StuffSelectize {
-
-  generate() {
+  static generate() {
     return {
-      'movement' : this._availableMovementBeings[this._randomOf(this._availableMovementBeings.length - 1)],
-      'behaviour' : this._availableBehaviourBeings[this._randomOf(this._availableBehaviourBeings.length - 1)]
+      'movement' : this._generateRandomAttributes(this._availableMovementBeings()),
+      'kind' : this._generateRandomAttributes(this._availableBehaviourBeings())
     }
   }
 
-  _availableMovementBeings() {
+  static _generateRandomAttributes(attributes) {
+    return attributes[this._randomOf(attributes.length - 1)];
+  }
+
+  static _availableMovementBeings() {
     return [StrayStuff, StaticStuff, CircularStuff];
   }
 
-  _availableBehaviourBeings() {
-    return ['goodFortune', 'poisoned'];
+  static _availableBehaviourBeings() {
+    return [Poison, GoodFortune, Empty];
   }
 
-  _randomOf(maximum) {
+  static _randomOf(maximum) {
     return Phaser.Math.RND.integerInRange(0, maximum);
   }
 }

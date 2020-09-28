@@ -3,18 +3,17 @@
 
 class CommonStuff extends Phaser.GameObjects.PathFollower {
 
-  constructor(scene, targetY, targetX, asset) {
-    super(scene, null, targetY, targetX, 'emptyBottle');
+  constructor(scene, targetY, targetX, kind) {
+    super(scene, null, targetY, targetX, kind.asset);
 
-    this._asset = asset;
     this._movementPattern = this._defineMovementPattern();
-    this.setTexture(this._asset);
     this.setPath(this._movementPattern);
 
     this._lifespan = 7000; // in milliseconds
     this._pathFollowDuration = 9000; // in milliseconds
+    this._kind = kind;
+
     this._expired = false;
-    this._pointEvaluation = 1;
 
     scene.physics.world.enable(this);
     scene.add.existing(this);
@@ -46,6 +45,10 @@ class CommonStuff extends Phaser.GameObjects.PathFollower {
 
   _defineMovementPattern() {
     return; // signature method
+  }
+
+  get kind() {
+    return this._kind;
   }
 
   get expired() {

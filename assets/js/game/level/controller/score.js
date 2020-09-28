@@ -3,19 +3,18 @@
 
 class Score {
   constructor() {
-    this._score = 0;
+    this._points = 0;
   }
 
   increasePoints(value) {
-    this._score += value;
+    this._points += value;
   }
 
-  reducePoints(value) {
-    this._score -= value;
+  decreasePoints(value) {
+    this._points -= value;
   }
 
-
-  get score() {
-    return this._score;
+  get points() {
+    return this._points;
   }
 }
