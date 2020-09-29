@@ -8,6 +8,6 @@ class GoodFortune extends KindBase {
   }
 
   scoreEffect() {
-    return { 'operation' : 'increase', 'amount' : 1 };
+    return { 'operation' : 'increase', 'amount' : 3 };
   }
 }

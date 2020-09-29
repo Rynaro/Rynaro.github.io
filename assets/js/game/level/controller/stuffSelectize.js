@@ -18,7 +18,7 @@ class StuffSelectize {
   }
 
   static _availableBehaviourBeings() {
-    return [Poison, GoodFortune, Empty];
+    return [Poison, Health, Mana, GoodFortune, Empty];
   }
 
   static _randomOf(maximum) {

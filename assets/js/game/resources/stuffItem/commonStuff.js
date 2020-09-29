@@ -3,8 +3,8 @@
 
 class CommonStuff extends Phaser.GameObjects.PathFollower {
 
-  constructor(scene, targetY, targetX, kind) {
-    super(scene, null, targetY, targetX, kind.asset);
+  constructor(scene, targetX, targetY, kind) {
+    super(scene, null, targetX, targetY, kind.asset);
 
     this._movementPattern = this._defineMovementPattern();
     this.setPath(this._movementPattern);

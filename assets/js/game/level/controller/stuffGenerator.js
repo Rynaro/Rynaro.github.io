@@ -9,8 +9,8 @@ class StuffGenerator {
     this._stuffKind = attributesSelected.kind;
   }
 
-  generate(yPosition, xPosition) {
-    return new this._stuffClass(this._scene, yPosition, xPosition, this._initializedKind());
+  generate(xPosition, yPosition) {
+    return new this._stuffClass(this._scene, xPosition, yPosition, this._initializedKind());
   }
 
   _initializedKind() {
