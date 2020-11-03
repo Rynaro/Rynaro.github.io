@@ -18,13 +18,38 @@ class ClockText extends Phaser.GameObjects.Text {
   }
 
   refresh() {
-    this.setText(`CLOCK : ${this._clock.ingameTime}`);
+    this._stylizeText();
+    this.setText(`TIME : ${this._composeText()}`);
+  }
+
+  _composeText() {
+    let sentence = this._clock.ingameTime;
+    if (this._clock.timesFrozen) sentence += ` + ${this._clock.frozenTime}`;
+
+    return sentence;
+  }
+
+  _stylizeText() {
+    this._clearStyle();
+    this._frozenedTimeStyle();
     this._endingTimeStyle();
   }
 
+  _clearStyle() {
+    if(!this._clock.timesEnding && !this._clock.timesFrozen) {
+      this.setColor('#FFFFFF');
+    }
+  }
+
   _endingTimeStyle() {
-    if(this._clock.ingameTime === 10) {
+    if(this._clock.timesEnding && !this._clock.timesFrozen) {
       this.setColor('#E94F37');
+    }
+  }
+
+  _frozenedTimeStyle() {
+    if(this._clock.timesFrozen) {
+      this.setColor('#3F88C5');
     }
   }
 }

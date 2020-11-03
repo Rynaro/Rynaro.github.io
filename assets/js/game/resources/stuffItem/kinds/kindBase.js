@@ -11,6 +11,10 @@ class KindBase {
     return;
   }
 
+  clockEffect() {
+    return;
+  }
+
   get asset() {
     return this._asset;
   }

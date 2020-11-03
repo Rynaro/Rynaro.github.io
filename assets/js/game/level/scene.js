@@ -6,8 +6,6 @@ class LevelScene extends Phaser.Scene {
   constructor() {
     super("LevelScene");
     this._assetManager = new AssetLoader(this);
-    this._score = new Score();
-    this._clock = new GameClock(this);
   }
 
   preload() {
@@ -15,6 +13,9 @@ class LevelScene extends Phaser.Scene {
   }
 
   create() {
+    this._score = new Score();
+    this._clock = new GameClock(this);
+
     this._player = new Player(this, 'commonGlove');
     this._controller = new Gamepad(this);
     this._scoreText = new ScoreText(this, this.screenWidth - 200, 65, this._score);
@@ -25,14 +26,23 @@ class LevelScene extends Phaser.Scene {
   }
 
   update() {
+    this._gameIsOver();
     this._controller.watchPlayerControls();
     this._stuffPopulationManager.watchPopulation();
     this._scoreText.refresh();
     this._clockText.refresh();
   }
 
+  _gameIsOver() {
+    if (this._clock.isTimesUp()) this.scene.start('GameOverScene', { score: this._score });
+  }
+
   get score() {
     return this._score;
+  }
+
+  get clock() {
+    return this._clock;
   }
 
   get player() {

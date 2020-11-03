@@ -10,4 +10,8 @@ class Poison extends KindBase {
   scoreEffect() {
     return { 'operation' : 'decrease', 'amount' : 1 };
   }
+
+  clockEffect() {
+    return { 'operation' : 'heat', 'amount' : 2 };
+  }
 }

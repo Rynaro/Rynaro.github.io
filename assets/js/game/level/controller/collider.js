@@ -15,6 +15,7 @@ class Collider {
 
   _triggerEvent() {
     this._expireStuff();
+    this._manipulateClock();
     this._calculateScorePoint();
   }
 
@@ -24,11 +25,23 @@ class Collider {
 
   _calculateScorePoint() {
     let scoreEffect = this._stuff.kind.scoreEffect();
+    if(!scoreEffect) return;
 
     if (scoreEffect.operation === 'increase') {
       this._scene.score.increasePoints(scoreEffect.amount);
     } else if(scoreEffect.operation === 'decrease') {
       this._scene.score.decreasePoints(scoreEffect.amount);
+    }
+  }
+
+  _manipulateClock() {
+    let clockEffect = this._stuff.kind.clockEffect();
+    if(!clockEffect) return;
+
+    if (clockEffect.operation === 'freeze') {
+      this._scene.clock.freezeFor(clockEffect.amount);
+    } else if(clockEffect.operation === 'heat') {
+      this._scene.clock.heatFor(clockEffect.amount);
     }
   }
 }

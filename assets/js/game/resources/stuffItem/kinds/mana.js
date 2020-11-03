@@ -8,6 +8,10 @@ class Mana extends KindBase {
   }
 
   scoreEffect() {
-    return { 'operation' : 'increase', 'amount' : 2 };
+    return { 'operation' : 'increase', 'amount' : 1 };
+  }
+
+  clockEffect() {
+    return { 'operation' : 'freeze', 'amount' : 5 };
   }
 }

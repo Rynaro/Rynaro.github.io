@@ -22,7 +22,6 @@ class IntroScene extends Phaser.Scene {
   create() {
     this.potionRows = this._generatePotions();
     this.startButton = new StartButton(this, 87, this.screenHeight - 50, "PLAY !");
-    // SOON youll be able to play a minigame here
   }
 
   update() {
