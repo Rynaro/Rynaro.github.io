@@ -12,6 +12,6 @@ class Mana extends KindBase {
   }
 
   clockEffect() {
-    return { 'operation' : 'freeze', 'amount' : 5 };
+    return { 'operation' : 'freeze', 'amount' : 3 };
   }
 }

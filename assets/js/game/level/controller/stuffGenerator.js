@@ -2,18 +2,19 @@
 ---
 
 class StuffGenerator {
-  constructor(scene, attributesSelected) {
+  constructor(scene) {
     this._scene = scene;
-
-    this._stuffClass = attributesSelected.movement;
-    this._stuffKind = attributesSelected.kind;
+    this._stuff = StuffSelectize.generate();
   }
 
-  generate(xPosition, yPosition) {
-    return new this._stuffClass(this._scene, xPosition, yPosition, this._initializedKind());
+  generate() {
+    let yPosition = Phaser.Math.RND.integerInRange(100, this._scene.screenHeight - 150);
+    let xPosition = Phaser.Math.RND.integerInRange(100, this._scene.screenWidth - 150);
+
+    return new this._stuff.movement(this._scene, xPosition, yPosition, this._initializedKind());
   }
 
   _initializedKind() {
-    return new this._stuffKind();
+    return new this._stuff.kind();
   }
 }

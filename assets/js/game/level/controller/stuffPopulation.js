@@ -40,13 +40,7 @@ class StuffPopulation {
     return this._populationSize() < this._limit;
   }
 
-  _determineStuffAttributes() {
-    return StuffSelectize.generate();
-  }
-
   _populate() {
-    let yPosition = Phaser.Math.RND.integerInRange(100, this._scene.screenHeight - 150);
-    let xPosition = Phaser.Math.RND.integerInRange(100, this._scene.screenWidth - 150);
-    return new StuffGenerator(this._scene, this._determineStuffAttributes()).generate(xPosition, yPosition);
+    return new StuffGenerator(this._scene).generate();
   }
 }
