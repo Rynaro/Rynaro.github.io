@@ -1,7 +1,7 @@
 ---
 ---
 
-class StartButton extends Phaser.GameObjects.Text {
+class ScreenSwitchButton extends Phaser.GameObjects.Text {
 
   constructor(scene, x, y, text) {
     super(scene, x, y, text, {
@@ -18,6 +18,12 @@ class StartButton extends Phaser.GameObjects.Text {
   }
 
   _action() {
-    this.scene.scene.start('LevelScene');
+    let levelScreen = this.scene.scene.get(this._targetScene());
+    this.scene.scene.stop();
+    levelScreen.scene.restart();
+  }
+
+  _targetScene() {
+    return;
   }
 }

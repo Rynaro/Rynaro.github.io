@@ -9,21 +9,19 @@ class IntroScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('red_potion', 'assets/game/icons/32x32/potion_03a.png');
-    this.load.image('blue_potion', 'assets/game/icons/32x32/potion_03b.png');
-    this.load.image('green_potion', 'assets/game/icons/32x32/potion_03c.png');
-    this.load.image('black_potion', 'assets/game/icons/32x32/potion_03d.png');
-    this.load.image('purple_potion', 'assets/game/icons/32x32/potion_03e.png');
-    this.load.image('orange_potion', 'assets/game/icons/32x32/potion_03f.png');
-    this.load.image('pink_potion', 'assets/game/icons/32x32/potion_03g.png');
-    this.load.image('white_potion', 'assets/game/icons/32x32/potion_03h.png');
+    this.load.image('redPotion', 'assets/game/icons/32x32/potion_03a.png');
+    this.load.image('bluePotion', 'assets/game/icons/32x32/potion_03b.png');
+    this.load.image('greenPotion', 'assets/game/icons/32x32/potion_03c.png');
+    this.load.image('blackPotion', 'assets/game/icons/32x32/potion_03d.png');
+    this.load.image('purplePotion', 'assets/game/icons/32x32/potion_03e.png');
+    this.load.image('orangePotion', 'assets/game/icons/32x32/potion_03f.png');
+    this.load.image('pinkPotion', 'assets/game/icons/32x32/potion_03g.png');
+    this.load.image('whitePotion', 'assets/game/icons/32x32/potion_03h.png');
   }
 
   create() {
-    let { width, height } = this.sys.game.canvas;
     this.potionRows = this._generatePotions();
-    // this.startButton = new StartButton(this, 87, height - 50, "PLAY !");
-    // SOON youll be able to play a minigame here
+    this.startButton = new StartButton(this, 87, this.screenHeight - 50, "PLAY !");
   }
 
   update() {
@@ -31,14 +29,13 @@ class IntroScene extends Phaser.Scene {
   }
 
   _generatePotions() {
-    let { width, height } = this.sys.game.canvas;
-    let rows = Math.ceil(height / 48) - 3;
+    let rows = Math.ceil(this.screenHeight / 48) - 3;
     let yPointer = 48;
     let actualRow = 0;
     let potionsRows = [];
 
     while(actualRow < rows) {
-      potionsRows.push(this._drawLine(width, yPointer));
+      potionsRows.push(this._drawLine(this.screenWidth, yPointer));
       yPointer += 48;
       actualRow += 1;
     }
@@ -53,7 +50,7 @@ class IntroScene extends Phaser.Scene {
 
     while (xPointer <= screenWidth) {
       latestPotion = this._safeRandomPotions(latestPotion);
-      potions.push(this._generatePotion(xPointer, yPointer, `${latestPotion}_potion`));
+      potions.push(this._generatePotion(xPointer, yPointer, `${latestPotion}Potion`));
       xPointer += 64;
     }
 
@@ -86,18 +83,24 @@ class IntroScene extends Phaser.Scene {
   }
 
   _translocatePotionsFrom(row, direction) {
-    let { width, _height } = this.sys.game.canvas;
 
     row.forEach(potion => {
       direction ? potion.moveLeft() : potion.moveRight();
       if(this._checkPotionOutBoundaries(potion.x, direction)) {
-        potion.setX(direction ? width : 0);
+        potion.setX(direction ? this.screenWidth : 0);
       }
     });
   }
 
   _checkPotionOutBoundaries(potionPositionX, direction) {
-    let { width, _height } = this.sys.game.canvas;
-    return ((potionPositionX > width && !direction) || (potionPositionX < 0 && direction));
+    return ((potionPositionX > this.screenWidth && !direction) || (potionPositionX < 0 && direction));
+  }
+
+  get screenWidth() {
+    return this.sys.game.canvas.width;
+  }
+
+  get screenHeight(){
+    return this.sys.game.canvas.height;
   }
 }
