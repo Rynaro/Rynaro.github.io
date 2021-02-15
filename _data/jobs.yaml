@@ -1,10 +1,24 @@
-- title: Sr. Software Enginner
-  company: Adimplere
-  begin_at: 06/2018
+- title: Software Enginner
+  company: ElectionBuddy Inc.
+  begin_at: 12/2020
   ended_at: present
   description: >-
-    Managing development pipeline, deployment routines, and team health.
-    Responsible to manages company tech ecosystem.
+    Developing awesome solutions to taking elections to next level, using Ruby on Rails stack at your prime excellence.
+  techs:
+    - ruby
+    - rails
+    - javascript
+    - sinatra
+    - postgres
+    - aws
+
+- title: Team Lead
+  company: Adimplere
+  begin_at: 06/2018
+  ended_at: 12/2020
+  description: >-
+    Managing software engineering pipeline, and team health.
+    Responsible to manages the company tech ecosystem and keeping the software architecture sustainable.
   techs:
     - ruby
     - rails
@@ -17,10 +31,10 @@
 - title: Software Enginner
   company: Adimplere
   begin_at: 11/2017
-  ended_at: present
+  ended_at: 12/2020
   description: >-
-    Development of financial services, and debt recovery systems using ruby ecosystem, with Sequel, Sinatra, and Rails.
-    Project recovery, and tech stack evolution.
+    Developing debt recovery, and finances system using unorthodox Ruby stack, with Sinatra, Grape, Sequel.
+    And using Angular-based stack for frontend solutions.
   techs:
     - ruby
     - rails
@@ -29,14 +43,15 @@
     - postgres
     - aws
     - project management
+    - project recovery
 
 - title: Software Enginner
   company: Varitus
   begin_at: 12/2016
   ended_at: 11/2017
   description: >-
-    Developing evolution of principal software with Java ecosystem technologies.
-    Manages, and develops a entire ERP project switch, from older ERP, to newer Odoo based solution for financial health.
+    Developing solutions using Java technologies, from EJB, Hibernate, JSP, going to Spring Boot stack.
+    Managing and developing an ERP migration, from older Vtiger based to Odoo.
   techs:
     - ruby
     - sinatra
@@ -53,8 +68,7 @@
   begin_at: 06/2015
   ended_at: 12/2016
   description: >-
-    Creating ERP modularized solutions, to attach brazillians fiscal rules inside the business of ERP routines.
-    And also develops some POC applications, and ERP side projects.
+    Developing iDempiere ERP based modules solutions, for the Brazil country fiscal context.
   techs:
     - ruby
     - rails
@@ -71,8 +85,8 @@
   begin_at: 05/2013
   ended_at: 12/2013
   description: >-
-    Recovering Flash based website into newer web technologies like HTML5, CSS3 and Javascript.
-    And builtin backend solutions for more complex websites. Also deploying these websites.
+    Recovering Flash-based website into newer web technologies like HTML5, CSS3, and Javascript. Using PHP, and Ruby (on Rails) as backend.
+    And maintaining the website's hosting solution.
   techs:
     - ruby
     - rails
@@ -83,12 +97,12 @@
     - bootstrap
     - mysql
 
-- title: Robotic Specialist Intern
+- title: Robotics Specialist Intern
   company: SESI
   begin_at: 01/2013
   ended_at: 05/2013
   description: >-
-    Making robotic projects, and mentoring the school students to learn robotics, and programming.
+    Developing robotics projects, and mentoring the school students to learn robotics, and programming.
   techs:
     - lego nxt
     - arduino
@@ -98,8 +112,7 @@
   begin_at: 05/2012
   ended_at: 12/2012
   description: >-
-    Development of storage, transport, and financial systems desktop based for small, and medium size business.
-    Highlight for "track recommendation" for truckers using Google Maps API.
+    Developing financial, and logistics solutions for small businesses, using ObjectPascal technologies.
   techs:
     - delphi
     - javascript
@@ -111,7 +124,7 @@
   begin_at: 06/2011
   ended_at: 04/2012
   description: >-
-    Helping the customers to dealing with software usage doubts, or even real errors.
+    Helping the customers to handle software usage doubts or even real errors.
     Sometimes developing tools to help our support pipeline.
   techs:
     - windows batch
@@ -123,7 +136,7 @@
   begin_at: 02/2010
   ended_at: 01/2011
   description: >-
-    Development of storage control systems, and integrating the first version of digital fiscal documents (NF-e v1) based on SOAP goverment system.
+    Developing solutions for medium-sized industries, and warehouses, using ObjectPascal based technologies.
   techs:
     - delphi
     - java
