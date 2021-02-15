@@ -1,0 +1,21 @@
+name: github-pages
+
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Ruby 2.6.3
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.6.3
+
+    - name: Install gems
+      run: |
+        BUNDLER_VERSION=$(cat Gemfile.lock | tail -1 | tr -d " ") gem install bundler
+        bundle check || bundle install
+
+    - name: Build static pages
+      run: |
+        bundle exec jekyll build
