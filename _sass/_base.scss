@@ -1,10 +1,11 @@
 html {
   background: $common-background;
-  font-family: 'Lato', sans-serif;
+  font-family: 'Overpass', sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Quicksand', sans-serif;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 100 !important;
 }
 
 .container.main {
@@ -24,7 +25,7 @@ h1, h2, h3, h4, h5, h6 {
   height: 100%;
 }
 
-.actionsbar {
+.sidebar {
   background: $sidebar-background;
   position: fixed;
   left: 0;
@@ -37,7 +38,7 @@ h1, h2, h3, h4, h5, h6 {
     height: 60px;
   }
 
-  .menu-bar {
+  .structure {
     list-style: none;
     padding-top: 10px;
 
@@ -48,7 +49,7 @@ h1, h2, h3, h4, h5, h6 {
       width: 100%;
     }
 
-    .menu-item {
+    .item {
       text-align: center;
       padding-top: 5px;
 
@@ -58,8 +59,8 @@ h1, h2, h3, h4, h5, h6 {
 
       a {
         background: $sidebar-background;
-        color: $white-ter;
-        border-color: $white-ter;
+        color: $default-purple;
+        border-color: $default-purple;
 
         &:hover {
           background: lighten($color: $sidebar-background, $amount: 11);
@@ -91,10 +92,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .curriculum {
-  h1 {
-    font-family: 'Quicksand', sans-serif;
-  }
-
   .detail {
     i {
       margin-right: 5px;
@@ -166,7 +163,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .tags {
   .is-purple {
-    background: $own-pastel-purple;
+    background: $default-blue;
     color: $white-ter;
   }
 }
@@ -179,17 +176,18 @@ h1, h2, h3, h4, h5, h6 {
 
 .post {
   .header {
-    border-bottom: 2px dashed $own-purple;
+    margin-top: 4.5em;
   }
 
   &.content {
-    font-family: 'Lato', sans-serif;
-    font-size: 19px;
+    font-family: 'Overpass', sans-serif;
+    font-size: 16px;
+    margin-top: 4.5em;
     padding-bottom: 16px;
 
     pre {
       background: $white;
-      border: 1px dashed $own-pastel-purple;
+      border: 1px dashed $light-pink;
       border-radius: 3px;
       text-align: left;
     }
@@ -202,7 +200,7 @@ h1, h2, h3, h4, h5, h6 {
 
   .linkable {
     h4 {
-      color: $own-pastel-purple;
+      color: $default-blue;
     }
 
     .go-arrow {
@@ -214,10 +212,10 @@ h1, h2, h3, h4, h5, h6 {
 
     &:hover{
       > h4 {
-        color: $own-purple;
+        color: lighten($color: $default-blue, $amount: 7);
 
         > .go-arrow {
-          color: $own-purple;
+          color: lighten($color: $default-blue, $amount: 15);
         }
       }
     }
@@ -232,12 +230,16 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .notebook-pages {
-  .page-marker {
+  .beacon {
+    background: lighten($color: $light-pink, $amount: 7);
+    box-shadow: none;
+    color: darken($color: $default-pink, $amount: 2);
     transition: background 0.2s ease-in;
 
     &:hover {
-      background: $own-lighten-pastel-purple;
-      box-shadow: 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px $own-pastel-purple;
+      background: lighten($color: $default-pink, $amount: 2);
+      color: darken($color: $default-pink, $amount: 2);
+      box-shadow: none;
     }
   }
 
@@ -250,18 +252,18 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .recents {
-    .post-item {
-      border-bottom: 1px solid $grey-light;
-      padding-bottom: 5px;
+    & > .column > .title {
+      padding: 2em 0;
+    }
+
+    .beacon {
+      background: $light-blue;
+      box-shadow: none;
+      min-height: 8rem;
       transition: background 0.2s ease-in;
 
       &:hover {
-        background: $own-lighten-pastel-purple;
-        border-bottom-color: $own-pastel-purple;
-
-        > h4 {
-          color: $own-purple !important;
-        }
+        background: darken($color: $light-blue, $amount: 13);
       }
     }
   }
@@ -269,11 +271,11 @@ h1, h2, h3, h4, h5, h6 {
 
 .contact {
   .is-purple {
-      background: $own-purple;
+      background: $default-purple;
       color: #FFFFFF;
 
       &:hover {
-        background: lighten($color: $own-purple, $amount: 12);
+        background: lighten($color: $default-purple, $amount: 12);
       }
   }
 }

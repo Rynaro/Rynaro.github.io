@@ -1,12 +1,12 @@
-// main page style
-$base-background: #0E103D;
+$light-pink: #FDC5F5;
+$default-pink: #F7AEF8;
+$default-purple: #B388EB;
+$default-blue: #8093F1;
+$light-blue: #72DDF7;
+
+$base-background: $default-purple;
 $font-color: #E5E6E4;
 $bubble-silhouette: #FEF6BD;
 
-$sidebar-background: darken($color: $base-background, $amount: 5);
-
-$common-background: #E5E6E4;
-
-$own-purple: #540D6E;
-$own-pastel-purple: #A5668B;
-$own-lighten-pastel-purple: #F3E4F1;
+$sidebar-background: lighten($color: $light-pink, $amount: 5);
+$common-background: #FFFFFF;
