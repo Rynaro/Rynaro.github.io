@@ -192,6 +192,10 @@ h1, h2, h3, h4, h5, h6 {
       text-align: left;
     }
   }
+
+  .comments {
+    margin-top: 4.5rem;
+  }
 }
 
 .project-box {
@@ -257,13 +261,13 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .beacon {
-      background: $light-blue;
+      background: darken($color: $common-background, $amount: 2);
       box-shadow: none;
       min-height: 8rem;
       transition: background 0.2s ease-in;
 
       &:hover {
-        background: darken($color: $light-blue, $amount: 13);
+        background: lighten($color:$default-blue, $amount: 15);
       }
     }
   }
