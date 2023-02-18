@@ -5,7 +5,7 @@ description: >-
   A code alchemist, that loves to write novels, and code transmutation circles.
 baseurl: ""
 url: "https://hlavezzo.me"
-github_username:  rynaro
+github_username: Rynaro
 
 permalink: /:year/:month/:day/:title
 markdown: kramdown
@@ -19,4 +19,4 @@ sass:
     - _sass
     - vendor/css
 
-exclude: ['vendor/bundle']
+exclude: ['vendor/bundle', 'node_modules']
