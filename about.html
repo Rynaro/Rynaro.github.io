@@ -3,122 +3,63 @@ layout: common
 ---
 
 <section class="section curriculum" id="curriculum">
-  <div class="container">
-    <div class="columns">
-      <div class="column is-full-mobile has-text-centered">
+  <header class="container">
+    <div class="columns is-multiline has-text-centered">
+      <div class="column is-full">
         <h1 class="title">Henrique Aparecido Lavezzo</h1>
         <h2 class="subtitle">Code Alchemist</h2>
       </div>
-    </div>
-  </div>
-  <div class="container">
-    <div class="columns">
-      <div class="column has-text-centered">
+      <div class="social-buttons column is-full">
         <a href="https://www.linkedin.com/in/hlavezzo" target="_blank">
           <i class="fab fa-linkedin social in"></i>
         </a>
         <a href="https://github.com/Rynaro" target="_blank">
           <i class="fab fa-github social gh"></i>
         </a>
-        <a href="https://stackoverflow.com/story/hlavezzo" target="_blank">
-          <i class="fab fa-stack-overflow social so"></i>
-        </a>
         <a href="https://dev.to/rynaro">
           <i class="fab fa-dev social dv" title="rynaro's DEV Profile"></i>
         </a>
       </div>
     </div>
-  </div>
-  <div class="container skill-section">
-    <div class="columns section-header">
-      <div class="column is-full-mobile is-full">
-        <h1 class="title has-text-centered"><i class="fa fa-star highlighted"></i></h1>
-        <h2 class="subtitle has-text-centered">Skill Highlights</h2>
-      </div>
-    </div>
-    <div class="columns skill-group">
-      <div class="column is-half is-full-mobile">
-        <canvas id="skill-radar"></canvas>
-      </div>
-      <div class="column is-half is-full-mobile">
-        <p class="has-text-justified">
-          A code alchemist always seek knowledge to transmute ideas into shiny gems. And spread the sharped knowledge back to the world.
+  </header>
+  <section class="container bio">
+    <h2 class="subtitle column is-full has-text-centered">About Me</h2>
+    <div class="columns">
+      <div class="column is-three-fifths is-offset-one-fifth">
+        <p>
+          A Code Alchemist with more than 10 years of experience in transmuting code. Experienced in writing code, building project architectures, and organizing development pipelines.
         </p>
-        <p class="has-text-justified">
-          As alchemist, I'm always curious about game development, and web technologies.
-          Ruby always is my favorite language, because its elegant, and flexible. And its my main language nowadays.
+        <p>
+          Always looking for the primitive state of knowledge.
+          By diving deep into papers about language paradigms papers at books and across the internet.
+          Love to understand how things work in the way that works. So we can get the concepts and crush them into new ideas.
         </p>
-        <p class="has-text-justified">
-          And actually looking closer into Go, and Elixir languages to empowering my grimoire, and transmutation elements.
+        <p>
+          Having experience with a sort of technologies, from the superb Object Pascal to modern market languages Elixir, Java, Javascript, and Ruby. And about Ruby, that's my main stack for the moment!
+        </p>
+        <p>
+          Also passionate about reading, games, gardening, and (over) organization. Not in this order. I love to talk about them!
         </p>
       </div>
     </div>
 
-    <div class="columns skill-group">
-      <div class="column is-half is-full-mobile">
-        <p class="has-text-justified">
-          Tooling is a important part inside a alchemist lab. We can do better work with right tools.
-        </p>
-        <p class="has-text-justified">
-          Linux <i class="fa fa-heart"></i> is part of my life over than 10 years, because of this, my system administration skill are very accurated.
-          And I can do transmutation tricks with Wine to run most of Windows games in Linux based OS.
-        </p>
-        <p class="has-text-justified">
-          I'm in love with Vagrant since 2012, and because of this. It's one of my most used tools to isolate environments.
-        </p>
-        <p class="has-text-justified">
-          And a alchemist is always able to use the ancient SQL even necessary over than modern ORM frameworks.
-          I really think, this skill is one of more important that I have in my hands.
-        </p>
-      </div>
-      <div class="column is-half is-full-mobile">
-        <canvas id="tooling-radar"></canvas>
-      </div>
-    </div>
-  </div>
-  <div class="container language-section">
-    <div class="columns section-header">
-      <div class="column is-full-mobile is-full">
-        <h1 class="title has-text-centered"><i class="fa fa-language lang"></i></h1>
-        <h2 class="subtitle has-text-centered">Languages</h2>
-      </div>
-    </div>
-    <div class="columns">
-      <div class="column is-offset-one-quarter is-half is-full-mobile">
-        <canvas id="language-bar"></canvas>
-      </div>
-    </div>
-  </div>
+  </section>
   <div class="container">
     <div class="columns section-header">
       <div class="column is-full">
-        <h1 class="title has-text-centered"><i class="fa fa-briefcase"></i></h1>
-        <h2 class="subtitle has-text-centered">Job Career</h2>
+        <h2 class="subtitle has-text-centered">Career</h2>
       </div>
     </div>
     <div class="jobs columns is-multiline">
       {% for job in site.data.jobs %}
         <div class="column is-one-third is-full-mobile">
-          <div class="box">
-            <div class="media-content">
-              <div class="content">
-                <h2 class="title">{{job.title}}</h2>
-                <h4 class="subtitle">{{job.company}}</h4>
-                <h5 class="subtitle time">{{job.begin_at}} - {{job.ended_at}}</h5>
-                <p class="description">{{job.description}}</p>
-                <div class="tags are-small">
-                  {% for tech in job.techs %}
-                    <span class="tag is-purple">{{tech}}</span>
-                  {% endfor %}
-                </div>
-              </div>
-            </div>
+          <div class="content box">
+            <h3 class="title">{{job.title}}</h2>
+            <h5 class="subtitle mb-1">{{job.company}}</h4>
+            <h6 class="subtitle">{{job.begin_at}} - {{job.ended_at}}</h6>
           </div>
         </div>
       {% endfor %}
     </div>
   </div>
 </section>
-
-<script src="{{'/vendor/js/Chart.min.js' | prepend: site.baseurl}}"></script>
-<script src="{{'/assets/js/curriculum.js' | prepend: site.baseurl}}"></script>
