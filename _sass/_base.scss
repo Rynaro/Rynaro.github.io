@@ -92,6 +92,20 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .curriculum {
+  & > header {
+    margin: 2.5em 0;
+  }
+
+  & > header {
+    h2 {
+      font-style: italic;
+    }
+
+    .social-buttons {
+      margin-top: 0.5em;
+    }
+  }
+
   .detail {
     i {
       margin-right: 5px;
@@ -124,40 +138,9 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-.skill-section {
-  .skill-group {
-    margin-top: 35px;
-  }
-
-  .highlighted {
-    color: #F1AC21;
-  }
-
-  .fa-heart {
-    color: #B20020;
-  }
-}
-
-.language-section {
-  .lang {
-    color: #0081AF;
-  }
-}
-
 .jobs {
-  .description {
-    height: 150px;
-    min-height: 150px;
-  }
-
-  .tags {
-    height: 65px;
-    min-height: 65px;
-  }
-
-  .time {
-    color: $grey-light;
-    font-style: italic;
+  .title {
+    color: $default-purple;
   }
 }
 
