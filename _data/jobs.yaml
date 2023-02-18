@@ -1,144 +1,60 @@
+- title: Director of Development
+  company: ElectionBuddy Inc.
+  begin_at: Aug, 2022
+  ended_at: Present
+
+- title: Lead Developer
+  company: ElectionBuddy Inc.
+  begin_at: Feb, 2022
+  ended_at: Aug, 2022
+
 - title: Software Enginner
   company: ElectionBuddy Inc.
-  begin_at: 12/2020
-  ended_at: present
-  description: >-
-    Developing awesome solutions to taking elections to next level, using Ruby on Rails stack at your prime excellence.
-  techs:
-    - ruby
-    - rails
-    - javascript
-    - sinatra
-    - postgres
-    - aws
+  begin_at: Dec, 2020
+  ended_at: Feb, 2022
 
-- title: Team Lead
+- title: CTO
   company: Adimplere
-  begin_at: 06/2018
-  ended_at: 12/2020
-  description: >-
-    Managing software engineering pipeline, and team health.
-    Responsible to manages the company tech ecosystem and keeping the software architecture sustainable.
-  techs:
-    - ruby
-    - rails
-    - sinatra
-    - python
-    - postgres
-    - aws
-    - project management
+  begin_at: May, 2018
+  ended_at: Dec, 2020
 
 - title: Software Enginner
   company: Adimplere
-  begin_at: 11/2017
-  ended_at: 12/2020
-  description: >-
-    Developing debt recovery, and finances system using unorthodox Ruby stack, with Sinatra, Grape, Sequel.
-    And using Angular-based stack for frontend solutions.
-  techs:
-    - ruby
-    - rails
-    - sinatra
-    - python
-    - postgres
-    - aws
-    - project management
-    - project recovery
+  begin_at: Nov, 2017
+  ended_at: May, 2018
 
 - title: Software Enginner
   company: Varitus
-  begin_at: 12/2016
-  ended_at: 11/2017
-  description: >-
-    Developing solutions using Java technologies, from EJB, Hibernate, JSP, going to Spring Boot stack.
-    Managing and developing an ERP migration, from older Vtiger based to Odoo.
-  techs:
-    - ruby
-    - sinatra
-    - java
-    - jboss
-    - hibernate
-    - python
-    - odoo
-    - docker
-    - postgres
+  begin_at: Dec, 2016
+  ended_at: Nov, 2017
 
 - title: Software Enginner
   company: devCoffee Business Solutions
-  begin_at: 06/2015
-  ended_at: 12/2016
-  description: >-
-    Developing iDempiere ERP based modules solutions, for the Brazil country fiscal context.
-  techs:
-    - ruby
-    - rails
-    - java
-    - osgi
-    - maven
-    - javascript
-    - angular
-    - electron
-    - postgres
+  begin_at: Jun, 2015
+  ended_at: Dec, 2016
 
-- title: Backend Developer
+- title: Software Engineer
   company: Koya Design
-  begin_at: 05/2013
-  ended_at: 12/2013
-  description: >-
-    Recovering Flash-based website into newer web technologies like HTML5, CSS3, and Javascript. Using PHP, and Ruby (on Rails) as backend.
-    And maintaining the website's hosting solution.
-  techs:
-    - ruby
-    - rails
-    - php
-    - codeigniter
-    - laravel
-    - javascript
-    - bootstrap
-    - mysql
+  begin_at: May, 2013
+  ended_at: Dec, 2013
 
 - title: Robotics Specialist Intern
   company: SESI
-  begin_at: 01/2013
-  ended_at: 05/2013
-  description: >-
-    Developing robotics projects, and mentoring the school students to learn robotics, and programming.
-  techs:
-    - lego nxt
-    - arduino
+  begin_at: Jan, 2013
+  ended_at: May, 2013
 
 - title: Software Enginner
   company: Compsoft
-  begin_at: 05/2012
-  ended_at: 12/2012
-  description: >-
-    Developing financial, and logistics solutions for small businesses, using ObjectPascal technologies.
-  techs:
-    - delphi
-    - javascript
-    - foxpro
-    - firebird
+  begin_at: May, 2012
+  ended_at: Dec, 2012
 
 - title: Support Analyst
   company: Microleme Sistemas
-  begin_at: 06/2011
-  ended_at: 04/2012
-  description: >-
-    Helping the customers to handle software usage doubts or even real errors.
-    Sometimes developing tools to help our support pipeline.
-  techs:
-    - windows batch
-    - dotnet
-    - firebird
+  begin_at: Jun, 2011
+  ended_at: Apr, 2012
 
 - title: Software Enginner
   company: ViaConnect - TCCOM
-  begin_at: 02/2010
-  ended_at: 01/2011
-  description: >-
-    Developing solutions for medium-sized industries, and warehouses, using ObjectPascal based technologies.
-  techs:
-    - delphi
-    - java
-    - clipper
-    - firebird
+  begin_at: Feb, 2010
+  ended_at: Jan, 2011
+
