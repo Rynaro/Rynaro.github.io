@@ -2,17 +2,13 @@
   url: https://github.com/Rynaro/Rynaro.github.io
   description: This wonderful site!
 
-- title: Snowflakes
-  url: https://github.com/Rynaro/Snowflakes
-  description: A simple snow simulator
+- title: postmon-clj
+  url: https://github.com/Rynaro/postmon-clj
+  description: Simple wrapper for PostmonAPI written in Clojure.
 
-- title: Flappy Ball
-  url: https://github.com/Rynaro/FlappyBall
-  description: Just because we need another Flappy Bird clone
-
-- title: Pong Clone
-  url: https://github.com/Rynaro/Pong
-  description: Pong clone, with dummy AI
+- title: Fluxus
+  url: https://github.com/Rynaro/fluxus
+  description: Fluxus is a simple, dependencyless, and extensible use-case wrapper for your Ruby code.
 
 - title: FipExtractor
   url: https://github.com/Rynaro/FipExtractor
@@ -20,8 +16,16 @@
 
 - title: Estratto
   url: https://github.com/Rynaro/Estratto
-  description: Parsing fixed width files content made easy
+  description: Parsing fixed width files content made easy.
 
-- title: postmon-clj
-  url: https://github.com/Rynaro/postmon-clj
-  description: Simple wrapper for PostmonAPI written in Clojure
+- title: Snowflakes
+  url: https://github.com/Rynaro/Snowflakes
+  description: A simple snow simulator.
+
+- title: Flappy Ball
+  url: https://github.com/Rynaro/FlappyBall
+  description: Just because we need another Flappy Bird clone.
+
+- title: Pong Clone
+  url: https://github.com/Rynaro/Pong
+  description: A Pong clone.
