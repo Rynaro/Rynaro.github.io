@@ -19,8 +19,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .alchemy-main {
-  background: $base-background;
-  position: fixed;
+  background: rgb(255,238,255);
+  background: linear-gradient(90deg, rgba(255,238,255,1) 23%, rgba(255,223,250,1) 100%);  position: fixed;
   width: 100%;
   height: 100%;
 }
@@ -85,9 +85,9 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .signature {
-    color: $white-ter;
+    color: #333333;
     font-family: 'Nothing You Could Do', cursive;
-    font-size: 1.2em;
+    font-size: 1.4em;
   }
 }
 
