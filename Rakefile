@@ -1,9 +1,9 @@
 task :serve do
-  sh 'jekyll serve -H 0.0.0.0 --watch --force-polling'
+  sh 'jekyll serve -H 0.0.0.0 --watch --force-polling --incremental'
 end
 
 task :prepare_assets do
-  js_assets = %w(chart.js/dist/Chart.min.js phaser/dist/phaser.min.js)
+  js_assets = %w(phaser/dist/phaser.min.js)
   style_assets = %w(bulma)
 
   root = Dir.pwd
