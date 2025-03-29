@@ -27,8 +27,7 @@
     color: darken($pastel-purple, 35%);
     margin-bottom: 1rem;
     font-size: 3rem;
-    font-weight: 500;
-    
+
     @media (max-width: $mobile-breakpoint) {
       font-size: 2.5rem;
     }

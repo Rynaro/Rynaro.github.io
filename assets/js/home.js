@@ -1,4 +1,4 @@
-// Enhanced Home Page JavaScript
+// Enhanced Home Page JavaScript with better mobile support
 document.addEventListener('DOMContentLoaded', function() {
   const alchemyCircle = document.querySelector('.alchemy-circle');
   const symbols = document.querySelectorAll('.alchemy-symbol, .rune');
@@ -9,10 +9,35 @@ document.addEventListener('DOMContentLoaded', function() {
   // Detect device type and update interactions accordingly
   function updateDeviceType() {
     isMobile = window.innerWidth < 768;
+    
+    // Adjust animation speed and behavior based on device
+    updateAnimations();
   }
   
-  // Update on resize
-  window.addEventListener('resize', updateDeviceType);
+  function updateAnimations() {
+    // Apply animations with more subtle effects on mobile
+    symbolNames.forEach((name, index) => {
+      // Find the element
+      let selector = `.alchemy-symbol--${name}, .rune--${name}`;
+      let element = document.querySelector(selector);
+      
+      if (element) {
+        // Set unique animation delays to stagger movement
+        const delay = (index * 0.5) % 2; // Stagger between 0-2 seconds
+        const duration = isMobile ? (3 + (index % 2)) : (3 + (index % 3)); // Shorter on mobile
+        
+        // Apply the animation style directly
+        element.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
+      }
+    });
+  }
+  
+  // Update on resize with debouncing
+  let resizeTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(updateDeviceType, 250);
+  });
   
   // Set unique animation delays for each symbol
   const symbolNames = [
@@ -20,34 +45,23 @@ document.addEventListener('DOMContentLoaded', function() {
     'ansuz', 'kenaz', 'raidho', 'laguz'
   ];
   
-  // Apply animations with more subtle effects on mobile
-  symbolNames.forEach((name, index) => {
-    // Find the element
-    let selector = `.alchemy-symbol--${name}, .rune--${name}`;
-    let element = document.querySelector(selector);
-    
-    if (element) {
-      // Set unique animation delays to stagger movement
-      const delay = (index * 0.5) % 2; // Stagger between 0-2 seconds
-      const duration = isMobile ? (3 + (index % 2)) : (3 + (index % 3)); // Shorter on mobile
-      
-      // Apply the animation style directly
-      element.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
-    }
-  });
+  // Initialize animations
+  updateDeviceType();
   
   // Make symbols interactive - more touch-friendly on mobile
   symbols.forEach(symbol => {
     // Combined event listener for both mouse and touch
     symbol.addEventListener('mouseenter', handleSymbolHover);
-    symbol.addEventListener('touchstart', handleSymbolTouch);
+    symbol.addEventListener('touchstart', handleSymbolTouch, { passive: false });
     symbol.addEventListener('mouseleave', handleSymbolUnhover);
     
     // Click/tap handler
     symbol.addEventListener('click', handleSymbolActivation);
     symbol.addEventListener('touchend', function(e) {
-      // Prevent additional mouse events
-      e.preventDefault();
+      // Prevent default to avoid double-triggering
+      if (e.cancelable) {
+        e.preventDefault();
+      }
       handleSymbolActivation(e);
     });
   });
@@ -58,7 +72,9 @@ document.addEventListener('DOMContentLoaded', function() {
   
   function handleSymbolTouch(e) {
     // Prevent scrolling when touching symbols
-    e.preventDefault();
+    if (e.cancelable) {
+      e.preventDefault();
+    }
     
     // Remove hover from all other symbols first
     symbols.forEach(s => s.classList.remove('hovered'));
@@ -114,6 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   document.addEventListener('mouseup', handleCircleRelease);
   document.addEventListener('touchend', handleCircleRelease);
+  document.addEventListener('touchcancel', handleCircleRelease);
   
   function handleCircleGrabStart(e) {
     startDrag(e.clientX, e.clientY);
@@ -123,7 +140,9 @@ document.addEventListener('DOMContentLoaded', function() {
   function handleCircleTouchStart(e) {
     if (e.touches.length === 1) {
       startDrag(e.touches[0].clientX, e.touches[0].clientY);
-      e.preventDefault(); // Prevent scrolling while rotating
+      if (e.cancelable) {
+        e.preventDefault(); // Prevent scrolling while rotating
+      }
     }
   }
   
@@ -141,6 +160,8 @@ document.addEventListener('DOMContentLoaded', function() {
       const a = values[0];
       const b = values[1];
       startRotate = Math.round(Math.atan2(parseFloat(b), parseFloat(a)) * (180/Math.PI));
+    } else {
+      startRotate = 0;
     }
   }
   
@@ -152,7 +173,9 @@ document.addEventListener('DOMContentLoaded', function() {
   function handleCircleTouchMove(e) {
     if (!isDragging || e.touches.length !== 1) return;
     moveCircle(e.touches[0].clientX, e.touches[0].clientY);
-    e.preventDefault(); // Prevent scrolling while rotating
+    if (e.cancelable) {
+      e.preventDefault(); // Prevent scrolling while rotating
+    }
   }
   
   function moveCircle(x, y) {

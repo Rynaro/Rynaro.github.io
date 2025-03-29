@@ -32,40 +32,45 @@
   {% endif %}
 </head>
 <body>
-  <nav class="sidebar" aria-label="Main navigation">
-    <ul class="nav-list">
-      <li class="nav-item">
-        <a href="/" class="nav-link" aria-label="Home">
-          <i class="fas fa-home" aria-hidden="true"></i>
-          <span class="sr-only">Home</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="/about" class="nav-link" aria-label="About">
-          <i class="fas fa-user-astronaut" aria-hidden="true"></i>
-          <span class="sr-only">About</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="/notebook" class="nav-link" aria-label="Notebook">
-          <i class="fas fa-pencil-ruler" aria-hidden="true"></i>
-          <span class="sr-only">Notebook</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="/laboratory" class="nav-link" aria-label="Laboratory">
-          <i class="fas fa-flask" aria-hidden="true"></i>
-          <span class="sr-only">Laboratory</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="/letter" class="nav-link" aria-label="Contact">
-          <i class="fas fa-envelope" aria-hidden="true"></i>
-          <span class="sr-only">Contact</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
+<!-- Horizontal Sigil Navigation -->
+<nav class="sigil-nav" aria-label="Main navigation">
+  <div class="sigil-nav-items">
+    <div class="sigil-nav-item" data-page="home">
+      <a href="/" class="sigil-icon-bubble" aria-label="Home">
+        <i class="fas fa-home" aria-hidden="true"></i>
+      </a>
+      <div class="sigil-title">Home</div>
+    </div>
+    
+    <div class="sigil-nav-item" data-page="about">
+      <a href="/about" class="sigil-icon-bubble" aria-label="About">
+        <i class="fas fa-user-astronaut" aria-hidden="true"></i>
+      </a>
+      <div class="sigil-title">About</div>
+    </div>
+    
+    <div class="sigil-nav-item" data-page="notebook">
+      <a href="/notebook" class="sigil-icon-bubble" aria-label="Notebook">
+        <i class="fas fa-pencil-ruler" aria-hidden="true"></i>
+      </a>
+      <div class="sigil-title">Notebook</div>
+    </div>
+    
+    <div class="sigil-nav-item" data-page="laboratory">
+      <a href="/laboratory" class="sigil-icon-bubble" aria-label="Laboratory">
+        <i class="fas fa-flask" aria-hidden="true"></i>
+      </a>
+      <div class="sigil-title">Laboratory</div>
+    </div>
+    
+    <div class="sigil-nav-item" data-page="letter">
+      <a href="/letter" class="sigil-icon-bubble" aria-label="Contact">
+        <i class="fas fa-envelope" aria-hidden="true"></i>
+      </a>
+      <div class="sigil-title">Letter</div>
+    </div>
+  </div>
+</nav>
 
   <main class="main-content">
     {{ content }}
@@ -80,5 +85,6 @@
 
   <!-- Custom scripts -->
   <script src="{{ "/assets/js/main.js" | relative_url }}" defer></script>
+  <script src="{{ "/assets/js/sigil-navigation.js" | relative_url }}" defer></script>
 </body>
 </html>
