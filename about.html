@@ -28,157 +28,360 @@ title: About Me
   </div>
 </section>
 
-<section class="about-bio">
+<section class="character-sheet">
   <div class="container">
     <div class="row">
       <div class="col col--12 text-center mb-4">
-        <h2 class="section-title fade-in">About Me</h2>
-      </div>
-      <div class="col col--6 col--offset-3">
-        <div class="about-bio__content fade-in">
-          <p>A Code Alchemist with more than 10 years of experience in transmuting code. Experienced in writing code, building project architectures, and organizing development pipelines.</p>
-          
-          <p>Always looking for the primitive state of knowledge. By diving deep into papers about language paradigms at books and across the internet. Love to understand how things work in the way that works. So we can get the concepts and crush them into new ideas.</p>
-          
-          <p>Having experience with a sort of technologies, from the superb Object Pascal to modern market languages Elixir, Java, Javascript, and Ruby. And about Ruby, that's my main stack for the moment!</p>
-          
-          <p>Also passionate about reading, games, gardening, and (over) organization. Not in this order. I love to talk about them!</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="skills" aria-labelledby="skills-heading">
-  <div class="container">
-    <div class="row">
-      <div class="col col--12 text-center mb-4">
-        <h2 id="skills-heading" class="section-title fade-in">Skills & Expertise</h2>
+        <h2 class="section-title fade-in">Character Sheet</h2>
       </div>
     </div>
     
-    <div class="row skills-row">
-      <div class="col col--3">
-        <div class="skill-card fade-in">
-          <div class="skill-card__icon" aria-hidden="true">
-            <i class="fas fa-code"></i>
+    <!-- Character Bio Section -->
+    <div class="row mb-4">
+      <div class="col col--8 col--offset-2">
+        <div class="character-bio fade-in">
+          <div class="bio-header">
+            <div class="bio-portrait">
+              <div class="portrait-placeholder">
+                <i class="fas fa-user-circle"></i>
+              </div>
+            </div>
+            <div class="bio-details">
+              <h3 class="character-name">Henrique Lavezzo</h3>
+              <div class="character-class">Level 15 Code Alchemist</div>
+              <div class="character-origin">Origin: Brazil</div>
+            </div>
           </div>
-          <h3 class="skill-card__title">Languages</h3>
-          <ul class="skill-card__list">
-            <li>Ruby</li>
-            <li>JavaScript</li>
-            <li>Elixir</li>
-            <li>Java</li>
-            <li>Clojure</li>
-          </ul>
+          <div class="bio-description">
+            <p>A Code Alchemist with more than 10 years of experience in transmuting code. Experienced in writing code, building project architectures, and organizing development pipelines.</p>
+            
+            <p>Always looking for the primitive state of knowledge. By diving deep into papers about language paradigms at books and across the internet. Love to understand how things work in the way that works. So we can get the concepts and crush them into new ideas.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Main Attributes Section -->
+    <div class="row attributes-section mb-4">
+      <div class="col col--4">
+        <div class="attribute-card fade-in">
+          <div class="attribute-icon">
+            <i class="fas fa-brain"></i>
+          </div>
+          <h3 class="attribute-name">Intelligence</h3>
+          <div class="attribute-bar">
+            <div class="attribute-fill" style="width: 85%"></div>
+          </div>
+          <div class="attribute-value">85/100</div>
+          <div class="attribute-description">
+            Exceptional problem-solving abilities and deep technical understanding
+          </div>
         </div>
       </div>
       
-      <div class="col col--3">
-        <div class="skill-card fade-in">
-          <div class="skill-card__icon" aria-hidden="true">
-            <i class="fas fa-layer-group"></i>
+      <div class="col col--4">
+        <div class="attribute-card fade-in">
+          <div class="attribute-icon">
+            <i class="fas fa-magic"></i>
           </div>
-          <h3 class="skill-card__title">Architecture</h3>
-          <ul class="skill-card__list">
-            <li>Domain-Driven Design</li>
-            <li>Microservices</li>
-            <li>Clean Architecture</li>
-            <li>Event-Driven Systems</li>
-            <li>API Design</li>
-          </ul>
+          <h3 class="attribute-name">Creativity</h3>
+          <div class="attribute-bar">
+            <div class="attribute-fill" style="width: 80%"></div>
+          </div>
+          <div class="attribute-value">80/100</div>
+          <div class="attribute-description">
+            Innovative approach to problems and elegant solution design
+          </div>
         </div>
       </div>
       
-      <div class="col col--3">
-        <div class="skill-card fade-in">
-          <div class="skill-card__icon" aria-hidden="true">
-            <i class="fas fa-users-cog"></i>
+      <div class="col col--4">
+        <div class="attribute-card fade-in">
+          <div class="attribute-icon">
+            <i class="fas fa-users"></i>
           </div>
-          <h3 class="skill-card__title">Leadership</h3>
-          <ul class="skill-card__list">
-            <li>Team Management</li>
-            <li>Technical Planning</li>
-            <li>Mentoring</li>
-            <li>Agile Methodologies</li>
-            <li>Project Management</li>
-          </ul>
+          <h3 class="attribute-name">Leadership</h3>
+          <div class="attribute-bar">
+            <div class="attribute-fill" style="width: 78%"></div>
+          </div>
+          <div class="attribute-value">78/100</div>
+          <div class="attribute-description">
+            Guiding teams through complex projects with clear direction
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="career">
-  <div class="container">
-    <div class="row">
-      <div class="col col--12 text-center mb-4">
-        <h2 class="section-title fade-in">Career Journey</h2>
       </div>
     </div>
     
-    <div class="timeline">
-      {% for job in site.data.jobs %}
-        <div class="timeline-item fade-in">
-          <div class="timeline-item__date">
-            <span>{{ job.begin_at }} - {{ job.ended_at }}</span>
+    <!-- Skills Section -->
+    <div class="row mb-4">
+      <div class="col col--12">
+        <div class="skills-section fade-in">
+          <h3 class="skills-title"><i class="fas fa-scroll"></i> Skills & Abilities</h3>
+          
+          <!-- Languages -->
+          <div class="skill-category">
+            <h4 class="category-title">Languages</h4>
+            <div class="skill-tree">
+              <div class="skill-branch">
+                <div class="skill-node master">
+                  <div class="skill-icon"><i class="fas fa-gem"></i></div>
+                  <div class="skill-info">
+                    <div class="skill-name">Ruby</div>
+                    <div class="skill-level">Master</div>
+                  </div>
+                </div>
+                
+                <div class="skill-node advanced">
+                  <div class="skill-icon"><i class="fab fa-js"></i></div>
+                  <div class="skill-info">
+                    <div class="skill-name">JavaScript</div>
+                    <div class="skill-level">Advanced</div>
+                  </div>
+                </div>
+                
+                <div class="skill-node proficient">
+                  <div class="skill-icon"><i class="fab fa-java"></i></div>
+                  <div class="skill-info">
+                    <div class="skill-name">Java</div>
+                    <div class="skill-level">Proficient</div>
+                  </div>
+                </div>
+                
+                <div class="skill-node adept">
+                  <div class="skill-icon"><i class="fas fa-atom"></i></div>
+                  <div class="skill-info">
+                    <div class="skill-name">Elixir</div>
+                    <div class="skill-level">Adept</div>
+                  </div>
+                </div>
+                
+                <div class="skill-node skilled">
+                  <div class="skill-icon"><i class="fas fa-circle-notch"></i></div>
+                  <div class="skill-info">
+                    <div class="skill-name">Clojure</div>
+                    <div class="skill-level">Skilled</div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="timeline-item__content">
-            <h3 class="timeline-item__title">{{ job.title }}</h3>
-            <h4 class="timeline-item__company">{{ job.company }}</h4>
+          
+          <!-- Architecture -->
+          <div class="skill-category">
+            <h4 class="category-title">Architecture</h4>
+            <div class="skill-grid">
+              <div class="skill-card advanced">
+                <div class="skill-card-header">
+                  <div class="skill-card-icon"><i class="fas fa-cubes"></i></div>
+                  <div class="skill-card-title">Domain-Driven Design</div>
+                </div>
+                <div class="skill-card-level">Advanced</div>
+              </div>
+              
+              <div class="skill-card master">
+                <div class="skill-card-header">
+                  <div class="skill-card-icon"><i class="fas fa-sitemap"></i></div>
+                  <div class="skill-card-title">Clean Architecture</div>
+                </div>
+                <div class="skill-card-level">Master</div>
+              </div>
+              
+              <div class="skill-card advanced">
+                <div class="skill-card-header">
+                  <div class="skill-card-icon"><i class="fas fa-network-wired"></i></div>
+                  <div class="skill-card-title">Microservices</div>
+                </div>
+                <div class="skill-card-level">Advanced</div>
+              </div>
+              
+              <div class="skill-card proficient">
+                <div class="skill-card-header">
+                  <div class="skill-card-icon"><i class="fas fa-exchange-alt"></i></div>
+                  <div class="skill-card-title">Event-Driven Systems</div>
+                </div>
+                <div class="skill-card-level">Proficient</div>
+              </div>
+              
+              <div class="skill-card advanced">
+                <div class="skill-card-header">
+                  <div class="skill-card-icon"><i class="fas fa-cogs"></i></div>
+                  <div class="skill-card-title">API Design</div>
+                </div>
+                <div class="skill-card-level">Advanced</div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Special Abilities -->
+          <div class="skill-category">
+            <h4 class="category-title">Special Abilities</h4>
+            <div class="abilities-list">
+              <div class="ability-item">
+                <div class="ability-badge"><i class="fas fa-bolt"></i></div>
+                <div class="ability-content">
+                  <h5 class="ability-title">Code Transmutation</h5>
+                  <p class="ability-description">Transform messy legacy code into clean, maintainable architectures</p>
+                </div>
+              </div>
+              
+              <div class="ability-item">
+                <div class="ability-badge"><i class="fas fa-eye"></i></div>
+                <div class="ability-content">
+                  <h5 class="ability-title">Pattern Recognition</h5>
+                  <p class="ability-description">Quickly identify patterns and anti-patterns in codebases</p>
+                </div>
+              </div>
+              
+              <div class="ability-item">
+                <div class="ability-badge"><i class="fas fa-user-friends"></i></div>
+                <div class="ability-content">
+                  <h5 class="ability-title">Team Synergy</h5>
+                  <p class="ability-description">Boost team productivity through mentoring and knowledge sharing</p>
+                </div>
+              </div>
+              
+              <div class="ability-item">
+                <div class="ability-badge"><i class="fas fa-lightbulb"></i></div>
+                <div class="ability-content">
+                  <h5 class="ability-title">Solution Architect</h5>
+                  <p class="ability-description">Craft elegant architectural solutions to complex problems</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-
-<section class="interests" aria-labelledby="interests-heading">
-  <div class="container">
-    <div class="row">
-      <div class="col col--12 text-center mb-4">
-        <h2 id="interests-heading" class="section-title fade-in">Personal Interests</h2>
       </div>
     </div>
     
+    <!-- Quest History (Organized Version) -->
+    <div class="row mb-4">
+      <div class="col col--12">
+        <div class="timeline-section fade-in">
+          <h3 class="timeline-title"><i class="fas fa-history"></i> Quest History</h3>
+          
+          <div class="quest-timeline">
+            <!-- Current Quest -->
+            <div class="quest-category">
+              <div class="quest-category-label">Current Quest</div>
+              {% assign current_job = site.data.jobs | where: "ended_at", "Present" | first %}
+              <div class="active-quest">
+                <div class="quest-icon active">
+                  <i class="fas fa-star"></i>
+                </div>
+                <div class="quest-content">
+                  <div class="quest-details">
+                    <div class="quest-title">{{ current_job.title }}</div>
+                    <div class="quest-company">{{ current_job.company }}</div>
+                  </div>
+                  <div class="quest-period">{{ current_job.begin_at }} - Present</div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Previous Major Quests -->
+            <div class="quest-category">
+              <div class="quest-category-label">Previous Major Quests</div>
+              <div class="quest-list">
+                {% for job in site.data.jobs offset:1 limit:3 %}
+                  <div class="quest-item">
+                    <div class="quest-icon">
+                      <i class="fas fa-scroll"></i>
+                    </div>
+                    <div class="quest-content">
+                      <div class="quest-details">
+                        <div class="quest-title">{{ job.title }}</div>
+                        <div class="quest-company">{{ job.company }}</div>
+                      </div>
+                      <div class="quest-period">{{ job.begin_at }} - {{ job.ended_at }}</div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+            
+            <!-- Earlier Adventures -->
+            <div class="quest-category collapsed">
+              <div class="quest-category-label toggle-earlier-quests">
+                Earlier Adventures
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="quest-list hidden">
+                {% for job in site.data.jobs offset:4 limit:6 %}
+                  <div class="quest-item">
+                    <div class="quest-icon small">
+                      <i class="fas fa-book-open"></i>
+                    </div>
+                    <div class="quest-content">
+                      <div class="quest-details">
+                        <div class="quest-title">{{ job.title }}</div>
+                        <div class="quest-company">{{ job.company }}</div>
+                      </div>
+                      <div class="quest-period">{{ job.begin_at }} - {{ job.ended_at }}</div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Personal Interests as Character Traits -->
     <div class="row interests-row">
-      <div class="col col--2">
-        <div class="interest-card fade-in">
-          <div class="interest-card__icon" aria-hidden="true">
-            <i class="fas fa-book"></i>
+      <div class="col col--12">
+        <div class="character-traits fade-in">
+          <h3 class="traits-title"><i class="fas fa-star"></i> Character Traits</h3>
+          
+          <div class="traits-grid">
+            <div class="trait-card">
+              <div class="trait-icon">
+                <i class="fas fa-gamepad"></i>
+              </div>
+              <h4 class="trait-name">Gaming Enthusiast</h4>
+              <p class="trait-description">+10 to relaxation when playing RPGs, especially Final Fantasy</p>
+            </div>
+            
+            <div class="trait-card">
+              <div class="trait-icon">
+                <i class="fas fa-seedling"></i>
+              </div>
+              <h4 class="trait-name">Green Thumb</h4>
+              <p class="trait-description">+15 to patience and nurturing through gardening skills</p>
+            </div>
+            
+            <div class="trait-card">
+              <div class="trait-icon">
+                <i class="fas fa-book"></i>
+              </div>
+              <h4 class="trait-name">Lore Keeper</h4>
+              <p class="trait-description">+12 to knowledge from reading fantasy and technical books</p>
+            </div>
+            
+            <div class="trait-card">
+              <div class="trait-icon">
+                <i class="fas fa-code-branch"></i>
+              </div>
+              <h4 class="trait-name">Game Developer</h4>
+              <p class="trait-description">+20 to creativity when crafting digital worlds in spare time</p>
+            </div>
+            
+            <div class="trait-card">
+              <div class="trait-icon">
+                <i class="fas fa-language"></i>
+              </div>
+              <h4 class="trait-name">Polyglot</h4>
+              <p class="trait-description">Fluent in Portuguese, English, learning Chinese</p>
+            </div>
+            
+            <div class="trait-card">
+              <div class="trait-icon">
+                <i class="fas fa-tasks"></i>
+              </div>
+              <h4 class="trait-name">Organization Wizard</h4>
+              <p class="trait-description">+25 to project efficiency through methodical planning</p>
+            </div>
           </div>
-          <h3 class="interest-card__title">Reading</h3>
-          <p class="interest-card__text">Fantasy, sci-fi, and technical books</p>
-        </div>
-      </div>
-      
-      <div class="col col--2">
-        <div class="interest-card fade-in">
-          <div class="interest-card__icon" aria-hidden="true">
-            <i class="fas fa-gamepad"></i>
-          </div>
-          <h3 class="interest-card__title">Gaming</h3>
-          <p class="interest-card__text">RPGs and Final Fantasy series</p>
-        </div>
-      </div>
-      
-      <div class="col col--2">
-        <div class="interest-card fade-in">
-          <div class="interest-card__icon" aria-hidden="true">
-            <i class="fas fa-seedling"></i>
-          </div>
-          <h3 class="interest-card__title">Gardening</h3>
-          <p class="interest-card__text">Cultivating plants and flowers</p>
-        </div>
-      </div>
-      
-      <div class="col col--2">
-        <div class="interest-card fade-in">
-          <div class="interest-card__icon" aria-hidden="true">
-            <i class="fas fa-code-branch"></i>
-          </div>
-          <h3 class="interest-card__title">Game Dev</h3>
-          <p class="interest-card__text">Building games in spare time</p>
         </div>
       </div>
     </div>
@@ -190,11 +393,65 @@ title: About Me
     <div class="row">
       <div class="col col--12 text-center">
         <div class="cta-content fade-in">
-          <h2 class="cta-title">Let's Connect</h2>
-          <p class="cta-text">Interested in working together or just want to chat about tech, games, or gardening?</p>
-          <a href="/letter" class="button button--primary">Get in Touch</a>
+          <h2 class="cta-title">Ready to Party Up?</h2>
+          <p class="cta-text">Join forces for your next digital adventure or just exchange tales of coding quests</p>
+          <a href="/letter" class="button button--primary">Send a Quest Invitation</a>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Animation for skill bars
+  function animateSkillBars() {
+    const bars = document.querySelectorAll('.attribute-fill');
+    bars.forEach(bar => {
+      const width = bar.style.width;
+      bar.style.width = '0';
+      setTimeout(() => {
+        bar.style.transition = 'width 1s ease-in-out';
+        bar.style.width = width;
+      }, 300);
+    });
+  }
+  
+  // Initialize animations
+  animateSkillBars();
+  
+  // Intersection Observer for fade-in animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  
+  document.querySelectorAll('.fade-in').forEach(el => {
+    observer.observe(el);
+  });
+  
+  // Toggle for Earlier Adventures
+  const toggleEarlierQuests = document.querySelector('.toggle-earlier-quests');
+  if (toggleEarlierQuests) {
+    toggleEarlierQuests.addEventListener('click', function() {
+      const questList = this.closest('.quest-category').querySelector('.quest-list');
+      const icon = this.querySelector('i');
+      
+      questList.classList.toggle('hidden');
+      this.classList.toggle('expanded');
+      
+      if (!questList.classList.contains('hidden')) {
+        // If expanded, scroll into view
+        setTimeout(() => {
+          questList.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 300);
+      }
+    });
+  }
+});
+</script>
