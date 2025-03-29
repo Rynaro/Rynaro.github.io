@@ -2,116 +2,274 @@
 layout: default
 ---
 
-<div class="hero fade-in">
-  <div class="hero__content">
-    <h1 class="hero__title">Henrique A. Lavezzo</h1>
-    <h2 class="hero__subtitle">Code Alchemist</h2>
-    <div class="social-icons mb-4">
-      <a href="https://www.linkedin.com/in/hlavezzo" target="_blank" class="social-icon social-icon--linkedin">
+<div class="alchemist-hero">
+  <div class="alchemy-circle">
+    <!-- Central circle -->
+    <div class="alchemy-circle__inner"></div>
+    
+    <!-- Orbital rings -->
+    <div class="alchemy-circle__ring alchemy-circle__ring--1"></div>
+    <div class="alchemy-circle__ring alchemy-circle__ring--2"></div>
+    <div class="alchemy-circle__ring alchemy-circle__ring--3"></div>
+    
+    <!-- Add a subtle glow -->
+    <div class="alchemy-circle__glow"></div>
+    
+    <!-- Alchemical symbols -->
+    <div class="alchemy-symbol alchemy-symbol--fire" title="Fire (Creativity)" style="--symbol-color: #FF5E5B;">
+      <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+        <path d="M25,5 L25,45 M15,15 L35,35 M15,35 L35,15" stroke="currentColor" stroke-width="2" />
+      </svg>
+    </div>
+    <div class="alchemy-symbol alchemy-symbol--water" title="Water (Adaptability)" style="--symbol-color: #5B8CFF;">
+      <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15,25 L35,25 M15,15 L35,15 M15,35 L35,35" stroke="currentColor" stroke-width="2" />
+      </svg>
+    </div>
+    <div class="alchemy-symbol alchemy-symbol--air" title="Air (Intellect)" style="--symbol-color: #FFDE59;">
+      <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+        <path d="M25,5 L25,45 M15,15 L35,15" stroke="currentColor" stroke-width="2" />
+      </svg>
+    </div>
+    <div class="alchemy-symbol alchemy-symbol--earth" title="Earth (Stability)" style="--symbol-color: #7ED957;">
+      <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15,15 L35,15 M25,15 L25,35 M15,35 L35,35" stroke="currentColor" stroke-width="2" />
+      </svg>
+    </div>
+    <div class="alchemy-symbol alchemy-symbol--quintessence" title="Quintessence (Excellence)" style="--symbol-color: #C77DFF;">
+      <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="25" cy="25" r="15" fill="none" stroke="currentColor" stroke-width="2" />
+        <path d="M25,10 L25,40 M10,25 L40,25" stroke="currentColor" stroke-width="2" />
+      </svg>
+    </div>
+    
+    <!-- Nordic runes -->
+    <div class="rune rune--ansuz" title="Ansuz (Communication)" style="--symbol-color: #FF9E7D;">
+      <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20,10 L30,10 L20,40" stroke="currentColor" stroke-width="2" fill="none" />
+      </svg>
+    </div>
+    <div class="rune rune--kenaz" title="Kenaz (Knowledge)" style="--symbol-color: #FF7D7D;">
+      <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20,10 L30,25 L20,40" stroke="currentColor" stroke-width="2" fill="none" />
+      </svg>
+    </div>
+    <div class="rune rune--raidho" title="Raidho (Journey)" style="--symbol-color: #7DFFB9;">
+      <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20,10 L20,40 M20,10 L30,25 L20,25" stroke="currentColor" stroke-width="2" fill="none" />
+      </svg>
+    </div>
+    <div class="rune rune--laguz" title="Laguz (Flow)" style="--symbol-color: #7DCAFF;">
+      <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+        <path d="M25,10 L25,40 L35,20" stroke="currentColor" stroke-width="2" fill="none" />
+      </svg>
+    </div>
+  </div>
+
+  <div class="hero-content">
+    <h1 class="hero-title fade-in">Henrique A. Lavezzo</h1>
+    <h2 class="hero-subtitle fade-in">Code Alchemist</h2>
+    <p class="hero-description fade-in">Transforming concepts into digital gold through the ancient art of code</p>
+    
+    <div class="social-icons fade-in">
+      <a href="https://www.linkedin.com/in/hlavezzo" target="_blank" rel="noopener" aria-label="LinkedIn Profile" class="social-icon social-icon--linkedin">
         <i class="fab fa-linkedin-in"></i>
       </a>
-      <a href="https://github.com/Rynaro" target="_blank" class="social-icon social-icon--github">
+      <a href="https://github.com/Rynaro" target="_blank" rel="noopener" aria-label="GitHub Profile" class="social-icon social-icon--github">
         <i class="fab fa-github"></i>
       </a>
-      <a href="https://dev.to/rynaro" target="_blank" class="social-icon social-icon--dev">
+      <a href="https://dev.to/rynaro" target="_blank" rel="noopener" aria-label="Dev.to Profile" class="social-icon social-icon--dev">
         <i class="fab fa-dev"></i>
       </a>
     </div>
-    <div class="hero__actions">
-      <a href="/about" class="button button--primary">About Me</a>
-      <a href="/notebook" class="button button--outlined">Read My Blog</a>
+    
+    <div class="hero-actions fade-in">
+      <a href="/about" class="button button--primary">About the Alchemist</a>
+      <a href="/laboratory" class="button button--outlined">Enter the Laboratory</a>
     </div>
   </div>
 </div>
 
-<script type="module">
-  // Simple particle animation for the background
-  document.addEventListener('DOMContentLoaded', () => {
-    const hero = document.querySelector('.hero');
-
-    // Create canvas
-    const canvas = document.createElement('canvas');
-    canvas.style.position = 'absolute';
-    canvas.style.top = '0';
-    canvas.style.left = '0';
-    canvas.style.width = '100%';
-    canvas.style.height = '100%';
-    canvas.style.zIndex = '1';
-    canvas.style.opacity = '0.3';
-
-    hero.style.position = 'relative';
-    hero.insertBefore(canvas, hero.firstChild);
-
-    const ctx = canvas.getContext('2d');
-    // Set canvas size
-    const resizeCanvas = () => {
-      canvas.width = hero.offsetWidth;
-      canvas.height = hero.offsetHeight;
-    };
-
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-
-    // Create particles
-    const particles = [];
-    const particleCount = 50;
-
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        radius: Math.random() * 3 + 1,
-        color: '#ffffff',
-        speedX: (Math.random() - 0.5) * 1,
-        speedY: (Math.random() - 0.5) * 1
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const alchemyCircle = document.querySelector('.alchemy-circle');
+    const symbols = document.querySelectorAll('.alchemy-symbol, .rune');
+    let isDragging = false;
+    let startX, startY, startRotate = 0;
+    
+    // Set unique animation delays for each symbol
+    const symbolNames = [
+      'fire', 'water', 'air', 'earth', 'quintessence',
+      'ansuz', 'kenaz', 'raidho', 'laguz'
+    ];
+    
+    // Apply the animations programmatically
+    symbolNames.forEach((name, index) => {
+      // Find the element
+      let selector = `.alchemy-symbol--${name}, .rune--${name}`;
+      let element = document.querySelector(selector);
+      
+      if (element) {
+        // Set unique animation delays to stagger movement
+        const delay = (index * 0.5) % 2; // Stagger between 0-2 seconds
+        const duration = 3 + (index % 3); // Durations between 3-5 seconds
+        
+        // Apply the animation style directly
+        element.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
+      }
+    });
+    
+    // Make symbols interactive
+    symbols.forEach(symbol => {
+      symbol.addEventListener('mouseover', function() {
+        this.classList.add('hovered');
       });
-    }
-
-    // Animation loop
-    const animate = () => {
-      requestAnimationFrame(animate);
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      particles.forEach(particle => {
-        // Move particle
-        particle.x += particle.speedX;
-        particle.y += particle.speedY;
-
-        // Bounce off edges
-        if (particle.x < 0 || particle.x > canvas.width) {
-          particle.speedX = -particle.speedX;
-        }
-
-        if (particle.y < 0 || particle.y > canvas.height) {
-          particle.speedY = -particle.speedY;
-        }
-
-        // Draw particle
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-        ctx.fillStyle = particle.color;
-        ctx.fill();
+      
+      symbol.addEventListener('mouseout', function() {
+        this.classList.remove('hovered');
       });
-
-      // Draw lines between close particles
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < 100) {
-            ctx.beginPath();
-            ctx.strokeStyle = `rgba(255, 255, 255, ${1 - distance / 100})`;
-            ctx.lineWidth = 0.5;
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.stroke();
+      
+      symbol.addEventListener('click', function(e) {
+        e.stopPropagation();
+        
+        // Add activation effect
+        this.classList.add('activated');
+        setTimeout(() => {
+          this.classList.remove('activated');
+        }, 1000);
+        
+        // Show ripple effect
+        const ripple = document.createElement('div');
+        ripple.className = 'alchemy-ripple';
+        ripple.style.left = e.clientX + 'px';
+        ripple.style.top = e.clientY + 'px';
+        document.body.appendChild(ripple);
+        
+        // Remove ripple after animation
+        setTimeout(() => {
+          ripple.remove();
+        }, 1000);
+      });
+    });
+    
+    // Make circle draggable for rotation
+    alchemyCircle.addEventListener('mousedown', function(e) {
+      isDragging = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      alchemyCircle.classList.add('interacting');
+      
+      // Get current rotation
+      const style = window.getComputedStyle(alchemyCircle);
+      const transform = style.getPropertyValue('transform');
+      if (transform !== 'none') {
+        const values = transform.split('(')[1].split(')')[0].split(',');
+        const a = values[0];
+        const b = values[1];
+        startRotate = Math.round(Math.atan2(parseFloat(b), parseFloat(a)) * (180/Math.PI));
+      }
+      
+      e.preventDefault();
+    });
+    
+    document.addEventListener('mousemove', function(e) {
+      if (!isDragging) return;
+      
+      const centerX = alchemyCircle.offsetLeft + alchemyCircle.offsetWidth / 2;
+      const centerY = alchemyCircle.offsetTop + alchemyCircle.offsetHeight / 2;
+      
+      const startAngle = Math.atan2(startY - centerY, startX - centerX);
+      const currentAngle = Math.atan2(e.clientY - centerY, e.clientX - centerX);
+      
+      const rotation = (currentAngle - startAngle) * (180 / Math.PI);
+      
+      alchemyCircle.style.transform = `rotate(${startRotate + rotation}deg)`;
+    });
+    
+    document.addEventListener('mouseup', function() {
+      isDragging = false;
+      alchemyCircle.classList.remove('interacting');
+    });
+    
+    // Add glow effect on hover
+    alchemyCircle.addEventListener('mousemove', function(e) {
+      if (isDragging) return;
+      
+      const rect = this.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      document.documentElement.style.setProperty('--glow-x', `${x}px`);
+      document.documentElement.style.setProperty('--glow-y', `${y}px`);
+      document.documentElement.style.setProperty('--glow-strength', '1');
+    });
+    
+    alchemyCircle.addEventListener('mouseleave', function() {
+      document.documentElement.style.setProperty('--glow-strength', '0');
+    });
+    
+    // Initial random positions and subtle animations for symbols
+    function randomizeSymbolPositions() {
+      const circle = document.querySelector('.alchemy-circle');
+      const centerX = circle.offsetWidth / 2;
+      const centerY = circle.offsetHeight / 2;
+      const radius = centerX * 0.6; // 60% of circle radius
+      
+      // Fixed positions for specific symbols to ensure they're visible at predictable places
+      const symbolPositions = {
+        'fire': { top: '15%', left: '25%', delay: 0.2 },
+        'water': { bottom: '20%', left: '20%', delay: 0.7 },
+        'air': { top: '20%', right: '20%', delay: 1.1 },
+        'earth': { bottom: '25%', right: '25%', delay: 0.5 },
+        'quintessence': { top: '50%', left: '15%', delay: 0.9 },
+        'ansuz': { top: '15%', right: '15%', delay: 1.4 },
+        'kenaz': { bottom: '15%', right: '15%', delay: 0.3 },
+        'raidho': { left: '50%', bottom: '15%', delay: 1.8 },
+        'laguz': { top: '50%', right: '15%', delay: 1.2 }
+      };
+      
+      // Apply fixed positions
+      symbols.forEach(symbol => {
+        // Get symbol type from class name
+        const classNames = symbol.className.split(' ');
+        const typeClass = classNames.find(cls => cls.includes('--'));
+        
+        if (typeClass) {
+          const type = typeClass.split('--')[1];
+          
+          if (symbolPositions[type]) {
+            const pos = symbolPositions[type];
+            
+            // Apply positions from our mapping
+            Object.keys(pos).forEach(prop => {
+              if (prop !== 'delay') {
+                symbol.style[prop] = pos[prop];
+              }
+            });
+            
+            // Set animation delay
+            symbol.style.animationDelay = `${pos.delay}s`;
           }
         }
-      }
-    };
-
-    animate();
+      });
+    }
+    
+    window.addEventListener('resize', function() {
+      // Recalculate positions on resize but preserve animations
+      symbols.forEach(symbol => {
+        // Keep the animation settings
+        const currentAnimation = symbol.style.animation;
+        
+        // We don't need to call randomizeSymbolPositions() anymore
+        // as we're using CSS-based positioning
+        
+        // Re-apply the animation
+        if (currentAnimation) {
+          setTimeout(() => {
+            symbol.style.animation = currentAnimation;
+          }, 10);
+        }
+      });
+    });
   });
 </script>
