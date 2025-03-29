@@ -11,7 +11,7 @@
   padding: 2rem;
   position: relative;
   overflow: hidden;
-  
+
   &::before {
     content: '';
     position: absolute;
@@ -19,12 +19,12 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: 
+    background-image:
       radial-gradient(circle at 20% 30%, rgba(103, 58, 183, 0.15) 0%, transparent 20%),
       radial-gradient(circle at 80% 70%, rgba(63, 81, 181, 0.15) 0%, transparent 20%);
     z-index: 1;
   }
-  
+
   @media (max-width: 992px) {
     flex-direction: column;
     padding: 3rem 1rem;
@@ -36,10 +36,11 @@
   flex: 1;
   max-width: 600px;
   margin-left: 2rem;
+  margin-right: 4rem;
   position: relative;
   z-index: 3;
   color: $background-cream;
-  
+
   @media (max-width: 992px) {
     margin-left: 0;
     text-align: center;
@@ -91,7 +92,7 @@
   width: 480px;
   height: 480px;
   margin: 0 auto;
-  margin-right: 5rem;
+  margin-right: 10rem;
   z-index: 2;
   cursor: pointer;
   display: flex;
@@ -122,8 +123,8 @@
   }
   
   @media (max-width: 576px) {
-    width: 320px;
-    height: 320px;
+    width: 240px;
+    height: 240px;
   }
   
   &.interacting {
