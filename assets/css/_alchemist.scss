@@ -1,0 +1,157 @@
+/* Add these styles to your existing CSS file */
+
+/* Reset initial positioning for symbols and runes */
+.alchemy-symbol, .rune {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(0, 0);
+  transition: transform 0.2s ease, filter 0.3s ease;
+  cursor: pointer;
+  z-index: 3;
+}
+
+/* Remove the previous animation definitions */
+.alchemy-symbol--fire,
+.alchemy-symbol--water,
+.alchemy-symbol--air,
+.alchemy-symbol--earth,
+.alchemy-symbol--quintessence,
+.rune--ansuz,
+.rune--kenaz,
+.rune--raidho,
+.rune--laguz {
+  animation: none;
+}
+
+/* Make the alchemy circle itself interactive */
+.alchemy-circle {
+  position: relative;
+  width: 400px;
+  height: 400px;
+  margin-right: 4rem;
+  z-index: 2;
+  transition: transform 0.1s ease-out;
+  cursor: grab;
+  
+  /* Remove the glow effect */
+  &:after {
+    display: none;
+  }
+}
+
+/* When dragging */
+.alchemy-circle.interacting {
+  cursor: grabbing;
+}
+
+/* Symbol hover effects */
+.alchemy-symbol.hovered, .rune.hovered {
+  filter: brightness(1.5) drop-shadow(0 0 10px var(--symbol-color));
+  transform: scale(1.2);
+  z-index: 5;
+}
+
+/* Symbol click activation effect */
+.alchemy-symbol.activated, .rune.activated {
+  filter: brightness(2) drop-shadow(0 0 15px var(--symbol-color));
+  animation: pulse-activate 1s ease-out;
+}
+
+/* Ring animations - make them more consistent */
+.alchemy-circle__ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  border: 1px solid var(--ring-color);
+  transform: translate(-50%, -50%);
+  
+  &--1 {
+    width: 150px;
+    height: 150px;
+    animation: rotate 40s linear infinite;
+  }
+  
+  &--2 {
+    width: 250px;
+    height: 250px;
+    animation: rotate 60s linear infinite reverse;
+  }
+  
+  &--3 {
+    width: 350px;
+    height: 350px;
+    animation: rotate 80s linear infinite;
+  }
+}
+
+/* Ripple effect on click */
+.alchemy-ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  background: radial-gradient(circle, 
+    rgba(255, 255, 255, 0.8) 0%, 
+    rgba(255, 255, 255, 0.2) 50%, 
+    transparent 70%);
+  width: 150px;
+  height: 150px;
+  margin-left: -75px;
+  margin-top: -75px;
+  opacity: 0;
+  animation: ripple 1s ease-out forwards;
+  pointer-events: none;
+}
+
+/* New Animations */
+@keyframes pulse-activate {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+/* Update existing animations */
+@keyframes rotate {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Adjust for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .alchemy-circle__ring {
+    animation: none;
+  }
+  
+  .alchemy-circle {
+    transition: none;
+  }
+  
+  .alchemy-symbol, .rune {
+    transition: none;
+  }
+}

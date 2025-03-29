@@ -1,0 +1,198 @@
+// ==========================================================================
+// COMMON COMPONENTS
+// ==========================================================================
+
+// Buttons
+.button {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  
+  &--primary {
+    background-color: $pastel-purple;
+    color: darken($pastel-purple, 35%);
+    
+    &:hover {
+      background-color: darken($pastel-purple, 10%);
+      color: $background-cream;
+    }
+  }
+  
+  &--outlined {
+    background-color: transparent;
+    border: 2px solid $pastel-purple;
+    color: darken($pastel-purple, 25%);
+    
+    &:hover {
+      background-color: $pastel-purple;
+      color: $background-cream;
+    }
+  }
+}
+
+// Cards
+.card {
+  background-color: $background-cream;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.08);
+  }
+  
+  &__title {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    font-size: 1.5rem;
+  }
+  
+  &__meta {
+    font-size: 0.875rem;
+    color: $text-light;
+    margin-bottom: 1rem;
+  }
+  
+  &__content {
+    margin-bottom: 0;
+  }
+}
+
+// Social icons
+.social-icons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  
+  .social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 0 0.5rem;
+    color: $background-cream;
+    font-size: 1.25rem;
+    transition: all 0.2s ease-in-out;
+    
+    &--linkedin {
+      background-color: #6E93B5;  // Pastel version of LinkedIn blue
+      
+      &:hover {
+        background-color: darken(#6E93B5, 10%);
+      }
+    }
+    
+    &--github {
+      background-color: #7B7B7B;  // Pastel version of GitHub black
+      
+      &:hover {
+        background-color: darken(#7B7B7B, 10%);
+      }
+    }
+    
+    &--dev {
+      background-color: #777;  // Pastel version of Dev.to black
+      
+      &:hover {
+        background-color: darken(#777, 10%);
+      }
+    }
+  }
+}
+
+// Section titles
+.section-title {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 2.5rem;
+  font-size: 2.25rem;
+  color: darken($pastel-purple, 15%);
+  
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: -0.75rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: $pastel-pink;
+  }
+}
+
+// Generic page header
+.page-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  
+  &__title {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  &__subtitle {
+    font-size: 1.2rem;
+    color: $text-medium;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+// Tags
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  
+  .tag {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    background-color: rgba($pastel-purple, 0.2);
+    color: darken($pastel-purple, 25%);
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background-color: rgba($pastel-purple, 0.4);
+    }
+  }
+}
+
+// Alert/message component
+.message {
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  
+  &--info {
+    background-color: rgba($pastel-blue, 0.2);
+    border-left: 4px solid $pastel-blue;
+  }
+  
+  &--success {
+    background-color: rgba($pastel-mint, 0.2);
+    border-left: 4px solid $pastel-mint;
+  }
+  
+  &--warning {
+    background-color: rgba(#F8E3B2, 0.2);
+    border-left: 4px solid #F8E3B2;
+  }
+  
+  &--error {
+    background-color: rgba(#F8D0C9, 0.2);
+    border-left: 4px solid #F8D0C9;
+  }
+}

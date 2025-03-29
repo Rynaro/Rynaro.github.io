@@ -1,0 +1,155 @@
+---
+layout: default
+title: Get in Touch
+---
+
+<section class="letter-hero">
+  <div class="container">
+    <div class="letter-hero__icon-container">
+      <i class="fas fa-envelope letter-hero__icon" aria-hidden="true"></i>
+    </div>
+    <h1 class="letter-hero__title">Get in Touch</h1>
+    <p class="letter-hero__subtitle">Have a project idea? Want to collaborate? Just want to say hello?</p>
+  </div>
+</section>
+
+<section class="letter-main">
+  <div class="container">
+    <div class="letter-content">
+      <div class="letter-info">
+        <div class="info-card">
+          <div class="info-card__icon-container">
+            <i class="fas fa-comments" aria-hidden="true"></i>
+          </div>
+          <h2 class="info-card__title">Let's Chat</h2>
+          <p class="info-card__text">I'm open to discussing new opportunities, projects, and technologies. Feel free to reach out with any questions!</p>
+        </div>
+        
+        <div class="info-card">
+          <div class="info-card__icon-container">
+            <i class="fas fa-code-branch" aria-hidden="true"></i>
+          </div>
+          <h2 class="info-card__title">Collaborate</h2>
+          <p class="info-card__text">Interested in working together on a project? Share your ideas and let's see what we can build.</p>
+        </div>
+        
+        <div class="info-card">
+          <div class="info-card__icon-container">
+            <i class="fas fa-coffee" aria-hidden="true"></i>
+          </div>
+          <h2 class="info-card__title">Connect</h2>
+          <p class="info-card__text">Find me on social media or just drop me an email. I'd love to expand my network with like-minded individuals.</p>
+        </div>
+        
+        <div class="social-connections">
+          <h3 class="social-connections__title">Connect with me</h3>
+          <div class="social-connections__links">
+            <a href="https://github.com/Rynaro" target="_blank" rel="noopener" aria-label="GitHub Profile" class="social-link">
+              <i class="fab fa-github" aria-hidden="true"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/hlavezzo" target="_blank" rel="noopener" aria-label="LinkedIn Profile" class="social-link">
+              <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+            </a>
+            <a href="https://dev.to/rynaro" target="_blank" rel="noopener" aria-label="Dev.to Profile" class="social-link">
+              <i class="fab fa-dev" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="letter-form">
+        <h2 class="letter-form__title">Send me a letter</h2>
+        <form action="https://formspree.io/f/hi@hlavezzo.me" method="POST" id="contact-form">
+          <div class="form-group">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" id="name" name="name" class="form-input" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" id="email" name="_replyto" class="form-input" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="subject" class="form-label">Subject</label>
+            <input type="text" id="subject" name="subject" class="form-input" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="message" class="form-label">Message</label>
+            <textarea id="message" name="message" class="form-textarea" rows="6" required></textarea>
+          </div>
+          
+          <div class="form-group form-actions">
+            <button type="submit" class="submit-button">
+              <span class="button-text">Send Letter</span>
+              <i class="fas fa-paper-plane" aria-hidden="true"></i>
+            </button>
+          </div>
+          
+          <!-- Honeypot field to prevent spam -->
+          <input type="text" name="_gotcha" style="display: none;">
+        </form>
+        
+        <div id="success-message" class="form-message form-message--success" style="display: none;">
+          <i class="fas fa-check-circle" aria-hidden="true"></i>
+          <p>Your message has been sent successfully! I'll get back to you soon.</p>
+        </div>
+        
+        <div id="error-message" class="form-message form-message--error" style="display: none;">
+          <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+          <p>Oops! Something went wrong. Please try again later or contact me directly via email.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('contact-form');
+    const successMessage = document.getElementById('success-message');
+    const errorMessage = document.getElementById('error-message');
+    
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(form);
+      const submitButton = form.querySelector('.submit-button');
+      
+      // Disable button and show loading state
+      submitButton.disabled = true;
+      submitButton.classList.add('is-loading');
+      
+      fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      })
+      .then(response => {
+        if (response.ok) {
+          // Show success message
+          form.reset();
+          form.style.display = 'none';
+          successMessage.style.display = 'flex';
+          
+          // Scroll to success message
+          successMessage.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          throw new Error('Network response was not ok');
+        }
+      })
+      .catch(error => {
+        // Show error message
+        console.error('Error:', error);
+        errorMessage.style.display = 'flex';
+        
+        // Re-enable button
+        submitButton.disabled = false;
+        submitButton.classList.remove('is-loading');
+      });
+    });
+  });
+</script>

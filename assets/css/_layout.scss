@@ -1,0 +1,106 @@
+// ==========================================================================
+// LAYOUT & GRID
+// ==========================================================================
+
+.container {
+  width: 100%;
+  max-width: $content-max-width;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.main-content {
+  margin-left: $sidebar-width;
+  min-height: 100vh;
+  padding: 0;
+
+  @media (max-width: $tablet-breakpoint) {
+    margin-left: 0;
+    padding-bottom: 70px;
+  }
+}
+
+// Grid system
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -0.75rem;
+  margin-left: -0.75rem;
+}
+
+.col {
+  flex: 1;
+  padding: 0 0.75rem;
+  
+  &--12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  
+  &--6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+    
+    @media (max-width: $mobile-breakpoint) {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+  }
+  
+  &--4 {
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+    
+    @media (max-width: $tablet-breakpoint) {
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
+    
+    @media (max-width: $mobile-breakpoint) {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+  }
+  
+  &--3 {
+    flex: 0 0 25%;
+    max-width: 25%;
+    
+    @media (max-width: $tablet-breakpoint) {
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
+    
+    @media (max-width: $mobile-breakpoint) {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+  }
+}
+
+.col--offset-3 {
+  margin-left: 25%;
+  
+  @media (max-width: $mobile-breakpoint) {
+    margin-left: 0;
+  }
+}
+
+// Footer
+.footer {
+  padding: 2rem 0;
+  text-align: center;
+  background-color: $pastel-lavender;
+  
+  &__copyright {
+    font-size: 0.875rem;
+    color: $text-medium;
+  }
+  
+  &__signature {
+    font-family: 'Nothing You Could Do', cursive;
+    font-size: 1.5rem;
+    margin-top: 0.5rem;
+    color: darken($pastel-purple, 15%);
+  }
+}

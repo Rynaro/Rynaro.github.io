@@ -1,0 +1,228 @@
+---
+layout: default
+---
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="post-header">
+    <div class="container">
+      <div class="post-meta">
+        {% if page.categories.size > 0 %}
+        <span class="post-category">{{ page.categories | first | capitalize }}</span>
+        {% endif %}
+        <time class="post-date" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
+          {{ page.date | date: "%b %-d, %Y" }}
+        </time>
+        <span class="post-reading-time">
+          {% assign words = content | number_of_words %}
+          {% if words < 360 %}
+            1 min read
+          {% else %}
+            {{ words | divided_by: 180 }} mins read
+          {% endif %}
+        </span>
+      </div>
+      
+      <h1 class="post-title" itemprop="name headline">{{ page.title }}</h1>
+      
+      {% if page.resume %}
+        <p class="post-subtitle">{{ page.resume }}</p>
+      {% endif %}
+      
+      {% if page.author %}
+        <div class="post-author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <span itemprop="name">{{ page.author }}</span>
+        </div>
+      {% endif %}
+      
+      {% if page.tags.size > 0 %}
+        <div class="post-tags">
+          {% for tag in page.tags %}
+            <span class="post-tag">#{{ tag }}</span>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="post-content-wrapper">
+    <div class="container">
+      <div class="post-container">
+        <aside class="post-sidebar">
+          <div class="post-toc" id="post-toc">
+            <h3 class="toc-title">Contents</h3>
+            <div class="toc-content" id="toc-content"></div>
+          </div>
+          
+          <div class="post-actions">
+            <button class="post-action-button" id="toggle-dark-mode" aria-label="Toggle dark mode">
+              <i class="fas fa-moon" aria-hidden="true"></i>
+              <span class="action-text">Dark mode</span>
+            </button>
+            
+            <div class="post-share">
+              <span class="share-text">Share</span>
+              <a href="https://twitter.com/intent/tweet?text={{ page.title | url_encode }}&url={{ site.url }}{{ page.url | url_encode }}" 
+                target="_blank" rel="noopener" aria-label="Share on Twitter" class="share-link">
+                <i class="fab fa-twitter" aria-hidden="true"></i>
+              </a>
+              <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ site.url }}{{ page.url | url_encode }}&title={{ page.title | url_encode }}"
+                target="_blank" rel="noopener" aria-label="Share on LinkedIn" class="share-link">
+                <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </aside>
+        
+        <div class="post-content" itemprop="articleBody">
+          {{ content }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="post-navigation">
+    <div class="container">
+      <div class="post-navigation-inner">
+        {% if page.previous.url %}
+          <a class="post-navigation-link post-navigation-previous" href="{{ page.previous.url }}">
+            <i class="fas fa-arrow-left" aria-hidden="true"></i>
+            <div class="post-navigation-info">
+              <span class="post-navigation-label">Previous</span>
+              <span class="post-navigation-title">{{ page.previous.title }}</span>
+            </div>
+          </a>
+        {% endif %}
+        
+        {% if page.next.url %}
+          <a class="post-navigation-link post-navigation-next" href="{{ page.next.url }}">
+            <div class="post-navigation-info">
+              <span class="post-navigation-label">Next</span>
+              <span class="post-navigation-title">{{ page.next.title }}</span>
+            </div>
+            <i class="fas fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  
+  <div class="related-posts">
+    <div class="container">
+      <h3 class="related-posts-title">You might also like</h3>
+      <div class="related-posts-grid">
+        {% assign related_posts = site.posts | where_exp: "post", "post.url != page.url" | sample: 3 %}
+        {% for post in related_posts %}
+          <a href="{{ post.url }}" class="related-post">
+            {% if post.categories.size > 0 %}
+              <span class="related-post-category">{{ post.categories | first | capitalize }}</span>
+            {% endif %}
+            <h4 class="related-post-title">{{ post.title }}</h4>
+            <p class="related-post-excerpt">{{ post.resume | default: post.excerpt | strip_html | truncate: 80 }}</p>
+            <span class="related-post-date">{{ post.date | date: "%b %-d, %Y" }}</span>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</article>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Generate Table of Contents
+    const headings = document.querySelectorAll('.post-content h2, .post-content h3');
+    const tocContent = document.getElementById('toc-content');
+    
+    if (headings.length > 0) {
+      const toc = document.createElement('ul');
+      
+      headings.forEach((heading, index) => {
+        // Add ID to heading if it doesn't have one
+        if (!heading.id) {
+          heading.id = `heading-${index}`;
+        }
+        
+        const listItem = document.createElement('li');
+        const link = document.createElement('a');
+        
+        // Adjust class based on heading level
+        if (heading.tagName === 'H3') {
+          listItem.classList.add('toc-h3');
+        }
+        
+        link.href = `#${heading.id}`;
+        link.textContent = heading.textContent;
+        
+        listItem.appendChild(link);
+        toc.appendChild(listItem);
+      });
+      
+      tocContent.appendChild(toc);
+      
+      // Show ToC only if there are headings
+      document.getElementById('post-toc').style.display = 'block';
+    } else {
+      document.getElementById('post-toc').style.display = 'none';
+    }
+    
+    // Smooth scrolling for ToC links
+    document.querySelectorAll('#toc-content a').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 100,
+            behavior: 'smooth'
+          });
+          
+          // Update URL without page jump
+          history.pushState(null, null, targetId);
+        }
+      });
+    });
+    
+    // Dark mode toggle
+    const darkModeToggle = document.getElementById('toggle-dark-mode');
+    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+    
+    // Set initial state
+    if (isDarkMode) {
+      document.body.classList.add('dark-mode');
+      darkModeToggle.querySelector('i').classList.remove('fa-moon');
+      darkModeToggle.querySelector('i').classList.add('fa-sun');
+      darkModeToggle.querySelector('.action-text').textContent = 'Light mode';
+    }
+    
+    darkModeToggle.addEventListener('click', function() {
+      document.body.classList.toggle('dark-mode');
+      
+      if (document.body.classList.contains('dark-mode')) {
+        localStorage.setItem('darkMode', 'true');
+        this.querySelector('i').classList.remove('fa-moon');
+        this.querySelector('i').classList.add('fa-sun');
+        this.querySelector('.action-text').textContent = 'Light mode';
+      } else {
+        localStorage.setItem('darkMode', 'false');
+        this.querySelector('i').classList.remove('fa-sun');
+        this.querySelector('i').classList.add('fa-moon');
+        this.querySelector('.action-text').textContent = 'Dark mode';
+      }
+    });
+    
+    // Progress bar
+    const progressBar = document.createElement('div');
+    progressBar.className = 'reading-progress';
+    document.body.appendChild(progressBar);
+    
+    window.addEventListener('scroll', function() {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const progress = (scrollTop / scrollHeight) * 100;
+      
+      progressBar.style.width = progress + '%';
+    });
+  });
+</script>

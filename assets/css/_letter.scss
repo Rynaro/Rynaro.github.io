@@ -1,0 +1,422 @@
+// ==========================================================================
+// LETTER/CONTACT PAGE STYLES
+// ==========================================================================
+
+.letter-hero {
+  background: linear-gradient(135deg, $pastel-lavender, $pastel-pink);
+  padding: 5rem 0 3rem;
+  text-align: center;
+  
+  &__icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    background-color: rgba($background-white, 0.2);
+    border-radius: 50%;
+  }
+  
+  &__icon {
+    font-size: 2.5rem;
+    color: darken($pastel-purple, 35%);
+  }
+  
+  &__title {
+    color: darken($pastel-purple, 35%);
+    margin-bottom: 1rem;
+    font-size: 3rem;
+    font-weight: 500;
+    
+    @media (max-width: $mobile-breakpoint) {
+      font-size: 2.5rem;
+    }
+  }
+  
+  &__subtitle {
+    color: darken($pastel-purple, 30%);
+    font-size: 1.25rem;
+    max-width: 600px;
+    margin: 0 auto;
+    
+    @media (max-width: $mobile-breakpoint) {
+      font-size: 1rem;
+    }
+  }
+}
+
+.letter-main {
+  padding: 4rem 0;
+  background-color: $background-cream;
+}
+
+.letter-content {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 3rem;
+  
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+// Info cards
+.letter-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.info-card {
+  background-color: $background-white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+  }
+  
+  &__icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    margin-bottom: 1rem;
+    background-color: rgba($pastel-lavender, 0.2);
+    border-radius: 50%;
+    
+    i {
+      font-size: 1.5rem;
+      color: darken($pastel-purple, 20%);
+    }
+  }
+  
+  &__title {
+    font-size: 1.35rem;
+    margin-bottom: 0.75rem;
+    color: $text-dark;
+    font-weight: 500;
+  }
+  
+  &__text {
+    color: $text-medium;
+    line-height: 1.6;
+    font-size: 0.95rem;
+  }
+}
+
+// Social connections
+.social-connections {
+  background-color: $background-white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  
+  &__title {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: $text-dark;
+    font-weight: 500;
+    text-align: center;
+  }
+  
+  &__links {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background-color: rgba($pastel-lavender, 0.2);
+  color: darken($pastel-purple, 20%);
+  transition: all 0.2s ease;
+  font-size: 1.35rem;
+  
+  &:hover {
+    background-color: $pastel-purple;
+    color: $background-white;
+    transform: translateY(-3px);
+  }
+}
+
+// Form styles
+.letter-form {
+  background-color: $background-white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  
+  &__title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: $text-dark;
+    font-weight: 500;
+    text-align: center;
+  }
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.form-label {
+  display: block;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  color: $text-dark;
+  font-weight: 500;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba($pastel-lavender, 0.5);
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: rgba($pastel-lavender, 0.05);
+  transition: all 0.2s ease;
+  color: $text-dark;
+  font-family: inherit;
+  
+  &:focus {
+    outline: none;
+    border-color: $pastel-purple;
+    background-color: rgba($pastel-lavender, 0.1);
+    box-shadow: 0 0 0 3px rgba($pastel-purple, 0.2);
+  }
+  
+  &::placeholder {
+    color: $text-light;
+  }
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.form-actions {
+  text-align: right;
+  margin-top: 1.5rem;
+}
+
+.submit-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  background-color: $pastel-purple;
+  color: $background-white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  .button-text {
+    margin-right: 0.5rem;
+  }
+  
+  i {
+    font-size: 0.9rem;
+    transition: transform 0.2s ease;
+  }
+  
+  &:hover {
+    background-color: darken($pastel-purple, 10%);
+    
+    i {
+      transform: translateX(3px);
+    }
+  }
+  
+  &:active {
+    transform: translateY(1px);
+  }
+  
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
+  &.is-loading {
+    position: relative;
+    color: transparent;
+    
+    &:after {
+      content: "";
+      position: absolute;
+      width: 1.25rem;
+      height: 1.25rem;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      border-top-color: white;
+      animation: button-loading-spinner 0.6s linear infinite;
+    }
+  }
+}
+
+@keyframes button-loading-spinner {
+  from {
+    transform: rotate(0turn);
+  }
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+// Form messages
+.form-message {
+  display: flex;
+  align-items: flex-start;
+  padding: 1.25rem;
+  border-radius: 6px;
+  margin-top: 1.5rem;
+  
+  i {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+    flex-shrink: 0;
+  }
+  
+  p {
+    margin: 0;
+    line-height: 1.6;
+  }
+  
+  &--success {
+    background-color: rgba($pastel-mint, 0.2);
+    border: 1px solid rgba($pastel-mint, 0.5);
+    color: darken($pastel-mint, 50%);
+    
+    i {
+      color: darken($pastel-mint, 30%);
+    }
+  }
+  
+  &--error {
+    background-color: rgba(#F8D0C9, 0.2);
+    border: 1px solid rgba(#F8D0C9, 0.5);
+    color: darken(#F8D0C9, 50%);
+    
+    i {
+      color: darken(#F8D0C9, 30%);
+    }
+  }
+}
+
+// Dark mode support
+body.dark-mode {
+  .letter-hero {
+    background: linear-gradient(135deg, darken($pastel-lavender, 40%), darken($pastel-pink, 40%));
+  }
+  
+  .letter-hero__title,
+  .letter-hero__subtitle,
+  .letter-hero__icon {
+    color: #e6e6e6;
+  }
+  
+  .letter-main {
+    background-color: #232830;
+  }
+  
+  .info-card,
+  .social-connections,
+  .letter-form {
+    background-color: #2c3138;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  }
+  
+  .info-card__title,
+  .social-connections__title,
+  .letter-form__title,
+  .form-label {
+    color: #e6e6e6;
+  }
+  
+  .info-card__text {
+    color: #b0b0b0;
+  }
+  
+  .info-card__icon-container {
+    background-color: rgba($pastel-lavender, 0.1);
+    
+    i {
+      color: lighten($pastel-purple, 15%);
+    }
+  }
+  
+  .social-link {
+    background-color: rgba($pastel-lavender, 0.1);
+    color: lighten($pastel-purple, 15%);
+    
+    &:hover {
+      background-color: lighten($pastel-purple, 5%);
+      color: #1a1f25;
+    }
+  }
+  
+  .form-input,
+  .form-textarea {
+    background-color: #1a1f25;
+    border-color: #3a3f45;
+    color: #e6e6e6;
+    
+    &:focus {
+      border-color: lighten($pastel-purple, 10%);
+      background-color: #1a1f25;
+      box-shadow: 0 0 0 3px rgba(lighten($pastel-purple, 10%), 0.2);
+    }
+  }
+  
+  .submit-button {
+    background-color: lighten($pastel-purple, 5%);
+    color: #1a1f25;
+    
+    &:hover {
+      background-color: lighten($pastel-purple, 10%);
+    }
+  }
+}
+
+// Accessibility improvements
+@media (prefers-reduced-motion: reduce) {
+  .info-card,
+  .social-link,
+  .submit-button i {
+    transition: none;
+  }
+  
+  .info-card:hover,
+  .social-link:hover {
+    transform: none;
+  }
+  
+  .submit-button:hover i {
+    transform: none;
+  }
+  
+  .submit-button.is-loading:after {
+    animation: none;
+  }
+}

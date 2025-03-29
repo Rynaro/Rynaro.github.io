@@ -1,0 +1,56 @@
+// ==========================================================================
+// BASE STYLES
+// ==========================================================================
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: $text-dark;
+  background-color: $background-cream;
+  scroll-behavior: smooth;
+}
+
+// Typography
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Roboto', 'Segoe UI', sans-serif;
+  font-weight: 300;
+  margin-top: 0;
+  color: $text-dark;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 1.25rem;
+}
+
+h3 {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+}
+
+h4 {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+p {
+  margin-bottom: 1.5rem;
+}
+
+a {
+  color: darken($pastel-purple, 15%);
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+
+  &:hover {
+    color: darken($pastel-purple, 25%);
+  }
+}

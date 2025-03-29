@@ -1,0 +1,29 @@
+// ==========================================================================
+// VARIABLES & CONFIGURATION
+// ==========================================================================
+
+// Color Palette
+$pastel-pink: #F8D1E0;      // Soft pastel pink
+$pastel-lavender: #E5D4F1;  // Light pastel lavender
+$pastel-purple: #CDB4DB;    // Muted pastel purple
+$pastel-blue: #B9C9E6;      // Soft pastel blue
+$pastel-mint: #C8E7D5;      // Complementary pastel mint
+
+// Background and text colors
+$background-cream: #F8F5F2;  // Warm off-white/cream background
+$background-light: #F0ECE9;  // Slightly darker background for sections
+$text-dark: #4A4A4A;         // Soft black for text
+$text-medium: #6D6D6D;       // Medium gray for secondary text
+$text-light: #8A8A8A;        // Light gray for tertiary text
+
+// Aliases for backward compatibility
+$soft-pink: $pastel-pink;
+$soft-purple: $pastel-purple;
+$soft-blue: $pastel-blue;
+$background-white: $background-cream;
+
+// Layout variables
+$sidebar-width: 60px;
+$content-max-width: 1200px;
+$tablet-breakpoint: 768px;
+$mobile-breakpoint: 480px;

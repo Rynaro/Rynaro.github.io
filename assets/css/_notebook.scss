@@ -1,0 +1,388 @@
+// ==========================================================================
+// NOTEBOOK PAGE STYLES
+// ==========================================================================
+
+.notebook-hero {
+  background: linear-gradient(135deg, $pastel-blue, $pastel-purple);
+  padding: 5rem 0 3rem;
+  text-align: center;
+  
+  &__title {
+    color: darken($pastel-purple, 30%);
+    margin-bottom: 1rem;
+    font-size: 3rem;
+    
+    @media (max-width: $mobile-breakpoint) {
+      font-size: 2.5rem;
+    }
+  }
+  
+  &__subtitle {
+    color: darken($pastel-purple, 25%);
+    font-size: 1.25rem;
+    max-width: 600px;
+    margin: 0 auto;
+    
+    @media (max-width: $mobile-breakpoint) {
+      font-size: 1rem;
+    }
+  }
+}
+
+.notebook-main {
+  padding: 3rem 0;
+  background-color: $background-cream;
+}
+
+.notebook-filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  
+  @media (max-width: $tablet-breakpoint) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .filter-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    
+    @media (max-width: $tablet-breakpoint) {
+      margin-bottom: 1rem;
+      justify-content: center;
+    }
+  }
+  
+  .filter-tab {
+    background: none;
+    border: none;
+    padding: 0.5rem 1.25rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    color: $text-medium;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      color: darken($pastel-purple, 25%);
+      background-color: rgba($pastel-purple, 0.1);
+    }
+    
+    &.active {
+      background-color: $pastel-purple;
+      color: darken($pastel-purple, 35%);
+      font-weight: 500;
+    }
+  }
+  
+  .search-input {
+    position: relative;
+    width: 250px;
+    
+    @media (max-width: $tablet-breakpoint) {
+      width: 100%;
+    }
+    
+    input {
+      width: 100%;
+      padding: 0.5rem 1rem 0.5rem 2.5rem;
+      border: 1px solid $pastel-lavender;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      background-color: rgba($pastel-lavender, 0.2);
+      transition: all 0.2s ease;
+      
+      &:focus {
+        outline: none;
+        border-color: $pastel-purple;
+        background-color: rgba($pastel-lavender, 0.3);
+      }
+      
+      &::placeholder {
+        color: $text-light;
+      }
+    }
+    
+    i {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: $text-light;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.notebook-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @media (max-width: $mobile-breakpoint) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.notebook-featured {
+  grid-column: span 3;
+  margin-bottom: 2.5rem;
+  
+  @media (max-width: 1024px) {
+    grid-column: span 2;
+  }
+  
+  @media (max-width: $mobile-breakpoint) {
+    grid-column: span 1;
+  }
+}
+
+.notebook-card {
+  background-color: $background-white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  height: 100%;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  }
+  
+  &.featured {
+    background: linear-gradient(135deg, rgba($pastel-lavender, 0.6), rgba($pastel-pink, 0.6));
+    border-left: 5px solid $pastel-purple;
+    
+    .notebook-card__title {
+      font-size: 1.75rem;
+      
+      @media (max-width: $mobile-breakpoint) {
+        font-size: 1.5rem;
+      }
+    }
+    
+    .notebook-card__excerpt {
+      font-size: 1.1rem;
+      
+      @media (max-width: $mobile-breakpoint) {
+        font-size: 1rem;
+      }
+    }
+  }
+  
+  &__meta {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    font-size: 0.85rem;
+    color: $text-medium;
+  }
+  
+  &__date {
+    margin-right: 1rem;
+    display: flex;
+    align-items: center;
+    
+    &:before {
+      content: "\f073";
+      font-family: "Font Awesome 5 Free";
+      margin-right: 0.35rem;
+      font-weight: 900;
+      font-size: 0.8rem;
+    }
+  }
+  
+  &__category {
+    padding: 0.2rem 0.75rem;
+    border-radius: 20px;
+    background-color: rgba($pastel-purple, 0.2);
+    color: darken($pastel-purple, 25%);
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  
+  &__title {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    font-size: 1.35rem;
+    color: $text-dark;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+  
+  &__excerpt {
+    color: $text-medium;
+    margin-bottom: 1.25rem;
+    line-height: 1.5;
+    flex-grow: 1;
+  }
+  
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+  }
+  
+  &__tag {
+    font-size: 0.75rem;
+    color: $text-medium;
+    margin-right: 0.75rem;
+    margin-bottom: 0.5rem;
+    
+    &:before {
+      content: "#";
+      opacity: 0.7;
+    }
+  }
+  
+  &__link {
+    align-self: flex-start;
+    color: darken($pastel-purple, 20%);
+    font-weight: 500;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    
+    i {
+      font-size: 0.8em;
+      margin-left: 0.35rem;
+      transition: transform 0.2s ease;
+    }
+    
+    &:hover {
+      color: darken($pastel-purple, 30%);
+      
+      i {
+        transform: translateX(3px);
+      }
+    }
+  }
+}
+
+.featured-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: $pastel-purple;
+  color: darken($pastel-purple, 35%);
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+}
+
+.no-results {
+  text-align: center;
+  padding: 3rem 0;
+  color: $text-medium;
+  font-size: 1.1rem;
+  
+  p {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+}
+
+// Post specific styles
+.post-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 3rem 0;
+  
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+  }
+  
+  pre {
+    padding: 1rem;
+    background-color: rgba($pastel-lavender, 0.2);
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+  
+  blockquote {
+    border-left: 4px solid $pastel-purple;
+    padding-left: 1rem;
+    margin-left: 0;
+    color: $text-medium;
+    font-style: italic;
+  }
+  
+  hr {
+    border: none;
+    height: 2px;
+    background-color: rgba($pastel-purple, 0.2);
+    margin: 2rem 0;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    
+    th, td {
+      padding: 0.75rem;
+      border: 1px solid rgba($pastel-purple, 0.2);
+    }
+    
+    th {
+      background-color: rgba($pastel-purple, 0.1);
+      font-weight: 500;
+    }
+    
+    tr:nth-child(even) {
+      background-color: rgba($pastel-lavender, 0.05);
+    }
+  }
+}
+
+// Post navigation
+.post-navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba($pastel-purple, 0.2);
+  
+  &__link {
+    display: flex;
+    align-items: center;
+    
+    &--prev {
+      i {
+        margin-right: 0.5rem;
+      }
+    }
+    
+    &--next {
+      margin-left: auto;
+      
+      i {
+        margin-left: 0.5rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,143 @@
+// ==========================================================================
+// HOME PAGE STYLES
+// ==========================================================================
+
+.hero {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: linear-gradient(135deg, $pastel-pink, $pastel-purple);
+  position: relative;
+  overflow: hidden;
+  
+  &__content {
+    max-width: 800px;
+    padding: 2rem;
+    position: relative;
+    z-index: 2;
+  }
+  
+  &__title {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    color: darken($pastel-purple, 30%);
+    
+    @media (max-width: $mobile-breakpoint) {
+      font-size: 2.5rem;
+    }
+  }
+  
+  &__subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: darken($pastel-purple, 25%);
+    
+    @media (max-width: $mobile-breakpoint) {
+      font-size: 1.25rem;
+    }
+  }
+  
+  &__actions {
+    margin-top: 2rem;
+    
+    .button {
+      margin: 0 0.5rem;
+      
+      @media (max-width: $mobile-breakpoint) {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+}
+
+// Featured sections
+.featured-section {
+  padding: 5rem 0;
+  text-align: center;
+  
+  &:nth-child(odd) {
+    background-color: $background-light;
+  }
+  
+  &:nth-child(even) {
+    background-color: $background-cream;
+  }
+  
+  &__header {
+    margin-bottom: 3rem;
+  }
+  
+  &__title {
+    font-size: 2.25rem;
+    margin-bottom: 1rem;
+  }
+  
+  &__description {
+    max-width: 700px;
+    margin: 0 auto;
+    color: $text-medium;
+  }
+  
+  &__content {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+}
+
+// Recent posts section
+.recent-posts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @media (max-width: $mobile-breakpoint) {
+    grid-template-columns: 1fr;
+  }
+  
+  &__item {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+// Testimonial section
+.testimonials {
+  padding: 5rem 0;
+  background: linear-gradient(135deg, rgba($pastel-lavender, 0.5), rgba($pastel-blue, 0.5));
+  
+  &__container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  &__item {
+    padding: 2rem;
+    background-color: $background-cream;
+    border-radius: 8px;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    
+    blockquote {
+      font-size: 1.2rem;
+      font-style: italic;
+      margin-bottom: 1.5rem;
+    }
+    
+    .author {
+      font-weight: 500;
+      color: $text-dark;
+    }
+    
+    .position {
+      font-size: 0.9rem;
+      color: $text-medium;
+    }
+  }
+}

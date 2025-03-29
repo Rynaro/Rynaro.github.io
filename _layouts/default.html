@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if page.title %}{{ page.title }} | {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
+  <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Nothing+You+Could+Do&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="{{ "/assets/css/main.css" | relative_url }}">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="{{ "/assets/images/bottle.png" | relative_url }}">
+  
+  {% if jekyll.environment == "production" %}
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '{{ site.google_analytics }}');
+    </script>
+  {% endif %}
+</head>
+<body>
+  <nav class="sidebar" aria-label="Main navigation">
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a href="/" class="nav-link" aria-label="Home">
+          <i class="fas fa-home" aria-hidden="true"></i>
+          <span class="sr-only">Home</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/about" class="nav-link" aria-label="About">
+          <i class="fas fa-user-astronaut" aria-hidden="true"></i>
+          <span class="sr-only">About</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/notebook" class="nav-link" aria-label="Notebook">
+          <i class="fas fa-pencil-ruler" aria-hidden="true"></i>
+          <span class="sr-only">Notebook</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/laboratory" class="nav-link" aria-label="Laboratory">
+          <i class="fas fa-flask" aria-hidden="true"></i>
+          <span class="sr-only">Laboratory</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/letter" class="nav-link" aria-label="Contact">
+          <i class="fas fa-envelope" aria-hidden="true"></i>
+          <span class="sr-only">Contact</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <main class="main-content">
+    {{ content }}
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p class="footer__copyright">&copy; {{ site.time | date: '%Y' }} {{ site.title }}</p>
+      <p class="footer__signature">Henrique A. Lavezzo</p>
+    </div>
+  </footer>
+
+  <!-- Custom scripts -->
+  <script src="{{ "/assets/js/main.js" | relative_url }}" defer></script>
+</body>
+</html>

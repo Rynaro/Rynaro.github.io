@@ -1,0 +1,153 @@
+---
+layout: default
+title: Laboratory
+---
+
+<section class="laboratory-hero">
+  <div class="container">
+    <div class="laboratory-hero__icon-container">
+      <i class="fas fa-flask laboratory-hero__icon" aria-hidden="true"></i>
+    </div>
+    <h1 class="laboratory-hero__title">Laboratory</h1>
+    <p class="laboratory-hero__subtitle">A collection of experiments, libraries, and open-source projects</p>
+  </div>
+</section>
+
+<section class="laboratory-main">
+  <div class="container">
+    <div class="laboratory-filter">
+      <div class="filter-tags">
+        <button class="filter-tag active" data-filter="all">All Projects</button>
+        <button class="filter-tag" data-filter="library">Libraries</button>
+        <button class="filter-tag" data-filter="tool">Tools</button>
+        <button class="filter-tag" data-filter="game">Games</button>
+      </div>
+      
+      <div class="search-input">
+        <input type="text" id="project-search" placeholder="Search projects..." aria-label="Search projects">
+        <i class="fas fa-search" aria-hidden="true"></i>
+      </div>
+    </div>
+    
+    <div class="project-grid">
+      {% for project in site.data.projects %}
+        <div class="project-item" 
+          {% if project.type %}data-type="{{ project.type }}"{% else %}data-type="library"{% endif %}>
+          <div class="project-card">
+            <div class="project-card__header">
+              <h2 class="project-card__title">{{ project.title }}</h2>
+              <div class="project-card__actions">
+                <a href="{{ project.url }}" class="project-card__action project-card__action--github" target="_blank" rel="noopener" aria-label="View on GitHub">
+                  <i class="fab fa-github" aria-hidden="true"></i>
+                </a>
+              </div>
+            </div>
+            
+            <p class="project-card__description">{{ project.description }}</p>
+            
+            <div class="project-card__meta">
+              {% if project.language %}
+                <span class="project-card__language">
+                  <span class="language-dot" style="background-color: {% include language-color.html language=project.language %}"></span>
+                  {{ project.language }}
+                </span>
+              {% endif %}
+              
+              {% if project.stars %}
+                <span class="project-card__stars">
+                  <i class="fas fa-star" aria-hidden="true"></i> {{ project.stars }}
+                </span>
+              {% endif %}
+              
+              {% if project.forks %}
+                <span class="project-card__forks">
+                  <i class="fas fa-code-branch" aria-hidden="true"></i> {{ project.forks }}
+                </span>
+              {% endif %}
+            </div>
+            
+            <div class="project-card__footer">
+              <a href="{{ project.url }}" class="project-card__link" target="_blank" rel="noopener">
+                View Project <i class="fas fa-arrow-right" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    
+    <div class="no-results" style="display: none;">
+      <p>No projects found matching your criteria. Try adjusting your search or filters.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Filter functionality
+    const filterTags = document.querySelectorAll('.filter-tag');
+    const projectItems = document.querySelectorAll('.project-item');
+    const searchInput = document.getElementById('project-search');
+    const noResults = document.querySelector('.no-results');
+    
+    // Filter projects by type and search term
+    function filterProjects() {
+      const activeFilter = document.querySelector('.filter-tag.active').getAttribute('data-filter');
+      const searchTerm = searchInput.value.toLowerCase();
+      
+      let visibleCount = 0;
+      
+      projectItems.forEach(item => {
+        const type = item.getAttribute('data-type');
+        const title = item.querySelector('.project-card__title').textContent.toLowerCase();
+        const description = item.querySelector('.project-card__description').textContent.toLowerCase();
+        
+        const matchesFilter = activeFilter === 'all' || type === activeFilter;
+        const matchesSearch = searchTerm === '' || 
+                             title.includes(searchTerm) || 
+                             description.includes(searchTerm);
+        
+        if (matchesFilter && matchesSearch) {
+          item.style.display = 'block';
+          visibleCount++;
+        } else {
+          item.style.display = 'none';
+        }
+      });
+      
+      // Show "no results" message if needed
+      noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+    
+    // Tag click event
+    filterTags.forEach(tag => {
+      tag.addEventListener('click', () => {
+        // Update active tag
+        filterTags.forEach(t => t.classList.remove('active'));
+        tag.classList.add('active');
+        
+        // Filter projects
+        filterProjects();
+      });
+    });
+    
+    // Search input event
+    searchInput.addEventListener('input', filterProjects);
+    
+    // Initialize with all projects visible
+    filterProjects();
+    
+    // Interactive cards
+    const projectCards = document.querySelectorAll('.project-card');
+    
+    projectCards.forEach(card => {
+      card.addEventListener('mouseenter', function() {
+        this.classList.add('project-card--hover');
+      });
+      
+      card.addEventListener('mouseleave', function() {
+        this.classList.remove('project-card--hover');
+      });
+    });
+  });
+</script>

@@ -1,0 +1,308 @@
+// ==========================================================================
+// ABOUT PAGE STYLES
+// ==========================================================================
+
+.about-hero {
+  padding: 6rem 0 3rem;
+  background: linear-gradient(135deg, $pastel-pink, $pastel-purple);
+  text-align: center;
+  
+  &__title {
+    color: darken($pastel-purple, 30%);
+    margin-bottom: 1rem;
+    font-size: 3rem;
+    
+    @media (max-width: $mobile-breakpoint) {
+      font-size: 2.5rem;
+    }
+  }
+  
+  &__subtitle {
+    color: darken($pastel-purple, 25%);
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    
+    @media (max-width: $mobile-breakpoint) {
+      font-size: 1.25rem;
+    }
+  }
+}
+
+.about-bio {
+  padding: 4rem 0;
+  background-color: $background-cream;
+  
+  &__content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    
+    p {
+      margin-bottom: 1.5rem;
+    }
+  }
+}
+
+// Skills section
+.skills {
+  padding: 4rem 0;
+  background-color: $background-light;
+}
+
+.skills-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: stretch;
+  margin: 0 -10px;
+  
+  @media (max-width: $tablet-breakpoint) {
+    justify-content: center;
+  }
+  
+  .col--4 {
+    flex: 0 0 calc(33.333% - 20px);
+    max-width: calc(33.333% - 20px);
+    margin: 0 10px 20px;
+    
+    @media (max-width: $tablet-breakpoint) {
+      flex: 0 0 calc(50% - 20px);
+      max-width: calc(50% - 20px);
+    }
+    
+    @media (max-width: $mobile-breakpoint) {
+      flex: 0 0 calc(100% - 20px);
+      max-width: calc(100% - 20px);
+    }
+  }
+}
+
+.skill-card {
+  background-color: $background-cream;
+  border-radius: 8px;
+  padding: 1.5rem;
+  height: 100%;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  }
+  
+  &__icon {
+    font-size: 2.25rem;
+    color: darken($pastel-purple, 15%);
+    margin-bottom: 1.25rem;
+  }
+  
+  &__title {
+    font-size: 1.35rem;
+    margin-bottom: 1rem;
+    color: $text-dark;
+  }
+  
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    flex-grow: 1;
+    
+    li {
+      padding: 0.35rem 0;
+      border-bottom: 1px solid $pastel-pink;
+      font-size: 0.95rem;
+      
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+}
+
+// Career timeline
+.career {
+  padding: 4rem 0;
+  background-color: $background-cream;
+}
+
+.timeline {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 0;
+  
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 3px;
+    background-color: $pastel-pink;
+    transform: translateX(-50%);
+    
+    @media (max-width: $tablet-breakpoint) {
+      left: 30px;
+    }
+  }
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 3rem;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+  
+  &__date {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(50% - 30px);
+    text-align: right;
+    padding-right: 30px;
+    font-size: 0.9rem;
+    color: $text-light;
+    
+    @media (max-width: $tablet-breakpoint) {
+      position: relative;
+      width: 100%;
+      text-align: left;
+      padding-left: 60px;
+      padding-right: 0;
+      margin-bottom: 0.5rem;
+    }
+  }
+  
+  &__content {
+    margin-left: 50%;
+    padding-left: 30px;
+    position: relative;
+    
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -7px;
+      width: 15px;
+      height: 15px;
+      background-color: darken($pastel-purple, 15%);
+      border-radius: 50%;
+      
+      @media (max-width: $tablet-breakpoint) {
+        left: -37px;
+      }
+    }
+    
+    @media (max-width: $tablet-breakpoint) {
+      margin-left: 0;
+      padding-left: 60px;
+    }
+  }
+  
+  &__title {
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+    color: $text-dark;
+  }
+  
+  &__company {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: darken($pastel-purple, 15%);
+    font-weight: normal;
+  }
+}
+
+// Interests section
+.interests {
+  padding: 4rem 0;
+  background-color: $background-light;
+}
+
+.interests-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: stretch;
+  margin: 0 -10px;
+  
+  @media (max-width: $tablet-breakpoint) {
+    justify-content: center;
+  }
+  
+  .col--3 {
+    flex: 0 0 calc(25% - 20px);
+    max-width: calc(25% - 20px);
+    margin: 0 10px 20px;
+    
+    @media (max-width: $tablet-breakpoint) {
+      flex: 0 0 calc(50% - 20px);
+      max-width: calc(50% - 20px);
+    }
+    
+    @media (max-width: $mobile-breakpoint) {
+      flex: 0 0 calc(100% - 20px);
+      max-width: calc(100% - 20px);
+    }
+  }
+}
+
+.interest-card {
+  text-align: center;
+  padding: 1.5rem;
+  height: 100%;
+  background-color: $background-cream;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  }
+  
+  &__icon {
+    font-size: 2.25rem;
+    color: darken($pastel-purple, 15%);
+    margin-bottom: 1rem;
+  }
+  
+  &__title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: $text-dark;
+  }
+  
+  &__text {
+    font-size: 0.9rem;
+    color: $text-medium;
+    flex-grow: 1;
+  }
+}
+
+// Call to action
+.cta {
+  padding: 5rem 0;
+  background: linear-gradient(135deg, $pastel-purple, $pastel-blue);
+  color: darken($pastel-purple, 35%);
+  text-align: center;
+  
+  &-title {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  &-text {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+  }
+}

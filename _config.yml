@@ -1,0 +1,59 @@
+# Site settings
+title: Henrique A. Lavezzo
+email: hi@hlavezzo.me
+author: Henrique A. Lavezzo
+description: A code alchemist, that loves to write novels, and code transmutation circles.
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://hlavezzo.me" # the base hostname & protocol for your site
+github_username: Rynaro
+linkedin_username: hlavezzo
+devto_username: rynaro
+
+# Build settings
+markdown: kramdown
+permalink: /:year/:month/:day/:title/
+
+# Sass settings
+sass:
+  sass_dir: _sass
+  style: compressed
+
+# Collections
+collections:
+  projects:
+    output: true
+    permalink: /projects/:path/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+  - scope:
+      path: ""
+      type: "projects"
+    values:
+      layout: "project"
+  - scope:
+      path: ""
+    values:
+      layout: "default"
+
+# Plugins
+# plugins:
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .git
+  - README.md
+  - package.json
+  - package-lock.json
+  - docker-compose.yml
+  - Dockerfile
+  - .gitignore
