@@ -1,0 +1,86 @@
+// ==========================================================================
+// RESPONSIVE BREAKPOINTS
+// ==========================================================================
+
+// Breakpoint variables
+$breakpoints: (
+  'xs': 400px,    // Extra small devices
+  'sm': 576px,    // Small devices
+  'md': 768px,    // Medium devices
+  'lg': 992px,    // Large devices
+  'xl': 1200px,   // Extra large devices
+  'xxl': 1400px   // Extra extra large devices
+);
+
+// Mixin for min-width media queries
+@mixin min-width($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (min-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  } @else {
+    @warn "Invalid breakpoint: #{$breakpoint}. Available breakpoints are: #{map-keys($breakpoints)}";
+  }
+}
+
+// Mixin for max-width media queries
+@mixin max-width($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (max-width: map-get($breakpoints, $breakpoint) - 1px) {
+      @content;
+    }
+  } @else {
+    @warn "Invalid breakpoint: #{$breakpoint}. Available breakpoints are: #{map-keys($breakpoints)}";
+  }
+}
+
+// Mixin for range media queries (min-width and max-width)
+@mixin between($min, $max) {
+  @if map-has-key($breakpoints, $min) and map-has-key($breakpoints, $max) {
+    @media (min-width: map-get($breakpoints, $min)) and (max-width: map-get($breakpoints, $max) - 1px) {
+      @content;
+    }
+  } @else {
+    @warn "Invalid breakpoint range. Available breakpoints are: #{map-keys($breakpoints)}";
+  }
+}
+
+// Mixin for high-DPI (retina) displays
+@mixin retina {
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    @content;
+  }
+}
+
+// Mixin for print styles
+@mixin print {
+  @media print {
+    @content;
+  }
+}
+
+// Mixin for dark mode
+@mixin dark-mode {
+  @media (prefers-color-scheme: dark) {
+    @content;
+  }
+}
+
+// Example usage:
+// @include min-width('md') {
+//   .element {
+//     width: 50%;
+//   }
+// }
+//
+// @include max-width('sm') {
+//   .element {
+//     width: 100%;
+//   }
+// }
+//
+// @include between('sm', 'lg') {
+//   .element {
+//     width: 75%;
+//   }
+// }

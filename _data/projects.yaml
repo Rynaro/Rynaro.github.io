@@ -1,31 +1,69 @@
 - title: This Site!
   url: https://github.com/Rynaro/Rynaro.github.io
+  type: "tool"
+  rarity: "legendary"
+  language: "html"
   description: This wonderful site!
 
-- title: postmon-clj
-  url: https://github.com/Rynaro/postmon-clj
-  description: Simple wrapper for PostmonAPI written in Clojure.
+- title: Potions
+  url: https://github.com/Rynaro/Potions
+  type: "tool"
+  rarity: "epic"
+  language: "shell"
+  description: It's dotfiles but not boring.
 
 - title: Fluxus
   url: https://github.com/Rynaro/fluxus
+  type: "library"
+  rarity: "epic"
+  language: "ruby"
   description: Fluxus is a simple, dependencyless, and extensible use-case wrapper for your Ruby code.
+
+- title: JEX
+  url: https://github.com/Rynaro/jex
+  type: "tool"
+  rarity: "uncommon"
+  language: "shell"
+  description: A command-line utility to streamline Jekyll development using Docker.
 
 - title: FipExtractor
   url: https://github.com/Rynaro/FipExtractor
+  type: "library"
+  rarity: "common"
+  language: "ruby"
   description: FipExtractor is a easy-to-use translator of the FIPE API.
 
 - title: Estratto
   url: https://github.com/Rynaro/Estratto
+  type: "library"
+  rarity: "uncommon"
+  language: "ruby"
   description: Parsing fixed width files content made easy.
+
+- title: postmon-clj
+  url: https://github.com/Rynaro/postmon-clj
+  type: "library"
+  rarity: "uncommon"
+  language: "clojure"
+  description: Simple wrapper for PostmonAPI written in Clojure.
 
 - title: Snowflakes
   url: https://github.com/Rynaro/Snowflakes
+  type: "game"
+  rarity: "common"
+  language: "processing"
   description: A simple snow simulator.
 
 - title: Flappy Ball
   url: https://github.com/Rynaro/FlappyBall
+  type: "game"
+  rarity: "common"
+  language: "processing"
   description: Just because we need another Flappy Bird clone.
 
 - title: Pong Clone
   url: https://github.com/Rynaro/Pong
+  type: "game"
+  rarity: "common"
+  language: "processing"
   description: A Pong clone.

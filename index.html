@@ -6,15 +6,15 @@ layout: default
   <div class="alchemy-circle">
     <!-- Central circle -->
     <div class="alchemy-circle__inner"></div>
-    
+
     <!-- Orbital rings -->
     <div class="alchemy-circle__ring alchemy-circle__ring--1"></div>
     <div class="alchemy-circle__ring alchemy-circle__ring--2"></div>
     <div class="alchemy-circle__ring alchemy-circle__ring--3"></div>
-    
+
     <!-- Add a subtle glow -->
     <div class="alchemy-circle__glow"></div>
-    
+
     <!-- Alchemical symbols -->
     <div class="alchemy-symbol alchemy-symbol--fire" title="Fire (Creativity)" style="--symbol-color: #FF5E5B;">
       <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
@@ -42,7 +42,7 @@ layout: default
         <path d="M25,10 L25,40 M10,25 L40,25" stroke="currentColor" stroke-width="2" />
       </svg>
     </div>
-    
+
     <!-- Nordic runes -->
     <div class="rune rune--ansuz" title="Ansuz (Communication)" style="--symbol-color: #FF9E7D;">
       <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
@@ -69,8 +69,14 @@ layout: default
   <div class="hero-content">
     <h1 class="hero-title fade-in">Henrique A. Lavezzo</h1>
     <h2 class="hero-subtitle fade-in">Code Alchemist</h2>
-    <p class="hero-description fade-in">Transforming concepts into digital gold through the ancient art of code</p>
-    
+    <p class="hero-description fade-in">Code is my craft, clarity my catalyst. I shape the chaos into scalable magic.</p>
+
+    <div class="hero-trademark fade-in">
+      <span class="hero-trademark__copyright">&copy;</span>
+      <span class="hero-trademark__year">{{ site.time | date: '%Y' }}</span>
+      <span class="hero-trademark__name">Henrique A. Lavezzo</span>
+    </div>
+
     <div class="social-icons fade-in">
       <a href="https://www.linkedin.com/in/hlavezzo" target="_blank" rel="noopener" aria-label="LinkedIn Profile" class="social-icon social-icon--linkedin">
         <i class="fab fa-linkedin-in"></i>
@@ -82,6 +88,7 @@ layout: default
         <i class="fab fa-dev"></i>
       </a>
     </div>
+  </div>
 </div>
 
 <script src="{{ "/assets/js/home.js" | relative_url }}" defer></script>

@@ -1,0 +1,48 @@
+traits:
+  - name: "Naturebound Nurturer"
+    icon: "fas fa-tree"
+    description: "+20 to patience, grounding, and growth — cultivates life from seed to towering tree with care and intention"
+    bonus: 20
+    category: "Hobby"
+
+  - name: "Game Realm Voyager"
+    icon: "fas fa-gamepad"
+    description: "+15 to immersion and creativity — explores countless digital worlds, gathering inspiration and strategy"
+    bonus: 15
+    category: "Hobby"
+
+  - name: "World Builder"
+    icon: "fas fa-dice-d20"
+    description: "+25 to imagination and design — passionately crafts interactive systems and stories through game development"
+    bonus: 25
+    category: "Skill"
+
+  - name: "Language Seeker"
+    icon: "fas fa-language"
+    description: "+15 to adaptability — learned English through Final Fantasy VII and now studies Chinese with discipline"
+    bonus: 15
+    category: "Mindset"
+
+  - name: "Familiar Keeper"
+    icon: "fas fa-paw"
+    description: "+18 to empathy and presence — nurtures a small home ecosystem of 5 cats and 2 fish with care"
+    bonus: 18
+    category: "Lifestyle"
+
+  - name: "Mind Palace Architect"
+    icon: "fas fa-brain"
+    description: "+20 to clarity and knowledge recall — structures thoughts with note-taking, maps, and mental frameworks"
+    bonus: 20
+    category: "Mindset"
+
+  - name: "Symbiotic Technomancer"
+    icon: "fas fa-robot"
+    description: "+22 to productivity and ideation — fuses with AI familiars (GPT, Claude, Perplexity, Local) for insight, flow, and power"
+    bonus: 22
+    category: "Affinity"
+
+  - name: "Harmony Weaver"
+    icon: "fas fa-leaf"
+    description: "+20 to balance and insight — blends technology, nature, and thought into a cohesive, grounded life rhythm"
+    bonus: 20
+    category: "Mindset"

@@ -1,0 +1,45 @@
+categories:
+  - name: Programming Languages
+    skills:
+      - name: Ruby
+        level: 5
+        icon: fas fa-gem
+        color: "#CC342D"
+
+      - name: Elixir
+        level: 4
+        icon: fas fa-flask
+        color: "#4B2E79"
+
+
+      - name: JavaScript
+        level: 4
+        icon: fab fa-js
+        color: "#F7DF1E"
+
+      - name: Clojure
+        level: 3
+        icon: fas fa-circle-notch
+        color: "#5881D8"
+
+  - name: Architecture & Design
+    skills:
+      - name: Clean Architecture
+        level: 5
+        icon: fas fa-sitemap
+        color: "#4A90E2"
+
+      - name: Domain-Driven Design
+        level: 4
+        icon: fas fa-cubes
+        color: "#4A90E2"
+
+      - name: Monolithic Architecture
+        level: 4
+        icon: fas fa-building
+        color: "#4A90E2"
+
+      - name: Microservices
+        level: 3
+        icon: fas fa-network-wired
+        color: "#4A90E2"

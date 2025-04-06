@@ -1,0 +1,21 @@
+social_links:
+  - name: GitHub
+    url: https://github.com/Rynaro
+    icon: github
+    label: GitHub Profile
+    text: GitHub Scrolls
+    icon_class: fab fa-github
+
+  - name: LinkedIn
+    url: https://www.linkedin.com/in/hlavezzo
+    icon: linkedin
+    label: LinkedIn Profile
+    text: LinkedIn Guild
+    icon_class: fab fa-linkedin-in
+
+  - name: Dev.to
+    url: https://dev.to/rynaro
+    icon: devto
+    label: Dev.to Profile
+    text: Dev.to Tavern
+    icon_class: fab fa-dev

@@ -6,27 +6,74 @@ title: About Me
 <section class="rpg-hero">
   <div class="container">
     <div class="hero-content">
-      <h1 class="hero-title fade-in">Henrique A. Lavezzo</h1>
-      <h2 class="hero-subtitle fade-in">Code Alchemist</h2>
+      <h1 class="hero-title fade-in">{{ site.data.character_build.character.name }}</h1>
+      <div class="hero-subtitle-container fade-in">
+        <img src="{{ "/assets/images/code-alchemist.svg" | relative_url }}" alt="Code Alchemist Symbol" class="code-alchemist-symbol">
+        <h2 class="hero-subtitle">{{ site.data.character_build.character.title }}</h2>
+      </div>
       <div class="hero-level">
-        <div class="level-badge">LVL 15</div>
-        <div class="level-job">Director of Engineering</div>
+        <div class="level-badge">LVL {{ site.data.character_build.character.level }}</div>
+        <div class="level-job">{{ site.data.character_build.character.job }}</div>
+      </div>
+      <div class="status-bars">
+        <div class="status-bar">
+          <svg class="status-icon" viewBox="0 0 24 24" width="16" height="16">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+          <div class="bar-container">
+            <div class="bar-fill hp" style="width: {{ site.data.character_build.character.status.hp.percentage }}%"></div>
+            <span class="bar-value">{{ site.data.character_build.character.status.hp.current }}/{{ site.data.character_build.character.status.hp.max }}</span>
+          </div>
+        </div>
+        <div class="status-bar">
+          <svg class="status-icon" viewBox="0 0 24 24" width="16" height="16">
+            <path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/>
+          </svg>
+          <div class="bar-container">
+            <div class="bar-fill mp" style="width: {{ site.data.character_build.character.status.mp.percentage }}%"></div>
+            <span class="bar-value">{{ site.data.character_build.character.status.mp.current }}/{{ site.data.character_build.character.status.mp.max }}</span>
+          </div>
+        </div>
+        <div class="status-bar">
+          <svg class="status-icon" viewBox="0 0 24 24" width="16" height="16">
+            <path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.8-.7"/>
+          </svg>
+          <div class="bar-container">
+            <div class="bar-fill st" style="width: {{ site.data.character_build.character.status.st.percentage }}%"></div>
+            <span class="bar-value">{{ site.data.character_build.character.status.st.current }}/{{ site.data.character_build.character.status.st.max }}</span>
+          </div>
+        </div>
+        <div class="status-bar">
+          <svg class="status-icon" viewBox="0 0 24 24" width="16" height="16">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+          <div class="bar-container">
+            <div class="bar-fill exp" id="exp-bar"></div>
+            <span class="bar-value" id="exp-value">{{ site.data.character_build.character.status.exp.current }}/{{ site.data.character_build.character.status.exp.max }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="status-badges">
+        {% for badge in site.data.character_build.character.badges %}
+        <div class="status-badge" data-description="{{ badge.description }}">
+          <div class="badge-icon">
+            <i class="{{ badge.icon }}"></i>
+          </div>
+          <span class="badge-name">{{ badge.name }}</span>
+        </div>
+        {% endfor %}
       </div>
       <div class="social-links">
-        <a href="https://www.linkedin.com/in/hlavezzo" target="_blank" rel="noopener" class="social-link">
-          <i class="fab fa-linkedin-in"></i>
+        {% for social in site.data.character_build.character.social %}
+        <a href="{{ social.url }}" target="_blank" rel="noopener" class="social-link">
+          <i class="{{ social.icon }}"></i>
         </a>
-        <a href="https://github.com/Rynaro" target="_blank" rel="noopener" class="social-link">
-          <i class="fab fa-github"></i>
-        </a>
-        <a href="https://dev.to/rynaro" target="_blank" rel="noopener" class="social-link">
-          <i class="fab fa-dev"></i>
-        </a>
+        {% endfor %}
       </div>
     </div>
     <div class="hero-avatar">
       <div class="avatar-frame">
-        <i class="fas fa-user-circle avatar-placeholder"></i>
+        <img src="{{ "/assets/images/me.png" | relative_url }}" alt="{{ site.data.character_build.character.name }}" class="avatar-image">
         <div class="avatar-orbs">
           <div class="orb orb-1"></div>
           <div class="orb orb-2"></div>
@@ -43,65 +90,54 @@ title: About Me
       <i class="fas fa-scroll section-icon"></i>
       Character Sheet
     </h2>
-    
+
     <div class="sheet-block bio-block">
       <div class="block-header">
         <h3 class="block-title">Character Bio</h3>
-        <div class="block-badge">Origin: Brazil</div>
+        <div class="block-badge">Origin: {{ site.data.character_build.character.origin }}</div>
       </div>
       <div class="block-content">
-        <p>A Code Alchemist with more than 15 years of experience in transmuting code into digital solutions. Experienced in writing applications, building project architectures, and organizing development pipelines.</p>
-        <p>Always looking for the primitive state of knowledge by diving deep into language paradigms and exploring the fundamental principles of programming. I love understanding how things work in the way that they work, so I can apply these concepts to create elegant solutions to complex problems.</p>
+        <p>Born with an <strong class="highlight">insatiable curiosity</strong>, Henrique A. Lavezzo is a <strong class="highlight">Code Alchemist</strong> who has spent over a decade dismantling the arcane machinery of software—just to understand how it ticks. From languages like <strong>Object Pascal</strong> and <strong>Elixir</strong> to the elegant incantations of <strong>Ruby</strong>, he explores each paradigm not just to master it, but to distill its essence.</p>
+        <p>With a deep affinity for crafting <strong class="highlight">scalable and maintainable systems</strong>, Henrique doesn't just build code—he refines it. Every architecture is a puzzle, every workflow a ritual waiting to be optimized. His toolkit blends <strong>technical mastery</strong> with a pragmatic, almost philosophical drive to solve real-world problems.</p>
+        <p>But his alchemy isn't limited to code. As the creator of <strong class="highlight">Diurnata</strong>, he weaves structure into development lifecycles while safeguarding the most fragile component in any system—<strong>human focus and well-being</strong>.</p>
+        <p>When not casting code or leading teams, you'll find him tending his garden of ideas: <strong>game design experiments</strong>, <strong>smart organizational tools</strong>, <strong>AI systems</strong>, and even literal plants—from seed to bloom.</p>
+        <p><strong class="highlight">Ever curious. Ever building. Ever refining.</strong></p>
+        <p><strong class="highlight">The journey of a Code Alchemist never ends.</strong></p>
       </div>
     </div>
 
     <div class="core-attributes">
-      <div class="attribute-card">
-        <div class="attribute-icon">
-          <i class="fas fa-brain"></i>
-        </div>
-        <div class="attribute-name">Intellect</div>
-        <div class="attribute-bar">
-          <div class="attribute-fill" style="width: 85%;"></div>
-          <span class="attribute-value">85</span>
-        </div>
-        <div class="attribute-description">Problem-solving & deep technical understanding</div>
+      <div class="major-attributes">
+        {% for attribute in site.data.attributes.attributes %}
+          {% if attribute.type == "major" %}
+          <div class="attribute-card">
+            <div class="attribute-icon">
+              <i class="{{ attribute.icon }}"></i>
+            </div>
+            <div class="attribute-name">{{ attribute.name }}</div>
+            <div class="attribute-bar">
+              <div class="attribute-fill" style="width: {{ attribute.value }}%; background-color: {{ attribute.color }};"></div>
+              <span class="attribute-value">{{ attribute.value }}</span>
+            </div>
+            <div class="attribute-description">{{ attribute.description }}</div>
+          </div>
+          {% endif %}
+        {% endfor %}
       </div>
-      
-      <div class="attribute-card">
-        <div class="attribute-icon">
-          <i class="fas fa-lightbulb"></i>
+
+      <div class="minor-attributes">
+        <div class="minor-attributes-title">Minor Attributes</div>
+        <div class="minor-attributes-list">
+          {% for attribute in site.data.attributes.attributes %}
+            {% if attribute.type == "minor" %}
+            <div class="minor-attribute-item">
+              <i class="{{ attribute.icon }}"></i>
+              <span class="minor-attribute-name">{{ attribute.name }}</span>
+              <span class="minor-attribute-value">{{ attribute.value }}</span>
+            </div>
+            {% endif %}
+          {% endfor %}
         </div>
-        <div class="attribute-name">Creativity</div>
-        <div class="attribute-bar">
-          <div class="attribute-fill" style="width: 80%;"></div>
-          <span class="attribute-value">80</span>
-        </div>
-        <div class="attribute-description">Innovative solutions & elegant designs</div>
-      </div>
-      
-      <div class="attribute-card">
-        <div class="attribute-icon">
-          <i class="fas fa-users"></i>
-        </div>
-        <div class="attribute-name">Leadership</div>
-        <div class="attribute-bar">
-          <div class="attribute-fill" style="width: 82%;"></div>
-          <span class="attribute-value">82</span>
-        </div>
-        <div class="attribute-description">Team guidance & clear direction</div>
-      </div>
-      
-      <div class="attribute-card">
-        <div class="attribute-icon">
-          <i class="fas fa-clock"></i>
-        </div>
-        <div class="attribute-name">Efficiency</div>
-        <div class="attribute-bar">
-          <div class="attribute-fill" style="width: 78%;"></div>
-          <span class="attribute-value">78</span>
-        </div>
-        <div class="attribute-description">Task management & resource optimization</div>
       </div>
     </div>
 
@@ -110,113 +146,27 @@ title: About Me
         <div class="block-header">
           <h3 class="block-title">Job Skills</h3>
         </div>
-        
         <div class="skills-grid">
+          {% for category in site.data.skills.categories %}
           <div class="skill-category">
-            <h4 class="category-title">Programming Languages</h4>
+            <h4 class="category-title">{{ category.name }}</h4>
             <div class="skill-list">
-              <div class="skill-item mastery-5">
-                <div class="skill-icon" style="background-color: #CC342D;">
-                  <i class="fas fa-gem"></i>
+              {% for skill in category.skills %}
+              <div class="skill-item mastery-{{ skill.level }}">
+                <div class="skill-icon" style="background-color: {{ skill.color }};">
+                  <i class="{{ skill.icon }}"></i>
                 </div>
                 <div class="skill-info">
-                  <div class="skill-name">Ruby</div>
+                  <div class="skill-name">{{ skill.name }}</div>
                   <div class="skill-mastery">
                     <span></span><span></span><span></span><span></span><span></span>
                   </div>
                 </div>
               </div>
-              
-              <div class="skill-item mastery-4">
-                <div class="skill-icon" style="background-color: #F7DF1E;">
-                  <i class="fab fa-js"></i>
-                </div>
-                <div class="skill-info">
-                  <div class="skill-name">JavaScript</div>
-                  <div class="skill-mastery">
-                    <span></span><span></span><span></span><span></span><span></span>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="skill-item mastery-4">
-                <div class="skill-icon" style="background-color: #B07219;">
-                  <i class="fab fa-java"></i>
-                </div>
-                <div class="skill-info">
-                  <div class="skill-name">Java</div>
-                  <div class="skill-mastery">
-                    <span></span><span></span><span></span><span></span><span></span>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="skill-item mastery-3">
-                <div class="skill-icon" style="background-color: #555555;">
-                  <i class="fas fa-code"></i>
-                </div>
-                <div class="skill-info">
-                  <div class="skill-name">C</div>
-                  <div class="skill-mastery">
-                    <span></span><span></span><span></span><span></span><span></span>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="skill-item mastery-3">
-                <div class="skill-icon" style="background-color: #5881D8;">
-                  <i class="fas fa-circle-notch"></i>
-                </div>
-                <div class="skill-info">
-                  <div class="skill-name">Clojure</div>
-                  <div class="skill-mastery">
-                    <span></span><span></span><span></span><span></span><span></span>
-                  </div>
-                </div>
-              </div>
+              {% endfor %}
             </div>
           </div>
-          
-          <div class="skill-category">
-            <h4 class="category-title">Architecture & Design</h4>
-            <div class="skill-list">
-              <div class="skill-item mastery-5">
-                <div class="skill-icon architecture-icon">
-                  <i class="fas fa-sitemap"></i>
-                </div>
-                <div class="skill-info">
-                  <div class="skill-name">Clean Architecture</div>
-                  <div class="skill-mastery">
-                    <span></span><span></span><span></span><span></span><span></span>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="skill-item mastery-4">
-                <div class="skill-icon architecture-icon">
-                  <i class="fas fa-cubes"></i>
-                </div>
-                <div class="skill-info">
-                  <div class="skill-name">Domain-Driven Design</div>
-                  <div class="skill-mastery">
-                    <span></span><span></span><span></span><span></span><span></span>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="skill-item mastery-4">
-                <div class="skill-icon architecture-icon">
-                  <i class="fas fa-network-wired"></i>
-                </div>
-                <div class="skill-info">
-                  <div class="skill-name">Microservices</div>
-                  <div class="skill-mastery">
-                    <span></span><span></span><span></span><span></span><span></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          {% endfor %}
         </div>
       </div>
     </div>
@@ -226,7 +176,7 @@ title: About Me
         <h3 class="block-title">Quest History</h3>
         <div class="block-badge">Professional Adventures</div>
       </div>
-      
+
       <div class="timeline">
         {% assign current_job = site.data.jobs | where: "ended_at", "Present" | first %}
         <div class="timeline-item current-quest">
@@ -240,7 +190,7 @@ title: About Me
             <div class="quest-badge">Current</div>
           </div>
         </div>
-        
+
         {% for job in site.data.jobs offset:1 limit:5 %}
         <div class="timeline-item">
           <div class="timeline-marker">
@@ -253,7 +203,7 @@ title: About Me
           </div>
         </div>
         {% endfor %}
-        
+
         <div class="timeline-item toggle-more">
           <div class="timeline-marker">
             <i class="fas fa-chevron-down"></i>
@@ -262,7 +212,7 @@ title: About Me
             <button class="toggle-button">Show more adventures</button>
           </div>
         </div>
-        
+
         <div class="hidden-quests">
           {% for job in site.data.jobs offset:6 %}
           <div class="timeline-item hidden">
@@ -284,43 +234,19 @@ title: About Me
       <div class="block-header">
         <h3 class="block-title">Special Abilities</h3>
       </div>
-      
+
       <div class="abilities-grid">
-        <div class="ability-card">
+        {% for ability in site.data.special_abilities.abilities %}
+        <div class="ability-card {% if ability.type == 'ultimate' %}ability-ultimate{% endif %}" data-type="{{ ability.type }}">
+          <div class="ability-type-badge ability-type-{{ ability.type }}">{{ ability.type | capitalize }}</div>
           <div class="ability-icon">
-            <i class="fas fa-magic"></i>
+            <i class="{{ ability.icon }}"></i>
           </div>
-          <div class="ability-name">Code Transmutation</div>
-          <div class="ability-description">Transforms messy legacy code into clean, maintainable architectures</div>
-          <div class="ability-mana">MP Cost: 35</div>
+          <div class="ability-name">{{ ability.name }}</div>
+          <div class="ability-description">{{ ability.description }}</div>
+          <div class="ability-mana">MP Cost: {{ ability.mana_cost }}</div>
         </div>
-        
-        <div class="ability-card">
-          <div class="ability-icon">
-            <i class="fas fa-hammer"></i>
-          </div>
-          <div class="ability-name">System Forging</div>
-          <div class="ability-description">Crafts robust systems that can withstand high loads and feature changes</div>
-          <div class="ability-mana">MP Cost: 45</div>
-        </div>
-        
-        <div class="ability-card">
-          <div class="ability-icon">
-            <i class="fas fa-shield-alt"></i>
-          </div>
-          <div class="ability-name">Defensive Programming</div>
-          <div class="ability-description">Protects applications against unexpected inputs and edge cases</div>
-          <div class="ability-mana">MP Cost: 30</div>
-        </div>
-        
-        <div class="ability-card">
-          <div class="ability-icon">
-            <i class="fas fa-tachometer-alt"></i>
-          </div>
-          <div class="ability-name">Performance Boost</div>
-          <div class="ability-description">Identifies and eliminates bottlenecks to enhance system performance</div>
-          <div class="ability-mana">MP Cost: 40</div>
-        </div>
+        {% endfor %}
       </div>
     </div>
 
@@ -328,39 +254,16 @@ title: About Me
       <div class="block-header">
         <h3 class="block-title">Character Traits</h3>
       </div>
-      
       <div class="traits-grid">
+        {% for trait in site.data.traits.traits %}
         <div class="trait-card">
-          <div class="trait-icon">
-            <i class="fas fa-gamepad"></i>
+          <div class="trait-icon" data-category="{{ trait.category }}">
+            <i class="{{ trait.icon }}"></i>
           </div>
-          <div class="trait-name">Gaming Enthusiast</div>
-          <div class="trait-description">+10 to relaxation when playing RPGs, especially Final Fantasy games</div>
+          <div class="trait-name">{{ trait.name }}</div>
+          <div class="trait-description">{{ trait.description }}</div>
         </div>
-        
-        <div class="trait-card">
-          <div class="trait-icon">
-            <i class="fas fa-seedling"></i>
-          </div>
-          <div class="trait-name">Gardening</div>
-          <div class="trait-description">+15 to patience and nurturing skills through plant cultivation</div>
-        </div>
-        
-        <div class="trait-card">
-          <div class="trait-icon">
-            <i class="fas fa-code"></i>
-          </div>
-          <div class="trait-name">Game Developer</div>
-          <div class="trait-description">+20 to creativity when crafting digital worlds in spare time</div>
-        </div>
-        
-        <div class="trait-card">
-          <div class="trait-icon">
-            <i class="fas fa-language"></i>
-          </div>
-          <div class="trait-name">Polyglot</div>
-          <div class="trait-description">Knows Portuguese (native), English (fluent), learning Chinese</div>
-        </div>
+        {% endfor %}
       </div>
     </div>
   </div>
@@ -379,87 +282,5 @@ title: About Me
   </div>
 </section>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  // Animate attribute bars
-  function animateAttributeBars() {
-    const bars = document.querySelectorAll('.attribute-fill');
-    bars.forEach(bar => {
-      const width = bar.style.width;
-      bar.style.width = '0';
-      setTimeout(() => {
-        bar.style.transition = 'width 1.2s cubic-bezier(0.12, 0.89, 0.32, 1.27)';
-        bar.style.width = width;
-      }, 300);
-    });
-  }
-  
-  // Toggle hidden quests
-  const toggleButton = document.querySelector('.toggle-button');
-  const hiddenQuests = document.querySelectorAll('.timeline-item.hidden');
-  const toggleMore = document.querySelector('.toggle-more');
-  
-  if (toggleButton) {
-    toggleButton.addEventListener('click', function() {
-      hiddenQuests.forEach(quest => {
-        quest.classList.toggle('show');
-      });
-      
-      if (this.textContent === 'Show more adventures') {
-        this.textContent = 'Hide adventures';
-        toggleMore.querySelector('.timeline-marker i').classList.replace('fa-chevron-down', 'fa-chevron-up');
-      } else {
-        this.textContent = 'Show more adventures';
-        toggleMore.querySelector('.timeline-marker i').classList.replace('fa-chevron-up', 'fa-chevron-down');
-      }
-    });
-  }
-  
-  // Floating effect for ability cards
-  const abilityCards = document.querySelectorAll('.ability-card');
-  abilityCards.forEach((card, index) => {
-    card.style.animationDelay = (index * 0.2) + 's';
-  });
-  
-  // Add hover effect to timeline items
-  const timelineItems = document.querySelectorAll('.timeline-item:not(.toggle-more)');
-  timelineItems.forEach(item => {
-    item.addEventListener('mouseenter', function() {
-      this.classList.add('hovered');
-    });
-    
-    item.addEventListener('mouseleave', function() {
-      this.classList.remove('hovered');
-    });
-  });
-  
-  // Initialize animations
-  animateAttributeBars();
-  
-  // Fade-in animations with Intersection Observer
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('fade-in-visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
-  
-  document.querySelectorAll('.sheet-block, .attribute-card, .ability-card, .trait-card').forEach(el => {
-    el.classList.add('fade-in-element');
-    observer.observe(el);
-  });
-  
-  // Animate avatar orbs
-  function animateOrbs() {
-    const orbs = document.querySelectorAll('.avatar-orbs .orb');
-    orbs.forEach((orb, index) => {
-      orb.style.animation = `orbit ${8 + index * 2}s linear infinite`;
-      orb.style.animationDelay = `${index * 0.5}s`;
-    });
-  }
-  
-  animateOrbs();
-});
-</script>
+<script src="{{ "/assets/js/exp-bar.js" | relative_url }}" defer></script>
+<script src="{{ "/assets/js/about.js" | relative_url }}" defer></script>

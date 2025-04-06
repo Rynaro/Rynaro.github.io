@@ -1,0 +1,53 @@
+character:
+  name: "Henrique A. Lavezzo"
+  title: "Code Alchemist"
+  level: 15
+  job: "Director of Engineering"
+  origin: "Brazil"
+
+  status:
+    hp:
+      current: 562
+      max: 623
+      percentage: 75
+    mp:
+      current: 1940
+      max: 2156
+      percentage: 90
+    st:
+      current: 240
+      max: 400
+      percentage: 60
+    exp:
+      current: 0
+      max: 100
+      percentage: 0
+
+  badges:
+    - name: "Arcane Refactor"
+      icon: "fas fa-magic"
+      description: "Refactors legacy systems with surgical precision and mystical efficiency"
+
+    - name: "Ludic Insight"
+      icon: "fas fa-gamepad"
+      description: "Draws inspiration from game mechanics to unlock creative breakthroughs"
+
+    - name: "Botanist’s Calm"
+      icon: "fas fa-leaf"
+      description: "Regains focus and energy while nurturing complex systems—or actual plants"
+
+    - name: "Zen Architect"
+      icon: "fas fa-brain"
+      description: "Designs scalable systems with calm clarity, even amidst chaos"
+
+
+  social:
+    - platform: "LinkedIn"
+      icon: "fab fa-linkedin-in"
+      url: "https://www.linkedin.com/in/hlavezzo"
+    - platform: "GitHub"
+      icon: "fab fa-github"
+      url: "https://github.com/Rynaro"
+    - platform: "Dev.to"
+      icon: "fab fa-dev"
+      url: "https://dev.to/rynaro"

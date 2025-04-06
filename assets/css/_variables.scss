@@ -27,3 +27,52 @@ $sidebar-width: 60px;
 $content-max-width: 1200px;
 $tablet-breakpoint: 768px;
 $mobile-breakpoint: 480px;
+
+// CSS Custom Properties (CSS Variables)
+:root {
+  // Final Fantasy inspired colors
+  --ff-blue: #4499cb;
+  --ff-blue-dark: #306d9a;
+  --ff-gold: #e6a553;
+  --ff-purple: #9966cc;
+  --ff-purple-light: #b19cd9;
+  --ff-red: #e74c3c;
+  --ff-green: #2ecc71;
+
+  // D&D inspired colors
+  --dnd-parchment: #f9f3e6;
+  --dnd-brown: #8a6d3b;
+  --dnd-red: #a94442;
+  --dnd-ink: #4e342e;
+
+  // Text colors
+  --text-primary: #333;
+  --text-secondary: #666;
+  --text-light: #898989;
+
+  // Visual effects
+  --border-light: rgba(153, 102, 204, 0.2);
+  --shadow-light: 0 5px 15px rgba(153, 102, 204, 0.1);
+  --shadow-medium: 0 8px 25px rgba(153, 102, 204, 0.15);
+
+  // Rarity colors
+  --rarity-common: #7c818c;
+  --rarity-uncommon: #1eff00;
+  --rarity-rare: #0070dd;
+  --rarity-epic: #a335ee;
+  --rarity-legendary: #ff8000;
+
+  // Notebook colors
+  --parchment-light: #f8f5e6;
+  --parchment-dark: #e8e0c0;
+  --ink-color: #3a2921;
+  --scroll-shadow: 0 5px 20px rgba(58, 41, 33, 0.1);
+
+  // Letter specific colors
+  --letter-gradient-start: #635b9c;
+  --letter-gradient-end: #a55b95;
+  --letter-paper: var(--parchment-light);
+  --letter-ink: var(--dnd-ink);
+  --wax-seal: #993333;
+  --letter-shadow: 0 8px 25px rgba(58, 41, 33, 0.15);
+}

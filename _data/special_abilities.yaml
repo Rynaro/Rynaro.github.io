@@ -1,0 +1,48 @@
+abilities:
+  - name: "Code Transmutation"
+    type: "active"
+    icon: "fas fa-magic"
+    description: "Transforms messy legacy code into clean, maintainable architectures"
+    mana_cost: 35
+
+  - name: "Workflow Conjuration"
+    type: "active"
+    icon: "fas fa-hammer"
+    description: "Designs custom dev pipelines, CLI tools, and syncing systems that automate tedious tasks across devices."
+    mana_cost: 40
+
+  - name: "Resilience Ward"
+    type: "active"
+    icon: "fas fa-shield-alt"
+    description: "Implements fallback strategies and integrity checks for distributed systems, ensuring uptime even under chaos."
+    mana_cost: 30
+
+  - name: "Performance Boost"
+    type: "active"
+    icon: "fas fa-tachometer-alt"
+    description: "Identifies and eliminates bottlenecks to enhance system performance"
+    mana_cost: 40
+
+  - name: "Mental Map Sync"
+    type: "passive"
+    icon: "fas fa-brain"
+    description: "Breaks complex ideas into clear task cards, structured plans, and well-organized note systems."
+    mana_cost: 20
+
+  - name: "Focus Aura"
+    type: "passive"
+    icon: "fas fa-crosshairs"
+    description: "Channels team energy toward the right goals, reducing distraction and aligning efforts across projects."
+    mana_cost: 30
+
+  - name: "Morale Uplift"
+    type: "passive"
+    icon: "fas fa-hands-helping"
+    description: "Boosts team confidence and clarity through structured feedback, mentorship, and calm leadership in chaos."
+    mana_cost: 25
+
+  - name: "Codex Unbound"
+    type: "ultimate"
+    icon: "fas fa-book-dead"
+    description: "Unleashes the full power of accumulated wisdom, transforming overwhelming complexity into a symphony of clarity, structure, and purpose. Projects realign. Teams regain focus. The path becomes unmistakably clear."
+    mana_cost: 100

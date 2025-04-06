@@ -1,0 +1,36 @@
+<!-- Character encoding and viewport -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Primary Meta Tags -->
+<title>{% if page.title %}{{ page.title | escape }} | Henrique A. Lavezzo{% else %}{{ site.title | escape }}{% endif %}</title>
+<meta name="description" content="{% if page.description %}{{ page.description | truncate: 160 }}{% else %}{{ site.description | truncate: 160 }}{% endif %}">
+<meta name="author" content="{{ site.author }}">
+<meta name="keywords" content="engineering director, software development, ruby on rails, javascript, golang, crystal, python, rust, leadership, project management, technology consulting">
+
+<!-- Open Graph / Meta / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ site.url }}{{ page.url | replace:'index.html','' }}">
+<meta property="og:title" content="{% if page.title %}{{ page.title | escape }} | Henrique A. Lavezzo{% else %}{{ site.title | escape }}{% endif %}">
+<meta property="og:description" content="{% if page.description %}{{ page.description | truncate: 160 }}{% else %}{{ site.description | truncate: 160 }}{% endif %}">
+<meta property="og:image" content="{{ site.url }}{{'/assets/images/me.png' | relative_url }}">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="pt_BR">
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="{{ site.url }}{{ page.url | replace:'index.html','' }}">
+<meta name="twitter:title" content="{% if page.title %}{{ page.title | escape }} | Henrique A. Lavezzo{% else %}{{ site.title | escape }}{% endif %}">
+<meta name="twitter:description" content="{% if page.description %}{{ page.description | truncate: 160 }}{% else %}{{ site.description | truncate: 160 }}{% endif %}">
+<meta name="twitter:image" content="{{ site.url }}{{'/assets/images/me.jpg' | relative_url }}">
+
+<!-- Canonical link -->
+<link rel="canonical" href="{{ site.url }}{{ page.url | replace:'index.html','' }}">
+
+<!-- Theme color for browser UI -->
+<meta name="theme-color" content="#4285f4">
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" sizes="32x32" href="{{ '/assets/images/favicon-32x32.png' | relative_url }}">
+<link rel="icon" type="image/png" sizes="16x16" href="{{ '/assets/images/favicon-16x16.png' | relative_url }}">
+<link rel="apple-touch-icon" sizes="180x180" href="{{ '/assets/images/apple-touch-icon.png' | relative_url }}">

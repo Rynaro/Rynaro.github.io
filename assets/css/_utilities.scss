@@ -1,4 +1,4 @@
-I// ==========================================================================
+// ==========================================================================
 // UTILITY CLASSES
 // ==========================================================================
 
@@ -117,17 +117,17 @@ I// ==========================================================================
   .no-print {
     display: none !important;
   }
-  
+
   a {
     text-decoration: underline;
-    
+
     &::after {
       content: " (" attr(href) ") ";
       font-size: 0.9em;
       font-weight: normal;
     }
   }
-  
+
   .post-toc-wrapper,
   .post-actions,
   .post-navigation,
@@ -135,26 +135,26 @@ I// ==========================================================================
   .footer {
     display: none !important;
   }
-  
+
   .post-content .container {
     display: block;
     max-width: 100%;
   }
-  
+
   .post-text {
     font-size: 12pt;
     line-height: 1.6;
   }
-  
+
   h1, h2, h3, h4, h5, h6 {
     page-break-after: avoid;
     page-break-inside: avoid;
   }
-  
+
   img, figure, table, pre {
     page-break-inside: avoid;
   }
-  
+
   p, h2, h3 {
     orphans: 3;
     widows: 3;
@@ -209,7 +209,7 @@ I// ==========================================================================
   color: white;
   z-index: 2000;
   transition: top 0.2s ease-in-out;
-  
+
   &:focus {
     top: 0;
   }

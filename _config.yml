@@ -1,19 +1,22 @@
 # Site settings
 title: Henrique A. Lavezzo
-email: hi@hlavezzo.me
 author: Henrique A. Lavezzo
-description: A code alchemist, that loves to write novels, and code transmutation circles.
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://hlavezzo.me" # the base hostname & protocol for your site
+email: hi@hlavezzo.me
+description: >-
+  A Code Alchemist with a passion for weaving tales and inscribing transmutation circles in pure code.
+baseurl: ""
+url: "https://hlavezzo.me"
 github_username: Rynaro
-linkedin_username: hlavezzo
-devto_username: rynaro
+google_analytics: "UA-135917274-1"
 
 # Build settings
+permalink: /:year/:month/:day/:title
 markdown: kramdown
-permalink: /:year/:month/:day/:title/
+plugins:
+  - jekyll-feed
+  - jemoji
 
-# Sass settings
+  # Sass settings
 sass:
   sass_dir: _sass
   style: compressed

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer Circle -->
+  <circle cx="100" cy="100" r="90" fill="none" stroke="#E6A44A" stroke-width="4"/>
+  
+  <!-- Inner Circle -->
+  <circle cx="100" cy="100" r="70" fill="none" stroke="#E6A44A" stroke-width="2"/>
+  
+  <!-- Binary Code Ring -->
+  <g transform="translate(100, 100)">
+    <text x="0" y="-75" text-anchor="middle" fill="#E6A44A" font-family="monospace" font-size="12" transform="rotate(-30)">
+      10101010
+    </text>
+    <text x="0" y="-75" text-anchor="middle" fill="#E6A44A" font-family="monospace" font-size="12" transform="rotate(30)">
+      01010101
+    </text>
+    <text x="0" y="-75" text-anchor="middle" fill="#E6A44A" font-family="monospace" font-size="12" transform="rotate(90)">
+      11001100
+    </text>
+    <text x="0" y="-75" text-anchor="middle" fill="#E6A44A" font-family="monospace" font-size="12" transform="rotate(150)">
+      00110011
+    </text>
+    <text x="0" y="-75" text-anchor="middle" fill="#E6A44A" font-family="monospace" font-size="12" transform="rotate(210)">
+      11110000
+    </text>
+    <text x="0" y="-75" text-anchor="middle" fill="#E6A44A" font-family="monospace" font-size="12" transform="rotate(270)">
+      00001111
+    </text>
+  </g>
+  
+  <!-- Alchemical Triangle -->
+  <path d="M100,40 L160,140 L40,140 Z" fill="none" stroke="#E6A44A" stroke-width="3"/>
+  
+  <!-- Code Brackets -->
+  <path d="M70,70 L60,70 L60,130 L70,130" fill="none" stroke="#E6A44A" stroke-width="3"/>
+  <path d="M130,70 L140,70 L140,130 L130,130" fill="none" stroke="#E6A44A" stroke-width="3"/>
+  
+  <!-- Center Circle -->
+  <circle cx="100" cy="100" r="20" fill="#E6A44A" opacity="0.2"/>
+  
+  <!-- Center Symbol -->
+  <text x="100" y="110" text-anchor="middle" fill="#E6A44A" font-family="monospace" font-size="24" font-weight="bold">
+    CA
+  </text>
+  
+  <!-- Decorative Elements -->
+  <circle cx="100" cy="40" r="4" fill="#E6A44A"/>
+  <circle cx="160" cy="140" r="4" fill="#E6A44A"/>
+  <circle cx="40" cy="140" r="4" fill="#E6A44A"/>
+  
+  <!-- Glow Effect -->
+  <filter id="glow">
+    <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+    <feMerge>
+      <feMergeNode in="coloredBlur"/>
+      <feMergeNode in="SourceGraphic"/>
+    </feMerge>
+  </filter>
+  
+  <!-- Apply glow to main elements -->
+  <g filter="url(#glow)">
+    <circle cx="100" cy="100" r="90" fill="none" stroke="#E6A44A" stroke-width="4"/>
+    <path d="M100,40 L160,140 L40,140 Z" fill="none" stroke="#E6A44A" stroke-width="3"/>
+    <path d="M70,70 L60,70 L60,130 L70,130" fill="none" stroke="#E6A44A" stroke-width="3"/>
+    <path d="M130,70 L140,70 L140,130 L130,130" fill="none" stroke="#E6A44A" stroke-width="3"/>
+  </g>
+</svg> 

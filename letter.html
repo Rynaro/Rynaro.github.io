@@ -1,155 +1,169 @@
 ---
 layout: default
-title: Get in Touch
+title: Send a Letter
 ---
 
-<section class="letter-hero">
+<section class="rpg-hero letter-hero">
   <div class="container">
-    <div class="letter-hero__icon-container">
-      <i class="fas fa-envelope letter-hero__icon" aria-hidden="true"></i>
+    <div class="hero-content">
+      <h1 class="hero-title fade-in">Magical Correspondence</h1>
+      <h2 class="hero-subtitle fade-in">Send a Letter</h2>
+      <p class="hero-description">Request an audience, propose a quest, or simply exchange knowledge</p>
     </div>
-    <h1 class="letter-hero__title">Get in Touch</h1>
-    <p class="letter-hero__subtitle">Have a project idea? Want to collaborate? Just want to say hello?</p>
-  </div>
-</section>
-
-<section class="letter-main">
-  <div class="container">
-    <div class="letter-content">
-      <div class="letter-info">
-        <div class="info-card">
-          <div class="info-card__icon-container">
-            <i class="fas fa-comments" aria-hidden="true"></i>
-          </div>
-          <h2 class="info-card__title">Let's Chat</h2>
-          <p class="info-card__text">I'm open to discussing new opportunities, projects, and technologies. Feel free to reach out with any questions!</p>
-        </div>
-        
-        <div class="info-card">
-          <div class="info-card__icon-container">
-            <i class="fas fa-code-branch" aria-hidden="true"></i>
-          </div>
-          <h2 class="info-card__title">Collaborate</h2>
-          <p class="info-card__text">Interested in working together on a project? Share your ideas and let's see what we can build.</p>
-        </div>
-        
-        <div class="info-card">
-          <div class="info-card__icon-container">
-            <i class="fas fa-coffee" aria-hidden="true"></i>
-          </div>
-          <h2 class="info-card__title">Connect</h2>
-          <p class="info-card__text">Find me on social media or just drop me an email. I'd love to expand my network with like-minded individuals.</p>
-        </div>
-        
-        <div class="social-connections">
-          <h3 class="social-connections__title">Connect with me</h3>
-          <div class="social-connections__links">
-            <a href="https://github.com/Rynaro" target="_blank" rel="noopener" aria-label="GitHub Profile" class="social-link">
-              <i class="fab fa-github" aria-hidden="true"></i>
-            </a>
-            <a href="https://www.linkedin.com/in/hlavezzo" target="_blank" rel="noopener" aria-label="LinkedIn Profile" class="social-link">
-              <i class="fab fa-linkedin-in" aria-hidden="true"></i>
-            </a>
-            <a href="https://dev.to/rynaro" target="_blank" rel="noopener" aria-label="Dev.to Profile" class="social-link">
-              <i class="fab fa-dev" aria-hidden="true"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-      
-      <div class="letter-form">
-        <h2 class="letter-form__title">Send me a letter</h2>
-        <form action="https://formspree.io/f/hi@hlavezzo.me" method="POST" id="contact-form">
-          <div class="form-group">
-            <label for="name" class="form-label">Name</label>
-            <input type="text" id="name" name="name" class="form-input" required>
-          </div>
-          
-          <div class="form-group">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" id="email" name="_replyto" class="form-input" required>
-          </div>
-          
-          <div class="form-group">
-            <label for="subject" class="form-label">Subject</label>
-            <input type="text" id="subject" name="subject" class="form-input" required>
-          </div>
-          
-          <div class="form-group">
-            <label for="message" class="form-label">Message</label>
-            <textarea id="message" name="message" class="form-textarea" rows="6" required></textarea>
-          </div>
-          
-          <div class="form-group form-actions">
-            <button type="submit" class="submit-button">
-              <span class="button-text">Send Letter</span>
-              <i class="fas fa-paper-plane" aria-hidden="true"></i>
-            </button>
-          </div>
-          
-          <!-- Honeypot field to prevent spam -->
-          <input type="text" name="_gotcha" style="display: none;">
-        </form>
-        
-        <div id="success-message" class="form-message form-message--success" style="display: none;">
-          <i class="fas fa-check-circle" aria-hidden="true"></i>
-          <p>Your message has been sent successfully! I'll get back to you soon.</p>
-        </div>
-        
-        <div id="error-message" class="form-message form-message--error" style="display: none;">
-          <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
-          <p>Oops! Something went wrong. Please try again later or contact me directly via email.</p>
+    <div class="hero-letter">
+      <div class="letter-frame">
+        <i class="fas fa-envelope-open-text letter-icon"></i>
+        <div class="letter-seal"></div>
+        <div class="letter-particles">
+          <div class="letter-glyph letter-glyph-1">✧</div>
+          <div class="letter-glyph letter-glyph-2">✦</div>
+          <div class="letter-glyph letter-glyph-3">✯</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('contact-form');
-    const successMessage = document.getElementById('success-message');
-    const errorMessage = document.getElementById('error-message');
-    
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      const formData = new FormData(form);
-      const submitButton = form.querySelector('.submit-button');
-      
-      // Disable button and show loading state
-      submitButton.disabled = true;
-      submitButton.classList.add('is-loading');
-      
-      fetch(form.action, {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'Accept': 'application/json'
-        }
-      })
-      .then(response => {
-        if (response.ok) {
-          // Show success message
-          form.reset();
-          form.style.display = 'none';
-          successMessage.style.display = 'flex';
-          
-          // Scroll to success message
-          successMessage.scrollIntoView({ behavior: 'smooth' });
-        } else {
-          throw new Error('Network response was not ok');
-        }
-      })
-      .catch(error => {
-        // Show error message
-        console.error('Error:', error);
-        errorMessage.style.display = 'flex';
-        
-        // Re-enable button
-        submitButton.disabled = false;
-        submitButton.classList.remove('is-loading');
-      });
-    });
-  });
-</script>
+<section class="rpg-correspondence">
+  <div class="container">
+    <h2 class="section-title">
+      <i class="fas fa-feather-alt section-icon"></i>
+      Ways to Reach Me
+    </h2>
+
+    <div class="correspondence-grid">
+      <!-- Left column: Contact info cards -->
+      <div class="contact-info">
+        <div class="info-scroll">
+          <div class="scroll-header">
+            <div class="header-icon">
+              <i class="fas fa-comments"></i>
+            </div>
+            <h3 class="scroll-title">Let's Chat</h3>
+          </div>
+          <div class="scroll-content">
+            <p>I'm open to discussing new opportunities, projects, and technologies. Feel free to reach out with any questions!</p>
+          </div>
+        </div>
+
+        <div class="info-scroll">
+          <div class="scroll-header">
+            <div class="header-icon">
+              <i class="fas fa-code-branch"></i>
+            </div>
+            <h3 class="scroll-title">Collaborate</h3>
+          </div>
+          <div class="scroll-content">
+            <p>Interested in working together on a project? Share your ideas and let's see what we can build.</p>
+          </div>
+        </div>
+
+        <div class="info-scroll">
+          <div class="scroll-header">
+            <div class="header-icon">
+              <i class="fas fa-coffee"></i>
+            </div>
+            <h3 class="scroll-title">Connect</h3>
+          </div>
+          <div class="scroll-content">
+            <p>Find me on social media or just drop me an email. I'd love to expand my network with like-minded individuals.</p>
+          </div>
+        </div>
+
+        <div class="social-grimoire">
+          <h3 class="grimoire-title">Magical Network</h3>
+          <div class="grimoire-links">
+            {% for link in site.data.profile.social_links %}
+            <a href="{{ link.url }}" target="_blank" rel="noopener" aria-label="{{ link.label }}" class="grimoire-link">
+              <div class="grimoire-icon {{ link.icon }}">
+                <i class="{{ link.icon_class }}"></i>
+              </div>
+              <span class="grimoire-text">{{ link.text }}</span>
+            </a>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Right column: Letter form -->
+      <div class="letter-form-container">
+        <div class="magical-parchment">
+          <div class="parchment-header">
+            <div class="wax-seal">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <h3 class="parchment-title">Compose a Letter</h3>
+          </div>
+
+          <form action="https://formspree.io/f/hi@hlavezzo.me" method="POST" id="contact-form" class="magical-form">
+            <div class="form-group">
+              <label for="name" class="form-label">Your Name</label>
+              <div class="input-container">
+                <i class="fas fa-user-circle input-icon"></i>
+                <input type="text" id="name" name="name" class="form-input" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="email" class="form-label">Your Magical Address</label>
+              <div class="input-container">
+                <i class="fas fa-at input-icon"></i>
+                <input type="email" id="email" name="_replyto" class="form-input" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="subject" class="form-label">Subject of Inquiry</label>
+              <div class="input-container">
+                <i class="fas fa-scroll input-icon"></i>
+                <input type="text" id="subject" name="subject" class="form-input" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="message" class="form-label">Your Message</label>
+              <div class="input-container textarea-container">
+                <i class="fas fa-feather-alt input-icon"></i>
+                <textarea id="message" name="message" class="form-textarea" rows="6" required></textarea>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="submit-button">
+                <span class="button-text">Send Letter</span>
+                <div class="button-icon">
+                  <i class="fas fa-paper-plane"></i>
+                </div>
+              </button>
+            </div>
+
+            <!-- Honeypot field to prevent spam -->
+            <input type="text" name="_gotcha" style="display: none;">
+          </form>
+
+          <div id="success-message" class="form-message success-message" style="display: none;">
+            <div class="message-icon">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="message-content">
+              <h4 class="message-title">Letter Sent!</h4>
+              <p>Your message has been sent successfully! I'll get back to you soon.</p>
+            </div>
+          </div>
+
+          <div id="error-message" class="form-message error-message" style="display: none;">
+            <div class="message-icon">
+              <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <div class="message-content">
+              <h4 class="message-title">Magical Interference!</h4>
+              <p>Oops! Something went wrong. Please try again later or contact me directly via email.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="{{ '/assets/js/letter.js' | relative_url }}" defer></script>

@@ -11,22 +11,22 @@
   text-align: center;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
-  
+
   &--primary {
     background-color: $pastel-purple;
     color: darken($pastel-purple, 35%);
-    
+
     &:hover {
       background-color: darken($pastel-purple, 10%);
       color: $background-cream;
     }
   }
-  
+
   &--outlined {
     background-color: transparent;
     border: 2px solid $pastel-purple;
     color: darken($pastel-purple, 25%);
-    
+
     &:hover {
       background-color: $pastel-purple;
       color: $background-cream;
@@ -42,24 +42,24 @@
   padding: 1.5rem;
   margin-bottom: 1.5rem;
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  
+
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.08);
   }
-  
+
   &__title {
     margin-top: 0;
     margin-bottom: 0.75rem;
     font-size: 1.5rem;
   }
-  
+
   &__meta {
     font-size: 0.875rem;
     color: $text-light;
     margin-bottom: 1rem;
   }
-  
+
   &__content {
     margin-bottom: 0;
   }
@@ -70,7 +70,7 @@
   display: flex;
   justify-content: center;
   margin-bottom: 1.5rem;
-  
+
   .social-icon {
     display: flex;
     align-items: center;
@@ -82,26 +82,26 @@
     color: $background-cream;
     font-size: 1.25rem;
     transition: all 0.2s ease-in-out;
-    
+
     &--linkedin {
       background-color: #6E93B5;  // Pastel version of LinkedIn blue
-      
+
       &:hover {
         background-color: darken(#6E93B5, 10%);
       }
     }
-    
+
     &--github {
       background-color: #7B7B7B;  // Pastel version of GitHub black
-      
+
       &:hover {
         background-color: darken(#7B7B7B, 10%);
       }
     }
-    
+
     &--dev {
       background-color: #777;  // Pastel version of Dev.to black
-      
+
       &:hover {
         background-color: darken(#777, 10%);
       }
@@ -116,7 +116,7 @@
   margin-bottom: 2.5rem;
   font-size: 2.25rem;
   color: darken($pastel-purple, 15%);
-  
+
   &:after {
     content: '';
     position: absolute;
@@ -133,12 +133,12 @@
 .page-header {
   text-align: center;
   margin-bottom: 3rem;
-  
+
   &__title {
     font-size: 2.5rem;
     margin-bottom: 0.5rem;
   }
-  
+
   &__subtitle {
     font-size: 1.2rem;
     color: $text-medium;
@@ -152,7 +152,7 @@
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 1rem;
-  
+
   .tag {
     display: inline-block;
     padding: 0.25rem 0.75rem;
@@ -163,7 +163,7 @@
     background-color: rgba($pastel-purple, 0.2);
     color: darken($pastel-purple, 25%);
     transition: all 0.2s ease;
-    
+
     &:hover {
       background-color: rgba($pastel-purple, 0.4);
     }
@@ -175,24 +175,106 @@
   padding: 1rem;
   border-radius: 4px;
   margin-bottom: 1.5rem;
-  
+
   &--info {
     background-color: rgba($pastel-blue, 0.2);
     border-left: 4px solid $pastel-blue;
   }
-  
+
   &--success {
     background-color: rgba($pastel-mint, 0.2);
     border-left: 4px solid $pastel-mint;
   }
-  
+
   &--warning {
     background-color: rgba(#F8E3B2, 0.2);
     border-left: 4px solid #F8E3B2;
   }
-  
+
   &--error {
     background-color: rgba(#F8D0C9, 0.2);
     border-left: 4px solid #F8D0C9;
+  }
+}
+
+// Share buttons
+.share-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.share-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  color: white;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: currentColor;
+    opacity: 0.1;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover::before {
+    opacity: 0.2;
+  }
+
+  i {
+    font-size: 1.2rem;
+    z-index: 1;
+  }
+
+  // X (Twitter)
+  &.x {
+    background-color: #000000;
+    color: #ffffff;
+  }
+
+  // LinkedIn
+  &.linkedin {
+    background-color: #0077b5;
+    color: #ffffff;
+  }
+
+  // Facebook
+  &.facebook {
+    background-color: #1877f2;
+    color: #ffffff;
+  }
+
+  // Reddit
+  &.reddit {
+    background-color: #ff4500;
+    color: #ffffff;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+// Dark mode adjustments
+.dark-mode {
+  .share-button {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
   }
 }

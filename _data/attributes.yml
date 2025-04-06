@@ -1,0 +1,50 @@
+attributes:
+  # Major Attributes
+  - name: Insight
+    type: "major"
+    value: 92
+    icon: fas fa-eye
+    description: Synthesizes complexity into clarity through note-taking, system mapping, and AI symbiosis. Sees both the forest and the roots.
+
+  - name: Leadership
+    type: "major"
+    value: 90
+    icon: fas fa-users
+    description: Guides teams with clarity, calm, and vision. Balances strategy with empathy and structured feedback.
+
+  - name: Intellect
+    type: "major"
+    value: 88
+    icon: fas fa-brain
+    description: Excels at breaking down complexity and mastering systems, from codebases to infrastructure and AI workflows.
+
+  - name: Creativity
+    type: "major"
+    value: 85
+    icon: fas fa-lightbulb
+    description: Crafts elegant systems, game mechanics, and workflows that bridge function and imagination.
+
+  # Minor Attributes
+  - name: Curiosity
+    type: "minor"
+    value: 80
+    icon: fas fa-search
+    description: Driven to explore languages, mechanics, tools, and philosophies. Seeks not just how things work, but *why* they do.
+
+  - name: Efficiency
+    type: "minor"
+    value: 82
+    icon: fas fa-clock
+    description: Task management, automation, and system harmony across devices.
+
+  - name: Focus
+    type: "minor"
+    value: 77
+    icon: fas fa-bullseye
+    description: Able to maintain clarity across deep work, long projects, and layered systems — even while wrangling AI and 5 cats.
+
+  - name: Empathy
+    type: "minor"
+    value: 75
+    icon: fas fa-heart
+    description: Cares for living systems — human, plant, or feline. Supports team growth and designs with user care in mind.

@@ -2,6 +2,17 @@
 // ALCHEMIST HOME PAGE STYLES
 // ==========================================================================
 
+// Prevent scrolling on home page
+body.home {
+  overflow: auto;
+  min-height: 100vh;
+}
+
+html.home {
+  overflow: auto;
+  height: auto;
+}
+
 .alchemist-hero {
   display: flex;
   align-items: center;
@@ -10,7 +21,7 @@
   background: linear-gradient(135deg, #211C30, #312A45);
   padding: 2rem;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 
   &::before {
     content: '';
@@ -25,7 +36,7 @@
     z-index: 1;
   }
 
-    @media (max-width: 992px) {
+  @include max-width('lg') {
     flex-direction: column;
     padding: 2rem 1rem;
     min-height: auto;
@@ -33,8 +44,9 @@
     padding-bottom: 4rem;
   }
 
-  @media (max-width: 576px) {
+  @include max-width('sm') {
     padding: 2rem 1rem;
+    min-height: calc(100vh - 4rem);
   }
 }
 
@@ -48,13 +60,13 @@
   z-index: 3;
   color: $background-cream;
 
-  @media (max-width: 992px) {
+  @include max-width('lg') {
     margin: 2rem 0 0 0;
     text-align: center;
     max-width: 100%;
   }
 
-  @media (max-width: 576px) {
+  @include max-width('sm') {
     margin: 1.5rem 0 0 0;
   }
 }
@@ -66,7 +78,7 @@
   font-weight: 700;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 
-  @media (max-width: 576px) {
+  @include max-width('sm') {
     font-size: 2.5rem;
   }
 }
@@ -74,11 +86,11 @@
 .hero-subtitle {
   font-size: 2rem;
   margin-bottom: 1.5rem;
-  color: $pastel-purple;
+  color: var(--ff-gold);
   font-family: 'Nothing You Could Do', cursive;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 
-  @media (max-width: 576px) {
+  @include max-width('sm') {
     font-size: 1.5rem;
   }
 }
@@ -90,6 +102,38 @@
   color: $pastel-blue;
 }
 
+.hero-trademark {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: rgba($pastel-purple, 0.8);
+  font-family: 'Nothing You Could Do', cursive;
+  text-shadow: 0 0 10px rgba($pastel-purple, 0.3);
+  z-index: 10;
+
+  &__copyright {
+    font-size: 1.1rem;
+  }
+
+  &__year {
+    font-weight: 300;
+  }
+
+  &__name {
+    font-weight: 500;
+  }
+
+  @include max-width('sm') {
+    bottom: 1.5rem;
+    right: 1.5rem;
+    font-size: 0.8rem;
+  }
+}
+
 .hero-actions {
   margin-top: 2rem;
 
@@ -97,7 +141,7 @@
     margin-right: 1rem;
   }
 
-  @media (max-width: 576px) {
+  @include max-width('sm') {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
@@ -121,19 +165,19 @@
   align-items: center;
   justify-content: center;
 
-  @media (max-width: 992px) {
+  @include max-width('lg') {
     width: 300px;
     height: 300px;
     margin: 0 0 2rem 0;
   }
 
-  @media (max-width: 576px) {
+  @include max-width('sm') {
     width: 250px;
     height: 250px;
-    margin: 0 0 1.5rem 0;
+    margin: 4rem 0 1.5rem 0;
   }
 
-  @media (max-width: 400px) {
+  @include max-width('xs') {
     width: 220px;
     height: 220px;
   }
@@ -171,12 +215,12 @@
   box-shadow: 0 0 25px rgba(205, 180, 219, 0.7);
   z-index: 2;
 
-  @media (max-width: 576px) {
+  @include max-width('sm') {
     width: 70px;
     height: 70px;
   }
 
-  @media (max-width: 400px) {
+  @include max-width('xs') {
     width: 60px;
     height: 60px;
   }
@@ -212,51 +256,51 @@
     --ring-color: rgba(248, 209, 224, 0.4);
   }
 
-  @media (max-width: 992px) {
+  @include max-width('lg') {
     &--1 {
       width: 120px;
       height: 120px;
     }
-    
+
     &--2 {
       width: 200px;
       height: 200px;
     }
-    
+
     &--3 {
       width: 280px;
       height: 280px;
     }
   }
-  
-  @media (max-width: 576px) {
+
+  @include max-width('sm') {
     &--1 {
       width: 100px;
       height: 100px;
     }
-    
+
     &--2 {
       width: 170px;
       height: 170px;
     }
-    
+
     &--3 {
       width: 230px;
       height: 230px;
     }
   }
-  
-  @media (max-width: 400px) {
+
+  @include max-width('xs') {
     &--1 {
       width: 90px;
       height: 90px;
     }
-    
+
     &--2 {
       width: 150px;
       height: 150px;
     }
-    
+
     &--3 {
       width: 210px;
       height: 210px;
@@ -280,57 +324,98 @@
   height: 50px;
   color: var(--symbol-color, $pastel-purple);
   filter: drop-shadow(0 0 8px var(--symbol-color, rgba(205, 180, 219, 0.5)));
-  transition: filter 0.5s ease;
+  transition: all 0.3s ease;
   z-index: 3;
   transform: translateY(0);
-  
+  animation: float 3s ease-in-out infinite;
+
   svg {
     width: 100%;
     height: 100%;
   }
-  
-  .alchemy-symbol.hovered, .rune.hovered {
-  filter: brightness(1.5) drop-shadow(0 0 12px var(--symbol-color));
-  transform: translateY(-10px) scale(1.3) !important;
-  z-index: 5;
-  transition: transform 0.3s ease, filter 0.3s ease;
-}
-  
+
   &.activated {
     filter: brightness(2) drop-shadow(0 0 20px var(--symbol-color));
     animation: pulse-activate 1s ease-out;
   }
 
-  @media (max-width: 576px) {
+  @include max-width('sm') {
     width: 35px;
     height: 35px;
   }
-  
-  @media (max-width: 400px) {
+
+  @include max-width('xs') {
     width: 30px;
     height: 30px;
   }
 }
 
-@keyframes float {
-  0% {
+.alchemy-symbol.hovered, .rune.hovered {
+  filter: brightness(1.5) drop-shadow(0 0 12px var(--symbol-color));
+  transform: translateY(-10px) scale(1.3);
+  z-index: 5;
+  animation: none;
+
+  &::after {
+    content: attr(title);
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(33, 28, 48, 0.85);
+    color: var(--symbol-color);
+    padding: 0.35rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    opacity: 1;
+    visibility: visible;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    animation: nameAppear 0.3s ease-out;
+    border: 1px solid rgba(205, 180, 219, 0.2);
+    text-shadow: 0 0 8px var(--symbol-color);
+  }
+}
+
+@keyframes float-glyphs {
+  0%, 100% {
     transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-8px);
   }
   50% {
-    transform: translateY(-10px);
+    transform: translateY(-12px);
+  }
+  75% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes pulse-activate {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.8;
   }
   100% {
-    transform: translateY(0);
+    transform: scale(1);
+    opacity: 1;
   }
+}
 
-  @media (max-width: 576px) {
-    width: 35px;
-    height: 35px;
+@keyframes nameAppear {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(5px);
   }
-  
-  @media (max-width: 400px) {
-    width: 30px;
-    height: 30px;
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
   }
 }
 
@@ -381,49 +466,23 @@
   right: 15%;
 }
 
-@keyframes float {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
-
-@keyframes pulse-activate {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.5);
-    opacity: 0.8;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
 /* Ripple effect on click */
 .alchemy-ripple {
   position: absolute;
   border-radius: 50%;
   transform: scale(0);
-  background: radial-gradient(circle, 
-    rgba(255, 255, 255, 0.8) 0%, 
-    rgba(255, 255, 255, 0.2) 50%, 
+  background: radial-gradient(circle,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
     transparent 70%);
-  width: 150px;
-  height: 150px;
-  margin-left: -75px;
-  margin-top: -75px;
+  width: 200px;
+  height: 200px;
+  margin-left: -100px;
+  margin-top: -100px;
   opacity: 0;
   animation: ripple 1s ease-out forwards;
   pointer-events: none;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
 @keyframes ripple {
@@ -431,8 +490,11 @@
     transform: scale(0);
     opacity: 1;
   }
+  50% {
+    opacity: 0.8;
+  }
   100% {
-    transform: scale(1);
+    transform: scale(1.5);
     opacity: 0;
   }
 }
@@ -442,11 +504,11 @@
   .alchemy-circle__ring {
     animation: none;
   }
-  
+
   .alchemy-circle {
     transition: none;
   }
-  
+
   .alchemy-symbol, .rune {
     transition: none;
     animation: none;
@@ -455,4 +517,27 @@
 
 html, body {
   overflow-x: hidden;
+}
+
+/* Particle effects */
+.alchemy-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: particle-fade 1s ease-out forwards;
+  box-shadow: 0 0 10px white;
+}
+
+@keyframes particle-fade {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--tx, 0), var(--ty, 0)) scale(0);
+    opacity: 0;
+  }
 }
