@@ -81,28 +81,34 @@ layout: default
             <div class="share-actions">
               <div class="share-label">Share this scroll:</div>
               <div class="share-buttons">
-                {% for option in site.data.sharing_options %}
-                  {% if option.enabled %}
-                    {% capture share_url %}{{ option.url }}{% endcapture %}
-                    {% assign first_param = true %}
-                    {% for param in option.params %}
-                      {% capture param_value %}{{ param[1] }}{% endcapture %}
-                      {% if first_param %}
-                        {% capture share_url %}{{ share_url }}?{{ param[0] }}={{ param_value | uri_escape }}{% endcapture %}
-                        {% assign first_param = false %}
-                      {% else %}
-                        {% capture share_url %}{{ share_url }}&{{ param[0] }}={{ param_value | uri_escape }}{% endcapture %}
-                      {% endif %}
-                    {% endfor %}
-                    <a href="{{ share_url }}"
-                       target="_blank"
-                       rel="noopener"
-                       class="share-button {{ option.name | downcase }}"
-                       aria-label="Share on {{ option.name }}">
-                      <i class="{{ option.icon }}"></i>
-                    </a>
-                  {% endif %}
-                {% endfor %}
+                <a href="https://twitter.com/intent/tweet?text={{ page.title | uri_escape }}&url={{ site.url }}{{ page.url | uri_escape }}"
+                   target="_blank"
+                   rel="noopener"
+                   class="share-button x"
+                   aria-label="Share on X">
+                  <i class="fab fa-x-twitter"></i>
+                </a>
+                <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ site.url }}{{ page.url | uri_escape }}&title={{ page.title | uri_escape }}"
+                   target="_blank"
+                   rel="noopener"
+                   class="share-button linkedin"
+                   aria-label="Share on LinkedIn">
+                  <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ site.url }}{{ page.url | uri_escape }}"
+                   target="_blank"
+                   rel="noopener"
+                   class="share-button facebook"
+                   aria-label="Share on Facebook">
+                  <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://www.reddit.com/submit?url={{ site.url }}{{ page.url | uri_escape }}&title={{ page.title | uri_escape }}"
+                   target="_blank"
+                   rel="noopener"
+                   class="share-button reddit"
+                   aria-label="Share on Reddit">
+                  <i class="fab fa-reddit-alien"></i>
+                </a>
               </div>
             </div>
           </div>
