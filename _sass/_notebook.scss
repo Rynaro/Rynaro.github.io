@@ -247,120 +247,111 @@
 /* Scroll Navigation */
 .scroll-navigation {
   display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
 
-  @include max-width('md') {
-    gap: 1rem;
+  @include max-width('sm') {
+    flex-direction: column;
+    align-items: stretch;
   }
 }
 
 .scroll-categories {
-  .categories-title {
-    font-size: 1.1rem;
-    color: var(--dnd-brown);
-    margin-bottom: 0.75rem;
-    font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
 
-    @include max-width('md') {
-      font-size: 1rem;
-      margin-bottom: 0.5rem;
-    }
+  @include max-width('sm') {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.categories-title {
+  font-size: 1rem;
+  color: var(--dnd-brown);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.category-tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.category-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: .75rem 1.25rem;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  i {
+    font-size: 0.9rem;
+    color: var(--ff-purple);
   }
 
-  .category-tabs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-
-    @include max-width('sm') {
-      gap: 0.5rem;
-    }
-
-    @include max-width('xs') {
-      width: 100%;
-      overflow-x: auto;
-      padding-bottom: 0.5rem;
-      justify-content: flex-start;
-    }
+  &:hover {
+    background: rgba(153, 102, 204, 0.1);
+    color: var(--ff-purple);
+    transform: translateY(-2px);
   }
 
-  .category-tab {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    background: rgba(255, 255, 255, 0.5);
-    border: 1px solid var(--border-light);
-    border-radius: 20px;
-    color: var(--dnd-brown);
-    font-weight: 500;
-    transition: all 0.3s ease;
-    cursor: pointer;
-
-    @include max-width('sm') {
-      padding: 0.4rem 0.8rem;
-      font-size: 0.9rem;
-    }
-
-    @include max-width('xs') {
-      white-space: nowrap;
-    }
+  &.active {
+    background: var(--ff-purple);
+    color: white;
+    border-color: var(--ff-purple);
+    box-shadow: 0 2px 8px rgba(153, 102, 204, 0.2);
 
     i {
-      font-size: 1rem;
-      color: var(--ff-purple);
-
-      @include max-width('sm') {
-        font-size: 0.9rem;
-      }
-    }
-
-    span {
-      @include max-width('xs') {
-        display: none;
-      }
-    }
-
-    &:hover {
-      background: rgba(255, 255, 255, 0.8);
-      transform: translateY(-1px);
-    }
-
-    &.active {
-      background: var(--ff-purple);
       color: white;
-      border-color: var(--ff-purple);
-
-      i {
-        color: white;
-      }
     }
   }
 }
 
 .scroll-search {
   position: relative;
-  width: 100%;
-  max-width: 400px;
+  flex: 0 1 300px;
 
-  @include max-width('md') {
-    max-width: 100%;
+  @include max-width('sm') {
+    flex: 1;
+    width: 100%;
   }
 
   input {
     width: 100%;
     padding: 0.75rem 1rem 0.75rem 2.5rem;
     border: 1px solid var(--border-light);
-    border-radius: 20px;
+    border-radius: 40px;
     background: rgba(255, 255, 255, 0.5);
+    color: var(--text-primary);
+    font-size: 0.9rem;
     transition: all 0.3s ease;
+
+    &::placeholder {
+      color: var(--text-light);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: var(--ff-purple);
+      box-shadow: 0 0 0 2px rgba(153, 102, 204, 0.1);
+      background: white;
+    }
 
     @include max-width('sm') {
       width: 80%;
-      padding: 0.6rem 0.8rem 0.6rem 2.2rem;
-      font-size: 0.9rem;
     }
   }
 
@@ -370,12 +361,7 @@
     top: 50%;
     transform: translateY(-50%);
     color: var(--ff-purple);
-    font-size: 1rem;
-
-    @include max-width('sm') {
-      left: 0.8rem;
-      font-size: 0.9rem;
-    }
+    font-size: 0.9rem;
   }
 }
 

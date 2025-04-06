@@ -1348,8 +1348,14 @@ strong {
     -webkit-backdrop-filter: blur(4px);
 
     @include max-width('sm') {
-      font-size: 0.75rem;
-      padding: 0.4rem 0.8rem;
+      white-space: normal;
+      max-width: 250px;
+      text-align: center;
+      word-wrap: break-word;
+      font-size: 0.7rem;
+      padding: 0.3rem 0.8rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
     }
   }
 }
