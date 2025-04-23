@@ -26,6 +26,13 @@
   language: "shell"
   description: A command-line utility to streamline Jekyll development using Docker.
 
+- title: drun
+  url: https://github.com/Rynaro/drun
+  type: "tool"
+  rarity: "epic"
+  language: "shell"
+  description: Quick Rails setup with docker composer.
+
 - title: FipExtractor
   url: https://github.com/Rynaro/FipExtractor
   type: "library"
