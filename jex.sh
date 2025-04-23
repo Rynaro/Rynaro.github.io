@@ -158,7 +158,7 @@ function container_serve() {
   echo -e "${BLUE}Starting Jekyll server with live reload...${NC}"
   USER_ID=$(id -u)
   GROUP_ID=$(id -g)
-  run_cmd "docker run --rm -v $(pwd):/site -u $USER_ID:$GROUP_ID -p ${JEKYLL_PORT:-4000}:4000 $DOCKER_IMAGE"
+  run_cmd "docker run --rm -v $(pwd):/site -e BUNDLE_PATH=/site/vendor/bundle -u $USER_ID:$GROUP_ID -p ${JEKYLL_PORT:-4000}:4000 $DOCKER_IMAGE"
 }
 
 # Run Jekyll server in background
