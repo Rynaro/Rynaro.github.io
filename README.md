@@ -28,10 +28,6 @@ Welcome to my digital playground! This is where I showcase my work, share my tho
 
 While this is my personal website, I'm always open to suggestions and improvements! Feel free to open an issue or submit a pull request.
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ---
 
 Made with ❤️ and powered by [JEX](https://github.com/Rynaro/jex)
