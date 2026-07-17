@@ -21,3 +21,9 @@ node_modules
 
 # Per-machine Claude Code permissions/MCP toggles -- not project state.
 .claude/settings.local.json
+
+# Visual-regression baselines (scripts/visual-baseline.mjs) -- ~38 MB of PNGs,
+# regenerated on demand, never source. Capture from a clean tree, apply the
+# refactor, then diff:
+#   git stash && npm run test:visual:update && git stash pop && npm run test:visual
+scripts/baselines/
