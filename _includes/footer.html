@@ -2,5 +2,27 @@
   <div class="container">
     <p class="footer__copyright">&copy; {{ site.time | date: '%Y' }} {{ site.title }}</p>
     <p class="footer__signature">Henrique A. Lavezzo</p>
+    <nav class="footer__links" aria-label="More pages">
+      <a href="{{ '/start-here/' | relative_url }}" class="footer__link">Start Here</a>
+      <a href="{{ '/now/' | relative_url }}" class="footer__link">Now</a>
+      <a href="{{ '/uses/' | relative_url }}" class="footer__link">Uses</a>
+      <a href="{{ '/log/' | relative_url }}" class="footer__link">Alchemist's Log</a>
+      <a href="{{ '/codex/' | relative_url }}" class="footer__link">The Codex</a>
+      <!-- AC-040 (Story 4.11): discoverable from every page, not just the sitemap. -->
+      <a href="{{ '/accessibility/' | relative_url }}" class="footer__link">Accessibility</a>
+    </nav>
+    <a href="{{ '/feed.xml' | relative_url }}" class="footer__feed-link" aria-label="Subscribe to the Scrolls via RSS">
+      <i class="fas fa-scroll" aria-hidden="true"></i> Subscribe to the Scrolls
+    </a>
+    <!-- Story 3.2, AC-020: sitewide disclaimer, every page, global footer (Xe Iaso
+         pattern). Deliberately keeps the AC's own required wording verbatim below
+         rather than paraphrasing it away, so the reputational-insurance promise stays
+         unambiguous. -->
+    <p class="footer__disclaimer">
+      Standard alchemist's disclosure: opinions are my own, not my employer's — brewed
+      off the clock, on my own cauldron, held to no roadmap but mine. See
+      <a href="{{ '/codex/' | relative_url }}" class="footer__link">The Alchemist's Codex</a>
+      for the full terms of transmutation.
+    </p>
   </div>
 </footer>

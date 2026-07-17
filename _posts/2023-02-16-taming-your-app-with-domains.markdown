@@ -4,9 +4,10 @@ author: Henrique A. Lavezzo
 title:  "Taming your App with Domains"
 resume: "Applying concepts, not influence"
 date:   2023-02-16 22:15:12 -0300
-comments: true
 categories: tech
 tags: domains code-architecture
+featured: true
+type: scroll
 ---
 
 This is not “yet another article about Domain Driven-Design”. The internet is well served with those articles, some of them are good and others not so much. It's your duty to consume them and absorb all the good stuff from each one. And just to conclude the logic, we got all classics from books the "Blue Book” by Eric Evans, the “Red Book” by Vaughn Vernon, and others.

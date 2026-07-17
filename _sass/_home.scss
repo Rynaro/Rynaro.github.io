@@ -234,28 +234,42 @@ html.home {
   left: 50%;
   border-radius: 50%;
   border: 1.5px solid var(--ring-color, rgba(205, 180, 219, 0.3));
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) rotate(var(--settle-angle, 0deg));
 
+  // AC-031 / Story 4.5: was `rotate 40s|60s|80s linear infinite` -- ALL THREE
+  // conditions of WCAG 2.2.2 held (auto-starts on load, presented in
+  // parallel with the hero name/subtitle/tagline/social row, and a single
+  // rotation already took 40-80s, let alone forever). research-ui-a11y.md
+  // §3.2's cheapest reconciliation: make the loop finite and it "does not
+  // apply at all, and you owe no pause button" -- a circle that inscribes,
+  // flares, and settles is also better theater than an idle spin. Each ring
+  // settles at a fixed --settle-angle (held via `forwards`) instead of
+  // spinning forever; re-triggers naturally on every full page load, since
+  // this is a static multi-page site with no client-side routing to
+  // re-trigger against.
   &--1 {
     width: 180px;
 
     height: 180px;
-    animation: rotate 40s linear infinite;
+    animation: circle-settle 2.2s cubic-bezier(0.22, 1, 0.36, 1) 1 forwards;
     --ring-color: rgba(205, 180, 219, 0.4);
+    --settle-angle: 35deg;
   }
 
   &--2 {
     width: 300px;
     height: 300px;
-    animation: rotate 60s linear infinite reverse;
+    animation: circle-settle 3.1s cubic-bezier(0.22, 1, 0.36, 1) 0.3s 1 forwards;
     --ring-color: rgba(185, 201, 230, 0.4);
+    --settle-angle: -50deg;
   }
 
   &--3 {
     width: 420px;
     height: 420px;
-    animation: rotate 80s linear infinite;
+    animation: circle-settle 3.8s cubic-bezier(0.22, 1, 0.36, 1) 0.6s 1 forwards;
     --ring-color: rgba(248, 209, 224, 0.4);
+    --settle-angle: 70deg;
   }
 
   @include max-width('lg') {
@@ -310,12 +324,23 @@ html.home {
   }
 }
 
-@keyframes rotate {
-  from {
-    transform: translate(-50%, -50%) rotate(0deg);
+// AC-031 / Story 4.5: "inscribes, flares, and settles" -- opacity fades in,
+// a brief scale overshoot around 65% reads as the "flare," and the ring
+// comes to rest at its own --settle-angle (held via `forwards`). Every ring
+// finishes well inside 5s (see the per-ring delay+duration above); 2.2.2
+// "does not apply at all" once the loop is finite, per research-ui-a11y.md.
+@keyframes circle-settle {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(calc(var(--settle-angle, 0deg) - 90deg)) scale(0.7);
   }
-  to {
-    transform: translate(-50%, -50%) rotate(360deg);
+  65% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(calc(var(--settle-angle, 0deg) * 0.85)) scale(1.06);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(var(--settle-angle, 0deg)) scale(1);
   }
 }
 
@@ -329,7 +354,12 @@ html.home {
   transition: all 0.3s ease;
   z-index: 3;
   transform: translateY(0);
-  animation: float 3s ease-in-out infinite;
+  // AC-031: was `float 3s ease-in-out infinite` (undefined locally -- see
+  // _sass/_base.scss's drift-settle note for the cross-partial `float`
+  // keyframe collision this rode on). assets/js/home.js overrides this
+  // inline on load with a finite (2-iteration) version of `float-glyphs`;
+  // this is the no-JS / pre-hydration fallback, now finite too.
+  animation: float-glyphs 1.8s ease-in-out 2;
 
   svg {
     width: 100%;

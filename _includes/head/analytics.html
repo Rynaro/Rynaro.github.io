@@ -1,10 +1,7 @@
-{% if jekyll.environment == "production" %}
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', '{{ site.google_analytics }}');
-  </script>
+{% comment %}
+  Plausible Analytics: cookie-free, no consent banner, ~1KB script.
+  Replaces the retired Universal Analytics property (D8) -- see rebrand-p1 spec AC-009.
+{% endcomment %}
+{% if jekyll.environment == "production" and site.plausible_domain %}
+  <script defer data-domain="{{ site.plausible_domain }}" src="https://plausible.io/js/script.js"></script>
 {% endif %}

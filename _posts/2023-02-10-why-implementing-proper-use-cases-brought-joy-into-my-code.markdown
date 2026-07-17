@@ -4,9 +4,11 @@ author: Henrique A. Lavezzo
 title:  "Why implementing proper use cases brought joy into my code"
 resume: "Why implementing proper use cases brought joy into my code"
 date:   2023-02-10 22:15:12 -0300
-comments: true
 categories: tech
 tags: ruby use-cases ddd motivation
+type: scroll
+redirect_from:
+  - /2023/02/10/why-implementing-proper-use-cases-brought-joy-into-my-code-copy
 ---
 
 Coding sometimes isn't about only inverting binary trees, implementing a super duper array reorder algorithm. We need to handle business cases, and not all cases are well-defined, a bunch of iterations are required with business experts, customers, and other coding folks. And those iterations sooner or later could create a web of written classes that needs to work together for a big purpose, but when you zoom out they seem not to make sense, and your code joy could get dusty.

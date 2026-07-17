@@ -113,7 +113,10 @@
   position: relative;
   z-index: 2;
   filter: drop-shadow(0 0 10px rgba(230, 165, 83, 0.5));
-  animation: glow 3s infinite alternate;
+  // AC-031: was `3s infinite alternate` -- auto-visible on load, in parallel
+  // with the search bar / category tabs / scroll grid. 2 iterations (2.2s
+  // each, one full pulse) then holds -- 4.4s total.
+  animation: glow 2.2s ease-in-out 2 alternate forwards;
 
   @include max-width('md') {
     font-size: 4rem;
@@ -183,14 +186,11 @@
   right: 20%;
 }
 
-@keyframes float {
-  0% {
-    transform: translate(0, 0) rotate(0deg);
-  }
-  100% {
-    transform: translate(0, -10px) rotate(10deg);
-  }
-}
+// AC-031 / Story 4.5: this partial's own `@keyframes float` used to collide
+// with identically-named keyframes in _letter.scss and _laboratory.scss
+// (global namespace; _letter.scss's import order made ITS definition win
+// site-wide, silently). Consolidated into the shared, finite `drift-settle`
+// keyframe in _base.scss (assets/js/notebook.js now references it directly).
 
 /* Scrolls Section */
 .rpg-scrolls {
@@ -241,7 +241,7 @@
 
 .section-icon {
   margin-right: 1rem;
-  color: var(--ff-purple);
+  color: var(--ff-purple-ink);
 }
 
 /* Scroll Navigation */
@@ -299,19 +299,19 @@
 
   i {
     font-size: 0.9rem;
-    color: var(--ff-purple);
+    color: var(--ff-purple-ink);
   }
 
   &:hover {
     background: rgba(153, 102, 204, 0.1);
-    color: var(--ff-purple);
+    color: var(--ff-purple-ink);
     transform: translateY(-2px);
   }
 
   &.active {
     background: var(--ff-purple);
     color: white;
-    border-color: var(--ff-purple);
+    border-color: var(--ff-purple-ink);
     box-shadow: 0 2px 8px rgba(153, 102, 204, 0.2);
 
     i {
@@ -345,7 +345,7 @@
 
     &:focus {
       outline: none;
-      border-color: var(--ff-purple);
+      border-color: var(--ff-purple-ink);
       box-shadow: 0 0 0 2px rgba(153, 102, 204, 0.1);
       background: white;
     }
@@ -360,7 +360,7 @@
     left: 1rem;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--ff-purple);
+    color: var(--ff-purple-ink);
     font-size: 0.9rem;
   }
 }
@@ -498,7 +498,8 @@
 .scroll-rarity.legendary {
   background: linear-gradient(to bottom, var(--rarity-legendary), rgba(255, 128, 0, 0.3) 80%);
   box-shadow: 0 0 15px rgba(255, 128, 0, 0.3);
-  animation: legendaryGlow 1.5s infinite alternate;
+  // AC-031: was `1.5s infinite alternate` -- 3 iterations then holds (4.5s).
+  animation: legendaryGlow 1.5s ease-in-out 3 alternate forwards;
 }
 
 @keyframes legendaryGlow {
@@ -542,7 +543,7 @@
   font-size: 0.85rem;
   padding: 0.25rem 0.75rem;
   background: rgba(153, 102, 204, 0.1);
-  color: var(--ff-purple);
+  color: var(--ff-purple-ink);
   border-radius: 20px;
   font-weight: 500;
 }
@@ -635,13 +636,13 @@
 }
 
 .scroll-tag:hover {
-  color: var(--ff-purple);
+  color: var(--ff-purple-ink);
 }
 
 .scroll-link {
   display: inline-flex;
   align-items: center;
-  color: var(--ff-purple);
+  color: var(--ff-purple-ink);
   font-weight: 500;
   font-size: 0.95rem;
   transition: all 0.3s ease;

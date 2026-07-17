@@ -1,0 +1,290 @@
+{
+  "schema": "ramza/plan-state.v1",
+  "plan": "rebrand",
+  "created_at": "2026-07-16T14:39:47Z",
+  "tier": "lite",
+  "phase": "DONE",
+  "phases_done": [
+    "RS",
+    "S",
+    "P",
+    "E",
+    "C",
+    "T",
+    "A",
+    "DONE"
+  ],
+  "rightsize": {
+    "score": 7,
+    "computed_tier": "full",
+    "inputs": {
+      "files_est": 20,
+      "new_dep": true,
+      "public_api": true,
+      "migration": true,
+      "security": false,
+      "novel": true,
+      "stakes": "med"
+    },
+    "override": {
+      "tier": "lite",
+      "reason": "Computed full (score 7): multi-surface rebrand, new plugins, taxonomy+analytics migration, novel persona-as-moat synthesis, reputational stakes. Overridden to lite for the phase machine because full's binding prerequisite — an independent critic (maker!=checker, ramza-gate critic) — is structurally unavailable in this solo planning session, and the mission explicitly defers independent critique and the ESL propose/specify hop to the orchestrator. Plan is authored to full content depth (Rejected Alternatives + Risks included) and self-consistency is still run; only the independent-critic layer is deferred downstream.",
+      "at": "2026-07-16T14:39:47Z"
+    }
+  },
+  "refine_cycles": 0,
+  "skips": [],
+  "gates": [
+    {
+      "rubric": "complexity",
+      "total": 9,
+      "dims": {
+        "scope": 3,
+        "ambiguity": 2,
+        "dependencies": 2,
+        "risk": 2
+      },
+      "verdict": "extended",
+      "at": "2026-07-16T14:40:16Z"
+    },
+    {
+      "rubric": "explore",
+      "total": 65.5,
+      "dims": {
+        "alignment": 5,
+        "correctness": 8,
+        "maintainability": 7,
+        "performance": 6,
+        "simplicity": 8,
+        "risk": 8,
+        "innovation": 3
+      },
+      "verdict": "weak",
+      "at": "2026-07-16T14:42:31Z",
+      "label": "A-defect-first-stabilize"
+    },
+    {
+      "rubric": "explore",
+      "total": 72.5,
+      "dims": {
+        "alignment": 8,
+        "correctness": 8,
+        "maintainability": 7,
+        "performance": 7,
+        "simplicity": 6,
+        "risk": 6,
+        "innovation": 7
+      },
+      "verdict": "solid",
+      "at": "2026-07-16T14:42:31Z",
+      "label": "B-exemplar-mapped-surfaces"
+    },
+    {
+      "rubric": "explore",
+      "total": 65,
+      "dims": {
+        "alignment": 8,
+        "correctness": 7,
+        "maintainability": 6,
+        "performance": 5,
+        "simplicity": 5,
+        "risk": 5,
+        "innovation": 9
+      },
+      "verdict": "weak",
+      "at": "2026-07-16T14:42:31Z",
+      "label": "C-persona-system-first"
+    },
+    {
+      "rubric": "explore",
+      "total": 87.5,
+      "dims": {
+        "alignment": 10,
+        "correctness": 9,
+        "maintainability": 9,
+        "performance": 8,
+        "simplicity": 7,
+        "risk": 8,
+        "innovation": 8
+      },
+      "verdict": "elite",
+      "at": "2026-07-16T14:42:31Z",
+      "label": "D-spine-then-phased-surfaces"
+    },
+    {
+      "rubric": "confidence",
+      "total": 83.5,
+      "dims": {
+        "pattern_match": 80,
+        "requirement_clarity": 90,
+        "decomposition_stability": 86,
+        "constraint_compliance": 78
+      },
+      "verdict": "VALIDATE",
+      "at": "2026-07-16T14:51:54Z"
+    },
+    {
+      "rubric": "complexity",
+      "total": 11,
+      "dims": {
+        "scope": 3,
+        "ambiguity": 2,
+        "dependencies": 3,
+        "risk": 3
+      },
+      "verdict": "human_loop",
+      "at": "2026-07-16T16:24:55Z"
+    },
+    {
+      "rubric": "explore",
+      "total": 59.5,
+      "dims": {
+        "alignment": 4,
+        "correctness": 8,
+        "maintainability": 7,
+        "performance": 7,
+        "simplicity": 6,
+        "risk": 5,
+        "innovation": 3
+      },
+      "verdict": "weak",
+      "at": "2026-07-16T16:25:06Z",
+      "label": "E1-palette-rewrite-perceptual"
+    },
+    {
+      "rubric": "explore",
+      "total": 86.5,
+      "dims": {
+        "alignment": 10,
+        "correctness": 9,
+        "maintainability": 8,
+        "performance": 8,
+        "simplicity": 8,
+        "risk": 8,
+        "innovation": 7
+      },
+      "verdict": "elite",
+      "at": "2026-07-16T16:25:06Z",
+      "label": "E2-ink-ornament-split-boundary"
+    },
+    {
+      "rubric": "explore",
+      "total": 70.5,
+      "dims": {
+        "alignment": 6,
+        "correctness": 8,
+        "maintainability": 9,
+        "performance": 7,
+        "simplicity": 7,
+        "risk": 6,
+        "innovation": 5
+      },
+      "verdict": "solid",
+      "at": "2026-07-16T16:25:06Z",
+      "label": "E3-compliance-by-CI"
+    },
+    {
+      "rubric": "explore",
+      "total": 59,
+      "dims": {
+        "alignment": 7,
+        "correctness": 6,
+        "maintainability": 5,
+        "performance": 6,
+        "simplicity": 4,
+        "risk": 5,
+        "innovation": 8
+      },
+      "verdict": "weak",
+      "at": "2026-07-16T16:25:06Z",
+      "label": "E4-dark-surface-pivot"
+    },
+    {
+      "rubric": "explore",
+      "total": 87.5,
+      "dims": {
+        "alignment": 10,
+        "correctness": 9,
+        "maintainability": 9,
+        "performance": 8,
+        "simplicity": 7,
+        "risk": 8,
+        "innovation": 8
+      },
+      "verdict": "elite",
+      "at": "2026-07-16T16:25:06Z",
+      "label": "E5-synthesis-fence-the-gimmick"
+    },
+    {
+      "rubric": "confidence",
+      "total": 84.25,
+      "dims": {
+        "pattern_match": 85,
+        "requirement_clarity": 88,
+        "decomposition_stability": 84,
+        "constraint_compliance": 80
+      },
+      "verdict": "VALIDATE",
+      "at": "2026-07-16T16:32:31Z"
+    },
+    {
+      "rubric": "refine",
+      "cycle": 1,
+      "total": 3.2,
+      "min": 2,
+      "dims": {
+        "clarity": 4,
+        "completeness": 3,
+        "actionability": 3,
+        "efficiency": 4,
+        "testability": 2
+      },
+      "verdict": "fail",
+      "at": "2026-07-16T16:44:35Z",
+      "label": "independent-critique-v0.2"
+    }
+  ],
+  "amendments": [
+    {
+      "prev": "1e56eeb7d2015e338dfc46a0d484f75144a707cf24a0855239e705c0dd8bf0d1",
+      "new": "7495bb01986563d5a6b78647bad83fe2c913eb0383f6e6eacf208a915d2d7c4c",
+      "reason": "v0.2 amendment: +24 ACs (AC-023..AC-046) for Phase 4 (Layout/UI/UX/A11y, per owner req R2) and Phase 5 (the Opal Transmutation Circle, optional/owner-gated, per FORGE v0.2 BOUNDED-ADOPT @ conf 90), plus Ruling 2's TOC/reduced-motion/no-JS-dark-mode stories folded into Phases 2/3. +5 defects (D15-D19). Byte ceiling resolved (keep 150 KiB). Research conflict reconciled as DECISION-A.",
+      "at": "2026-07-16T16:32:42Z"
+    }
+  ],
+  "declared_scope": [
+    "_config.yml",
+    "_data/*",
+    "_layouts/*",
+    "_includes/*",
+    "_posts/*",
+    "_sass/*",
+    "assets/images/*",
+    "assets/js/*",
+    "_opal/*",
+    ".github/workflows/*",
+    "index.html",
+    "about.html",
+    "notebook.html",
+    "laboratory.html",
+    "letter.html",
+    "404.html",
+    "now.*",
+    "uses.*",
+    "start-here.*",
+    "accessibility.*",
+    "Gemfile",
+    "Gemfile.lock",
+    "package.json",
+    ".pa11yci",
+    "robots.txt"
+  ],
+  "criteria_sha256": "7495bb01986563d5a6b78647bad83fe2c913eb0383f6e6eacf208a915d2d7c4c",
+  "critic": {
+    "author": "ramza-author:job-ac6f42e7:v0.2",
+    "checker": "ramza-critic:opus-4.8:rebrand-plan-v0.2-critique",
+    "at": "2026-07-16T16:44:35Z"
+  },
+  "scope_declared_at": "2026-07-16T16:32:42Z",
+  "criteria_frozen_at": "2026-07-16T14:51:54Z"
+}

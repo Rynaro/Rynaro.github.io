@@ -69,7 +69,7 @@ layout: default
   <div class="hero-content">
     <h1 class="hero-title fade-in">Henrique A. Lavezzo</h1>
     <h2 class="hero-subtitle fade-in">Code Alchemist</h2>
-    <p class="hero-description fade-in">Code is my craft, clarity my catalyst. I shape the chaos into scalable magic.</p>
+    <p class="hero-description fade-in">{{ site.data.identity.tagline }}</p>
 
     <div class="hero-trademark fade-in">
       <span class="hero-trademark__copyright">&copy;</span>
@@ -90,5 +90,56 @@ layout: default
     </div>
   </div>
 </div>
+
+<!-- Reader-facing content below the hero (Story 2.1, AC-012). The homepage was a
+     hero-only landing (FINDING-008); this surfaces recent scrolls plus a curated
+     "best of" set via the `featured: true` front-matter flag, Larson's /featured
+     pattern, rather than hardcoding a post list. -->
+<section class="rpg-scrolls home-scrolls">
+  <div class="container">
+    <h2 class="section-title">
+      <i class="fas fa-scroll section-icon"></i>
+      Recent Scrolls
+    </h2>
+
+    <div class="scrolls-collection">
+      {% for post in site.posts limit: 3 %}
+        {% include notebook/scroll-item.html post=post index=forloop.index %}
+      {% endfor %}
+    </div>
+
+    <p class="text-center mt-3">
+      <a href="{{ '/notebook/' | relative_url }}" class="scroll-link">
+        <span>Browse the full Notebook</span>
+        <i class="fas fa-arrow-right"></i>
+      </a>
+    </p>
+  </div>
+</section>
+
+{% assign featured_posts = site.posts | where: "featured", true %}
+{% if featured_posts.size > 0 %}
+<section class="rpg-scrolls home-scrolls home-scrolls--featured">
+  <div class="container">
+    <h2 class="section-title">
+      <i class="fas fa-award section-icon"></i>
+      Favorites from the Grimoire
+    </h2>
+
+    <div class="scrolls-collection">
+      {% for post in featured_posts %}
+        {% include notebook/scroll-item.html post=post index=forloop.index %}
+      {% endfor %}
+    </div>
+
+    <p class="text-center mt-3">
+      <a href="{{ '/start-here/' | relative_url }}" class="scroll-link">
+        <span>Not sure where to start? Try the Grimoire's Best Pages</span>
+        <i class="fas fa-arrow-right"></i>
+      </a>
+    </p>
+  </div>
+</section>
+{% endif %}
 
 <script src="{{ "/assets/js/home.js" | relative_url }}" defer></script>

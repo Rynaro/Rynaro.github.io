@@ -3,12 +3,17 @@ document.addEventListener('DOMContentLoaded', function() {
   const successMessage = document.getElementById('success-message');
   const errorMessage = document.getElementById('error-message');
 
-  // Animate letter glyphs
+  // Animate letter glyphs (AC-024: no script-created animated node under reduced motion;
+  // AC-031: finite drift-settle, not an infinite loop -- see _sass/_base.scss for the
+  // keyframe and the collision it replaced. Delay is capped (not index * 0.7 unbounded)
+  // so total run time (delay + duration) stays <= 5s regardless of glyph count.)
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const letterGlyphs = document.querySelectorAll('.letter-glyph');
   letterGlyphs.forEach((glyph, index) => {
-    const delay = index * 0.7;
-    const duration = 3 + Math.random() * 2;
-    glyph.style.animation = `float ${duration}s ease-in-out ${delay}s infinite alternate`;
+    if (prefersReducedMotion) return;
+    const delay = Math.min(index * 0.15, 1.2);
+    const duration = 1.8 + Math.random() * 1;
+    glyph.style.animation = `drift-settle ${duration}s ease-out ${delay}s 1 forwards`;
   });
 
   // Add magical flourishes to form inputs

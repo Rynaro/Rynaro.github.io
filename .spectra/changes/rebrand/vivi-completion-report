@@ -1,0 +1,45 @@
+{
+  "envelope_version": "1.0",
+  "from": {
+    "eidolon": "vivi"
+  },
+  "to": {
+    "eidolon": "kupo"
+  },
+  "performative": "INFORM",
+  "objective": "Phase 0 (Identity Spine and Canon) implemented for AC-001/002/003. Maker (vivi) hands off to checker (kupo) for verification; maker does not self-verify or transition the change.",
+  "context_delta": {
+    "acceptance_targeted": [
+      "AC-001",
+      "AC-002",
+      "AC-003"
+    ],
+    "build_verified": "JEKYLL_ENV=production jekyll build exits 0, no missing-layout/include errors",
+    "deferred_findings": [
+      "_config.yml site.description not repointed (not a named AC-001 consumer; feed.xml subtitle and future SEO-tag default still show the old tagline -- flag for Phase 1 SEO story)",
+      "pt_BR removal (AC-056) and keyword AC-057 CI check are Phase 1, not touched here",
+      "hero subtitle two-line wrap is CSS-graceful today with no Phase 4 layout work needed"
+    ],
+    "files_changed": [
+      "_data/identity.yml (new)",
+      "_data/jobs.yaml",
+      "index.html",
+      "about.html",
+      "_includes/head/meta.html",
+      "CONVENTIONS.md (new)",
+      "_config.yml"
+    ],
+    "out_of_scope_not_touched": [
+      "Phases 1-5",
+      "post front-matter retyping (Phase 3 Story 3.1/3.3)",
+      "badges/rendering for type and assay (Phase 3 AC-017/018)"
+    ],
+    "phase": "0 - Identity Spine and Canon",
+    "stories_completed": [
+      "0.1",
+      "0.2",
+      "0.3",
+      "0.4"
+    ]
+  }
+}

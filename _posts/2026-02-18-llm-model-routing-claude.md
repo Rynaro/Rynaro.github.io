@@ -4,12 +4,12 @@ author: Henrique A. Lavezzo
 title:  "LLM Model Routing - Claude"
 resume: "A bit reasoning around model routing"
 date:   2026-02-18 20:41:45 -0300
-comments: false
 categories: llm
-tags: braindump llm claude ai-models budget 
+tags: braindump llm claude ai-models budget
+featured: true
+type: transmutation
+assay: tested
 ---
-
-# Optimal model routing between Claude tiers for AI coding workflows
 
 **The single most impactful decision in AI-assisted coding isn't which model you use — it's knowing when to switch.** With Opus 4.6's price dropping 67% to $5/$25 per million tokens (from $15/$75 in earlier generations), the economics of model routing have fundamentally shifted. The Opus-to-Sonnet cost gap shrank from 5× to just 1.67×, making intelligent routing more about matching cognitive depth to task complexity than pure cost arbitrage. This report synthesizes benchmark data, community experience, tool documentation, and cost analysis into an actionable methodology for routing between Claude Opus, Sonnet, and Haiku during coding sessions — including multi-agent orchestration scenarios.
 

@@ -1,0 +1,50 @@
+---
+layout: default
+title: Notebook — AI/LLM
+permalink: /notebook/llm/
+---
+
+<section class="rpg-hero notebook-hero">
+  <div class="container">
+    <div class="hero-content">
+      <h1 class="hero-title fade-in">Notebook</h1>
+      <h2 class="hero-subtitle fade-in">AI/LLM Archives</h2>
+      <p class="hero-description">Scrolls on conducting AI familiars — the Symbiotic Technomancer's field notes</p>
+    </div>
+  </div>
+</section>
+
+<section class="rpg-scrolls">
+  <div class="container">
+    <h2 class="section-title">
+      <i class="fas fa-robot section-icon"></i>
+      AI/LLM Archives
+    </h2>
+
+    <div class="scroll-navigation">
+      {% include notebook/category-tabs.html active="llm" %}
+
+      <div class="scroll-search">
+        <input type="text" id="scroll-search" placeholder="Search scrolls..." aria-label="Search scrolls">
+        <i class="fas fa-search"></i>
+      </div>
+    </div>
+
+    <div class="scrolls-collection">
+      {% for post in site.categories.llm %}
+        {% include notebook/scroll-item.html post=post index=forloop.index %}
+      {% endfor %}
+    </div>
+
+    <div class="empty-archive" style="display: none;">
+      <div class="empty-archive-icon">
+        <i class="fas fa-book"></i>
+      </div>
+      <h3 class="empty-archive-title">No Scrolls Found</h3>
+      <p class="empty-archive-text">The archives contain no scrolls matching your search criteria.</p>
+      <button class="reset-search-button">Reset Search</button>
+    </div>
+  </div>
+</section>
+
+<script src="{{ '/assets/js/notebook.js' | relative_url }}" defer></script>

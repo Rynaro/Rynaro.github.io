@@ -99,6 +99,62 @@
     font-family: 'Nothing You Could Do', cursive;
     font-size: 1.5rem;
     margin-top: 0.5rem;
-    color: darken($pastel-purple, 15%);
+    color: $pastel-purple-ink;
+  }
+
+  &__links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-top: 0.75rem;
+  }
+
+  &__link {
+    font-size: 0.875rem;
+    color: $text-medium;
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      color: $pastel-purple-ink;
+      text-decoration: underline;
+    }
+  }
+
+  &__feed-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+    color: $text-medium;
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      color: $pastel-purple-ink;
+      text-decoration: underline;
+    }
+  }
+
+  // Sitewide disclaimer (Story 3.2, AC-020) -- deliberately understated, matching the
+  // rest of the footer's small print rather than calling attention to itself.
+  &__disclaimer {
+    max-width: 480px;
+    margin: 1rem auto 0;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: $text-light;
+
+    a {
+      color: $text-light;
+      text-decoration: underline;
+
+      &:hover,
+      &:focus-visible {
+        color: $pastel-purple-ink;
+      }
+    }
   }
 }

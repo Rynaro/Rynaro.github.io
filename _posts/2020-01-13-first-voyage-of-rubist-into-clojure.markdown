@@ -4,9 +4,9 @@ author: Henrique A. Lavezzo
 title:  "First voyage of Rubist into Clojure"
 resume: "First voyage, and we'll keep go on"
 date:   2020-01-13 22:15:12 -0300
-comments: true
 categories: tech
 tags: clojure ruby functional motivation
+type: scroll
 ---
 
 Few days ago, I've decided to learn something new. But, not a new framework in a known language, in my safety zone. I wanted something, a new flame to expurge the ashes of daily issues that were consuming my motivation one month per time.

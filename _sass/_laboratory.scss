@@ -84,7 +84,10 @@
 .emblem-icon {
   font-size: 6rem;
   color: rgba(255, 255, 255, 0.8);
-  animation: pulse 3s ease-in-out infinite alternate;
+  // AC-031: was `3s infinite alternate` -- auto-visible on load, in parallel
+  // with the search bar / filter tabs / project grid. 2 iterations (2.2s
+  // each, one full pulse) then holds -- 4.4s total.
+  animation: pulse 2.2s ease-in-out 2 alternate forwards;
 
   @include max-width('md') {
     font-size: 4rem;
@@ -142,14 +145,12 @@
   right: 25%;
 }
 
-@keyframes float {
-  0% {
-    transform: translate(0, 0);
-  }
-  100% {
-    transform: translate(0, -10px);
-  }
-}
+// AC-031 / Story 4.5: this partial's own `@keyframes float` used to collide
+// with identically-named (but not identical) keyframes in _letter.scss and
+// _notebook.scss (global namespace; _letter.scss's import order made ITS
+// definition -- which includes a `rotate()` this one never had -- win
+// site-wide, silently). Consolidated into the shared, finite `drift-settle`
+// keyframe in _base.scss (assets/js/laboratory.js now references it directly).
 
 /* RPG Inventory Section */
 .rpg-inventory {
@@ -200,7 +201,7 @@
 
 .section-icon {
   margin-right: 1rem;
-  color: var(--ff-purple);
+  color: var(--ff-purple-ink);
 }
 
 /* Inventory Controls */
@@ -294,7 +295,7 @@
   &.active {
     background: var(--ff-purple);
     color: white;
-    border-color: var(--ff-purple);
+    border-color: var(--ff-purple-ink);
     box-shadow: 0 3px 8px rgba(153, 102, 204, 0.3);
 
     i {
@@ -328,7 +329,7 @@
     &:focus {
       outline: none;
       background: rgba(255, 255, 255, 0.8);
-      border-color: var(--ff-purple);
+      border-color: var(--ff-purple-ink);
       box-shadow: 0 0 0 3px rgba(153, 102, 204, 0.2);
     }
 
@@ -433,7 +434,7 @@
     height: 36px;
     border-radius: 50%;
     background-color: rgba(153, 102, 204, 0.1);
-    color: var(--ff-purple);
+    color: var(--ff-purple-ink);
     transition: all 0.3s ease;
     margin-left: 0.5rem;
   }
@@ -502,7 +503,7 @@
   .item-link {
     display: inline-flex;
     align-items: center;
-    color: var(--ff-purple);
+    color: var(--ff-purple-ink);
     font-weight: 500;
     font-size: 0.95rem;
     transition: all 0.3s ease;
@@ -526,7 +527,7 @@
     font-size: 0.8rem;
     padding: 0.25rem 0.75rem;
     background: rgba(153, 102, 204, 0.1);
-    color: var(--ff-purple);
+    color: var(--ff-purple-ink);
     border-radius: 20px;
     font-weight: 500;
   }
@@ -582,7 +583,10 @@
 .item-rarity-indicator.legendary {
   background: linear-gradient(to bottom, var(--rarity-legendary), rgba(255, 128, 0, 0.4));
   box-shadow: 0 0 15px rgba(255, 128, 0, 0.3);
-  animation: legendaryGlow 1.5s infinite alternate;
+  // AC-031: was `1.5s infinite alternate` -- every legendary card on the
+  // grid glowed forever in parallel with the rest of the page. 3 iterations
+  // ("flashier," matching the tier) then holds -- 4.5s total.
+  animation: legendaryGlow 1.5s ease-in-out 3 alternate forwards;
 }
 
 @keyframes legendaryGlow {
@@ -592,10 +596,42 @@
 
 .item-header {
   padding: 1.25rem 1.25rem 0.75rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.item-header-top {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  border-bottom: 1px solid var(--border-light);
+}
+
+// AC-030 / D20 (Story 4.4a): the visible tier word -- 1.4.1 forbids conveying
+// rarity by chip colour alone. Ink text on parchment always reads regardless
+// of tier; the tier colour is a redundant 1px accent border only (never the
+// text or the fill), so it stays exempt from the contrast obligation
+// (Story 4.1 doctrine: reinforcement, not the information channel).
+.item-rarity-label {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 10px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--dnd-brown);
+  background: var(--dnd-parchment);
+  border: 1px solid var(--rarity-common);
+
+  &--rare { border-color: var(--rarity-rare); }
+  &--epic { border-color: var(--rarity-epic); }
+  &--legendary { border-color: var(--rarity-legendary); }
+  &--uncommon { border-color: var(--rarity-common); } // AC-030 note: --rarity-uncommon (#1eff00, 1.26:1) is
+  // dead code (no .uncommon rule exists; laboratory.js's rarity switch already
+  // falls through unknown tiers to "common" -- see report). Not rescued here;
+  // the label still renders the literal word "Uncommon" correctly from data,
+  // it just borrows the common accent color rather than reviving the
+  // unreachable token.
 }
 
 /* Empty State */

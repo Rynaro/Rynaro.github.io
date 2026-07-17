@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
   const expBar = document.getElementById('exp-bar');
   const expValue = document.getElementById('exp-value');
+  const expContainer = document.getElementById('exp-bar-container');
   const levelBadge = document.querySelector('.level-badge');
 
   // Get current date
@@ -35,6 +36,18 @@ document.addEventListener('DOMContentLoaded', function() {
   expBar.style.width = `${progressPercentage}%`;
   expValue.textContent = `${formatNumber(currentXP)}/${formatNumber(maxXP)}`;
 
+  // AC-029: role="progressbar" -- keep aria-valuenow/max and aria-valuetext
+  // in sync with the JS-computed values (the Liquid-rendered attributes are
+  // 0/100 placeholders; this is the real, live progress).
+  updateExpAria(currentXP, maxXP);
+
+  function updateExpAria(current, max) {
+    if (!expContainer) return;
+    expContainer.setAttribute('aria-valuemax', max);
+    expContainer.setAttribute('aria-valuenow', current);
+    expContainer.setAttribute('aria-valuetext', `${current} of ${max} experience points`);
+  }
+
   // Check for level up
   if (yearProgress === 1) {
     levelUp();
@@ -55,6 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const newMaxXP = newLevel * 150;
       expValue.textContent = `0/${formatNumber(newMaxXP)}`;
       expBar.style.width = '0%';
+      updateExpAria(0, newMaxXP);
     }, 1000);
   }
 });

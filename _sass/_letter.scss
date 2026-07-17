@@ -92,11 +92,13 @@
 
 .letter-icon {
   font-size: 5rem;
-  color: var(--ff-purple);
+  color: var(--ff-purple-ink);
   position: relative;
   z-index: 2;
   filter: drop-shadow(0 0 10px rgba(153, 102, 204, 0.5));
-  animation: letterGlow 3s infinite alternate;
+  // AC-031: was `3s infinite alternate` -- auto-visible on load, in parallel
+  // with the contact form. 2 iterations (2.2s each) then holds -- 4.4s total.
+  animation: letterGlow 2.2s ease-in-out 2 alternate forwards;
 }
 
 @keyframes letterGlow {
@@ -165,7 +167,7 @@
 
 .letter-glyph {
   position: absolute;
-  color: var(--ff-purple);
+  color: var(--ff-purple-ink);
   font-size: 1.5rem;
   opacity: 0.6;
   filter: drop-shadow(0 0 5px rgba(153, 102, 204, 0.5));
@@ -186,14 +188,12 @@
   left: 30%;
 }
 
-@keyframes float {
-  0% {
-    transform: translate(0, 0) rotate(0deg);
-  }
-  100% {
-    transform: translate(0, -10px) rotate(10deg);
-  }
-}
+// AC-031 / Story 4.5: this partial's own `@keyframes float` used to collide
+// with identically-named (but not identical) keyframes in _notebook.scss and
+// _laboratory.scss -- CSS keyframes are global, so the last `@import`ed
+// definition (this one, since _letter.scss loads after both) silently won
+// site-wide. Consolidated into the shared, finite `drift-settle` keyframe in
+// _base.scss (assets/js/letter.js now references it directly).
 
 /* Correspondence Section */
 .rpg-correspondence {
@@ -243,7 +243,7 @@
 
 .section-icon {
   margin-right: 0.75rem;
-  color: var(--ff-purple);
+  color: var(--ff-purple-ink);
 }
 
 /* Correspondence Grid */
@@ -525,7 +525,7 @@
 }
 
 .input-container.input-focused {
-  border-color: var(--ff-purple);
+  border-color: var(--ff-purple-ink);
   box-shadow: 0 0 0 3px rgba(153, 102, 204, 0.2);
   background: rgba(255, 255, 255, 0.8);
 }
@@ -535,7 +535,7 @@
   left: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--ff-purple);
+  color: var(--ff-purple-ink);
   font-size: 1rem;
   opacity: 0.7;
 
@@ -684,6 +684,15 @@
   color: transparent;
 }
 
+// AC-031: the loading spinner is user-triggered (form submit), not an
+// auto-starting animation, so 2.2.2's "starts automatically" condition never
+// applies to it -- unlike every other `infinite` fix in this phase, it does
+// not need to become finite. It still needs the literal `infinite` moved
+// behind a motion-ok gate (this is the one deliberately-infinite exception,
+// not an oversight), and per no-motion-first (Tatiana Mac /
+// research-ui-a11y.md §3.3), the BASELINE is a finite, motion-free
+// substitute -- a brief opacity pulse -- rather than a spinning ring with the
+// spin subtracted out under `reduce`.
 .submit-button.is-loading::after {
   content: '';
   position: absolute;
@@ -692,10 +701,19 @@
   border-radius: 50%;
   border: 2px solid rgba(255, 255, 255, 0.3);
   border-top-color: white;
-  animation: spinner 0.8s linear infinite;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  animation: spinner-pulse 0.8s ease-in-out 3 alternate;
+
+  @include motion-ok {
+    animation: spinner 0.8s linear infinite;
+  }
+}
+
+@keyframes spinner-pulse {
+  from { opacity: 0.4; }
+  to { opacity: 1; }
 }
 
 @keyframes spinner {
@@ -738,12 +756,12 @@
 
 .success-message .message-icon {
   background: rgba(46, 204, 113, 0.1);
-  color: var(--ff-green);
+  color: var(--ff-green-ink);
 }
 
 .error-message .message-icon {
   background: rgba(231, 76, 60, 0.1);
-  color: var(--ff-red);
+  color: var(--ff-red-ink);
 }
 
 .message-content {

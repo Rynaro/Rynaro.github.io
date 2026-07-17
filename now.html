@@ -1,0 +1,69 @@
+---
+layout: default
+title: Now
+permalink: /now/
+resume: "What the Code Alchemist is brewing right now"
+last_updated: 2026-07-16
+---
+
+<!--
+  /now -- "The Alchemist's Current Brew" (Story 2.3, AC-014). Derek Sivers' /now pattern:
+  what you'd tell a friend you hadn't seen in a year. `last_updated` (front matter above)
+  is a living value -- update it whenever this page's content changes; that date is what
+  AC-014 checks for.
+
+  Seed content below is grounded only in what the site already establishes elsewhere
+  (character_build.yml's job title, traits.yml's hobbies, the LLM post's subject matter)
+  rather than invented specifics. The owner should personalize this on the next real update.
+-->
+<section class="rpg-hero">
+  <div class="container">
+    <div class="hero-content">
+      <h1 class="hero-title fade-in">The Alchemist's Current Brew</h1>
+      <h2 class="hero-subtitle fade-in">/now</h2>
+      <p class="hero-description">What I'd tell you over coffee if we hadn't talked in a year</p>
+      <p class="now-last-updated">
+        <i class="fas fa-clock" aria-hidden="true"></i>
+        Last updated: <time datetime="{{ page.last_updated }}">{{ page.last_updated | date: "%B %-d, %Y" }}</time>
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="rpg-scrolls">
+  <div class="container">
+    <h2 class="section-title">
+      <i class="fas fa-flask section-icon"></i>
+      What's Bubbling
+    </h2>
+
+    <div class="now-content">
+      <p>
+        Still {{ site.data.character_build.character.job }} by trade — shipping systems,
+        keeping teams unstuck, and trying not to let the character sheet's HP bar dip too low
+        ({{ site.data.character_build.character.status.hp.current }}/{{ site.data.character_build.character.status.hp.max }},
+        for anyone keeping score).
+      </p>
+      <p>
+        Lately most of the interesting work is at the seam between "write the code myself" and
+        "conduct an AI familiar while it writes the code" — routing between Claude, GPT, and
+        local models depending on how much the task actually needs, instead of reaching for the
+        biggest hammer by default. If that sounds interesting, the
+        <a href="{{ '/notebook/llm/' | relative_url }}">AI/LLM notebook</a> is where that
+        thinking gets written down properly; <a href="{{ '/uses/' | relative_url }}">/uses</a>
+        has the toolchain itself.
+      </p>
+      <p>
+        Off the clock: still tending a small home ecosystem of 5 cats and 2 fish (a
+        surprisingly effective focus-testing environment), still chipping away at Chinese the
+        same stubborn way I picked up English — through the games, not the textbook — and
+        still treating gardening as the one debugging loop that doesn't have a stack trace.
+      </p>
+      <p class="now-disclaimer">
+        <em>(This is a <a href="https://sive.rs/nowff" target="_blank" rel="noopener">now page</a> —
+        it's supposed to go stale and then get updated, not stay accurate forever. If it's been
+        a while since {{ page.last_updated | date: "%B %Y" }}, assume some of this has drifted.)</em>
+      </p>
+    </div>
+  </div>
+</section>

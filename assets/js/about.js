@@ -105,9 +105,18 @@ function initFadeInAnimations() {
  * Animate the avatar orbs with orbital motion
  */
 function animateOrbs() {
+  // AC-024: no script-created animated node under a reduced-motion preference.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return;
+  }
+
+  // AC-031: finite (one orbit, then rest at the home position), not an
+  // infinite loop -- the avatar orbs auto-start on load in parallel with the
+  // hero name/level/status bars. delay(<=1s) + duration(<=3.2s) stays <= 5s.
   const orbs = document.querySelectorAll('.avatar-orbs .orb');
   orbs.forEach((orb, index) => {
-    orb.style.animation = `orbit ${8 + index * 2}s linear infinite`;
+    orb.style.animation = `orbit ${2.4 + index * 0.4}s ease-out 1`;
     orb.style.animationDelay = `${index * 0.5}s`;
+    orb.style.animationFillMode = 'forwards';
   });
 }

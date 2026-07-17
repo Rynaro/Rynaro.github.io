@@ -1,0 +1,81 @@
+---
+layout: default
+title: Uses
+permalink: /uses/
+resume: "The Code Alchemist's reagents, familiars, and daily-driver kit"
+---
+
+<!--
+  /uses -- "The Alchemist's Reagents & Familiars" (Story 2.3, AC-015). Wes Bos's /uses
+  convention: editor/terminal/hardware/config, and -- per research-personal-site.md --
+  "a natural, hype-free home for your actual AI toolchain." The AI familiars list below is
+  sourced directly from _data/traits.yml's "Symbiotic Technomancer" trait (the one place
+  the toolchain is already canonical); languages from _data/skills.yml. Specific
+  hardware/editor picks are seed content -- the owner should confirm/adjust on review.
+-->
+<section class="rpg-hero">
+  <div class="container">
+    <div class="hero-content">
+      <h1 class="hero-title fade-in">The Alchemist's Reagents &amp; Familiars</h1>
+      <h2 class="hero-subtitle fade-in">/uses</h2>
+      <p class="hero-description">The toolchain, hype-free — hardware, editor, and the AI familiars actually in the loop</p>
+    </div>
+  </div>
+</section>
+
+<section class="rpg-scrolls">
+  <div class="container">
+    <h2 class="section-title">
+      <i class="fas fa-toolbox section-icon"></i>
+      Daily-Driver Kit
+    </h2>
+
+    <div class="uses-grid">
+      <div class="uses-category">
+        <h3><i class="fas fa-desktop" aria-hidden="true"></i> Hardware</h3>
+        <ul>
+          <li>A laptop that runs Ruby, Elixir, and a terminal emulator without complaint (the alchemy doesn't need much more than that)</li>
+          <li>A second monitor, mostly for keeping the docs open next to the code that ignores them</li>
+        </ul>
+      </div>
+
+      <div class="uses-category">
+        <h3><i class="fas fa-keyboard" aria-hidden="true"></i> Editor &amp; Terminal</h3>
+        <ul>
+          <li>Whichever editor survives the week — the honest answer changes more often than this page does (don't make me commit to just one)</li>
+          <li>A terminal multiplexer, tab completion turned all the way up, and a prompt that tells me which git branch I'm about to regret</li>
+        </ul>
+      </div>
+
+      <div class="uses-category">
+        <h3><i class="fas fa-code" aria-hidden="true"></i> Languages &amp; Craft</h3>
+        <ul>
+          {% for category in site.data.skills.categories %}
+            {% for skill in category.skills %}
+              <li><i class="{{ skill.icon }}" aria-hidden="true"></i> {{ skill.name }}</li>
+            {% endfor %}
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="uses-category uses-category--familiars">
+        <h3><i class="fas fa-robot" aria-hidden="true"></i> AI Familiars</h3>
+        <p class="uses-familiars-intro">
+          {% assign technomancer = site.data.traits.traits | where: "name", "Symbiotic Technomancer" | first %}
+          {{ technomancer.description }}
+        </p>
+        <ul>
+          <li><strong>Claude</strong> — the default familiar for anything that needs to read a lot of code before touching it</li>
+          <li><strong>GPT</strong> — the second opinion, especially when a plan needs stress-testing</li>
+          <li><strong>Perplexity</strong> — research and citation-chasing, before anything gets written down</li>
+          <li><strong>Local models</strong> — the offline, no-telemetry option for the things that don't leave the machine</li>
+        </ul>
+        <p class="uses-familiars-note">
+          No hype here — just the routing logic. The reasoning behind picking one familiar over
+          another lives in the <a href="{{ '/notebook/llm/' | relative_url }}">AI/LLM notebook</a>,
+          starting with <a href="{{ site.posts.first.url | relative_url }}">{{ site.posts.first.title }}</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

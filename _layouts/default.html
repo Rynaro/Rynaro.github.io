@@ -5,12 +5,10 @@
   {% include head/fonts.html %}
   {% include head/styles.html %}
   {% include head/analytics.html %}
+  {% feed_meta %}
 
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <!-- Favicon -->
-  <link rel="icon" href="{{ "/assets/images/bottle.png" | relative_url }}">
+  <!-- Favicon (Font Awesome is loaded once, from head/fonts.html) -->
+  <link rel="icon" href="{{ "/assets/images/favicon.png" | relative_url }}">
 </head>
 <body {% if page.url == "/" %}class="home"{% endif %}>
 <!-- Horizontal Sigil Navigation -->
@@ -57,9 +55,11 @@
     {{ content }}
   </main>
 
-  {% unless page.url == "/" %}
+  <!-- Story 3.2, AC-020: the footer (and its sitewide disclaimer) must render on
+       EVERY page, including the homepage -- previously excluded here, which meant
+       the homepage carried no disclaimer, no Start Here/Now/Uses navigation, and no
+       feed link at all. -->
   {% include footer.html %}
-  {% endunless %}
 
   <!-- Custom scripts -->
   <script src="{{ "/assets/js/main.js" | relative_url }}" defer></script>

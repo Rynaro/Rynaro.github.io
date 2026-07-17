@@ -1,0 +1,7 @@
+# Canonical compound identity line (AC-001 / ESL change `rebrand`, Phase 0, Story 0.1).
+# Single source of truth: consumed verbatim by the homepage hero (index.html),
+# the About lead (about.html), and the meta description (_includes/head/meta.html).
+# Owner-chosen line (owner-decisions.md #1) -- do not paraphrase or duplicate elsewhere.
+tagline: >-
+  An engineering lead who never stopped shipping — a Code Alchemist transmuting
+  chaos into scalable systems, now conducting AI familiars in the open.

@@ -1,0 +1,12 @@
+# _config.ci.yml -- AC-039 (Story 4.10b) CI-only override.
+#
+# Merged on top of _config.yml via `bundle exec jekyll build --config
+# _config.yml,_config.ci.yml` for the pa11y-ci job ONLY. Jekyll 4.x removed
+# the `--url` CLI flag (`invalid option: --url` as of 4.4.1) -- a merged
+# config file is the supported way to override `url:` without touching the
+# real _config.yml, which must keep the production domain (jekyll-feed's
+# <link>, jekyll-sitemap's <loc>, canonical URLs, ... all read site.url).
+#
+# Without this override, sitemap.xml would bake in `https://hlavezzo.me/...`
+# and pa11y-ci would crawl the LIVE production site instead of this build.
+url: "http://localhost:4000"

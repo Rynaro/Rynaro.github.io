@@ -11,45 +11,82 @@ title: About Me
         <img src="{{ "/assets/images/code-alchemist.svg" | relative_url }}" alt="Code Alchemist Symbol" class="code-alchemist-symbol">
         <h2 class="hero-subtitle">{{ site.data.character_build.character.title }}</h2>
       </div>
+      <p class="hero-description fade-in">{{ site.data.identity.tagline }}</p>
       <div class="hero-level">
         <div class="level-badge">LVL {{ site.data.character_build.character.level }}</div>
         <div class="level-job">{{ site.data.character_build.character.job }}</div>
       </div>
+      <!-- AC-028 / AC-029 / Story 4.3: HP/MP/ST are measurements within a
+           defined range (role="meter", APG's own distinction -- "meter should
+           not be used to indicate progress"); EXP is progress toward level-up
+           (role="progressbar"). Built as styled divs, not native <meter>
+           (cross-browser styling swamp -- research-ui-a11y.md §4.4). Each
+           carries a non-empty aria-valuetext ("X of Y hit points") so a
+           screen reader narrates the character sheet AS a character sheet
+           instead of a bare percentage. .status-icon SVGs are aria-hidden
+           (AC-032) since the meter's aria-label now carries the name; .bar-value
+           is aria-hidden too since aria-valuetext already carries its text,
+           preventing double-announcement. -->
       <div class="status-bars">
         <div class="status-bar">
-          <svg class="status-icon" viewBox="0 0 24 24" width="16" height="16">
+          <svg class="status-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="16" height="16">
             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
           </svg>
-          <div class="bar-container">
+          <div class="bar-container"
+               role="meter"
+               aria-label="Hit Points"
+               aria-valuemin="0"
+               aria-valuemax="{{ site.data.character_build.character.status.hp.max }}"
+               aria-valuenow="{{ site.data.character_build.character.status.hp.current }}"
+               aria-valuetext="{{ site.data.character_build.character.status.hp.current }} of {{ site.data.character_build.character.status.hp.max }} hit points">
             <div class="bar-fill hp" style="width: {{ site.data.character_build.character.status.hp.percentage }}%"></div>
-            <span class="bar-value">{{ site.data.character_build.character.status.hp.current }}/{{ site.data.character_build.character.status.hp.max }}</span>
+            <span class="bar-value" aria-hidden="true">{{ site.data.character_build.character.status.hp.current }}/{{ site.data.character_build.character.status.hp.max }}</span>
           </div>
         </div>
         <div class="status-bar">
-          <svg class="status-icon" viewBox="0 0 24 24" width="16" height="16">
+          <svg class="status-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="16" height="16">
             <path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/>
           </svg>
-          <div class="bar-container">
+          <div class="bar-container"
+               role="meter"
+               aria-label="Magic Points"
+               aria-valuemin="0"
+               aria-valuemax="{{ site.data.character_build.character.status.mp.max }}"
+               aria-valuenow="{{ site.data.character_build.character.status.mp.current }}"
+               aria-valuetext="{{ site.data.character_build.character.status.mp.current }} of {{ site.data.character_build.character.status.mp.max }} magic points">
             <div class="bar-fill mp" style="width: {{ site.data.character_build.character.status.mp.percentage }}%"></div>
-            <span class="bar-value">{{ site.data.character_build.character.status.mp.current }}/{{ site.data.character_build.character.status.mp.max }}</span>
+            <span class="bar-value" aria-hidden="true">{{ site.data.character_build.character.status.mp.current }}/{{ site.data.character_build.character.status.mp.max }}</span>
           </div>
         </div>
         <div class="status-bar">
-          <svg class="status-icon" viewBox="0 0 24 24" width="16" height="16">
+          <svg class="status-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="16" height="16">
             <path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.8-.7"/>
           </svg>
-          <div class="bar-container">
+          <div class="bar-container"
+               role="meter"
+               aria-label="Stamina"
+               aria-valuemin="0"
+               aria-valuemax="{{ site.data.character_build.character.status.st.max }}"
+               aria-valuenow="{{ site.data.character_build.character.status.st.current }}"
+               aria-valuetext="{{ site.data.character_build.character.status.st.current }} of {{ site.data.character_build.character.status.st.max }} stamina">
             <div class="bar-fill st" style="width: {{ site.data.character_build.character.status.st.percentage }}%"></div>
-            <span class="bar-value">{{ site.data.character_build.character.status.st.current }}/{{ site.data.character_build.character.status.st.max }}</span>
+            <span class="bar-value" aria-hidden="true">{{ site.data.character_build.character.status.st.current }}/{{ site.data.character_build.character.status.st.max }}</span>
           </div>
         </div>
         <div class="status-bar">
-          <svg class="status-icon" viewBox="0 0 24 24" width="16" height="16">
+          <svg class="status-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="16" height="16">
             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
           </svg>
-          <div class="bar-container">
+          <div class="bar-container"
+               id="exp-bar-container"
+               role="progressbar"
+               aria-label="Experience"
+               aria-valuemin="0"
+               aria-valuemax="{{ site.data.character_build.character.status.exp.max }}"
+               aria-valuenow="{{ site.data.character_build.character.status.exp.current }}"
+               aria-valuetext="{{ site.data.character_build.character.status.exp.current }} of {{ site.data.character_build.character.status.exp.max }} experience points">
             <div class="bar-fill exp" id="exp-bar"></div>
-            <span class="bar-value" id="exp-value">{{ site.data.character_build.character.status.exp.current }}/{{ site.data.character_build.character.status.exp.max }}</span>
+            <span class="bar-value" id="exp-value" aria-hidden="true">{{ site.data.character_build.character.status.exp.current }}/{{ site.data.character_build.character.status.exp.max }}</span>
           </div>
         </div>
       </div>
@@ -65,8 +102,12 @@ title: About Me
       </div>
       <div class="social-links">
         {% for social in site.data.character_build.character.social %}
-        <a href="{{ social.url }}" target="_blank" rel="noopener" class="social-link">
-          <i class="{{ social.icon }}"></i>
+        <!-- AC-033/032 (Story 4.7): icon-only link -- accessible name via
+             aria-label on the <a> (matches index.html's .social-icon
+             pattern, which already did this); the icon itself carries no
+             text a screen reader could use. -->
+        <a href="{{ social.url }}" target="_blank" rel="noopener" aria-label="{{ social.platform }} Profile" class="social-link">
+          <i class="{{ social.icon }}" aria-hidden="true"></i>
         </a>
         {% endfor %}
       </div>
@@ -97,10 +138,11 @@ title: About Me
         <div class="block-badge">Origin: {{ site.data.character_build.character.origin }}</div>
       </div>
       <div class="block-content">
-        <p>Born with an <strong class="highlight">insatiable curiosity</strong>, Henrique A. Lavezzo is a <strong class="highlight">Code Alchemist</strong> who has spent over a decade dismantling the arcane machinery of software—just to understand how it ticks. From languages like <strong>Object Pascal</strong> and <strong>Elixir</strong> to the elegant incantations of <strong>Ruby</strong>, he explores each paradigm not just to master it, but to distill its essence.</p>
-        <p>With a deep affinity for crafting <strong class="highlight">scalable and maintainable systems</strong>, Henrique doesn't just build code—he refines it. Every architecture is a puzzle, every workflow a ritual waiting to be optimized. His toolkit blends <strong>technical mastery</strong> with a pragmatic, almost philosophical drive to solve real-world problems.</p>
-        <p>But his alchemy isn't limited to code. As the creator of <strong class="highlight">Diurnata</strong>, he weaves structure into development lifecycles while safeguarding the most fragile component in any system—<strong>human focus and well-being</strong>.</p>
-        <p>When not casting code or leading teams, you'll find him tending his garden of ideas: <strong>game design experiments</strong>, <strong>smart organizational tools</strong>, <strong>AI systems</strong>, and even literal plants—from seed to bloom.</p>
+        <p><strong class="highlight">Era I — The Apprentice.</strong> I cut my teeth on <strong>Object Pascal</strong> (Delphi, if you want the receipts — it's how half of Brazil learned to code) before <strong>Ruby</strong> found me, and the lineage from one to the other still shapes how I think about syntax today. I even learned English this way: one dialogue box at a time, grinding through <strong>Final Fantasy VII</strong> — still the best tutor I've ever had (sorry, actual teachers).</p>
+        <p><strong class="highlight">Era II — The Artificer.</strong> Once syntax stopped being the interesting part, I got obsessed with shape: <strong>Clean Architecture</strong>, <strong>Domain-Driven Design</strong>, use-cases — the kind of ideas that make you rewrite a perfectly working feature three times because you finally understand why it should look different. That obsession eventually distilled into <strong class="highlight">Fluxus</strong>, a small, dependency-less use-case wrapper for Ruby, built because I couldn't find one that stayed out of my way.</p>
+        <p><strong class="highlight">Era III — The Guildmaster.</strong> Somewhere along the way people started asking me to lead instead of just build — and, to my own surprise, I liked it. At ElectionBuddy that grew into <strong class="highlight">Director of Engineering</strong>; alongside it I built <strong>Diurnata</strong>, a small tool guarding the one resource every team actually runs on — human focus and well-being. Leading, it turns out, is its own architecture problem.</p>
+        <p><strong class="highlight">Era IV — The Technomancer.</strong> These days the tools have changed shape again. I spend as much time conducting <strong>AI familiars</strong> — routing between Claude, GPT, and whichever local model is awake that day — as I do writing Ruby by hand. Less "the machines replaced me," more "I finally have a party." <em>Symbiotic Technomancer</em> stopped being just a trait on this page; it's closer to a job description now.</p>
+        <p>When I'm not casting code or leading teams, you'll find me tending my garden of ideas: <strong>game design experiments</strong>, <strong>smart organizational tools</strong>, and even literal plants — from seed to bloom.</p>
         <p><strong class="highlight">Ever curious. Ever building. Ever refining.</strong></p>
         <p><strong class="highlight">The journey of a Code Alchemist never ends.</strong></p>
       </div>

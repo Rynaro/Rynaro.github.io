@@ -1,0 +1,57 @@
+{
+  "esl_version": "1.1",
+  "change_id": "rebrand-p3",
+  "status": "verified",
+  "tier": "full",
+  "maker": "vivi",
+  "checker": "kupo",
+  "acceptance_checks": [
+    {
+      "id": "AC-017",
+      "given": "a post declaring a `type` from the themed vocabulary",
+      "when": "the post renders",
+      "then": "the post layout SHALL display a visible post-type badge matching that declared type",
+      "verify_method": "a post with `type: cantrip` renders a badge labeled for the cantrip type in `_site`"
+    },
+    {
+      "id": "AC-018",
+      "given": "a post that sets the optional epistemic-status (`assay`) field",
+      "when": "the post renders",
+      "then": "the layout SHALL display the declared epistemic-status label",
+      "verify_method": "a post with `assay: speculative` renders the speculative label in `_site`"
+    },
+    {
+      "id": "AC-019",
+      "then": "the site SHALL publish a reader-contract page stating the right-to-be-wrong or living-document terms for the journal",
+      "verify_method": "a terms or contract page renders and states the correction or revision policy"
+    },
+    {
+      "id": "AC-020",
+      "then": "every page SHALL carry a sitewide \"opinions are my own, not my employer's\" disclaimer in the global footer",
+      "verify_method": "the disclaimer string appears in the shared footer include of every rendered page"
+    },
+    {
+      "id": "AC-021",
+      "given": "the 2026 LLM-routing post",
+      "when": "the research-dump (\"transmutation\") post-type is applied to it",
+      "then": "it SHALL render with a post-type badge visibly distinct from the handcrafted \"scroll\" essays",
+      "verify_method": "the post's rendered badge label differs from a scroll post's badge label"
+    },
+    {
+      "id": "AC-022",
+      "then": "the site SHALL provide a cadence-anchor stream (\"Alchemist's Log\") with its own index or tag aggregation page",
+      "verify_method": "a log index or tag page renders and lists the log-type entries"
+    },
+    {
+      "id": "AC-025",
+      "given": "a visitor whose operating system reports a dark colour-scheme preference",
+      "when": "any page is loaded with JavaScript disabled",
+      "then": "the page SHALL render in the dark theme via `prefers-color-scheme`",
+      "verify_method": "JS-disabled render with `prefers-color-scheme: dark` emulated shows the dark theme background token on every page, not only post pages"
+    }
+  ],
+  "spec_ref": ".claude/rebrand/rebrand-plan.md",
+  "supersedes": "rebrand",
+  "drift_checked": true,
+  "has_code": true
+}

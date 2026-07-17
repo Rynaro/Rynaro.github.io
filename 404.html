@@ -1,25 +1,81 @@
 ---
 permalink: /404.html
 layout: page
+resume: "The requested scroll could not be located in the archives"
 ---
 
-<style type="text/css" media="screen">
-  .container {
-    margin: 10px auto;
-    max-width: 600px;
-    text-align: center;
-  }
-  h1 {
-    margin: 30px 0;
-    font-size: 4em;
-    line-height: 1;
-    letter-spacing: -1px;
-  }
-</style>
+<!--
+  Story 2.4, AC-016. The unstyled minima remnant (a bare inline <style> block + plain
+  text, off-brand against the fantasy theme) is replaced with the same rpg-hero pattern
+  every other page uses. `layout: page` -> `_layouts/page.html` -> `layout: default`
+  already supplies the site chrome (sigil nav, footer, main.css); Phase 1 wired that
+  wrapper for build health, this is where the page's own content becomes on-brand.
+-->
+<section class="rpg-hero">
+  <div class="container">
+    <div class="hero-content">
+      <h1 class="hero-title fade-in">A Blank Page in the Grimoire</h1>
+      <h2 class="hero-subtitle fade-in">404 — Scroll Not Found</h2>
+      <p class="hero-description">
+        Whatever spell you were reaching for isn't bound to this page. Maybe it was
+        rewritten, maybe it never existed — either way, no scroll here.
+      </p>
+    </div>
+  </div>
+</section>
 
-<div class="container">
-  <h1>404</h1>
+<section class="rpg-scrolls">
+  <div class="container text-center">
+    <h2 class="section-title">
+      <i class="fas fa-compass section-icon"></i>
+      Try One of These Instead
+    </h2>
 
-  <p><strong>Page not found :(</strong></p>
-  <p>The requested page could not be found.</p>
-</div>
+    <div class="related-scrolls">
+      <div class="related-scroll-item">
+        <div class="related-scroll-card">
+          <div class="related-scroll-rarity common"></div>
+          <div class="related-scroll-header">
+            <h3 class="related-scroll-title">Home</h3>
+          </div>
+          <div class="related-scroll-content">
+            <p class="related-scroll-excerpt">Back to the alchemy circle and the recent scrolls.</p>
+          </div>
+          <div class="related-scroll-footer">
+            <a href="{{ '/' | relative_url }}" class="related-scroll-link">Go home</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="related-scroll-item">
+        <div class="related-scroll-card">
+          <div class="related-scroll-rarity rare"></div>
+          <div class="related-scroll-header">
+            <h3 class="related-scroll-title">Start Here</h3>
+          </div>
+          <div class="related-scroll-content">
+            <p class="related-scroll-excerpt">The Grimoire's best pages, curated by theme.</p>
+          </div>
+          <div class="related-scroll-footer">
+            <a href="{{ '/start-here/' | relative_url }}" class="related-scroll-link">Browse</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="related-scroll-item">
+        <div class="related-scroll-card">
+          <div class="related-scroll-rarity epic"></div>
+          <div class="related-scroll-header">
+            <h3 class="related-scroll-title">Notebook</h3>
+          </div>
+          <div class="related-scroll-content">
+            <p class="related-scroll-excerpt">All the scrolls, filed by archive.</p>
+          </div>
+          <div class="related-scroll-footer">
+            <a href="{{ '/notebook/' | relative_url }}" class="related-scroll-link">Read scrolls</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

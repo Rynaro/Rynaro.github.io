@@ -1,0 +1,123 @@
+name: Accessibility & Palette Contrast
+
+# AC-049: "the palette contrast test SHALL run as a blocking continuous-
+# integration check from the first accessibility release onward." VERIFY:
+# the CI workflow invokes the palette contrast test and exits non-zero on any
+# failing token; the check is present in the same release that ships the ink
+# token split (Story 4.1, this same PR).
+#
+# GitHub Pages safe mode forbids custom Jekyll plugins/generators -- this is
+# a GitHub Action, not a Jekyll plugin, so it never touches the deployed
+# build (spec.yaml declared_scope: `.github/workflows/*`).
+#
+# 4a jobs (blocking from this release): manifest, token-usage, contrast,
+# rarity-label, motion. 4b jobs (axe/pa11y ratchet, AC-039) are added in the
+# 4b pass once the semantics/craft work they depend on (role=meter,
+# aria-hidden ornament, focus, target size, ...) has shipped -- landing them
+# before that would fail on defects this same PR hasn't fixed yet.
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  static-checks:
+    name: Palette manifest, token usage, contrast, rarity label, motion (4a)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - name: Jekyll build (rarity-label.test.mjs reads the built _site/)
+        run: bundle exec jekyll build
+
+      # AC-048: manifest completeness + role<=>obligation consistency + logotype usage-binding.
+      - name: Palette manifest (AC-048)
+        run: npm run test:manifest
+
+      # AC-047: every color/border-color/fill usage in _sass/ resolves to content/ink or a documented exemption.
+      - name: Token usage (AC-047)
+        run: npm run test:token-usage
+
+      # AC-026 / AC-027 / AC-049 itself: this IS "the palette contrast test."
+      - name: Palette contrast (AC-026, AC-027, AC-049)
+        run: npm run test:contrast
+
+      # AC-030: rarity conveyed by visible text, not chip colour alone.
+      - name: Rarity label (AC-030)
+        run: npm run test:rarity-label
+
+      # AC-031: no un-gated `infinite` animation (2.2.2).
+      - name: Motion (AC-031)
+        run: npm run test:motion
+
+      # AC-034 / AC-058: fluid-type clamp() lint (vacuous pass today -- zero
+      # clamp() calls in _sass/ -- see scripts/clamp.test.mjs's own header).
+      - name: Fluid type clamp() lint (AC-034, AC-058)
+        run: npm run test:clamp
+
+      # AC-038: no fixed height on a themed chip/badge/banner/stat-row.
+      - name: Text-spacing height lint (AC-038)
+        run: npm run test:text-spacing-height
+
+      # AC-028/029/032/033/035/036/037: real headless-browser verification
+      # (Playwright + axe-core) against the built _site/ -- see
+      # scripts/axe-audit.mjs's header for why this exists (the brief's own
+      # note that Phase 3's AC-025 shipped on CSS inspection with no
+      # browser, and this phase should not repeat that gap).
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: axe-core browser audit (AC-028, AC-029, AC-032, AC-033, AC-035, AC-036, AC-037)
+        run: npm run test:axe
+
+  pa11y-ratchet:
+    name: pa11y-ci + axe over the sitemap, WCAG2AA (AC-039)
+    runs-on: ubuntu-latest
+    needs: static-checks
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      # Build with _config.ci.yml merged in, overriding `url:` to the local
+      # server -- _config.yml's real `url: https://hlavezzo.me` would
+      # otherwise bake production URLs into sitemap.xml, and pa11y-ci would
+      # crawl the LIVE site instead of this PR's build. (Jekyll 4.4.1 has no
+      # `--url` CLI flag -- "invalid option: --url" -- a merged config file
+      # is the supported override mechanism.)
+      - name: Jekyll build (url overridden to localhost via _config.ci.yml)
+        run: bundle exec jekyll build --config _config.yml,_config.ci.yml
+
+      - name: Serve the built site
+        run: |
+          nohup npx http-server _site -p 4000 -s > /tmp/http-server.log 2>&1 &
+          npx wait-on http://localhost:4000/sitemap.xml
+
+      - name: pa11y-ci (axe runner, WCAG2AA, over the sitemap)
+        run: npx pa11y-ci

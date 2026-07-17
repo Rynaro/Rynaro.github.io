@@ -94,6 +94,71 @@
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Post-type badge (Story 3.1, AC-017) + assay label (AC-018). `color` is the
+   alchemist-ink hex HARDCODED, deliberately not `var(--dnd-ink)` -- that token is
+   theme-reactive (Story 3.5 / `prefers-color-scheme: dark`, and the JS `.dark-mode`
+   toggle) while these badges' pastel grounds are static, so pairing a reactive ink
+   with a static ground would invert contrast under dark mode. Measured WCAG ratios
+   (relative-luminance, #4e342e ink):
+     --scroll (pastel-blue #B9C9E6):        6.77:1
+     --cantrip (pastel-mint #C8E7D5):       8.54:1
+     --log (pastel-pink #F8D1E0):           8.19:1
+     --distillation (pastel-lavender #E5D4F1): 8.10:1
+     --transmutation (pastel-purple #CDB4DB):  6.01:1
+   All comfortably clear 4.5:1 today -- ships ahead of Phase 4's `-ink`/`-ornament`
+   token split without creating a contrast debt for that phase to inherit. */
+.post-type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #4e342e;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.post-type-badge--scroll {
+  background: $pastel-blue;
+}
+
+.post-type-badge--cantrip {
+  background: $pastel-mint;
+}
+
+.post-type-badge--log {
+  background: $pastel-pink;
+}
+
+.post-type-badge--distillation {
+  background: $pastel-lavender;
+}
+
+// AC-021: transmutation's badge must be visibly distinct from a scroll post's badge
+// -- different pastel ground (purple vs. blue) AND different label text ("Transmutation"
+// vs. "Scroll"), not merely a text swap.
+.post-type-badge--transmutation {
+  background: $pastel-purple;
+}
+
+/* Assay label uses the SAME theme-reactive pair the rest of the notebook/post surface
+   already uses (var(--dnd-parchment) ground + var(--dnd-ink) text/border move together
+   under dark mode -- see _notebook.scss's prefers-color-scheme block) -- safe here
+   because, unlike the type badge above, neither side of this pairing is static. */
+.post-assay-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 0.8rem;
+  color: var(--dnd-ink);
+  background: var(--dnd-parchment);
+  border: 1px solid var(--dnd-ink);
+}
+
 .post-date {
   display: flex;
   align-items: center;
@@ -170,7 +235,7 @@
 }
 
 .post-tag:hover {
-  color: var(--ff-gold);
+  color: var(--ff-gold-ink);
 }
 
 /* Post Content Section */
@@ -285,7 +350,7 @@
   content: '•';
   position: absolute;
   left: -1rem;
-  color: var(--ff-purple-light);
+  color: var(--ff-purple-light-ink);
 }
 
 .toc-link {
@@ -309,7 +374,7 @@
 }
 
 .toc-link:hover {
-  color: var(--ff-purple);
+  color: var(--ff-purple-ink);
 }
 
 .toc-link:hover::after {
@@ -317,7 +382,7 @@
 }
 
 .toc-link.active {
-  color: var(--ff-purple);
+  color: var(--ff-purple-ink);
   font-weight: 500;
 }
 
@@ -363,7 +428,7 @@
 }
 
 .action-button:hover {
-  color: var(--ff-purple);
+  color: var(--ff-purple-ink);
 }
 
 .action-icon {
@@ -517,7 +582,7 @@
 
 .article-content h2::before {
   content: '§';
-  color: var(--ff-purple-light);
+  color: var(--ff-purple-light-ink);
   margin-right: 0.5rem;
   opacity: 0.7;
 }
@@ -534,8 +599,15 @@
   margin-bottom: 1.5rem;
 }
 
+// AC-039-adjacent (1.4.1 Use of Color / axe `link-in-text-block`): the
+// underline used to be hover-only (`transform: scaleX(0)` by default) --
+// invisible to axe's static analysis of the DEFAULT state, and to a sighted
+// user who never hovers this exact link. Visible by default now (subtler
+// weight); the hover flourish switches from "appear" to "brighten + thicken,"
+// keeping the animated feel without relying on interaction for the baseline
+// distinction 1.4.1 requires.
 .article-content a {
-  color: var(--ff-purple);
+  color: var(--ff-purple-ink);
   text-decoration: none;
   position: relative;
   transition: color 0.3s ease;
@@ -549,9 +621,9 @@
   width: 100%;
   height: 1px;
   background: var(--ff-purple);
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.3s ease;
+  opacity: 0.6;
+  transform: scaleX(1);
+  transition: opacity 0.3s ease, height 0.3s ease, background-color 0.3s ease;
 }
 
 .article-content a:hover {
@@ -559,8 +631,9 @@
 }
 
 .article-content a:hover::after {
-  transform: scaleX(1);
-  transform-origin: left;
+  opacity: 1;
+  height: 2px;
+  background: var(--ff-blue-dark);
 }
 
 /* Lists */
@@ -577,7 +650,7 @@
 }
 
 .article-content ul li::marker {
-  color: var(--ff-purple);
+  color: var(--ff-purple-ink);
 }
 
 /* Blockquotes */
@@ -597,7 +670,7 @@
   top: -0.5rem;
   left: 0.5rem;
   font-size: 4rem;
-  color: var(--ff-purple-light);
+  color: var(--ff-purple-light-ink);
   opacity: 0.3;
   font-family: Georgia, serif;
   line-height: 1;
@@ -637,7 +710,11 @@
   padding: 0.2em 0.4em;
   background: rgba(153, 102, 204, 0.08);
   border-radius: 3px;
-  color: var(--ff-purple-dark);
+  // AC-026: was `var(--ff-purple-dark)`, a token declared nowhere in
+  // _sass/_variables.scss -- an undefined custom property, silently falling
+  // back to inherited color. Found while auditing token usage for Story 4.1;
+  // repointed to the real ink token for inline code (real body content).
+  color: var(--ff-purple-ink);
 }
 
 .article-content pre code {
@@ -841,7 +918,7 @@
   align-items: center;
   justify-content: center;
   font-size: 1.2rem;
-  color: var(--ff-purple);
+  color: var(--ff-purple-ink);
   width: 36px;
   height: 36px;
   margin: 0 0.75rem;
@@ -881,7 +958,7 @@
 }
 
 .post-nav-item:hover .nav-title {
-  color: var(--ff-purple);
+  color: var(--ff-purple-ink);
 }
 
 /* Related Posts Section */
@@ -988,7 +1065,7 @@
   font-size: 0.85rem;
   padding: 0.25rem 0.75rem;
   background: rgba(153, 102, 204, 0.1);
-  color: var(--ff-purple);
+  color: var(--ff-purple-ink);
   border-radius: 20px;
   font-weight: 500;
   margin-bottom: 0.75rem;
@@ -1044,7 +1121,7 @@
 
 .related-scroll-link {
   font-size: 0.9rem;
-  color: var(--ff-purple);
+  color: var(--ff-purple-ink);
   font-weight: 500;
   transition: color 0.3s ease;
 }
@@ -1082,6 +1159,11 @@ body.dark-mode {
   --text-light: #909090;
   --border-light: rgba(153, 102, 204, 0.3);
   --post-sidebar-bg: rgba(44, 44, 44, 0.7);
+  // Story 3.5: keep the manual JS toggle a superset of the OS-driven baseline (AC-025)
+  // -- without this, toggling on when the OS prefers light would darken the post
+  // scroll container while the outer html/body canvas stayed light.
+  --bg-primary: #232323;
+  --text-body: #e0e0e0;
 }
 
 body.dark-mode .post-scroll::before {
@@ -1092,7 +1174,7 @@ body.dark-mode .post-scroll::before {
 
 body.dark-mode .article-content code {
   background: rgba(153, 102, 204, 0.15);
-  color: var(--ff-purple-light);
+  color: var(--ff-purple-light-ink);
 }
 
 body.dark-mode .article-content pre {

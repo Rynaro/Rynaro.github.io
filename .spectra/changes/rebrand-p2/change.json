@@ -1,0 +1,57 @@
+{
+  "esl_version": "1.1",
+  "change_id": "rebrand-p2",
+  "status": "verified",
+  "tier": "full",
+  "maker": "vivi",
+  "checker": "kupo",
+  "acceptance_checks": [
+    {
+      "id": "AC-012",
+      "given": "the homepage",
+      "when": "it is rendered",
+      "then": "it SHALL surface reader-facing post content below the hero rather than a hero-only landing",
+      "verify_method": "`_site/index.html` contains a post-list region linking at least the most recent post permalink"
+    },
+    {
+      "id": "AC-013",
+      "given": "the Notebook category filter tabs",
+      "when": "a reader filters by any category present in the post corpus",
+      "then": "every post SHALL be reachable through a non-\"All\" tab, never orphaned behind a phantom `storybook` tab",
+      "verify_method": "the set of tab `data-category` values equals the set of categories used by posts; no tab maps to zero posts"
+    },
+    {
+      "id": "AC-014",
+      "then": "the site SHALL publish a `/now` page that displays a visible last-updated date",
+      "verify_method": "`_site/now/` renders and contains a \"last updated\" date string"
+    },
+    {
+      "id": "AC-015",
+      "then": "the site SHALL publish a `/uses` page listing the current toolchain including the AI familiars",
+      "verify_method": "`_site/uses/` renders and lists hardware or editor plus the AI tools such as Claude or local models"
+    },
+    {
+      "id": "AC-016",
+      "then": "the site SHALL serve a 404 page rendered through an existing themed layout rather than the unstyled minima remnant",
+      "verify_method": "`_site/404.html` renders with the site chrome; no reference to a missing `page` layout remains"
+    },
+    {
+      "id": "AC-023",
+      "given": "a post whose body contains headings",
+      "when": "the rendered page is loaded with JavaScript disabled",
+      "then": "the table-of-contents region SHALL contain server-rendered links to those headings rather than an empty \"Contents\" shell",
+      "verify_method": "JS-disabled fetch of a post shows `#toc-content` containing at least one anchor whose href matches a heading id"
+    },
+    {
+      "id": "AC-024",
+      "given": "any page of the site",
+      "when": "the operating system reports a reduced-motion preference",
+      "then": "no script-created animated node SHALL be injected into the page DOM",
+      "verify_method": "headless run with `prefers-reduced-motion: reduce` emulated over Home, About, Notebook, Laboratory, and Letter asserts zero script-injected animated nodes; `grep -rn \"style.animation\" assets/js/` shows every injection site behind a `matchMedia` reduced-motion guard"
+    }
+  ],
+  "spec_ref": ".claude/rebrand/rebrand-plan.md",
+  "supersedes": "rebrand",
+  "drift_checked": true,
+  "has_code": true
+}

@@ -1,0 +1,90 @@
+{
+  "esl_version": "1.1",
+  "change_id": "rebrand-p1",
+  "status": "verified",
+  "tier": "full",
+  "maker": "vivi",
+  "checker": "kupo",
+  "acceptance_checks": [
+    {
+      "id": "AC-004",
+      "given": "the rebranded site source",
+      "when": "`jekyll build` runs with `JEKYLL_ENV=production`",
+      "then": "the build SHALL exit 0 with no missing-layout or missing-include error in its log",
+      "verify_method": "gate: `jekyll build` exits 0; build log contains no \"Could not find layout\" or \"Included file not found\""
+    },
+    {
+      "id": "AC-005",
+      "given": "favicon and social-card image references in the built output",
+      "when": "`_site` is scanned for local image paths",
+      "then": "every referenced local image SHALL resolve to a file that exists, never a dangling path such as bottle.png or me.jpg",
+      "verify_method": "script asserts each local image reference in `_site` exists on disk; zero missing"
+    },
+    {
+      "id": "AC-006",
+      "given": "a post carrying a per-post summary field",
+      "when": "the page is built with jekyll-seo-tag enabled",
+      "then": "the emitted meta description SHALL be that post's own summary rather than the generic site description",
+      "verify_method": "for a sample post, the `_site` meta description equals the post summary text, not `site.description`"
+    },
+    {
+      "id": "AC-007",
+      "then": "the site SHALL publish a syndication feed whose entries contain the full post body rather than a truncated excerpt",
+      "verify_method": "the first `feed.xml` entry content length is within 5% of the rendered post body length"
+    },
+    {
+      "id": "AC-008",
+      "then": "the site chrome SHALL surface a human-visible link to the feed in the header or footer, not only a `\u003clink rel\u003e` hint",
+      "verify_method": "an `\u003ca\u003e` whose href resolves to the feed appears in the rendered header or footer markup"
+    },
+    {
+      "id": "AC-009",
+      "given": "the retired Universal Analytics property",
+      "when": "the built site is scanned for analytics identifiers",
+      "then": "no `UA-` Universal Analytics identifier SHALL remain in any emitted page",
+      "verify_method": "`grep -r \"UA-135917274\" _site` returns zero matches"
+    },
+    {
+      "id": "AC-010",
+      "then": "the build SHALL emit a `sitemap.xml` listing the published pages of the site",
+      "verify_method": "`_site/sitemap.xml` exists and lists at least the home, About, Notebook, plus each post URL"
+    },
+    {
+      "id": "AC-011",
+      "then": "every rendered page SHALL carry a canonical URL whose host is the served `hlavezzo.me` origin",
+      "verify_method": "each page's `\u003clink rel=\"canonical\"\u003e` host equals `hlavezzo.me`"
+    },
+    {
+      "id": "AC-054",
+      "given": "the built site's emitted markup",
+      "when": "it is scanned for Font Awesome stylesheet references",
+      "then": "exactly one Font Awesome version SHALL be loaded",
+      "verify_method": "`grep -rho \"font-awesome[^\\\"']*\" _site | sort -u` yields exactly one version string"
+    },
+    {
+      "id": "AC-055",
+      "given": "the post front matter across the corpus",
+      "when": "it is scanned for comment-system fields",
+      "then": "no post SHALL declare a `comments` field while no comment system is wired",
+      "verify_method": "`grep -rn \"^comments:\" _posts/` returns zero matches"
+    },
+    {
+      "id": "AC-056",
+      "given": "the emitted meta tags",
+      "when": "the site declares no Portuguese content",
+      "then": "no `og:locale:alternate` value of `pt_BR` SHALL be emitted",
+      "verify_method": "`grep -rn \"pt_BR\" _site` returns zero matches"
+    },
+    {
+      "id": "AC-057",
+      "given": "the emitted meta keywords",
+      "when": "the built site is scanned",
+      "then": "every programming language advertised in the keywords SHALL be a member of the language set backed by the skills data",
+      "verify_method": "a script builds the backed set L from `_data/skills.yml` categories[\"Programming Languages\"].skills[].name (case-folded); splits every emitted `\u003cmeta name=\"keywords\"\u003e` content on commas into case-folded, trimmed tokens K; and for each token matching the pinned language lexicon V = {ruby, elixir, javascript, typescript, golang, go, crystal, python, rust, clojure, java, c, c++, c#, php, perl, scala, kotlin, swift, haskell, erlang} as a whole word, asserts that language is a member of L; zero unbacked languages remain (today's unbacked set is golang, crystal, python, rust)"
+    }
+  ],
+  "spec_ref": ".claude/rebrand/rebrand-plan.md",
+  "supersedes": "rebrand",
+  "drift_checked": true,
+  "has_code": true
+}

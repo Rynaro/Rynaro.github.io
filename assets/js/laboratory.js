@@ -6,10 +6,16 @@ document.addEventListener('DOMContentLoaded', function() {
   const emptyState = document.querySelector('.empty-state');
   const resetButton = document.querySelector('.reset-search-button');
 
-  // Animate particles
+  // Animate particles (AC-024: no script-created animated node under reduced motion;
+  // AC-031: finite drift-settle, not an infinite loop -- see _sass/_base.scss for the
+  // keyframe and the collision it replaced. Delay is capped so total run time
+  // (delay + duration) stays <= 5s regardless of particle count.)
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const particles = document.querySelectorAll('.particle');
   particles.forEach((particle, index) => {
-    particle.style.animation = `float ${3 + (index % 2)}s ease-in-out ${index * 0.7}s infinite alternate`;
+    if (prefersReducedMotion) return;
+    const delay = Math.min(index * 0.15, 1.2);
+    particle.style.animation = `drift-settle ${1.8 + (index % 2) * 0.5}s ease-out ${delay}s 1 forwards`;
   });
 
   // Add rarity classes based on project properties

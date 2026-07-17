@@ -1,0 +1,579 @@
+# _data/palette-manifest.yml
+#
+# AC-047 / AC-048 (Story 4.1, Phase 4a). The committed manifest: every color
+# TOKEN declared in `_sass/_variables.scss` (Sass `$variables` in the "Color
+# Palette" / "Background and text colors" sections, plus CSS custom
+# properties in the `:root` block) gets EXACTLY ONE `role` from
+# {ornament, logotype, content} and EXACTLY ONE `obligation` from {ink,
+# exempt}, under the fixed mapping `content <=> ink`, `ornament|logotype <=>
+# exempt`. Scope is deliberately the tokens *declared* in `_variables.scss` --
+# not every CSS custom property in the codebase (`--symbol-color`,
+# `--ring-color`, `--post-text`, `--ff-purple-dark` are set/aliased locally in
+# individual partials, not in _variables.scss; see `not_manifest_scope` below
+# for what each of those actually is). Layout tokens ($sidebar-width,
+# $content-max-width, $tablet-breakpoint, $mobile-breakpoint) are declared in
+# the same file but are not colors -- "palette token" excludes them.
+#
+# Consumed by scripts/palette-manifest.test.mjs (AC-048: completeness +
+# role<=>obligation consistency + logotype usage-binding) and
+# scripts/token-usage.test.mjs (AC-047: every non-logotype color/border-color/
+# fill usage in _sass/ resolves to a content/ink token, or is in the
+# documented `usage_exemptions` below).
+#
+# GENERATED FROM MEASUREMENT, NOT PROSE: every ratio cited here is computed by
+# scripts/lib/color-math.mjs (WCAG 2.x relative luminance, no rounding before
+# comparison) and independently cross-checked against real `bundle exec sass`
+# output for every darken() call (see scripts/repoint-ink-tokens.mjs history /
+# the completion report for the verification transcript). Do not hand-edit a
+# ratio without re-running the contrast test.
+
+meta:
+  source: _sass/_variables.scss
+  declared_backgrounds:
+    cream: "#F8F5F2"
+    light: "#F0ECE9"
+    parchment-dark: "#e8e0c0"
+    hero-gradient-1: "#211C30"
+    hero-gradient-2: "#312A45"
+  logotype_selectors:
+    - ".hero-subtitle" # about.html, home.scss, laboratory.scss, letter.scss, notebook.scss all style
+      # the "Code Alchemist" wordmark through this one class -- AC-048's VERIFY names it exactly.
+  content_threshold: 4.5   # AC-026, ratio, no rounding
+  boundary_threshold: 3.0  # AC-027, ratio, no rounding
+
+tokens:
+  # --- Final Fantasy inspired (ornament, with -ink content siblings) ---
+  - name: --ff-blue
+    kind: css-var
+    hex: "#4499cb"
+    role: ornament
+    obligation: exempt
+    note: >-
+      Gradients/backgrounds/box-shadow glows only after Story 4.1 (its one
+      content usage, about.scss .ability-mana, now reads --ff-blue-dark).
+  - name: --ff-blue-dark
+    kind: css-var
+    hex: "#2e6792" # darken(#306d9a, 2%)
+    role: content
+    obligation: ink
+    measured: {cream: 5.57, light: 5.15, parchment-dark: 4.57}
+    note: >-
+      Pre-existing token, darkened 2% further by this phase: the original
+      #306d9a passed cream/light (5.12/4.73) but missed parchment-dark
+      (4.19) -- caught by the contrast test's blanket cross-check against
+      every declared background (matching research-ui-a11y.md §2.1's own
+      table methodology: every token vs every one of the three light
+      surfaces, not just the one its current usages happen to sit on).
+  - name: --ff-gold
+    kind: css-var
+    hex: "#e6a553"
+    role: ornament
+    obligation: exempt
+    measured: {cream: 1.96, light: 1.81, parchment-dark: 1.61}
+    note: Rune ring, glyphs, gradients, wordmark ground -- pure decoration/logotype after Story 4.1.
+  - name: --ff-gold-ink
+    kind: css-var
+    hex: "#835113"
+    role: content
+    obligation: ink
+    measured: {cream: 6.14, light: 5.67, parchment-dark: 5.03}
+  - name: --ff-purple
+    kind: css-var
+    hex: "#9966cc"
+    role: ornament
+    obligation: exempt
+    measured: {cream: 3.77, light: 3.49, parchment-dark: 3.09}
+    note: Backgrounds/gradients/box-shadow only after Story 4.1 (every color/border-color usage repointed).
+  - name: --ff-purple-ink
+    kind: css-var
+    hex: "#783cb4"
+    role: content
+    obligation: ink
+    measured: {cream: 6.23, light: 5.76, parchment-dark: 5.11}
+  - name: --ff-purple-light
+    kind: css-var
+    hex: "#b19cd9"
+    role: ornament
+    obligation: exempt
+    measured: {cream: 2.24, light: 2.07, parchment-dark: 1.84}
+  - name: --ff-purple-light-ink
+    kind: css-var
+    hex: "#6a44b1"
+    role: content
+    obligation: ink
+    measured: {cream: 6.29, light: 5.82, parchment-dark: 5.16}
+  - name: --ff-red
+    kind: css-var
+    hex: "#e74c3c"
+    role: ornament
+    obligation: exempt
+    note: Zero remaining color/border-color/fill usage after Story 4.1 (its one usage now reads --ff-red-ink).
+  - name: --ff-red-ink
+    kind: css-var
+    hex: "#b12416"
+    role: content
+    obligation: ink
+    measured: {cream: 6.17, light: 5.71, parchment-dark: 5.06}
+  - name: --ff-green
+    kind: css-var
+    hex: "#2ecc71"
+    role: ornament
+    obligation: exempt
+    note: Zero remaining color/border-color/fill usage after Story 4.1 (its one usage now reads --ff-green-ink).
+  - name: --ff-green-ink
+    kind: css-var
+    hex: "#17683a"
+    role: content
+    obligation: ink
+    measured: {cream: 6.28, light: 5.81, parchment-dark: 5.15}
+
+  # --- D&D inspired ---
+  - name: --dnd-parchment
+    kind: css-var
+    hex: "#f9f3e6"
+    role: ornament
+    obligation: exempt
+    note: Surface/background token (.character-sheet, .item-rarity-label, ...), never color/border-color/fill.
+  - name: --dnd-brown
+    kind: css-var
+    hex: "#6d562f"
+    role: content
+    obligation: ink
+    measured: {cream: 6.40, light: 5.92, parchment-dark: 5.25}
+    note: >-
+      Darkened in place 8% from #8a6d3b (was 4.46 on cream -- missed AA by
+      0.04, 1.4.11/1.4.3 forbid rounding a near-miss into a pass). 34 usages,
+      all `color:`, zero ornament use -- safe to darken the token itself
+      rather than split it.
+  - name: --dnd-red
+    kind: css-var
+    hex: "#a94442"
+    role: ornament
+    obligation: exempt
+    note: >-
+      DEAD TOKEN -- `grep -rn "dnd-red" _sass/` returns only its own
+      declaration. Not rescued (same discipline as --rarity-uncommon below);
+      left in place, exempt because unreachable.
+  - name: --dnd-ink
+    kind: css-var
+    hex: "#4e342e"
+    role: content
+    obligation: ink
+    measured: {cream: 10.43, light: 9.64, parchment-dark: 8.55}
+    note: >-
+      Pre-existing, already passing. NOT ~12.7:1 (that figure belongs to
+      --ink-color, #3a2921) -- see spec.yaml traps.
+
+  # --- Text colors ---
+  - name: --text-primary
+    kind: css-var
+    hex: "#333333"
+    role: content
+    obligation: ink
+    measured: {cream: 11.63, light: 10.76, parchment-dark: 9.54}
+  - name: --text-secondary
+    kind: css-var
+    hex: "#5c5c5c"
+    role: content
+    obligation: ink
+    measured: {cream: 6.16, light: 5.69, parchment-dark: 5.05}
+    note: >-
+      Darkened in place 4% from #666 (was 4.33 on parchment-dark -- fails).
+      The `.dark-mode`-scoped override (#b0b0b0, four call sites) targets a
+      dark surface outside the declared background set and is untouched.
+  - name: --text-light
+    kind: css-var
+    hex: "#5b5b5b"
+    role: content
+    obligation: ink
+    measured: {cream: 6.25, light: 5.78, parchment-dark: 5.13}
+    note: Darkened in place 18% from #898989 (was 3.22/2.98/2.64 -- never legal body text).
+
+  # --- Visual effects (shadows/borders -- never color/border-color/fill) ---
+  - name: --border-light
+    kind: css-var
+    value: "rgba(153, 102, 204, 0.2)"
+    role: ornament
+    obligation: exempt
+    note: Used only via `border:`/`box-shadow:` shorthand across the codebase -- zero border-color/color/fill hits.
+  - name: --shadow-light
+    kind: css-var
+    role: ornament
+    obligation: exempt
+  - name: --shadow-medium
+    kind: css-var
+    role: ornament
+    obligation: exempt
+
+  # --- Stat-bar hairline (new, AC-027 / Story 4.2) ---
+  - name: --stat-track-hairline
+    kind: css-var
+    resolves_to: --dnd-ink
+    role: content
+    obligation: ink
+    measured_against_local_surface:
+      attribute-bar-track-on-parchment: 9.16
+      dnd-parchment: 10.24
+    note: 1.4.11 binds the fill/track BOUNDARY, not the pastel fill (--ff-blue/--ff-purple keep their exact hex).
+  - name: --stat-fill-edge
+    kind: css-var
+    resolves_to: --dnd-ink
+    role: content
+    obligation: ink
+    measured_against_local_surface:
+      attribute-bar-track-on-parchment: 9.16
+
+  # --- Rarity colors (WoW item-quality hues; near-black-UI palette on a light site) ---
+  - name: --rarity-common
+    kind: css-var
+    hex: "#7c818c"
+    role: ornament
+    obligation: exempt
+  - name: --rarity-uncommon
+    kind: css-var
+    hex: "#1eff00"
+    role: ornament
+    obligation: exempt
+    note: >-
+      DEAD TOKEN. `grep -rn "rarity-uncommon" _sass/` returns only its own
+      declaration; no `.uncommon` rule exists anywhere, and
+      laboratory.js's rarity switch falls through unknown tiers to "common".
+      1.26:1 on cream -- would fail catastrophically if ever wired up. NOT
+      rescued here (no dark-surface module built for a failure that cannot
+      currently occur) -- see report. The AC-030 rarity label (Story 4.4a)
+      still renders the literal word "Uncommon" correctly from data; it just
+      borrows --rarity-common's accent color rather than reviving this token.
+  - name: --rarity-rare
+    kind: css-var
+    hex: "#0070dd"
+    role: ornament
+    obligation: exempt
+  - name: --rarity-epic
+    kind: css-var
+    hex: "#a335ee"
+    role: ornament
+    obligation: exempt
+  - name: --rarity-legendary
+    kind: css-var
+    hex: "#ff8000"
+    role: ornament
+    obligation: exempt
+    note: >-
+      2.32:1 on cream -- fails even the 3:1 non-text bar, which is exactly
+      why AC-030 conveys the tier by TEXT (.item-rarity-label), never by this
+      color alone; the color stays a redundant border/strip accent.
+
+  # --- Notebook colors ---
+  - name: --parchment-light
+    kind: css-var
+    hex: "#f8f5e6"
+    role: ornament
+    obligation: exempt
+  - name: --parchment-dark
+    kind: css-var
+    hex: "#e8e0c0"
+    role: ornament
+    obligation: exempt
+    note: This is also one of the four AC-026 declared BACKGROUNDS -- as a token it is a surface, not text/boundary.
+  - name: --ink-color
+    kind: css-var
+    hex: "#3a2921"
+    role: content
+    obligation: ink
+    measured: {cream: 12.73, light: 11.77, parchment-dark: 10.44}
+    note: Declared but currently has zero live color/border-color/fill usage (only a redundant redeclaration in _notebook.scss:7). Classified content/ink defensively; already passes everywhere.
+  - name: --scroll-shadow
+    kind: css-var
+    role: ornament
+    obligation: exempt
+
+  # --- Letter specific colors ---
+  - name: --letter-gradient-start
+    kind: css-var
+    hex: "#635b9c"
+    role: ornament
+    obligation: exempt
+  - name: --letter-gradient-end
+    kind: css-var
+    hex: "#a55b95"
+    role: ornament
+    obligation: exempt
+  - name: --letter-paper
+    kind: css-var
+    resolves_to: --parchment-light
+    role: ornament
+    obligation: exempt
+  - name: --letter-ink
+    kind: css-var
+    resolves_to: --dnd-ink
+    role: content
+    obligation: ink
+    note: DEAD TOKEN -- zero usages anywhere in _sass/. Already resolves to a passing ink token if ever wired up; not rescued/used, just correctly classified.
+  - name: --wax-seal
+    kind: css-var
+    hex: "#993333"
+    role: ornament
+    obligation: exempt
+  - name: --letter-shadow
+    kind: css-var
+    role: ornament
+    obligation: exempt
+
+  # --- Base canvas tokens (Story 3.5 / AC-025) ---
+  - name: --bg-primary
+    kind: css-var
+    role: ornament
+    obligation: exempt
+    note: The page canvas itself -- a background, not text or a boundary.
+  - name: --text-body
+    kind: css-var
+    role: content
+    obligation: ink
+    note: Resolves to $text-dark (light) / #e0e0e0 (dark, prefers-color-scheme) -- both pre-existing, both passing on their own theme's surfaces (Phase 3, AC-025).
+
+  # --- Sass color variables ($pastel-*, backgrounds, text) ---
+  - name: $pastel-pink
+    kind: sass-var
+    hex: "#F8D1E0"
+    role: ornament
+    obligation: exempt
+  - name: $pastel-lavender
+    kind: sass-var
+    hex: "#E5D4F1"
+    role: ornament
+    obligation: exempt
+  - name: $pastel-purple
+    kind: sass-var
+    hex: "#CDB4DB"
+    role: ornament
+    obligation: exempt
+    measured: {cream: 1.73, light: 1.60, parchment-dark: 1.42}
+    note: >-
+      Every color/border-color content usage repointed to $pastel-purple-ink
+      (Story 4.1) except two independently-verified-passing exemptions --
+      see usage_exemptions (.hero-description, .hero-trademark).
+  - name: $pastel-purple-ink
+    kind: sass-var
+    hex: "#764692" # darken($pastel-purple, 36%)
+    role: content
+    obligation: ink
+    measured: {cream: 6.32, light: 5.84, parchment-dark: 5.18}
+  - name: $pastel-purple-ink-hover
+    kind: sass-var
+    hex: "#683e80" # darken($pastel-purple, 41%)
+    role: content
+    obligation: ink
+    measured: {cream: 7.47, light: 6.91, parchment-dark: 6.12}
+  - name: $pastel-blue
+    kind: sass-var
+    hex: "#B9C9E6"
+    role: ornament
+    obligation: exempt
+    measured: {cream: 1.54, light: 1.42, parchment-dark: 1.26}
+    note: One content usage (.hero-description) is an independently-verified-passing exemption -- see usage_exemptions.
+  - name: $pastel-mint
+    kind: sass-var
+    hex: "#C8E7D5"
+    role: ornament
+    obligation: exempt
+  - name: $background-cream
+    kind: sass-var
+    hex: "#F8F5F2"
+    role: ornament
+    obligation: exempt
+    note: >-
+      The site canvas; also used as inverted TEXT color on saturated/dark
+      button and icon fills (.button--primary, .social-icon, ...) -- those
+      backgrounds are outside the AC-026 declared set by construction (a
+      light color used as light text is definitionally not the 1.4.3 failure
+      mode), so this stays classified by its dominant, declared purpose.
+  - name: $background-light
+    kind: sass-var
+    hex: "#F0ECE9"
+    role: ornament
+    obligation: exempt
+    note: This is also one of the four AC-026 declared BACKGROUNDS.
+  - name: $text-dark
+    kind: sass-var
+    hex: "#4A4A4A"
+    role: content
+    obligation: ink
+    measured: {cream: 8.16, light: 7.55, parchment-dark: 6.69}
+  - name: $text-medium
+    kind: sass-var
+    hex: "#5b5b5b"
+    role: content
+    obligation: ink
+    measured: {cream: 6.25, light: 5.78, parchment-dark: 5.13}
+    note: Darkened in place 7% from #6D6D6D (was 4.76/4.41/3.91 -- fails light and parchment-dark).
+  - name: $text-light
+    kind: sass-var
+    hex: "#5c5c5c"
+    role: content
+    obligation: ink
+    measured: {cream: 6.16, light: 5.69, parchment-dark: 5.05}
+    note: Darkened in place 18% from #8A8A8A (was 3.18/2.94/2.61 -- never legal body text).
+
+not_manifest_scope:
+  # Declared OUTSIDE _sass/_variables.scss -- AC-048's VERIFY scopes the
+  # manifest to that one file ("enumerates every token declared in
+  # _sass/_variables.scss"). Listed here for auditability, not as manifest
+  # rows.
+  - token: --symbol-color
+    declared_at: "inline style, index.html (per alchemy-symbol element) / _sass/_home.scss (fallback only)"
+    disposition: >-
+      Ornament (5 ad hoc per-glyph hex values, e.g. #FF5E5B; decorative rune
+      icon fill). One usage (home.scss:368, the .hovered::after name
+      tooltip) renders real text (the rune's title) on a near-black
+      rgba(33,28,48,0.85) background -- independently plausible-passing
+      (light pastel-family colors on near-black) but not mechanically
+      verified here since the token is out of manifest scope by declaration
+      site. Logged for Phase 4b/5 follow-up, not blocking any of the 19 ACs.
+  - token: --ring-color
+    declared_at: "_sass/_home.scss (per-ring custom property, alchemy circle ornament)"
+    disposition: Ornament, decorative ring stroke color, never text.
+  - token: --post-text
+    declared_at: "_sass/_post.scss:7 (`--post-text: var(--dnd-ink);`), dark-mode override _sass/_post.scss:1145"
+    disposition: Alias of --dnd-ink (already content/ink, already passing) -- trivially safe, just declared locally instead of in _variables.scss.
+  - token: --ff-purple-dark
+    declared_at: NOWHERE
+    disposition: >-
+      BUG, found and fixed (not part of the 19 ACs, but adjacent and cheap):
+      _sass/_post.scss:705 (`.article-content code`) referenced
+      `var(--ff-purple-dark)`, a custom property declared nowhere in the
+      codebase -- an undefined var() with no fallback, silently inheriting
+      instead of erroring. Repointed to --ff-purple-ink (real body content:
+      inline code text).
+
+usage_exemptions:
+  # AC-047 binds "a palette token referenced by a CSS color/border-color/fill
+  # rule that renders body text or a meaning-bearing boundary" to a
+  # content/ink token. These are the specific, narrow, individually-justified
+  # usages of an ORNAMENT-role token via one of those three properties that
+  # are NOT bound -- each has a documented reason and, where feasible, an
+  # independently measured ratio. This list is deliberately short; it is the
+  # anti-vacuity discipline, generalized from the logotype selector-set carve-out.
+  - file: _sass/_about.scss
+    line: 360
+    selector: ".social-link:hover"
+    property: border-color
+    token: --ff-gold
+    reason: >-
+      Decorative color-echo border on a hover state whose STATE is already
+      carried by an obvious, large background-color change on the same rule
+      (background: var(--ff-gold) two lines up) -- the border does not
+      independently convey the state.
+  - file: _sass/_about.scss
+    line: 848
+    selector: ".current-quest .timeline-marker"
+    property: border-color
+    token: --ff-gold
+    reason: "Same pattern -- border-color matches background: var(--ff-gold) on the same rule."
+  - file: _sass/_about.scss
+    lines: [960, 976, 993]
+    selector: ".ability-type-ultimate, .ability-ultimate .ability-name/.ability-mana"
+    property: "color"
+    token: "--ff-gold, --dnd-brown"
+    reason: >-
+      KNOWN, MEASURED FAILURE, DELIBERATELY NOT FIXED HERE (line 960's
+      --dnd-brown is plausibly fine on its own gold/#d4a017 gradient but not
+      independently verified; lines 976/993's --ff-gold is independently
+      MEASURED FAILING). This card's own background is a
+      linear-gradient(135deg, var(--ff-purple), var(--ff-blue-dark)) -- not
+      one of the four AC-026 declared backgrounds. Measured directly:
+      --ff-gold on the gradient stops is 1.93:1 / 2.61:1 (fails); the
+      light-background-oriented --ff-gold-ink is WORSE there (1.63/1.20),
+      because it is tuned for cream/light/parchment-dark, not a dark card.
+      Fixing this honestly needs a dedicated light value for this specific
+      dark-gradient context (e.g. a near-white with a gold text-shadow), which
+      is a small design decision, not a token swap -- out of this bounded
+      pass. Logged for Phase 4b/5, not silently exempted as "fine."
+  - file: _sass/_about.scss
+    line: 1183
+    selector: ".cta-title"
+    property: color
+    token: --ff-gold
+    reason: >-
+      Same category as the ability-ultimate cluster above: background is
+      linear-gradient(135deg, var(--ff-blue-dark), var(--ff-purple)), not a
+      declared background. Not independently verified passing; logged, not fixed.
+  - file: _sass/_notebook.scss
+    line: 163
+    selector: ".glyph"
+    property: color
+    token: --ff-gold
+    reason: >-
+      Decorative ambient Unicode glyph (a floating symbol, not a text label)
+      in the grimoire hero. Non-informational by design -- scheduled for
+      `aria-hidden="true"` in Story 4.6 (AC-032, Phase 4b), which formalizes
+      its decorative-only status; currently NOT aria-hidden, a gap logged
+      for that pass.
+  - file: _sass/_home.scss
+    line: 104
+    selector: ".hero-description"
+    property: color
+    token: $pastel-blue
+    reason: >-
+      Real content (the identity-line tagline), but independently measured
+      passing against both declared hero-gradient stops: 9.86:1 / 8.12:1.
+      No -ink variant needed since the base hex already clears 4.5:1 in its
+      only content context.
+  - file: _sass/_home.scss
+    line: 115
+    selector: ".hero-trademark"
+    property: color
+    token: "rgba($pastel-purple, 0.8)"
+    reason: >-
+      Real content (copyright text), independently measured by alpha-blending
+      against both hero-gradient stops before computing contrast: 6.12:1 / 5.19:1.
+  - file: _sass/_home.scss
+    line: 63
+    selector: ".hero-content"
+    property: color
+    token: $background-cream
+    reason: "Sets the default hero text color; independently measured against both hero-gradient stops: 15.18:1 / 12.49:1."
+  - file: _sass/_home.scss
+    line: 79
+    selector: ".hero-title"
+    property: color
+    token: $background-cream
+    reason: "Same hero-gradient pairing as .hero-content, restated: 15.18:1 / 12.49:1."
+  - file: _sass/_home.scss
+    line: 352
+    selector: ".alchemy-symbol, .rune"
+    property: color
+    token: "var(--symbol-color, $pastel-purple)"
+    reason: >-
+      $pastel-purple here is a fallback for --symbol-color (out of manifest
+      scope, see not_manifest_scope) -- every actual rune element sets
+      --symbol-color inline, so the $pastel-purple fallback never renders in
+      practice. Decorative icon fill, not body text.
+  - file: _sass/_components.scss
+    line: 89
+    selector: ".social-icon (--linkedin/--github/--dev)"
+    property: color
+    token: $background-cream
+    reason: >-
+      KNOWN, MEASURED FAILURE, DELIBERATELY NOT FIXED HERE. $background-cream
+      text on the three brand-color icon fills measures 2.97:1 (#6E93B5
+      linkedin), 3.90:1 (#7B7B7B github), 4.12:1 (#777 dev) -- all fail 4.5,
+      and no available ink token rescues it either (the darkest, --ink-color,
+      only reaches 3.09-4.28:1 against these same three fills): the icon FILL
+      colors themselves are too light/medium to support any 4.5:1 text pairing.
+      A real fix needs to darken the three brand-color fills, not swap the
+      text token -- out of this bounded pass. Logged for Phase 4b/5. Compare
+      to .button--primary/--outlined hover states (_components.scss:21,32),
+      which had the identical defect shape and WERE fixed here (--ink-color
+      clears 5.24:1 / 7.34:1 against those two fills).
+  - file: _sass/_laboratory.scss
+    lines: [626, 627, 628, 629]
+    selector: ".item-rarity-label, &--rare, &--epic, &--legendary, &--uncommon"
+    property: border-color
+    token: "--rarity-rare, --rarity-epic, --rarity-legendary, --rarity-common"
+    reason: >-
+      AC-030's whole point: the tier is conveyed by the label's TEXT
+      (rendered in --dnd-brown on --dnd-parchment, already content/ink), and
+      the rarity color is a redundant 1px border accent -- reinforcement, not
+      the information channel (research-ui-a11y.md: "the tier color as a 2px
+      border... redundant with the label, and 1.4.1 is satisfied by G14").
+      Never used as the label's text or fill.

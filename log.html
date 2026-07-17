@@ -1,0 +1,59 @@
+---
+layout: default
+title: "Alchemist's Log"
+permalink: /log/
+resume: "The cadence-anchor stream — short, frequent journal entries between the long-form Scrolls"
+---
+
+<!--
+  /log -- "The Alchemist's Log" (Story 3.4, AC-022). The cadence-anchor stream: a
+  `type: log` entry is meant to be cheap enough to write that busy periods produce a
+  quick Log entry instead of silence (the site's own posting-cadence gap is exactly
+  the problem this exists to soften -- scout-report.md FINDING-024). GitHub Pages runs
+  Jekyll in safe mode (no custom generators/plugins) -- this is a plain static page
+  filtering `site.posts` by front matter at build time, same pattern Story 2.2 used for
+  the `/notebook/<category>/` pages (`site.categories`), just keyed on `type` instead
+  of `categories` since `type` is a separate closed-vocabulary field (CONVENTIONS.md),
+  not a Jekyll category.
+-->
+<section class="rpg-hero notebook-hero">
+  <div class="container">
+    <div class="hero-content">
+      <h1 class="hero-title fade-in">Alchemist's Log</h1>
+      <h2 class="hero-subtitle fade-in">The cadence anchor</h2>
+      <p class="hero-description">Short entries, written often — the notebook that survives busy weeks</p>
+    </div>
+  </div>
+</section>
+
+<section class="rpg-scrolls">
+  <div class="container">
+    <h2 class="section-title">
+      <i class="fas fa-feather-alt section-icon"></i>
+      Log Entries
+    </h2>
+
+    <p class="log-content">
+      A Scroll is a considered essay; a Log entry is whatever's worth writing down today,
+      kept short on purpose. When there isn't time for a full Scroll, there's usually time
+      for a Log — that's the point of having both.
+    </p>
+
+    {% assign log_posts = site.posts | where: "type", "log" %}
+    {% if log_posts.size > 0 %}
+      <div class="scrolls-collection">
+        {% for post in log_posts %}
+          {% include notebook/scroll-item.html post=post index=forloop.index %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-archive">
+        <div class="empty-archive-icon">
+          <i class="fas fa-feather-alt"></i>
+        </div>
+        <h3 class="empty-archive-title">No Log Entries Yet</h3>
+        <p class="empty-archive-text">The Alchemist's Log is warming up. Check back soon.</p>
+      </div>
+    {% endif %}
+  </div>
+</section>

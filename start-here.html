@@ -1,0 +1,57 @@
+---
+layout: default
+title: Start Here
+permalink: /start-here/
+resume: "A curated route through the Grimoire, by theme instead of by date"
+---
+
+<!--
+  /start-here -- "The Grimoire's Best Pages" (Story 2.4, AC-016). Larson's /featured
+  pattern, curated by theme (_data/start_here.yml) rather than a raw chronological dump.
+  Linked from the homepage's "Favorites from the Grimoire" section and the 404 page.
+-->
+<section class="rpg-hero">
+  <div class="container">
+    <div class="hero-content">
+      <h1 class="hero-title fade-in">The Grimoire's Best Pages</h1>
+      <h2 class="hero-subtitle fade-in">Start Here</h2>
+      <p class="hero-description">Not sure where to begin? Pick a theme instead of scrolling the archives</p>
+    </div>
+  </div>
+</section>
+
+<section class="rpg-scrolls">
+  <div class="container">
+    {% for section in site.data.start_here.sections %}
+      <h2 class="section-title">
+        <i class="{{ section.icon }} section-icon"></i>
+        {{ section.title }}
+      </h2>
+
+      <div class="related-scrolls start-here-scrolls">
+        {% for entry in section.entries %}
+          <div class="related-scroll-item">
+            <div class="related-scroll-card">
+              <div class="related-scroll-rarity
+                {% assign mod = forloop.index | modulo: 3 %}
+                {% if mod == 1 %}rare{% elsif mod == 2 %}epic{% else %}common{% endif %}
+              "></div>
+
+              <div class="related-scroll-header">
+                <h3 class="related-scroll-title">{{ entry.title }}</h3>
+              </div>
+
+              <div class="related-scroll-content">
+                <p class="related-scroll-excerpt">{{ entry.description }}</p>
+              </div>
+
+              <div class="related-scroll-footer">
+                <a href="{{ entry.url | relative_url }}" class="related-scroll-link">Read on</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+</section>

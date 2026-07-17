@@ -14,22 +14,29 @@
 
   &--primary {
     background-color: $pastel-purple;
-    color: darken($pastel-purple, 35%);
+    color: $pastel-purple-ink;
 
     &:hover {
       background-color: darken($pastel-purple, 10%);
-      color: $background-cream;
+      // AC-026-adjacent: was `$background-cream` (near-white) on this
+      // saturated hover fill -- measured 2.43:1, a real failure found while
+      // auditing $background-cream's other `color:` usages (outside the
+      // four AC-026 declared backgrounds, so not gated by the mechanical
+      // test, but cheap and correct to fix: --ink-color already existed and
+      // clears 5.24:1 here).
+      color: var(--ink-color);
     }
   }
 
   &--outlined {
     background-color: transparent;
     border: 2px solid $pastel-purple;
-    color: darken($pastel-purple, 25%);
+    color: $pastel-purple-ink-hover;
 
     &:hover {
       background-color: $pastel-purple;
-      color: $background-cream;
+      // Same fix: was $background-cream at 1.73:1 on $pastel-purple; --ink-color clears 7.34:1.
+      color: var(--ink-color);
     }
   }
 }
@@ -115,7 +122,7 @@
   display: inline-block;
   margin-bottom: 2.5rem;
   font-size: 2.25rem;
-  color: darken($pastel-purple, 15%);
+  color: $pastel-purple-ink;
 
   &:after {
     content: '';
@@ -161,7 +168,7 @@
     border-radius: 20px;
     font-size: 0.8rem;
     background-color: rgba($pastel-purple, 0.2);
-    color: darken($pastel-purple, 25%);
+    color: $pastel-purple-ink-hover;
     transition: all 0.2s ease;
 
     &:hover {

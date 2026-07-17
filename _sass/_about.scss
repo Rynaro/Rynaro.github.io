@@ -264,17 +264,39 @@
 
 .bar-container {
   flex: 1;
-  height: 8px;
+  // AC-038: was `height: 8px` + `overflow: hidden` -- .bar-value's text (the
+  // meter's aria-valuetext-equivalent visible label) sat absolutely
+  // positioned inside a hard-clipped box, so a 1.4.12 text-spacing override
+  // would have been invisibly cut off rather than merely overflowing.
+  // min-height keeps the default 8px look (nothing here forces it taller in
+  // the common case) but no longer HARD-caps it; overflow:hidden dropped so
+  // grown text is visible (overlapping, not lost) instead of clipped.
+  // .bar-fill switches from `height: 100%` (which would resolve to `auto`,
+  // i.e. collapse, against a min-height-only parent) to absolute
+  // top/bottom:0 positioning, which resolves correctly against a
+  // min-height-established box.
+  min-height: 8px;
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: 4px;
   position: relative;
-  overflow: hidden;
 }
 
 .bar-fill {
-  height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
   border-radius: 4px;
   transition: width 0.3s ease;
+  // AC-027-adjacent: measured (not manifest-token-driven, so outside the
+  // automated palette-contrast test's declared-background set -- these are
+  // page-specific hex, not _variables.scss tokens) -- HP (#e64a4a) reaches
+  // only 3.16/2.58:1 against this dark track and MP (#4a4ae6) only
+  // 1.98/1.62:1; ST/EXP already clear 3:1 on their own saturation. A light
+  // hairline (cream, 9.15-11.23:1 against the blended track) closes the
+  // fill/track boundary for all four uniformly rather than special-casing
+  // two of them.
+  border-right: 1px solid rgba(248, 245, 242, 0.9);
 }
 
 .bar-value {
@@ -439,7 +461,7 @@
 }
 
 .highlight {
-  color: var(--ff-gold);
+  color: var(--ff-gold-ink);
   font-weight: 600;
   text-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
   position: relative;
@@ -458,7 +480,7 @@
 }
 
 strong {
-  color: $pastel-purple;
+  color: $pastel-purple-ink;
   font-weight: 600;
 }
 
@@ -484,7 +506,7 @@ strong {
 
     .minor-attributes-title {
       font-size: 0.9rem;
-      color: var(--ff-gold);
+      color: var(--ff-gold-ink);
       margin-bottom: 0.5rem;
       text-align: center;
       font-weight: 600;
@@ -513,7 +535,7 @@ strong {
       }
 
       i {
-        color: var(--ff-gold);
+        color: var(--ff-gold-ink);
         font-size: 0.9rem;
       }
 
@@ -523,7 +545,7 @@ strong {
       }
 
       .minor-attribute-value {
-        color: var(--ff-purple);
+        color: var(--ff-purple-ink);
         font-weight: 600;
       }
     }
@@ -579,20 +601,42 @@ strong {
 }
 
 .attribute-bar {
-  height: 20px;
+  // AC-038: was `height: 20px` + `overflow: hidden` -- .attribute-value's
+  // text sat absolutely positioned inside a hard-clipped box, so a 1.4.12
+  // text-spacing override would have been invisibly cut off. min-height
+  // keeps the default 20px look; overflow:hidden dropped so grown text
+  // overlaps rather than disappears. See .bar-container above for the
+  // identical fix on the HP/MP/ST/EXP bars.
+  min-height: 20px;
   background: rgba(153, 102, 204, 0.1);
   border-radius: 10px;
   position: relative;
   margin-bottom: 1rem;
-  border: 1px solid rgba(153, 102, 204, 0.2);
-  overflow: hidden;
+  // AC-027 / Story 4.2: was `rgba(153, 102, 204, 0.2)` -- 1.4.11 binds the
+  // track's boundary (measured 9.16:1 against the track's own blended
+  // surface here, 10.24:1 against --dnd-parchment; the old rgba border was
+  // never checked and reads far below 3:1). --ff-blue and --ff-purple keep
+  // their exact hex as the fill gradient (Story 4.1: "every pastel keeps its
+  // exact hex") -- only the boundary ink changed.
+  border: 1px solid var(--stat-track-hairline);
 }
 
 .attribute-fill {
-  height: 100%;
+  // AC-038: `height: 100%` would resolve to `auto` (collapse) against a
+  // min-height-only parent -- switched to absolute top/bottom:0, which
+  // resolves correctly against a min-height-established box (see
+  // .bar-fill's identical fix above).
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
   background: linear-gradient(to right, var(--ff-blue), var(--ff-purple));
   border-radius: 10px;
-  position: relative;
+  // AC-027: the fill/track boundary -- ff-blue (2.55:1) and ff-purple
+  // (3.31:1) against the blended track are the "part of the graphic required
+  // to understand the content" per 1.4.11's own Understanding text; the
+  // hairline discharges that obligation without touching the fill gradient.
+  border-right: 1px solid var(--stat-fill-edge);
 }
 
 .attribute-value {
@@ -600,7 +644,7 @@ strong {
   top: 50%;
   right: 10px;
   transform: translateY(-50%);
-  color: var(--ff-gold);
+  color: var(--ff-gold-ink);
   font-weight: bold;
   font-size: 0.85rem;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
@@ -628,7 +672,7 @@ strong {
   .minor-attribute-icon {
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
-    color: var(--ff-gold);
+    color: var(--ff-gold-ink);
   }
 
   .minor-attribute-name {
@@ -640,7 +684,7 @@ strong {
 
   .minor-attribute-value {
     font-size: 0.9rem;
-    color: var(--ff-purple);
+    color: var(--ff-purple-ink);
     font-weight: 500;
   }
 }
@@ -802,7 +846,7 @@ strong {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--ff-purple);
+  color: var(--ff-purple-ink);
   font-size: 0.9rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border: 2px solid var(--ff-purple-light);
@@ -841,7 +885,7 @@ strong {
 }
 
 .quest-location {
-  color: var(--ff-purple);
+  color: var(--ff-purple-ink);
   margin-bottom: 0.5rem;
 }
 
@@ -866,7 +910,7 @@ strong {
 .toggle-button {
   background: none;
   border: none;
-  color: var(--ff-purple);
+  color: var(--ff-purple-ink);
   font-weight: 500;
   cursor: pointer;
   display: flex;
@@ -946,7 +990,11 @@ strong {
     color: white;
     border: 1px solid var(--ff-gold);
     box-shadow: 0 0 20px rgba(230, 165, 83, 0.3);
-    animation: ultimate-glow 2s infinite alternate;
+    // AC-031: was `2s infinite alternate` -- auto-visible on load, in
+    // parallel with the rest of the character sheet. 2 iterations (one full
+    // brighten/dim cycle, "flares" once) then holds at the brighter frame
+    // -- 4s total, well under 5s.
+    animation: ultimate-glow 2s ease-in-out 2 alternate forwards;
 
     .ability-name {
       color: var(--ff-gold);
@@ -1021,7 +1069,7 @@ strong {
 }
 
 .ability-mana {
-  color: var(--ff-blue);
+  color: var(--ff-blue-dark);
   font-size: 0.9rem;
   font-weight: 600;
   display: inline-block;
@@ -1185,7 +1233,7 @@ strong {
   transform: translateY(-5px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
   background: white;
-  color: var(--ff-purple);
+  color: var(--ff-purple-ink);
 }
 
 .button-icon {
@@ -1256,7 +1304,7 @@ strong {
 
 .section-icon {
   margin-right: 1rem;
-  color: var(--ff-purple);
+  color: var(--ff-purple-ink);
 }
 
 /* Block Components */

@@ -95,7 +95,14 @@ title: Send a Letter
             <h3 class="parchment-title">Compose a Letter</h3>
           </div>
 
-          <form action="https://formspree.io/f/hi@hlavezzo.me" method="POST" id="contact-form" class="magical-form">
+          <!-- Formspree form-hash ID supplied by the owner (2026-07-16); UNVERIFIED --
+               owner said "I think the ID is this one." A safe GET to this endpoint
+               returns Formspree's own "Form should POST" page (HTTP 405), which confirms
+               the form-hash ID EXISTS -- it does not confirm submissions reach the
+               owner's inbox. No test POST was sent (would create a real submission).
+               The owner must send ONE real test submission through the live site to
+               confirm end-to-end delivery (D9). -->
+          <form action="https://formspree.io/f/xjvapdgb" method="POST" id="contact-form" class="magical-form">
             <div class="form-group">
               <label for="name" class="form-label">Your Name</label>
               <div class="input-container">

@@ -1,0 +1,16 @@
+<!--
+  Epistemic-status ("assay") label (Story 3.1, AC-018). Renders the alchemist's
+  purity read for `page.assay` against the closed three-value vocabulary
+  CONVENTIONS.md fixed in Phase 0. Optional -- a post with no `assay:` field renders
+  nothing.
+  Param: include.assay -- the raw `page.assay` value.
+-->
+{% assign assay_key = include.assay %}
+{% if site.data.assay.labels[assay_key] %}
+  {% assign assay_label = site.data.assay.labels[assay_key] %}
+  {% assign assay_icon = site.data.assay.icons[assay_key] | default: "fas fa-vial" %}
+  <span class="post-assay-label post-assay-label--{{ assay_key }}" title="{{ site.data.assay.glosses[assay_key] }}">
+    <i class="{{ assay_icon }}" aria-hidden="true"></i>
+    {{ assay_label }}
+  </span>
+{% endif %}

@@ -1,0 +1,105 @@
+{
+  "mcpServers": {
+    "crystalium": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "--label",
+        "eidolons.project=rynaro-github-io",
+        "-v",
+        "/home/rynaro/.crystalium/rynaro-github-io:/root/.crystalium/rynaro-github-io",
+        "-e",
+        "CRYSTALIUM_DATA_DIR=/root/.crystalium/rynaro-github-io",
+        "-e",
+        "CRYSTALIUM_CALLER_TIER=T1",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "ghcr.io/rynaro/crystalium@sha256:a83469675b21ea74db68f8ea143841073667d1cf75a67df25039fa66f244e8e9",
+        "python",
+        "-m",
+        "crystalium",
+        "serve"
+      ]
+    },
+    "tonberry": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "-u",
+        "1000:1000",
+        "--label",
+        "eidolons.project=rynaro-github-io",
+        "-v",
+        "/home/rynaro/workspace/personal/Rynaro.github.io:/workspace:z",
+        "-w",
+        "/workspace",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "ghcr.io/rynaro/tonberry@sha256:55dd2fed08070461e1f3b92c303128a0ae1f3c1b62165fd07d0c327e7b1f94f9",
+        "serve"
+      ]
+    },
+    "junction": {
+      "command": "/home/rynaro/.eidolons/cache/junction@0.4.0/junction",
+      "args": [
+        "mcp",
+        "serve"
+      ]
+    },
+    "atomos": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "--label",
+        "eidolons.project=rynaro-github-io",
+        "-v",
+        "/home/rynaro/workspace/personal/Rynaro.github.io:/workspace:z",
+        "-w",
+        "/workspace",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "ghcr.io/rynaro/atomos@sha256:b3f67b4ef64230ebe91aa37efea14e386f178950a2750e0c26c8d29d7ea4a639",
+        "serve"
+      ]
+    },
+    "atlas-aci": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "--read-only",
+        "-u",
+        "1000:1000",
+        "-e",
+        "HOME=/tmp",
+        "-v",
+        "/home/rynaro/workspace/personal/Rynaro.github.io:/repo:ro,Z",
+        "-v",
+        "/home/rynaro/workspace/personal/Rynaro.github.io/.atlas/memex:/memex:Z",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "ghcr.io/rynaro/atlas-aci@sha256:386677f06b0ce23cb4883f6c0f91d8eac22328cd7d9451ae241e2f183207ad96",
+        "serve",
+        "--repo",
+        "/repo",
+        "--memex-root",
+        "/memex"
+      ]
+    }
+  }
+}

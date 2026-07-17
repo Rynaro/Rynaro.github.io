@@ -1,0 +1,23 @@
+<!--
+  Post-type badge (Story 3.1, AC-017; visibly-distinct badge for AC-021). Renders a
+  themed pill for `page.type` against the closed five-value vocabulary CONVENTIONS.md
+  fixed in Phase 0 -- an untyped post, or a `type:` outside that set, renders no badge
+  (CONVENTIONS.md: "A post with no `type:` field is untyped and renders with no
+  badge"). Each type gets its own pastel ground with the alchemist-ink text color
+  hardcoded (NOT `var(--dnd-ink)` -- that token flips to a light grey under
+  `prefers-color-scheme: dark` / `.dark-mode`, Story 3.5, and would wreck contrast
+  against a static pastel background) -- measured 6.01-8.54:1 across all five pastels,
+  comfortably >4.5:1, so this ships ahead of Phase 4's `-ink`/`-ornament` split without
+  handing it a contrast defect to clean up. See `_sass/_post.scss` for the per-type
+  measured ratios.
+  Param: include.type -- the raw `page.type` value.
+-->
+{% assign type_key = include.type %}
+{% if site.data.post_types.labels[type_key] %}
+  {% assign type_label = site.data.post_types.labels[type_key] %}
+  {% assign type_icon = site.data.post_types.icons[type_key] | default: "fas fa-scroll" %}
+  <span class="post-type-badge post-type-badge--{{ type_key }}" title="{{ site.data.post_types.glosses[type_key] }}">
+    <i class="{{ type_icon }}" aria-hidden="true"></i>
+    {{ type_label }}
+  </span>
+{% endif %}
