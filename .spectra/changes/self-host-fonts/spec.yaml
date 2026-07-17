@@ -1,0 +1,108 @@
+artifact: spec
+change_id: self-host-fonts
+tier: full
+version: 0.1.0
+title: Replace third-party font CDNs with self-hosted assets
+esl:
+  tier: full
+  maker: vivi
+  checker: kupo
+  has_code: true
+  status_at_emission: in_progress
+provenance_note: >-
+  No separate SPECTRA/ramza `specify` hop produced this spec (unlike rebrand-*/normalize-*).
+  The orchestrator gave vivi a direct, fully-scoped brief and routed straight to in_progress.
+  This file is vivi's own record of that brief plus its own verification; no ramza score or
+  criteria-freeze hash is claimed.
+criteria_source: .spectra/changes/self-host-fonts/spec.md
+criteria_count: 8
+acceptance_checks:
+- id: AC-001
+  given: 'the built site'
+  when: '_site/ is scanned for third-party font CDN references'
+  then: 'no fonts.googleapis, fonts.gstatic, or cdnjs.cloudflare substring appears anywhere in _site/'
+  verify_method: "grep -rE 'fonts\\.googleapis|fonts\\.gstatic|cdnjs\\.cloudflare' _site/ ; zero matches"
+- id: AC-002
+  given: 'the modified Sass source'
+  when: 'bundle exec jekyll build runs'
+  then: 'the build exits 0 and introduces no new Sass error (pre-existing darken()/@import deprecation warnings in _variables.scss are unchanged and out of scope)'
+  verify_method: 'bundle exec jekyll build; exit code 0; warning set diffed against pre-change baseline shows no new warning class'
+- id: AC-003
+  given: 'assets/fonts/'
+  when: 'the build runs'
+  then: 'assets/fonts/*.woff2 exist on disk and are copied into _site/assets/fonts/'
+  verify_method: '7 .woff2 files present in both assets/fonts/ and _site/assets/fonts/; _config.yml exclude: does not match assets/fonts'
+- id: AC-004
+  given: 'the local Font Awesome stylesheet'
+  when: 'every @font-face src is inspected'
+  then: 'every url(...) resolves to a shipped local file -- zero dangling references'
+  verify_method: 'every url(...) in assets/fonts/fontawesome.min.css names a file that exists in the same directory'
+- id: AC-005
+  given: 'the pre-existing font-family: "Font Awesome 5 Free" (weight 900) usage in _sass/_post.scss and _sass/_notebook.scss'
+  when: 'the local Font Awesome CSS loads instead of the cdnjs original'
+  then: 'the same v4/v5-compat family-name alias resolves to the solid glyph set, so \f073 (calendar) and \f017 (clock) keep rendering exactly as before'
+  verify_method: 'assets/fonts/fontawesome.min.css contains the Font Awesome 5 Free / weight 900 / fa-solid-900.woff2 alias; fontTools cmap confirms U+F073 and U+F017 present in fa-solid-900.woff2'
+- id: AC-006
+  given: '3 representative icon classes actually used in markup: fas fa-scroll, fas fa-flask, fab fa-github'
+  when: 'the local CSS and shipped webfonts are inspected'
+  then: 'each class has a content: rule in the local CSS and a glyph at that codepoint in the corresponding shipped webfont'
+  verify_method: 'CSS content rules \f70e / \f0c3 / \f09b present; fontTools cmap confirms U+F70E, U+F0C3 in fa-solid-900.woff2 and U+F09B in fa-brands-400.woff2'
+- id: AC-007
+  given: 'npm run test:a11y-static is the project trust anchor'
+  when: 'the change lands'
+  then: 'npm run test:a11y-static still exits 0'
+  verify_method: 'npm run test:a11y-static; exit 0'
+- id: AC-008
+  given: 'family names Inter, Roboto, Nothing You Could Do referenced across _sass/_base.scss, _sass/_about.scss, _sass/_home.scss, _sass/_layout.scss, _sass/_notebook.scss'
+  when: 'the self-hosted @font-face rules replace the CDN stylesheet'
+  then: 'every family name and every referenced weight (Inter 300/400/500/700, Roboto 300/400/500, Nothing You Could Do 400) resolves to a registered @font-face'
+  verify_method: "grep -o '@font-face{[^}]*}' _site/assets/css/main.css lists exactly those 8 (family, weight) pairs"
+investigation_finding:
+  topic: 'Font Awesome 5 vs 6 family-name mismatch in _sass/'
+  finding: >-
+    Font Awesome 6.4.2's own CSS (upstream and this self-hosted copy) ships backward-compat
+    @font-face aliases naming "Font Awesome 5 Free" / "Font Awesome 5 Brands" pointing at the
+    same v6 solid/brands/regular binaries. The _sass/ usages of "Font Awesome 5 Free" were
+    already rendering correctly under the CDN; self-hosting the unmodified upstream CSS
+    preserves that with zero additional code. Verified via live CDN response inspection +
+    fontTools cmap check of the downloaded fa-solid-900.woff2 (U+F073, U+F017 present).
+  action_taken: none required -- upstream alias carried over verbatim
+assets_added:
+  woff2:
+  - path: assets/fonts/inter-latin-var.woff2
+    bytes: 48256
+    note: 'variable font, wght axis 100-900, covers Inter 300/400/500/700 (Google serves the same file for all 4 weights)'
+  - path: assets/fonts/roboto-latin-var.woff2
+    bytes: 43136
+    note: 'variable font, wght axis 100-900, covers Roboto 300/400/500 (same file for all 3 weights)'
+  - path: assets/fonts/nothing-you-could-do-latin-400.woff2
+    bytes: 16096
+    note: 'static, weight 400 only'
+  - path: assets/fonts/fa-solid-900.woff2
+    bytes: 150020
+  - path: assets/fonts/fa-brands-400.woff2
+    bytes: 109808
+  - path: assets/fonts/fa-regular-400.woff2
+    bytes: 24488
+    note: 'not exercised by current markup (no far/fal usage found) -- shipped anyway so the vendored FA CSS has zero dangling @font-face references; browsers never fetch an unreferenced-by-usage font resource, so this costs nothing at runtime'
+  - path: assets/fonts/fa-v4compatibility.woff2
+    bytes: 4568
+    note: 'same rationale as fa-regular-400.woff2'
+  css:
+  - path: assets/fonts/fontawesome.min.css
+    bytes_raw: 102585
+    bytes_gzip: ~22800
+    note: 'vendored verbatim from the official cdnjs Font Awesome Free 6.4.2 release, url() paths flattened to the local co-located directory, .ttf fallback src dropped (not shipped, never fetched by any current browser)'
+  total_woff2_bytes: 396372
+external_requests_removed:
+  before: 'up to 7 third-party HTTP requests across 2 origins (fonts.googleapis.com: 1 stylesheet; fonts.gstatic.com: up to 3 font files for the latin subset; cdnjs.cloudflare.com: 1 stylesheet + up to 2 font files), plus 2 preconnect hints'
+  after: 0
+declared_scope:
+- _includes/head/fonts.html
+- _sass/_fonts.scss
+- assets/css/main.scss
+- assets/fonts/*
+out_of_scope_untouched:
+- scripts/visual-baseline.mjs
+- any _sass/ color/layout/BEM rule
+- any .html page body or layout

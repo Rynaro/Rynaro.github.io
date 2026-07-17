@@ -1,0 +1,17 @@
+{
+  "envelope_version": "2.0",
+  "from": {
+    "eidolon": "vivi"
+  },
+  "to": {
+    "eidolon": "kupo"
+  },
+  "performative": "INFORM",
+  "objective": "Vivi (maker) completed the self-host-fonts implement hop at in_progress; handing off to Kupo (checker) for the verified transition. Vivi does not self-verify (maker != checker, C4).",
+  "context_delta": {
+    "acceptance_checks_verified": 8,
+    "spec_ref": ".spectra/changes/self-host-fonts/spec.md",
+    "summary": "Replaced third-party font CDN loading (Google Fonts css2 + cdnjs Font Awesome 6.4.2) with self-hosted woff2 assets under assets/fonts/. All 8 acceptance criteria in spec.md/spec.yaml verified locally by vivi: zero fonts.googleapis/fonts.gstatic/cdnjs.cloudflare references in _site/, jekyll build exits 0 with no new Sass errors, 7 woff2 files + fontawesome.min.css ship into _site/assets/fonts/, zero dangling @font-face src references, the Font Awesome 5/6 family-name mismatch investigated and found to be a pre-existing non-issue (FA6's own CSS ships a v4/v5-compat alias carried over verbatim), 3 representative icons (fa-scroll, fa-flask, fa-github) verified glyph-present via fontTools cmap inspection, npm run test:a11y-static exits 0 (all suites green), and all 8 Inter/Roboto/Nothing You Could Do (family, weight) pairs resolve to a registered @font-face in the compiled main.css. Total added woff2 weight: 396,372 bytes across 7 files (woff2 is pre-compressed internally, gzip yields no further reduction); fontawesome.min.css is 102,585 bytes raw / ~22.7KB gzipped. External requests removed: up to 7 across 2 third-party origins, now 0. Files touched: _includes/head/fonts.html (rewritten), assets/css/main.scss (+4 lines, one @import), _sass/_fonts.scss (new), assets/fonts/ (new, 8 files). No _sass/ color/layout/BEM rule touched beyond the new partial + one import line. scripts/visual-baseline.mjs was NOT run/updated per the orchestrator's instruction. Nothing committed.",
+    "verify_gate": "tonberry verify: C1/C2a/C2b/C3 MUST all ok, C7 (8/8 EARS) SHOULD all ok, exit_code 0, has_fail false"
+  }
+}

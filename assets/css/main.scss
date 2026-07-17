@@ -5,6 +5,10 @@
 // Import partials
 @import "variables";
 @import 'breakpoints';
+// self-host-fonts: @font-face declarations must land before `base` (the
+// first partial that sets `font-family: 'Inter', ...` etc.) so the families
+// are registered before anything consumes them.
+@import "fonts";
 @import "base";
 @import "layout";
 @import "navigation";
