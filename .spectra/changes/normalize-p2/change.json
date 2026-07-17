@@ -1,0 +1,101 @@
+{
+  "esl_version": "1.1",
+  "change_id": "normalize-p2",
+  "status": "proposed",
+  "tier": "full",
+  "maker": "vivi",
+  "checker": "kupo",
+  "acceptance_checks": [
+    {
+      "id": "AC-201",
+      "given": "scripts/lib/scss-scan.mjs:23 performs a flat non-recursive readdirSync(SASS_DIR).filter(f=\u003ef.endsWith('.scss')), so a partial moved into _sass/components/ becomes invisible to the scanner and its tests pass while checking nothing",
+      "when": "the scanner enumerates stylesheet sources",
+      "then": "listScssFiles() SHALL return every .scss file under _sass/ at any directory depth",
+      "verify_method": "specified test asserts listScssFiles().length equals the count from a recursive find _sass -name '*.scss'; exit 0"
+    },
+    {
+      "id": "AC-202",
+      "given": "the anti-vacuity guard at scripts/token-usage.test.mjs:65 only fires on a total wipeout (usages.length === 0), so a scanner silently skipping one subdirectory still yields a green suite",
+      "when": "the token-usage suite runs",
+      "then": "the suite SHALL fail if the scanner's scanned-file count diverges from the recursive on-disk .scss count",
+      "verify_method": "specified strengthened guard in token-usage.test.mjs; mutation check: temporarily moving one partial into a subdirectory makes the suite FAIL before AC-201 lands and PASS after"
+    },
+    {
+      "id": "AC-203",
+      "given": "_data/palette-manifest.yml:31 hardcodes meta.source: _sass/_variables.scss, and scripts/palette-manifest.test.mjs:68 (source-\u003emanifest) and :75 (manifest-\u003esource) lock them bidirectionally, so an ITCSS split of the settings layer breaks the a11y suite BY CONSTRUCTION",
+      "when": "the settings layer is split across more than one file",
+      "then": "meta.source SHALL resolve every file of the settings layer rather than one fixed path",
+      "verify_method": "npm run test:manifest exits 0 with the settings layer split across \u003e1 file; the test resolves meta.source as a directory glob"
+    },
+    {
+      "id": "AC-204",
+      "given": "AC-201..AC-203 make the harness structure-agnostic, and the dangerous failure mode is a green suite that measures nothing",
+      "when": "the harness migration lands",
+      "then": "the harness migration SHALL land in its own commit, before any partial is moved",
+      "verify_method": "gate: git log shows the scss-scan.mjs/meta.source commit strictly precedes the first file-move commit; a file move in the same commit fails the gate"
+    },
+    {
+      "id": "AC-205",
+      "given": "scripts/lib/scss-scan.mjs:21 hardcodes LOGOTYPE_SELECTORS=['.hero-subtitle'], consumed by isLogotypeContext() at :110 and exercised via token-usage.test.mjs, so a .hero__subtitle rename silently reclassifies logotype usages instead of failing loudly (note: the manifest's own logotype_selectors key at _data/palette-manifest.yml:38 is read by NO test, and palette-manifest.test.mjs:86 states no token is currently role=logotype, so that test's logotype loop is dead)",
+      "when": "a BEM rename touches the wordmark selector",
+      "then": "the logotype selector set SHALL be updated in the same commit as the rename",
+      "verify_method": "specified test asserts every entry of LOGOTYPE_SELECTORS matches at least one selector present in _sass/; a stale entry fails the suite loudly"
+    },
+    {
+      "id": "AC-206",
+      "given": "the RPG/FF/D\u0026D vocabulary (.rpg-scrolls, .character-sheet, --ff-gold, --dnd-parchment) is UBIQUITOUS LANGUAGE that BEM wraps and never renames, per CONVENTIONS.md and the owner's binding decision",
+      "when": "a BEM rename is applied to a domain selector",
+      "then": "the domain noun SHALL be preserved in the resulting block name",
+      "verify_method": "gate: reviewer checks each rename against the rule .scroll-card -\u003e .scroll__card, never .card; a rename dropping the domain noun is rejected"
+    },
+    {
+      "id": "AC-207",
+      "given": "'.share-button' is defined twice - _sass/_components.scss:214 (2.5rem, ::before overlay, position:relative, overflow:hidden) and _sass/_post.scss:477 (36px, .twitter/.linkedin grounds) - and _post.scss is imported later (assets/css/main.scss:16 vs :11), so the rendered button is a hybrid of both and matches neither definition; its only consumer is _layouts/post.html",
+      "when": "the two definitions are flattened into one",
+      "then": "the flattened definition SHALL compute to the same rendered result as today's cascade",
+      "verify_method": "BLOCKED-ON-P0 (GAP-1): no scripts/visual-baseline.mjs on any branch and no test:visual script exist today; this check is UNVERIFIABLE until P0 lands and MUST NOT be claimed satisfied before then. absent P0, a computed-style dump of .share-button before and after is byte-identical (GAP-5: which definition was INTENDED is unknown and is NOT decided by this criterion)"
+    },
+    {
+      "id": "AC-208",
+      "given": "16 @import statements and 18 darken() call sites in _sass/ are deprecated by Dart Sass, and @use/@forward is itself the variable/mixin hierarchy mechanism ITCSS requires (GAP-6: the scout's 35/15 are warning counts, not occurrence counts; the exact warning count is not asserted)",
+      "when": "the site is built after the module migration",
+      "then": "the build SHALL emit zero Sass deprecation warnings for @import",
+      "verify_method": "bundle exec jekyll build stderr contains no DEPRECATION WARNING mentioning @import; exit 0"
+    },
+    {
+      "id": "AC-209",
+      "given": "darken() is deprecated in favour of color.adjust()/color.scale(), and _sass/_variables.scss:82,83,93 derive --ff-purple-ink, --ff-purple-light-ink and --dnd-brown through it",
+      "when": "the colour functions are migrated",
+      "then": "every migrated colour SHALL retain its exact pre-migration computed hex",
+      "verify_method": "specified script compares each derived token's compiled hex before and after using scripts/lib/color-math.mjs; --ff-purple-ink remains #783cb4; zero drift"
+    },
+    {
+      "id": "AC-210",
+      "given": "P2 restructures files and selectors without intending any rendering change",
+      "when": "the a11y suite runs at the end of P2",
+      "then": "npm run test:a11y-static SHALL exit 0",
+      "verify_method": "npm run test:a11y-static; exit 0"
+    },
+    {
+      "id": "AC-211",
+      "given": "the four real specificity fights at _sass/_about.scss:404,405,411,412, where .avatar-orbs .orb (0,2,0) beats .orb-2 (0,1,0) and is compensated with !important",
+      "when": "BEM flattens those selectors to equal specificity",
+      "then": "those four !important declarations SHALL be removed",
+      "verify_method": "grep -c '!important' _sass/_about.scss returns 0; the sitewide count drops from 38 to 34"
+    },
+    {
+      "id": "AC-212",
+      "given": "34 of the 38 !important declarations are LEGITIMATE - 22 in the print layer (_sass/_post.scss:1199-1264), 11 the required .visually-hidden clip idiom (_sass/_utilities.scss), 1 in dead .hljs - so a mass purge is explicitly NOT specced",
+      "when": "a contributor attempts a mass !important purge",
+      "then": "the print-layer and .visually-hidden declarations SHALL be preserved",
+      "verify_method": "grep -c '!important' _sass/_utilities.scss returns 11; the print-layer count in _sass/_post.scss remains 22"
+    }
+  ],
+  "spec_ref": ".spectra/changes/normalize-p2/spec.md",
+  "supersedes": "normalize",
+  "has_code": true,
+  "memory_preflight": {
+    "ran": true,
+    "records": 2
+  }
+}

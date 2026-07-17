@@ -35,6 +35,18 @@ meta:
     parchment-dark: "#e8e0c0"
     hero-gradient-1: "#211C30"
     hero-gradient-2: "#312A45"
+    # normalize-p1 / AC-108: the gold ground (`--ff-gold`, where `.scroll-seal`'s
+    # text sits) and the consolidated dark canvas (`--dnd-parchment` in dark /
+    # the literal several partials already paint their dark sections with) were
+    # invisible to the contrast suite before P1 -- neither is a blanket
+    # cross-product ground (see palette-contrast.test.mjs's exclusion list,
+    # extended alongside this); each is measured only via a TARGETED,
+    # theme-correct pairing (the pre-existing hero-gradient pattern), never
+    # against every -ink token, which would false-positive every light -ink
+    # token that never renders on the dark canvas (N1 -- the exact class of
+    # error the rejected R1 spec made).
+    gold: "#e6a553"
+    dark-canvas: "#232323"
   logotype_selectors:
     - ".hero-subtitle" # about.html, home.scss, laboratory.scss, letter.scss, notebook.scss all style
       # the "Code Alchemist" wordmark through this one class -- AC-048's VERIFY names it exactly.
@@ -577,3 +589,63 @@ usage_exemptions:
       the information channel (research-ui-a11y.md: "the tier color as a 2px
       border... redundant with the label, and 1.4.1 is satisfied by G14").
       Never used as the label's text or fill.
+  # --- normalize-p1 (AC-106): dark-mode-only re-pairings on the /about
+  # character-sheet cards. Each repairs a sibling of an AC-106-enumerated
+  # selector that used a NON-flipping -ink token safely against the surface's
+  # OLD hardcoded `white` -- flipping that surface to the consolidated dark
+  # ground (D-C: the surface must flip, not the text un-flip) would otherwise
+  # trade one AA failure for another. Every pair here is independently
+  # measured >= 4.5 against the dark ground it actually renders on
+  # (`scripts/dark-cascade-contrast.test.mjs`; the ornament token is the
+  # deliberately CHOSEN ink for this dark pairing, not an accidental leak of
+  # a decorative hue into body text) -- see _sass/_about.scss's own "Dark
+  # Mode Support" header comment for the measured ratios.
+  - file: _sass/_about.scss
+    selector: ".attribute-value"
+    property: color
+    token: "--ff-gold"
+    reason: >-
+      Dark-mode-only re-pairing (@include dark-mode). Was --ff-gold-ink
+      (content/ink, 2.36 against the new #232323 card ground). --ff-gold
+      itself measures 7.39 against #232323 -- verified >= 4.5, chosen
+      deliberately for this one dark pairing.
+  - file: _sass/_about.scss
+    selector: ".quest-location"
+    property: color
+    token: "--ff-purple-light"
+    reason: >-
+      Dark-mode-only re-pairing (@include dark-mode). Was --ff-purple-ink
+      (content/ink, 2.32 against the new #232323 card ground). --ff-purple-light
+      measures 6.46 against #232323 -- verified >= 4.5, chosen deliberately
+      for this one dark pairing.
+  - file: _sass/_about.scss
+    selector: ".bio-block strong"
+    property: color
+    token: "--ff-purple-light"
+    reason: >-
+      Dark-mode-only re-pairing (@include dark-mode) for the sitewide bare
+      `strong { color: $pastel-purple-ink; }` (_sass/_about.scss) as it
+      renders inside `.bio-block` once that card's surface flips dark.
+      $pastel-purple-ink measures 2.29 against #232323; --ff-purple-light
+      measures 6.46 -- verified >= 4.5, chosen deliberately for this one
+      dark pairing.
+  - file: _sass/_about.scss
+    selector: ".highlight"
+    property: color
+    token: "--ff-gold"
+    reason: >-
+      Dark-mode-only re-pairing (@include dark-mode). The base rule already
+      uses --ff-gold-ink (content/ink); in dark mode, once `.bio-block`'s
+      surface flips, --ff-gold-ink measures 2.36 against #232323. --ff-gold
+      itself measures 7.39 -- verified >= 4.5, chosen deliberately for this
+      one dark pairing (same re-pairing as .attribute-value above).
+  - file: _sass/_about.scss
+    selector: ".ability-mana"
+    property: color
+    token: "--ff-blue"
+    reason: >-
+      Dark-mode-only re-pairing (@include dark-mode). Was --ff-blue-dark
+      (content/ink) against a translucent rgba(68,153,204,0.1) tile blended
+      over the new #232323 card ground -- 2.26. --ff-blue against a lighter
+      rgba(68,153,204,0.05) tile over the same ground measures 4.66 --
+      verified >= 4.5, chosen deliberately for this one dark pairing.

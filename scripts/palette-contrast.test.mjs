@@ -45,10 +45,23 @@ if (contentTokens.length === 0) {
 // caught --ff-blue-dark missing parchment-dark by 0.31 despite passing on
 // both backgrounds its 10 real usages actually touch -- see
 // _data/palette-manifest.yml's note on that token.
+// normalize-p1 / AC-108: `gold` and `dark-canvas` are excluded from the
+// blanket cross-product for the same reason `hero-gradient-*` already is --
+// they are not interchangeable light surfaces every content/ink token could
+// plausibly land on. `dark-canvas` in particular is the trap N1 names
+// explicitly: every LIGHT `-ink` token here (--ff-blue-dark, --ff-gold-ink,
+// ...) is tuned against cream/light/parchment-dark and NEVER renders on the
+// dark canvas (in dark mode those surfaces flip and so does the text that
+// sits on them) -- cross-producting them here would false-positive exactly
+// the class of error the rejected R1 spec made (`--dnd-brown` "2.26 on
+// #232323", a pair that never renders). Both grounds are instead measured
+// only via the TARGETED, theme-correct pairings below (the pre-existing
+// hero-gradient pattern).
+const UNTARGETED_GROUNDS = ['hero-gradient', 'gold', 'dark-canvas'];
 let pairsChecked = 0;
 for (const token of contentTokens) {
   for (const [bgName, bgHex] of Object.entries(bg)) {
-    if (bgName.startsWith('hero-gradient')) continue; // see hero-gradient note below
+    if (UNTARGETED_GROUNDS.some((g) => bgName.startsWith(g))) continue; // see targeted pairings below
     const ratio = contrastRatio(token.hex, bgHex);
     pairsChecked++;
     if (!(ratio >= CONTENT_MIN)) {
@@ -90,6 +103,43 @@ for (const c of heroChecks) {
     const ratio = contrastRatio(blended, bgHex);
     pairsChecked++;
     if (!(ratio >= CONTENT_MIN)) fail(`rgba($pastel-purple,0.8) (.hero-trademark) vs ${bgName} = ${ratio.toFixed(4)} < ${CONTENT_MIN}`);
+  }
+}
+
+// normalize-p1 / AC-108: targeted, theme-correct pairings for the two grounds
+// this phase adds to `declared_backgrounds` -- `gold` (#e6a553, `--ff-gold`)
+// and `dark-canvas` (#232323, the consolidated dark `--dnd-parchment` /
+// the literal `#232323` several partials already paint their dark section
+// backgrounds with). Each pair below is a REAL rendered pairing (grep-checked
+// against `_sass/`), not a blanket cross-product -- N1/N2: these are HARD
+// assertions (the suite fails, not just prints, if any drops below
+// `content_threshold`).
+const targetedGroundChecks = [
+  // .scroll-seal / .scroll-seal i (_sass/_notebook.scss) -- AC-106's repaired
+  // gold-ground pair. --ff-gold never flips, so the same fixed ink is
+  // measured once and holds in every theme the seal renders in.
+  { label: '--ink-color (.scroll-seal / .scroll-seal i) vs gold', hex: '#3a2921', against: bg.gold },
+  // --dnd-brown's DARK value (the consolidated flip) on the dark canvas --
+  // the real pairing at .item-rarity-label (_sass/_laboratory.scss, AC-107)
+  // and the /about dark card surfaces this phase repairs (AC-106).
+  { label: '--dnd-brown (dark #e0e0e0) vs dark-canvas', hex: '#e0e0e0', against: bg['dark-canvas'] },
+  // --text-primary's DARK value on the dark canvas -- .skill-name (about),
+  // .item-name (laboratory), .scroll-title (notebook), .grimoire-text (letter).
+  { label: '--text-primary (dark #e0e0e0) vs dark-canvas', hex: '#e0e0e0', against: bg['dark-canvas'] },
+  // --text-secondary's DARK value on the dark canvas -- .scroll-excerpt
+  // (notebook), .item-description (laboratory), .scroll-content (letter).
+  { label: '--text-secondary (dark #b0b0b0) vs dark-canvas', hex: '#b0b0b0', against: bg['dark-canvas'] },
+  // --text-light's DARK value on the dark canvas -- .quest-period (about, via
+  // the consolidated flip).
+  { label: '--text-light (dark #909090) vs dark-canvas', hex: '#909090', against: bg['dark-canvas'] },
+];
+for (const c of targetedGroundChecks) {
+  const ratio = contrastRatio(c.hex, c.against);
+  pairsChecked++;
+  if (!(ratio >= CONTENT_MIN)) {
+    fail(`${c.label} (${c.hex} vs ${c.against}) = ${ratio.toFixed(4)} < ${CONTENT_MIN}`);
+  } else {
+    console.log(`ok: ${c.label} (${c.hex} vs ${c.against}) = ${ratio.toFixed(4)} >= ${CONTENT_MIN}`);
   }
 }
 

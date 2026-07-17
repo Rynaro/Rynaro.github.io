@@ -157,11 +157,61 @@ $mobile-breakpoint: 480px;
 // page, with JavaScript off. Values match the dark tones _post.scss's `body.dark-mode`
 // and _laboratory.scss / _letter.scss / _notebook.scss's existing dark-mode blocks
 // already use, so this doesn't introduce a second, competing dark palette.
+//
+// normalize-p1 / AC-101,102,103 (Phase 1 dark-cascade consolidation): this is now the
+// ONE authoritative dark `:root` custom-property block for the whole site. Before P1,
+// FOUR separate `:root` blocks under `@media (prefers-color-scheme: dark)` (here,
+// _notebook.scss, _laboratory.scss, _letter.scss) wrote the same document-scoped
+// custom properties with CONFLICTING values; because `:root` is resolved per-property
+// last-import-wins across the single compiled `main.css`, the earlier-imported values
+// were silently dead (`_notebook.scss`'s `--dnd-parchment:#2c2c2c`/`--dnd-ink:#d0d0d0`,
+// `_laboratory.scss`'s `--dnd-parchment:#2c2c2c`) -- `_letter.scss` (imported last)
+// always won. This block keeps exactly those LAST-IMPORT-WINNING values (verified
+// against the compiled cascade, not a per-partial reading -- see
+// `.spectra/changes/normalize-p1/spec.md`), so consolidating is a no-op for every
+// token that was already resolving through the old cascade (AC-110 guards this).
+// D-C: emitted through BOTH `@media (prefers-color-scheme: dark)` (OS preference) AND
+// `:root[data-theme="dark"]` (the future toggle mechanism, not yet wired to any
+// attribute-setting code -- P3 owns that policy) so the two mechanisms share one
+// source of truth instead of drifting into a second dark palette. The three
+// now-dead declarations this block replaces (`_notebook.scss:805` `--dnd-parchment:
+// #2c2c2c`, `_notebook.scss:808` `--dnd-ink:#d0d0d0`, `_laboratory.scss:693`
+// `--dnd-parchment:#2c2c2c`) have been deleted from their source partials, which keep
+// only their non-`:root` per-selector dark rules (AC-102).
 @media (prefers-color-scheme: dark) {
   :root {
     --bg-primary: #232323;
     --text-body: #e0e0e0;
+    --text-primary: #e0e0e0;
+    --text-secondary: #b0b0b0;
+    --text-light: #909090;
+    --dnd-parchment: #232323;
+    --dnd-brown: #e0e0e0;
+    --dnd-ink: #e0e0e0;
+    --parchment-light: #323232;
+    --parchment-dark: #252525;
+    --letter-paper: #2c2c2c;
+    --border-light: rgba(153, 102, 204, 0.3);
+    --scroll-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    --letter-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
   }
+}
+
+:root[data-theme="dark"] {
+  --bg-primary: #232323;
+  --text-body: #e0e0e0;
+  --text-primary: #e0e0e0;
+  --text-secondary: #b0b0b0;
+  --text-light: #909090;
+  --dnd-parchment: #232323;
+  --dnd-brown: #e0e0e0;
+  --dnd-ink: #e0e0e0;
+  --parchment-light: #323232;
+  --parchment-dark: #252525;
+  --letter-paper: #2c2c2c;
+  --border-light: rgba(153, 102, 204, 0.3);
+  --scroll-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  --letter-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
 }
 
 // Story 4.5 / AC-031: the --motionOK gate (Adam Argyle / Open Props pattern --

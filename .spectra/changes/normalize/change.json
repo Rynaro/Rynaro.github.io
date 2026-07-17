@@ -1,0 +1,58 @@
+{
+  "esl_version": "1.1",
+  "change_id": "normalize",
+  "status": "proposed",
+  "tier": "full",
+  "maker": "vivi",
+  "checker": "kupo",
+  "acceptance_checks": [
+    {
+      "id": "AC-001",
+      "given": "binding decision 2 says visual-regression baselines land FIRST as P0, but measured today: scripts/visual-baseline.mjs exists on NO branch (git log --all returns nothing), test:visual is absent from package.json, and branch normalize/tokens holds only commit 5c3770f (a rebrand p0-p4 snapshot). playwright ^1.61.1 IS a devDependency, so P0 is feasible but not started (GAP-1)",
+      "when": "any of normalize-p1..p4 is started",
+      "then": "P0 SHALL have landed a test:visual command with a documented pass/fail contract before that phase begins",
+      "verify_method": "gate: npm run test:visual exists in package.json and exits 0 on an unmodified tree; absent this, every [BLOCKED-ON-P0] criterion is unverifiable and MUST NOT be claimed satisfied"
+    },
+    {
+      "id": "AC-002",
+      "given": "the owner requires each phase to be its own ESL change, independently verifiable and independently revertable",
+      "when": "any single phase is reverted",
+      "then": "the remaining phases SHALL still build and pass the a11y suite",
+      "verify_method": "gate: git revert of the phase's merge commit leaves bundle exec jekyll build exit 0 and npm run test:a11y-static exit 0"
+    },
+    {
+      "id": "AC-003",
+      "given": "the RPG/FF/D\u0026D vocabulary (.rpg-scrolls, .character-sheet, --ff-gold, --dnd-parchment) is UBIQUITOUS LANGUAGE and CONVENTIONS.md fixes a closed set of five post types data-driven via _data/post_types.yml",
+      "when": "the normalization program completes",
+      "then": "the domain vocabulary SHALL survive in every renamed selector",
+      "verify_method": "gate: no selector rename drops a domain noun (.scroll-card -\u003e .scroll__card, never .card); _data/post_types.yml order still lists exactly scroll, cantrip, log, distillation, transmutation"
+    },
+    {
+      "id": "AC-004",
+      "given": "rebrand-p5 (Opal island + post) is an UNRELATED owner-gated change sitting at status=proposed",
+      "when": "the normalization program executes",
+      "then": "rebrand-p5 SHALL remain untouched",
+      "verify_method": "gate: tonberry list shows rebrand-p5 status unchanged at proposed; git diff shows no edit under .spectra/changes/rebrand-p5/"
+    },
+    {
+      "id": "AC-005",
+      "given": "npm run test:a11y-static is the project's trust anchor and the only test suite that exists today; it passes at spec time",
+      "when": "any phase of the normalization program ends",
+      "then": "npm run test:a11y-static SHALL exit 0",
+      "verify_method": "npm run test:a11y-static; exit 0 (enforced per phase by AC-109, AC-210, AC-307, AC-407)"
+    },
+    {
+      "id": "AC-006",
+      "given": "the a11y suite is coupled to the SOURCE LAYOUT, so an ITCSS split breaks it by construction, and scripts/lib/scss-scan.mjs:23's flat readdirSync makes moved partials SILENTLY invisible - a green suite measuring nothing",
+      "when": "a stylesheet partial is moved into a subdirectory of _sass/",
+      "then": "the harness SHALL still scan that partial",
+      "verify_method": "specified test asserts listScssFiles().length equals a recursive find count (AC-201); mutation check per AC-202"
+    }
+  ],
+  "spec_ref": ".spectra/changes/normalize/spec.md",
+  "has_code": true,
+  "memory_preflight": {
+    "ran": true,
+    "records": 2
+  }
+}

@@ -249,6 +249,34 @@ async function newPage() {
 }
 
 // ---------------------------------------------------------------------
+// AC-105 (normalize-p1): axe-core's color-contrast rule against each built
+// page, under BOTH a default and a colorScheme:'dark' browser context.
+// Scoped to the five themed pages P1's dark-cascade consolidation touches
+// sitewide (Home/About/Notebook/Laboratory/Letter -- the same set the
+// svg-img-alt sweep above already uses); AC-110 enumerates the "about dark"
+// and "notebook light/dark" viewports as the only PIXEL-level expected diffs
+// for this phase, so this is where a color-contrast regression on any of
+// these five pages, in either theme, would surface.
+// ---------------------------------------------------------------------
+{
+  for (const scheme of ['light', 'dark']) {
+    for (const path of ['/index.html', '/about.html', '/notebook/', '/laboratory.html', '/letter.html']) {
+      const context = await browser.newContext({ colorScheme: scheme });
+      const page = await context.newPage();
+      await page.goto(base + path, { waitUntil: 'networkidle' });
+      const axeResults = await new AxeBuilder({ page }).withRules(['color-contrast']).analyze();
+      if (axeResults.violations.length > 0) {
+        for (const v of axeResults.violations) {
+          for (const n of v.nodes) fail(`axe color-contrast (${path}, ${scheme}): ${n.target.join(' ')} -- ${n.failureSummary.replace(/\n/g, ' ')}`);
+        }
+      }
+      await context.close();
+    }
+  }
+  if (failures === 0) ok('axe color-contrast reports zero violations across Home/About/Notebook/Laboratory/Letter, in both default and colorScheme:\'dark\' contexts (AC-105)');
+}
+
+// ---------------------------------------------------------------------
 // Full-page axe pass (WCAG2AA), informational -- the blocking CI gate is
 // pa11y-ci (AC-039); this is an extra local signal in the same run.
 // ---------------------------------------------------------------------

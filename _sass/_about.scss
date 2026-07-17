@@ -1462,3 +1462,78 @@ strong {
 .status-badge:nth-child(4) .badge-icon {
   background: linear-gradient(135deg, rgba(255, 152, 0, 0.8), rgba(245, 124, 0, 0.8));
 }
+
+/* Dark Mode Support */
+// normalize-p1 / AC-106 (the primary P1 defect): before this block, _about.scss
+// had ZERO dark handling -- its character-sheet card surfaces hardcode
+// `background: white`, while the CONTENT tokens they carry (--dnd-brown,
+// --text-primary, --text-secondary, --dnd-ink) already flip globally through
+// the consolidated dark set (`_sass/_variables.scss`). Text flips, surface
+// never did: `.attribute-name`/`.category-title`/`.quest-title`/`.ability-name`
+// (each `color: var(--dnd-brown)`) rendered `#e0e0e0` on `#ffffff` = 1.32,
+// failing WCAG 1.4.3 (< 4.5). D-C: the fix flips the SURFACE (not the text --
+// un-flipping the token was rejected, see spec's Rejected Alternatives), using
+// the already-declared `--dnd-parchment` token (no new token name is
+// introduced -- N1/the manifest lock in `_data/palette-manifest.yml` stays
+// exact) so the surface tracks the one consolidated dark palette instead of a
+// second hardcoded value.
+//
+// Every card below shares the exact `.item-rarity-label` pairing already
+// proven safe in dark (`_sass/_laboratory.scss`): `--dnd-brown`/`--text-primary`/
+// `--text-secondary`/`--dnd-ink` on `--dnd-parchment` = 11.91 / 11.91 / 7.25 /
+// 11.91. Flipping a shared card surface also exposes every sibling that reads
+// a NON-flipping ornament ink (--ff-gold-ink, --ff-purple-ink, --ff-blue-dark,
+// $pastel-purple-ink) -- those siblings pass today only because the surface
+// stays white in every theme; moving the surface without re-pairing them would
+// trade one AA failure for another. Each is re-paired here against an
+// existing, already-declared token/value verified >= 4.5 on the new dark
+// ground (`scripts/dark-cascade-contrast.test.mjs`):
+//   .attribute-value (--ff-gold-ink 2.36 on #232323) -> var(--ff-gold) = 7.39
+//   .quest-location   (--ff-purple-ink 2.32 on #232323) -> var(--ff-purple-light) = 6.46
+//   .ability-mana     (--ff-blue-dark blended-bg 2.26) -> var(--ff-blue) on a
+//                      lighter tint = 4.66
+//   .skill-item's own translucent light-cream tile background is repointed to
+//                      the same dark-tile idiom `_sass/_notebook.scss`/
+//                      `_sass/_laboratory.scss` already use elsewhere
+//                      (rgba(50,50,50,0.6)), so --text-primary/.skill-name
+//                      stays >= 4.5 against it (10.58) instead of the ~2.57 a
+//                      light tile over a dark card would measure.
+// `.timeline-marker` and `.cta-button:hover` also hardcode `background: white`
+// but their text (--ff-purple-ink) never flips and already clears 4.5 against
+// white in every theme -- flipping their surface without cause would introduce
+// a NEW failure, not repair one, so both are deliberately left untouched
+// (out of AC-106's enumerated defect set).
+@include dark-mode {
+  .attribute-card,
+  .sheet-block,
+  .timeline-content,
+  .ability-card,
+  .trait-card {
+    background: var(--dnd-parchment);
+  }
+
+  .attribute-value {
+    color: var(--ff-gold);
+  }
+
+  .quest-location {
+    color: var(--ff-purple-light);
+  }
+
+  .bio-block strong {
+    color: var(--ff-purple-light);
+  }
+
+  .highlight {
+    color: var(--ff-gold);
+  }
+
+  .skill-item {
+    background: rgba(50, 50, 50, 0.6);
+  }
+
+  .ability-mana {
+    background: rgba(68, 153, 204, 0.05);
+    color: var(--ff-blue);
+  }
+}

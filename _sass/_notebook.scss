@@ -1,12 +1,21 @@
 /* RPG-Styled Notebook Page */
 
-/* Notebook specific variables */
-:root {
-  --parchment-light: #f8f5e6;
-  --parchment-dark: #e8e0c0;
-  --ink-color: #3a2921;
-  --scroll-shadow: 0 5px 20px rgba(58, 41, 33, 0.1);
-}
+// normalize-p1: this partial used to carry its own unconditional (non-dark)
+// `:root { --parchment-light: #f8f5e6; --parchment-dark: #e8e0c0;
+// --ink-color: #3a2921; --scroll-shadow: 0 5px 20px rgba(58, 41, 33, 0.1); }`
+// here -- byte-identical to `_sass/_variables.scss`'s own base `:root`
+// declarations for those same four tokens, so it changed nothing in light
+// mode. But being UNCONDITIONAL and textually AFTER the consolidated dark
+// `:root` (`_sass/_variables.scss`, imported first), it silently WON over
+// the dark flip for `--parchment-light`/`--parchment-dark`/`--scroll-shadow`
+// in `prefers-color-scheme: dark` -- e.g. `.post-scroll` (_sass/_post.scss),
+// `.uses-category` (_sass/_pages.scss) and `.scroll-card`'s own light rule
+// (masked there only because that selector also carries its own dark
+// override) all read `var(--parchment-light)`/`var(--scroll-shadow)`
+// directly. Removed as the redundant duplicate it always was -- AC-102's
+// "exactly one canonical source" applies to a token's LIGHT declaration too,
+// not just its dark override, once both live in the same document-scoped
+// custom-property namespace.
 
 /* Notebook Hero Section - based on rpg-hero but with unique elements */
 .notebook-hero {
@@ -667,12 +676,26 @@
 }
 
 /* Featured scroll special styling */
+// normalize-p1 / AC-106: `.scroll-seal`'s text sat on `var(--ff-gold)` (#e6a553,
+// an ornament token that never flips -- role=ornament/obligation=exempt, per
+// _data/palette-manifest.yml) via `var(--dnd-brown)`, a CONTENT token that DOES
+// flip: #6d562f on #e6a553 measures 3.27 (light, shipping today) / #e0e0e0 on
+// #e6a553 measures 1.61 (dark) -- both fail the 4.5 minimum in every theme the
+// seal renders in. Since the ground never flips, un-flipping the text globally
+// is not an option (D-C: the mechanism converges, it isn't suppressed) and no
+// existing flip-token clears 4.5 against gold in its dark value either -- the
+// seal needs its own theme-invariant ink. `--ink-color` (#3a2921) is already
+// declared in `_variables.scss`, carries zero dark override in any of the four
+// (now one) dark blocks, so it renders identically in both themes: 6.50 against
+// `#e6a553` in both light and dark (verified:
+// `scripts/dark-cascade-contrast.test.mjs`, `scripts/palette-contrast.test.mjs`
+// AC-108 targeted pairing).
 .scroll-seal {
   position: absolute;
   top: 0;
   right: 0;
   background: var(--ff-gold);
-  color: var(--dnd-brown);
+  color: var(--ink-color);
   padding: 0.5rem 1rem;
   font-weight: 600;
   font-size: 0.85rem;
@@ -690,7 +713,7 @@
 }
 
 .scroll-seal i {
-  color: var(--dnd-brown);
+  color: var(--ink-color);
 }
 
 /* Rarity card effects */
@@ -797,29 +820,20 @@
 }
 
 /* Dark Mode Support */
+// normalize-p1 / AC-102: the `:root` custom-property override that used to live
+// here (--text-primary/--text-secondary/--text-light/--dnd-parchment/
+// --parchment-light/--parchment-dark/--dnd-ink/--border-light/--scroll-shadow) is
+// now authored exactly once, in `_sass/_variables.scss` (the consolidated dark
+// token set) -- this partial keeps only its own per-selector dark rules.
+// normalize-p1 / AC-109: `.section-title`, `.categories-title`, `.scroll-search
+// input`, `.scroll-title`, `.empty-archive-title` no longer carry a hand-written
+// `color: #e0e0e0` literal here -- each already reads a token
+// (--dnd-brown/--dnd-ink/--text-primary) that the consolidated flip above already
+// resolves to #e0e0e0 in dark mode, so the literal was a computed no-op (verified:
+// `scripts/dark-literal-noop.test.mjs`).
 @media (prefers-color-scheme: dark) {
-  :root {
-    --text-primary: #e0e0e0;
-    --text-secondary: #b0b0b0;
-    --text-light: #909090;
-    --dnd-parchment: #2c2c2c;
-    --parchment-light: #323232;
-    --parchment-dark: #252525;
-    --dnd-ink: #d0d0d0;
-    --border-light: rgba(153, 102, 204, 0.3);
-    --scroll-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-  }
-
   .rpg-scrolls {
     background-color: #232323;
-  }
-
-  .section-title {
-    color: #e0e0e0;
-  }
-
-  .categories-title {
-    color: #e0e0e0;
   }
 
   .category-tab {
@@ -840,7 +854,6 @@
   .scroll-search input {
     background: rgba(50, 50, 50, 0.6);
     border-color: rgba(153, 102, 204, 0.3);
-    color: #e0e0e0;
   }
 
   .scroll-search input:focus {
@@ -858,10 +871,6 @@
       radial-gradient(circle at 80% 20%, rgba(60, 60, 60, 0.5) 0%, transparent 50%);
   }
 
-  .scroll-title {
-    color: #e0e0e0;
-  }
-
   .scroll-excerpt {
     color: #b0b0b0;
   }
@@ -872,10 +881,6 @@
 
   .empty-archive {
     background: rgba(50, 50, 50, 0.6);
-  }
-
-  .empty-archive-title {
-    color: #e0e0e0;
   }
 
   /* Dark mode card variants */

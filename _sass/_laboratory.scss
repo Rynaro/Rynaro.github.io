@@ -685,25 +685,24 @@
 }
 
 /* Dark Mode Support */
+// normalize-p1 / AC-102: the `:root` custom-property override that used to live
+// here (--text-primary/--text-secondary/--text-light/--dnd-parchment/
+// --border-light) is now authored exactly once, in `_sass/_variables.scss` (the
+// consolidated dark token set) -- this partial keeps only its own per-selector
+// dark rules.
+// normalize-p1 / AC-107: `.item-rarity-label` (below, unchanged) is NOT touched
+// here -- its `var(--dnd-brown)` on `var(--dnd-parchment)` already clears AA in
+// dark through the consolidated flip (11.91), so it stays token-driven with no
+// per-selector literal.
+// normalize-p1 / AC-109: `.section-title`, `.filter-title`, `.inventory-search
+// input`, `.item-name`, `.empty-state-title` no longer carry a hand-written
+// `color: #e0e0e0` literal here. Each is gated on
+// `scripts/dark-literal-noop.test.mjs`'s computed-style before/after diff
+// (built `_site`, dark) -- a literal that changes the computed value is
+// reinstated, not left deleted (N4).
 @include dark-mode {
-  :root {
-    --text-primary: #e0e0e0;
-    --text-secondary: #b0b0b0;
-    --text-light: #909090;
-    --dnd-parchment: #2c2c2c;
-    --border-light: rgba(153, 102, 204, 0.3);
-  }
-
   .rpg-inventory {
     background-color: #232323;
-  }
-
-  .section-title {
-    color: #e0e0e0;
-  }
-
-  .filter-title {
-    color: #e0e0e0;
   }
 
   .filter-button {
@@ -724,7 +723,6 @@
   .inventory-search input {
     background: rgba(50, 50, 50, 0.6);
     border-color: rgba(153, 102, 204, 0.3);
-    color: #e0e0e0;
 
     &:focus {
       background: rgba(60, 60, 60, 0.8);
@@ -740,10 +738,6 @@
     border-bottom-color: rgba(153, 102, 204, 0.3);
   }
 
-  .item-name {
-    color: #e0e0e0;
-  }
-
   .item-description p {
     color: #b0b0b0;
   }
@@ -756,7 +750,4 @@
     background: rgba(50, 50, 50, 0.6);
   }
 
-  .empty-state-title {
-    color: #e0e0e0;
-  }
 }

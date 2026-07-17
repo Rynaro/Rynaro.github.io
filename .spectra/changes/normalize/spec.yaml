@@ -1,0 +1,368 @@
+artifact: spec
+change_id: normalize
+tier: full
+version: 0.1.0
+maker: vivi
+checker: kupo
+title: Phased front-end normalization
+esl:
+  tier: full
+  route: 0->1->2->3->4
+  right_size:
+    rubric_score: 12
+    files_touched: 40
+    tradeoff_present: true
+ramza:
+  rs_tier: full
+  rs_score: 6
+  complexity:
+    score: 12
+    verdict: human_loop
+criteria_source: .spectra/changes/normalize/normalize.criteria.md
+criteria_count: 38
+acceptance_checks:
+- id: AC-001
+  given: 'binding decision 2 says visual-regression baselines land FIRST as P0; as re-verified at
+    refine cycle 1 (R1) this LANDED: scripts/visual-baseline.mjs now EXISTS and test:visual +
+    test:visual:update are in package.json (84 committed baselines = 14 targets x 3 viewports x 2
+    themes; playwright ^1.61.1 is a devDependency). GAP-1 RESOLVED'
+  when: any of normalize-p1..p4 is started
+  then: P0 SHALL have landed a test:visual command with a documented pass/fail contract before that phase
+    begins
+  verify_method: 'gate: npm run test:visual exists in package.json and exits 0 on an unmodified tree;
+    absent this, every [BLOCKED-ON-P0] criterion is unverifiable and MUST NOT be claimed satisfied'
+- id: AC-002
+  given: the owner requires each phase to be its own ESL change, independently verifiable and independently
+    revertable
+  when: any single phase is reverted
+  then: the remaining phases SHALL still build and pass the a11y suite
+  verify_method: 'gate: git revert of the phase''s merge commit leaves bundle exec jekyll build exit 0
+    and npm run test:a11y-static exit 0'
+- id: AC-003
+  given: the RPG/FF/D&D vocabulary (.rpg-scrolls, .character-sheet, --ff-gold, --dnd-parchment) is UBIQUITOUS
+    LANGUAGE and CONVENTIONS.md fixes a closed set of five post types data-driven via _data/post_types.yml
+  when: the normalization program completes
+  then: the domain vocabulary SHALL survive in every renamed selector
+  verify_method: 'gate: no selector rename drops a domain noun (.scroll-card -> .scroll__card, never .card);
+    _data/post_types.yml order still lists exactly scroll, cantrip, log, distillation, transmutation'
+- id: AC-004
+  given: rebrand-p5 (Opal island + post) is an UNRELATED owner-gated change sitting at status=proposed
+  when: the normalization program executes
+  then: rebrand-p5 SHALL remain untouched
+  verify_method: 'gate: tonberry list shows rebrand-p5 status unchanged at proposed; git diff shows no
+    edit under .spectra/changes/rebrand-p5/'
+- id: AC-005
+  given: npm run test:a11y-static is the project's trust anchor and the only test suite that exists today;
+    it passes at spec time
+  when: any phase of the normalization program ends
+  then: npm run test:a11y-static SHALL exit 0
+  verify_method: npm run test:a11y-static; exit 0 (enforced per phase by AC-109, AC-210, AC-307, AC-407)
+- id: AC-006
+  given: the a11y suite is coupled to the SOURCE LAYOUT, so an ITCSS split breaks it by construction,
+    and scripts/lib/scss-scan.mjs:23's flat readdirSync makes moved partials SILENTLY invisible - a green
+    suite measuring nothing
+  when: a stylesheet partial is moved into a subdirectory of _sass/
+  then: the harness SHALL still scan that partial
+  verify_method: specified test asserts listScssFiles().length equals a recursive find count (AC-201);
+    mutation check per AC-202
+unrelated_do_not_touch:
+- rebrand-p5
+phases:
+- id: normalize-p1
+  phase: 1
+  title: Dark-cascade consolidation + contrast defect repair
+  depends_on:
+  - P0
+  complexity: 10
+  verdict: human_loop
+  criteria: AC-101..AC-112
+  blocked_on_p0: []
+  gated_by_decision:
+  - D-C (mechanism only - owner-decided: converge dark mechanism; toggle POLICY deferred to P3)
+  - D-A (radius/spacing tokenization explicitly DEFERRED - not P1)
+  note: 'RE-DERIVED at R2 after independent critic rejected R1 (45/100) for per-partial reasoning
+    about document-scoped :root. P1 consolidates 4 conflicting prefers-dark :root blocks into one
+    (reachable via prefers-color-scheme AND :root[data-theme=dark]) and repairs the REAL failures
+    (/about dark 1.32; .scroll-seal on #e6a553 3.27 light + 1.61 dark). MUST produce a visual diff;
+    gate is test:visual COMPARE vs the authoritative baselines + intentionality review (AC-110),
+    NOT zero-diff and NOT a test:visual:update rubber-stamp.'
+- id: normalize-p2
+  phase: 2
+  title: ITCSS + BEM + Sass module migration
+  depends_on:
+  - normalize-p1
+  complexity: 11
+  verdict: human_loop
+  criteria: AC-201..AC-212
+  blocked_on_p0: []
+  gated_by_decision:
+  - D-B
+- id: normalize-p3
+  phase: 3
+  title: HTML component extraction
+  depends_on:
+  - normalize-p2
+  complexity: 9
+  verdict: extended
+  criteria: AC-301..AC-307
+  blocked_on_p0: []
+  gated_by_decision:
+  - D-C (policy)
+  - D-D
+- id: normalize-p4
+  phase: 4
+  title: Dead code removal
+  depends_on:
+  - normalize-p3
+  complexity: 7
+  verdict: extended
+  criteria: AC-401..AC-407
+  blocked_on_p0: []
+  gated_by_decision:
+  - AC-406 owner-elected
+gates:
+  must_stay_green_every_phase:
+  - npm run test:a11y-static
+  - npm run test:visual
+  baseline_measured_at_spec_time:
+    npm run test:a11y-static: PASS
+  unavailable: []
+  p0_status:
+    resolved_at: R1 (refine cycle 1) — P0 landed DURING this planning session
+    test:visual: node scripts/visual-baseline.mjs
+    test:visual:update: node scripts/visual-baseline.mjs --update
+    baselines: 84 = 14 targets x 3 viewports x 2 themes
+    tolerance_percent: 0.1
+    dark_mechanisms_covered:
+    - prefers-color-scheme via Playwright colorScheme (all targets)
+    - body.dark-mode class (post target)
+    caveat: a green test:visual run was NOT observed by the planner; the run aborted with EADDRINUSE on
+      port 4174 (consistent with the concurrent P0 agent holding the port, not a diff failure). Confirm
+      before relying on it.
+open_decisions:
+- id: D-A
+  topic: spacing scale / radius
+  options:
+  - unify base-4
+  - unify base-5
+  - keep two named scales
+  - tokenize radius only
+  sub_choice:
+    D-A-1: 1:1 radius tokenization (11 tokens) — ZERO pixel movement, baseline-free
+    D-A-2: collapse to ~5 semantic tiers — moves pixels <=2px at ~37 sites, REQUIRES P0
+  measured:
+    base-4:
+      4px: 61
+      8px: 51
+      12px: 10
+      32px: 10
+    base-5:
+      10px: 48
+      15px: 27
+      5px: 25
+      30px: 13
+    shared:
+    - 20px
+    - 40px
+    radius_distinct_values: 11
+    radius:
+      8px: 20
+      10px: 17
+      4px: 10
+      6px: 8
+      20px: 8
+      3px: 4
+      40px: 2
+      24px: 2
+      5px: 1
+      30px: 1
+      12px: 1
+  recommendation: 'D-A-2 if P0 lands, else D-A-1. DEFER the base-4/base-5 spacing unification to a post-P4
+    change: it is orthogonal to ITCSS/BEM and is the largest pixel-moving action in the program. If ever
+    unified, prefer base-4 (tie-break on convention; populations are within 1%).'
+  decided_by: owner
+- id: D-B
+  topic: harness migration vs monolithic _variables.scss
+  recommendation: 'Migrate: scss-scan.mjs recurses + meta.source becomes a directory glob, as P2 story
+    2.1, landing ALONE and FIRST (AC-204). Selected hypothesis H-B (75.5, solid) over H-A 65.5 / H-D 70.5
+    / H-C 62.'
+  rationale: 'Forgoing the split forfeits P2''s deliverable to avoid ~2 lines of scanner change. The real
+    work is the meta.source glob and the strengthened anti-vacuity guard: today''s guard (token-usage.test.mjs:65)
+    only catches a TOTAL wipeout, so a scanner skipping one subdirectory yields a green suite measuring
+    nothing.'
+  decided_by: owner
+- id: D-C
+  topic: dark mode unification
+  measured:
+    class_toggle_present_in:
+    - _layouts/post.html
+    standalone_pages_without_toggle: 15
+    mechanisms:
+    - body.dark-mode (JS, _layouts/post.html:308-322)
+    - prefers-color-scheme (@mixin dark-mode, _sass/_breakpoints.scss:63)
+  wcag: NO WCAG AA criterion requires a manual dark-mode toggle. 1.4.3/1.4.11 apply to whatever is rendered
+    in either state; 1.4.8 (user control of colours) is AAA and scoped to text blocks. Deleting the toggle
+    creates no violation; keeping it satisfies no specific AA criterion. Argue it on UX, not compliance.
+  recommendation: 'Separate mechanism from policy. P1 converges the MECHANISM (one flip block, applied
+    via both prefers-color-scheme and a data-theme attribute). P3 decides the POLICY (markup is P3''s
+    domain). Recommended policy: promote the toggle sitewide via data-theme — a control present on 1 of
+    ~16 page types is the one indefensible state — but note this doubles the dark surface area unless
+    the mechanism converges first. Deleting the toggle is a legitimate alternative and costs no compliance.
+    Interim: do not delete a working feature.'
+  decided_by: owner
+- id: D-D
+  topic: .section-icon badge colour (added by mid-task correction; independently re-measured)
+  root_cause: 'NAMING/ISOLATION defect: .section-icon names two components — an inline icon (class ON
+    the <i>, 4 definitions, 21 of 22 markup sites) and a circular badge wrapper (class on a <div>, 1 definition,
+    1 site: _layouts/post.html:106). The import-order collision is a SYMPTOM. Repair = BEM split into
+    two blocks; NOT a cascade tweak, NOT !important.'
+  measured_on_ground: '--ff-purple-light #b19cd9 (NOT in declared_backgrounds — no test ever measured
+    this badge in either state)'
+  options:
+  - option: keep the darker ink (status quo by accident)
+    fg: '#783cb4'
+    ratio: 2.78
+    note: best of the two current candidates; still <3.0; zero change
+  - option: restore the intended white
+    fg: '#ffffff'
+    ratio: 2.43
+    note: DO NOT — the accident is BETTER than the design; restoring intent REGRESSES visibility
+  - option: darken the badge ground
+    ground: 'darken(#b19cd9,20%) = #7752bd'
+    fg: '#ffffff'
+    ratio: 5.64
+    note: clears 3.0; shifts the badge's visual identity toward --ff-purple-ink
+  - option: drop the badge; use the inline form
+    ratio: null
+    note: RECOMMENDED — resolves the naming defect and the colour question in one move; the only option
+      that removes rather than adds; the badge is the 1-of-22 outlier
+  severity: Decorative icon (adjacent <h3 class='toc-title'>Contents</h3> carries the meaning) => WCAG
+    1.4.11 does NOT bite. Visual/architectural defect, NOT an a11y failure. NO 3.0/4.5 threshold is asserted
+    for it — that would be a fabricated requirement.
+  current_state: both candidates unmeasured-and-below-3.0, decorative so non-blocking
+  recommendation: drop the badge, adopt the inline form; owner-gated (visible design change) and P0-gated
+  decided_by: owner
+rejected_alternatives:
+- id: H-A
+  score: 65.5
+  verdict: weak
+  summary: keep _variables.scss monolithic, forgo the ITCSS token split
+- id: H-C
+  score: 62
+  verdict: weak
+  summary: generate _variables.scss from the manifest (codegen single source of truth)
+- id: H-D
+  score: 70.5
+  verdict: solid
+  summary: retarget the harness at COMPILED CSS, decoupling it from source layout permanently
+  why_rejected: needs a Jekyll build in the test loop (performance 4) and rebuilds the a11y suite — the
+    trust anchor — mid-refactor
+  carry_forward: 'highest correctness (9): it would have caught the .section-icon collision, invisible
+    to a per-file source scan. P3''s collision detector (AC-301, AC-306) should read the COMPILED stylesheet.
+    Revisit wholesale after P4.'
+gaps:
+- id: GAP-1
+  blocking: false
+  summary: 'RESOLVED at R1: P0 landed DURING this planning session (test:visual + test:visual:update;
+    84 baselines; 0.1% tolerance; dark via colorScheme for all targets + body.dark-mode for post). RESIDUAL:
+    a green test:visual run was never observed by the planner (aborted EADDRINUSE port 4174, consistent
+    with the concurrent P0 agent). Confirm a clean run before relying on the gate.'
+- id: GAP-2
+  blocking: false
+  summary: 'Exact partition of dark hex occurrences into flip declarations vs compensation literals is
+    uncomputed. Raw measured totals over _sass/*.scss: #e0e0e0 25, #2c2c2c 12, #b0b0b0 10, #232323 7,
+    #909090 4 = 58. Scout reports ~51 compensation literals (24/12/10/6/4). Delta is consistent with flips
+    being counted in the raw grep, but that was NOT verified. AC-102 requires the census script to COMPUTE
+    the partition.'
+- id: GAP-3
+  blocking: false
+  summary: Whether extending declared_backgrounds surfaces failing pairs, and how many, is unknown until
+    run. AC-105/AC-106 specify the PROCEDURE, not the outcome.
+- id: GAP-4
+  blocking: true
+  summary: D-A, D-B, D-C, D-D unresolved. Recommendations given; the owner decides.
+- id: GAP-5
+  blocking: false
+  summary: Which .share-button definition was intended is unknowable from source (_components.scss:214
+    2.5rem+::before overlay vs _post.scss:477 36px+.twitter/.linkedin; post imported later so the rendered
+    button is a hybrid matching neither). AC-207 sidesteps it by preserving the COMPUTED result. A designed
+    button is a separate change.
+- id: GAP-6
+  blocking: false
+  summary: Scout's Sass deprecation figures (35 @import, 15 darken()) are WARNING counts; measured 16
+    @import statements and 18 darken() call sites. No Sass build was run to reconcile warnings-vs-occurrences.
+    Direction unambiguous; exact warning count not load-bearing and not asserted.
+- id: GAP-7
+  blocking: false
+  summary: 'Post pages in OS-dark WITHOUT the toggle land in a mixed state: _post.scss flips --dnd-brown/--post-background
+    only under body.dark-mode and has NO prefers-color-scheme block, while _base/_laboratory/_notebook/_letter
+    flip :root globally under prefers-color-scheme. What that actually renders was NOT verified. P0''s
+    post-target dark baseline can now answer it; first thing P1 should inspect.'
+evidence_method: 'Counts are raw `grep -roE` occurrence counts over _sass/*.scss — not usage-weighted,
+  not deduped by rule. Contrast ratios computed with the project''s own scripts/lib/color-math.mjs. Where
+  my count diverges from the scout''s, both are given. (Method stated per the rebrand retraction lesson:
+  a figure produced by a method that does not match how the artifact is served must be retracted.)'
+criteria_sha256: 826b187d4d4d9edfac7a64e35dc22d3f8e3fdd73f936f9f8065c8c3571733a38
+gate_status:
+  ramza_lint: pass
+  ramza_ears_lint: pass (38 criteria)
+  esl_verify: 'OK (C1,C2a,C2b,C3 MUST; C7 SHOULD all pass — zero C7 failures). RE-RUN at R2 via tonberry 0.5.2 verify against normalize-p1 (AC-101..AC-112): OK exit 0.'
+  critic: PENDING — author=ramza cannot self-approve (ramza-gate critic DENY); tier=full requires an independent
+    critic before phase A
+  confidence:
+    score: 75
+    verdict: VALIDATE
+    note: 'AUTHOR-SCORED, pre-critic. Prior art: the rebrand plan self-scored 84.25 and an independent
+      critic scored ~75 — expect this to move down, not up.'
+  phase: T (Test) — NOT assembled; A is gate-denied until a critic is recorded
+r1_findings:
+  p0_landed_mid_session: true
+  RETRACTED_at_R2: 'The live_wcag_failure block below was FALSE - produced by per-partial reasoning
+    about document-scoped :root. --dnd-brown is flipped to #e0e0e0 SITEWIDE by the last-imported
+    _letter.scss dark block, so .item-rarity-label/.scroll-seal render #e0e0e0 (not #6d562f) in dark.
+    The 2.26/2.01 figures are RETRACTED and must not be reused. See r2_findings.'
+  live_wcag_failure_discovered_RETRACTED:
+    token: --dnd-brown
+    claimed_measured_RETRACTED:
+      '#6d562f on #232323': 2.26
+      '#6d562f on #2c2c2c': 2.01
+    why_false: '--dnd-brown resolves to #e0e0e0 in dark (last-import-wins from _letter.scss:827), so
+      #6d562f never renders on #232323/#2c2c2c in dark; .item-rarity-label is #e0e0e0 on #232323 =
+      11.91 (PASSES). An independent critic scored the R1 P1 spec 45/100 on this error.'
+r2_findings:
+  rejected_r1_score: 45/100 (independent critic)
+  real_defects_compiled_cascade:
+    about_dark:
+      pair: '#e0e0e0 on #ffffff'
+      ratio: 1.32
+      cause: '_about.scss has ZERO dark handling; the --dnd-brown text token flips to #e0e0e0 globally
+        but the white surfaces (:556,844,861,951,1099,1235,1312) never flip. Selectors
+        .attribute-name:599, .category-title:714, .quest-title:882, .ability-name:1057.'
+      severity: 'PRIMARY P1 defect - live WCAG 1.4.3 AA failure in OS-dark'
+    scroll_seal:
+      pairs:
+        'light: #6d562f on #e6a553': 3.27
+        'dark: #e0e0e0 on #e6a553': 1.61
+      cause: '_notebook.scss:674 background var(--ff-gold) #e6a553 (never flipped); :675/:693 color
+        var(--dnd-brown). Fails 4.5 in BOTH themes; ships to every visitor now (renders <span>Latest</span>).'
+    item_rarity_label_PASSES:
+      pair: '#e0e0e0 on #232323'
+      ratio: 11.91
+      note: 'NOT a defect; guarded by AC-107 against a spurious fix.'
+    root_cause: 'Four conflicting prefers-dark :root blocks (_variables.scss:160, _notebook.scss:800,
+      _laboratory.scss:688, _letter.scss:820); last import wins, so _notebook.scss:805/:808 and
+      _laboratory.scss:693 are DEAD. P1 consolidates to one canonical dark set reachable via both
+      prefers-color-scheme and :root[data-theme=dark] (D-C mechanism).'
+  measurement_method: 'Every ratio computed with scripts/lib/color-math.mjs against the COMPILED
+    cascade (confirmed byte-identical to the tmp/main.compiled.snapshot.css and to getComputedStyle
+    on the built _site). Never per-partial.'
+criteria_amendment_chain:
+- from: e0bc0b1b27a38c95a6824e35a938b65ccfafa4b61a370d37c6a8d1d65c86d6b0
+  to: 826b187d4d4d9edfac7a64e35dc22d3f8e3fdd73f936f9f8065c8c3571733a38
+  reason: 'R1: P0 landed mid-session (GAP-1 resolved); AC-103 zero-diff premise falsified; AC-110/AC-111 added'
+  recorded_via: ramza-freeze --amend
+- from: 826b187d4d4d9edfac7a64e35dc22d3f8e3fdd73f936f9f8065c8c3571733a38
+  to: 12ef6d3c252ae1a4d6b5a1299e2b093e5857539faba1f755660588f8cefdedbb
+  reason: 'R2: P1 re-derived on the compiled cascade after independent critic rejected R1 (45/100);
+    retracted no-op AC-101 and inverted AC-110; consolidation + real-defect repair; 11 to 12 criteria'
+  recorded_via: ramza-freeze --amend

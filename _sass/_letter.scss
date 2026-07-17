@@ -817,25 +817,21 @@
 }
 
 /* Dark Mode Support */
+// normalize-p1 / AC-102: the `:root` custom-property override that used to live
+// here (--text-primary/--text-secondary/--text-light/--dnd-parchment/
+// --letter-paper/--dnd-brown/--dnd-ink/--border-light/--letter-shadow) is now
+// authored exactly once, in `_sass/_variables.scss` (the consolidated dark token
+// set -- this was the LAST-imported block, so every value here is preserved
+// verbatim as the winning value) -- this partial keeps only its own
+// per-selector dark rules.
+// normalize-p1 / AC-109: `.section-title`, `.grimoire-text`, `.form-input`/
+// `.form-textarea` no longer carry a hand-written `color: #e0e0e0` literal
+// here. Each is gated on `scripts/dark-literal-noop.test.mjs`'s computed-style
+// before/after diff (built `_site`, dark) -- a literal that changes the
+// computed value is reinstated, not left deleted (N4).
 @include dark-mode {
-  :root {
-    --text-primary: #e0e0e0;
-    --text-secondary: #b0b0b0;
-    --text-light: #909090;
-    --dnd-parchment: #232323;
-    --letter-paper: #2c2c2c;
-    --dnd-brown: #e0e0e0;
-    --dnd-ink: #e0e0e0;
-    --border-light: rgba(153, 102, 204, 0.3);
-    --letter-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-  }
-
   .rpg-correspondence {
     background-color: #232323;
-  }
-
-  .section-title {
-    color: #e0e0e0;
   }
 
   .info-scroll,
@@ -870,10 +866,6 @@
     background: rgba(60, 60, 60, 0.8);
   }
 
-  .grimoire-text {
-    color: #e0e0e0;
-  }
-
   .input-container {
     background: rgba(50, 50, 50, 0.5);
     border-color: rgba(153, 102, 204, 0.3);
@@ -881,11 +873,6 @@
 
   .input-container.input-focused {
     background: rgba(60, 60, 60, 0.8);
-  }
-
-  .form-input,
-  .form-textarea {
-    color: #e0e0e0;
   }
 
   .form-message {
