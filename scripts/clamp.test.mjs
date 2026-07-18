@@ -21,10 +21,18 @@
 // Story 4.8's fluid-type work was not part of this bounded pass (see the
 // completion report for what Phase 4a/4b did and did not do).
 
-import { scanClamps } from './lib/scss-scan.mjs';
+import { scanClamps, assertScanCoverage } from './lib/scss-scan.mjs';
 
 let failures = 0;
 const fail = (msg) => { console.error(`FAIL: ${msg}`); failures++; };
+
+// AC-202 (normalize-p2): shared anti-vacuity structural guard. This suite
+// calls listScssFiles() (via scanClamps()) directly, so it gets the same
+// scanner-coverage protection as token-usage.test.mjs rather than staying
+// blind to a scanner silently under-scanning _sass/.
+const coverage = assertScanCoverage();
+if (!coverage.ok) fail(coverage.message);
+else console.log(`ok: ${coverage.message}`);
 
 const clamps = scanClamps();
 console.log(`${clamps.length} clamp() call(s) found in _sass/.`);

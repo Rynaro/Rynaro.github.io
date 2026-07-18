@@ -22,8 +22,8 @@
     "test:4b": "npm run test:clamp && npm run test:text-spacing-height && npm run test:accessibility-page",
     "test:a11y-static": "npm run test:4a && npm run test:4b",
     "test:axe": "node scripts/axe-audit.mjs",
-    "test:visual": "node scripts/visual-baseline.mjs",
-    "test:visual:update": "node scripts/visual-baseline.mjs --update"
+    "test:visual": "bundle exec jekyll build && node scripts/visual-baseline.mjs",
+    "test:visual:update": "bundle exec jekyll build && node scripts/visual-baseline.mjs --update"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",

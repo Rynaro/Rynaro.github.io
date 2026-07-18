@@ -30,7 +30,7 @@
 
 import { readFileSync } from 'node:fs';
 import yaml from 'js-yaml';
-import { scanTokenUsages } from './lib/scss-scan.mjs';
+import { scanTokenUsages, assertScanCoverage } from './lib/scss-scan.mjs';
 
 const root = new URL('../', import.meta.url).pathname;
 const manifest = yaml.load(readFileSync(root + '_data/palette-manifest.yml', 'utf8'));
@@ -59,6 +59,24 @@ function usageMatchesExemption(u, e) {
 }
 
 const exemptions = manifest.usage_exemptions || [];
+
+// AC-202: strengthened anti-vacuity guard. The pre-existing check below
+// (`usages.length === 0`) only fires on a TOTAL wipeout; it would stay green
+// even if the scanner silently skipped an entire subdirectory (e.g. a
+// regression of listScssFiles() back to a flat, non-recursive readdirSync)
+// as long as at least one usage still turned up elsewhere. This guard
+// compares the scanner's scanned-file count against an INDEPENDENT
+// recursive on-disk `.scss` count (scss-scan.mjs's assertScanCoverage(),
+// shared with palette-manifest.test.mjs/clamp.test.mjs/
+// text-spacing-height.test.mjs so the same protection covers every direct
+// consumer of listScssFiles(), not just this suite) and fails loudly on any
+// divergence, partial or total.
+const coverage = assertScanCoverage();
+if (!coverage.ok) {
+  console.error(`FAIL: ${coverage.message}`);
+  process.exit(1);
+}
+console.log(`ok: ${coverage.message}`);
 
 const usages = scanTokenUsages();
 if (usages.length === 0) {

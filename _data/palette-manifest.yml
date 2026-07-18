@@ -28,7 +28,19 @@
 # ratio without re-running the contrast test.
 
 meta:
-  source: _sass/_variables.scss
+  # AC-203 (normalize-p2, Story 2.1): a LIST rather than one fixed path, so
+  # `scripts/palette-manifest.test.mjs`'s bidirectional manifest<=>source
+  # lock resolves the whole SETTINGS LAYER, not one hardcoded file. Today
+  # the settings layer is still just this one file -- a single-item list,
+  # not a glob string like `_sass/settings/*.scss` (that would match NOTHING
+  # today, since nothing has moved -- AC-204 forbids moving any partial in
+  # this story). Each entry is either a literal path (read verbatim) or a
+  # `dir/*.scss`-style glob (expanded by the test against the directory's
+  # current contents) -- so when the settings layer later splits across
+  # `_sass/settings/`, this list grows to include that glob entry alongside
+  # (or instead of) this one, with no change needed to the test's shape.
+  source:
+    - _sass/_variables.scss
   declared_backgrounds:
     cream: "#F8F5F2"
     light: "#F0ECE9"

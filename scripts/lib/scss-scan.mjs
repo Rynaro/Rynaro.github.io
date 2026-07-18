@@ -20,10 +20,80 @@ export const SASS_DIR = new URL('../../_sass/', import.meta.url).pathname;
 // these is eligible for `role: logotype`.
 export const LOGOTYPE_SELECTORS = ['.hero-subtitle'];
 
+// AC-201 (normalize-p2, Story 2.1): recurses into subdirectories instead of
+// the old flat `readdirSync(dir).filter(...)`. `_sass/` is flat today (this
+// story moves no partial -- AC-204), so the RESULT is unchanged now; the
+// recursion only diverges from the old flat behavior once the later ITCSS
+// split (normalize-p2's later stories) moves a partial into a subdirectory
+// (e.g. `_sass/components/`), which would otherwise go invisible to every
+// scanTokenUsages()/scanClamps() consumer. Return shape is unchanged (a flat
+// array of absolute file paths); results are sorted for a deterministic
+// order regardless of the underlying filesystem's directory-entry ordering
+// (readdirSync's order is not itself a portable guarantee).
+function walkScssFiles(dir, out) {
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const full = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      walkScssFiles(full, out);
+    } else if (entry.isFile() && entry.name.endsWith('.scss')) {
+      out.push(full);
+    }
+  }
+}
+
 export function listScssFiles(dir = SASS_DIR) {
-  return readdirSync(dir)
-    .filter((f) => f.endsWith('.scss'))
-    .map((f) => join(dir, f));
+  const out = [];
+  walkScssFiles(dir, out);
+  return out.sort();
+}
+
+// AC-202's anti-vacuity structural guard needs an on-disk `.scss` count that
+// is INDEPENDENT of listScssFiles()'s own recursion -- comparing
+// listScssFiles() to itself would be circular (a regression in
+// walkScssFiles above would trivially "agree" with itself). This walk is
+// deliberately a separate implementation of the same recursive-count idea,
+// so a future regression to a flat, non-recursive listScssFiles() (or one
+// that silently skips a subdirectory) is caught by divergence against THIS
+// count, not validated by it.
+export function countScssFilesOnDisk(dir = SASS_DIR) {
+  let count = 0;
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const full = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      count += countScssFilesOnDisk(full);
+    } else if (entry.isFile() && entry.name.endsWith('.scss')) {
+      count += 1;
+    }
+  }
+  return count;
+}
+
+// AC-202: shared anti-vacuity structural guard. `listScssFiles()` is called
+// directly by MULTIPLE suites -- token-usage.test.mjs, palette-manifest
+// .test.mjs, clamp.test.mjs, text-spacing-height.test.mjs (P1-era critic's
+// N6). A coverage guard living only inside token-usage.test.mjs would leave
+// the other three blind to a scanner silently under-scanning _sass/ (e.g. a
+// regression back to the old flat readdirSync, or a future bug that skips
+// one subdirectory) -- their `usages`/`clamps`/`records` arrays would just
+// quietly shrink instead of failing loudly. Exporting the check HERE, next
+// to listScssFiles() itself, means every current and future direct consumer
+// gets the SAME protection from the SAME source of truth, rather than each
+// suite re-implementing (and risking drifting) its own copy.
+//
+// Returns { ok, scanned, onDisk, message } rather than throwing or calling
+// process.exit -- each test file keeps its own reporting/exit-code idiom
+// (some use a `fail()` helper, some print directly and set a `failures`
+// counter); AC-202's own VERIFY only requires the token-usage suite to FAIL
+// on divergence, which every caller below satisfies by exiting non-zero
+// when `ok` is false.
+export function assertScanCoverage(dir = SASS_DIR) {
+  const scanned = listScssFiles(dir).length;
+  const onDisk = countScssFilesOnDisk(dir);
+  const ok = scanned === onDisk;
+  const message = ok
+    ? `scanner coverage matches on-disk count (${scanned} of ${onDisk} .scss file(s) under _sass/, via an independent recursive walk)`
+    : `scanner coverage diverges from on-disk count -- listScssFiles() returned ${scanned} file(s) but an independent recursive walk of _sass/ found ${onDisk} .scss file(s). The scanner is silently skipping ${Math.abs(onDisk - scanned)} file(s) (AC-202 anti-vacuity structural guard).`;
+  return { ok, scanned, onDisk, message };
 }
 
 // Strips `//` line comments and `/* */` block comments so they can't produce
@@ -111,6 +181,39 @@ export function isLogotypeContext(selectorStack) {
   return selectorStack.some((sel) =>
     LOGOTYPE_SELECTORS.some((wm) => sel.includes(wm))
   );
+}
+
+// AC-205 (normalize-p2, Story 2.1): every distinct selector that opens a
+// rule block anywhere under `_sass/` (recursively, via listScssFiles() --
+// so this stays structure-agnostic exactly like AC-201), regardless of
+// whether the block is single-line or spans multiple lines. scanFile()'s
+// own per-line `selectorStack` (used by isLogotypeContext()) is captured
+// BEFORE each line's characters are scanned, so a selector opened and
+// closed on ONE line (e.g. `.foo { color: red; }`) never shows up in any
+// record's selectorStack -- fine for token-usage scanning (nothing is
+// declared inside such a block worth attributing to it), but NOT fine for
+// "does this selector exist at all", which is exactly what a stale
+// LOGOTYPE_SELECTORS entry check needs. This walks brace/semicolon
+// boundaries directly over the whole (comment-stripped) file text instead,
+// so every opened selector is captured, including single-line ones.
+export function listAllSelectors(files = listScssFiles()) {
+  const selectors = new Set();
+  for (const file of files) {
+    const src = stripComments(readFileSync(file, 'utf8'));
+    let pending = '';
+    for (const ch of src) {
+      if (ch === '{') {
+        const sel = pending.trim();
+        if (sel) selectors.add(sel);
+        pending = '';
+      } else if (ch === '}' || ch === ';') {
+        pending = '';
+      } else {
+        pending += ch;
+      }
+    }
+  }
+  return selectors;
 }
 
 /**

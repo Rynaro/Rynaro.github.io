@@ -19,7 +19,7 @@
 // VERIFY's own "within themed chip, badge, banner, or stat-row rule blocks"
 // qualifier.
 
-import { scanFile, listScssFiles } from './lib/scss-scan.mjs';
+import { scanFile, listScssFiles, assertScanCoverage } from './lib/scss-scan.mjs';
 
 const root = process.cwd() + '/';
 
@@ -35,6 +35,14 @@ const HEIGHT_RE = /(^|[^-a-zA-Z0-9])height:\s*[0-9]/;
 
 let failures = 0;
 const fail = (msg) => { console.error(`FAIL: ${msg}`); failures++; };
+
+// AC-202 (normalize-p2): shared anti-vacuity structural guard. This suite
+// calls listScssFiles() directly, so it gets the same scanner-coverage
+// protection as token-usage.test.mjs rather than staying blind to a
+// scanner silently under-scanning _sass/.
+const coverage = assertScanCoverage();
+if (!coverage.ok) fail(coverage.message);
+else console.log(`ok: ${coverage.message}`);
 
 // Narrow, individually-justified exemptions: a themed-keyword selector whose
 // fixed height sizes a FIXED-SIZE ICON GLYPH (never reflowable text) rather
