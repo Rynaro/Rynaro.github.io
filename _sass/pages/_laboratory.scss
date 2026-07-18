@@ -6,15 +6,15 @@
 .laboratory-hero {
   background: linear-gradient(135deg, #217aa3, #7244a1);
 
-  .hero-title {
+  .hero__title {
     color: white;
   }
 
-  .hero-subtitle {
+  .hero__subtitle {
     color: var(--ff-gold);
   }
 
-  .hero-description {
+  .hero__description {
     color: rgba(255, 255, 255, 0.9);
     font-size: 1.1rem;
     margin-top: 1rem;
@@ -28,27 +28,27 @@
     }
   }
 
-  .hero-description {
+  .hero__description {
     @include max-width('md') {
       margin-left: auto;
       margin-right: auto;
     }
   }
 
-  .hero-title {
+  .hero__title {
     @include max-width('xs') {
       font-size: 2rem;
     }
   }
 
-  .hero-subtitle {
+  .hero__subtitle {
     @include max-width('xs') {
       font-size: 1.4rem;
     }
   }
 }
 
-.hero-emblem {
+.hero__emblem {
   flex: 0 0 240px;
   margin: 2rem 0;
 

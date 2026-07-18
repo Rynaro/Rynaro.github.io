@@ -5,8 +5,8 @@
 // at least 4.5 against its cascade-resolved background in every theme it
 // renders in." Runs getComputedStyle (Playwright) on the BUILT
 // `_site/about.html` (dark) and `_site/notebook.html` (light + dark) for the
-// selectors AC-106 names -- `.attribute-name`, `.category-title`,
-// `.quest-title`, `.ability-name` (about, dark only -- the surface never
+// selectors AC-106 names -- `.attribute-card__name`, `.category-title`,
+// `.quest__title`, `.ability-card__name` (about, dark only -- the surface never
 // rendered in light before or after P1) and `.scroll-seal`/`.scroll-seal i`
 // (notebook, both themes -- the gold ground never flips) -- and asserts every
 // value >= 4.5, computed with `scripts/lib/color-math.mjs` (never rounded).
@@ -124,7 +124,7 @@ async function checkSelector(page, label, selector, { walkBg = true } = {}) {
 {
   const page = await newPage('dark');
   await page.goto(`${base}/about.html`, { waitUntil: 'networkidle' });
-  for (const sel of ['.attribute-name', '.category-title', '.quest-title', '.ability-name']) {
+  for (const sel of ['.attribute-card__name', '.category-title', '.quest__title', '.ability-card__name']) {
     await checkSelector(page, 'about.html (dark)', sel);
   }
   await page.close();

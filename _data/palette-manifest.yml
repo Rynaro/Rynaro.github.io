@@ -60,8 +60,10 @@ meta:
     gold: "#e6a553"
     dark-canvas: "#232323"
   logotype_selectors:
-    - ".hero-subtitle" # about.html, home.scss, laboratory.scss, letter.scss, notebook.scss all style
+    - ".hero__subtitle" # about.html, home.scss, laboratory.scss, letter.scss, notebook.scss all style
       # the "Code Alchemist" wordmark through this one class -- AC-048's VERIFY names it exactly.
+      # (normalize-p2 BEM rename: was .hero-subtitle -- AC-205 requires this entry to move in
+      # lockstep with that rename.)
   content_threshold: 4.5   # AC-026, ratio, no rounding
   boundary_threshold: 3.0  # AC-027, ratio, no rounding
 
@@ -495,7 +497,7 @@ usage_exemptions:
     reason: "Same pattern -- border-color matches background: var(--ff-gold) on the same rule."
   - file: _sass/pages/_about.scss
     lines: [960, 976, 993]
-    selector: ".ability-type-ultimate, .ability-ultimate .ability-name/.ability-mana"
+    selector: ".ability-type-ultimate, .ability-ultimate .ability-card__name/.ability-card__mana"
     property: "color"
     token: "--ff-gold, --dnd-brown"
     reason: >-
@@ -514,7 +516,7 @@ usage_exemptions:
       pass. Logged for Phase 4b/5, not silently exempted as "fine."
   - file: _sass/pages/_about.scss
     line: 1183
-    selector: ".cta-title"
+    selector: ".cta-section__title"
     property: color
     token: --ff-gold
     reason: >-
@@ -534,7 +536,7 @@ usage_exemptions:
       for that pass.
   - file: _sass/pages/_home.scss
     line: 104
-    selector: ".hero-description"
+    selector: ".hero__description"
     property: color
     token: $pastel-blue
     reason: >-
@@ -552,13 +554,13 @@ usage_exemptions:
       against both hero-gradient stops before computing contrast: 6.12:1 / 5.19:1.
   - file: _sass/pages/_home.scss
     line: 63
-    selector: ".hero-content"
+    selector: ".hero__content"
     property: color
     token: $background-cream
     reason: "Sets the default hero text color; independently measured against both hero-gradient stops: 15.18:1 / 12.49:1."
   - file: _sass/pages/_home.scss
     line: 79
-    selector: ".hero-title"
+    selector: ".hero__title"
     property: color
     token: $background-cream
     reason: "Same hero-gradient pairing as .hero-content, restated: 15.18:1 / 12.49:1."
@@ -613,7 +615,7 @@ usage_exemptions:
   # a decorative hue into body text) -- see _sass/_about.scss's own "Dark
   # Mode Support" header comment for the measured ratios.
   - file: _sass/pages/_about.scss
-    selector: ".attribute-value"
+    selector: ".attribute-card__value"
     property: color
     token: "--ff-gold"
     reason: >-
@@ -622,7 +624,7 @@ usage_exemptions:
       itself measures 7.39 against #232323 -- verified >= 4.5, chosen
       deliberately for this one dark pairing.
   - file: _sass/pages/_about.scss
-    selector: ".quest-location"
+    selector: ".quest__location"
     property: color
     token: "--ff-purple-light"
     reason: >-
@@ -631,7 +633,7 @@ usage_exemptions:
       measures 6.46 against #232323 -- verified >= 4.5, chosen deliberately
       for this one dark pairing.
   - file: _sass/pages/_about.scss
-    selector: ".bio-block strong"
+    selector: ".sheet-block--bio strong"
     property: color
     token: "--ff-purple-light"
     reason: >-
@@ -652,7 +654,7 @@ usage_exemptions:
       itself measures 7.39 -- verified >= 4.5, chosen deliberately for this
       one dark pairing (same re-pairing as .attribute-value above).
   - file: _sass/pages/_about.scss
-    selector: ".ability-mana"
+    selector: ".ability-card__mana"
     property: color
     token: "--ff-blue"
     reason: >-

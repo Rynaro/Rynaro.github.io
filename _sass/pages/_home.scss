@@ -56,7 +56,7 @@ html.home {
 }
 
 /* Hero Content */
-.hero-content {
+.hero__content {
   flex: 1;
   max-width: 600px;
   margin-left: 2rem;
@@ -76,7 +76,7 @@ html.home {
   }
 }
 
-.hero-title {
+.hero__title {
   font-size: 3.5rem;
   margin-bottom: 0.5rem;
   color: $background-cream;
@@ -88,7 +88,7 @@ html.home {
   }
 }
 
-.hero-subtitle {
+.hero__subtitle {
   font-size: 2rem;
   margin-bottom: 1.5rem;
   color: var(--ff-gold);
@@ -100,7 +100,7 @@ html.home {
   }
 }
 
-.hero-description {
+.hero__description {
   font-size: 1.2rem;
   margin-bottom: 2rem;
   line-height: 1.6;
@@ -139,7 +139,7 @@ html.home {
   }
 }
 
-.hero-actions {
+.hero__actions {
   margin-top: 2rem;
 
   .button {

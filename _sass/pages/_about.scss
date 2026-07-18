@@ -44,7 +44,7 @@
     }
   }
 
-  .hero-title {
+  .hero__title {
     font-size: 3.5rem;
     margin-bottom: 0.5rem;
     font-weight: 700;
@@ -59,14 +59,14 @@
     }
   }
 
-  .hero-subtitle-container {
+  .hero__subtitle-container {
     display: flex;
     align-items: center;
     gap: 1rem;
     margin-bottom: 1.5rem;
   }
 
-  .hero-subtitle {
+  .hero__subtitle {
     font-size: 2rem;
     margin-bottom: 0;
     color: var(--ff-gold);
@@ -108,7 +108,7 @@
     }
   }
 
-  .hero-avatar {
+  .hero__avatar {
     flex: 0 0 260px;
     margin: 2rem 0;
 
@@ -161,7 +161,7 @@
   }
 
   .avatar-orbs {
-    .orb {
+    .avatar-orbs__orb {
       transform-origin: 130px;
 
       @include max-width('md') {
@@ -175,11 +175,11 @@
   }
 }
 
-.hero-content {
+.hero__content {
   flex: 1;
 }
 
-.hero-level {
+.hero__level {
   display: flex;
   align-items: center;
   margin-bottom: 1.5rem;
@@ -383,7 +383,7 @@
   border-radius: 50%;
 }
 
-.avatar-orbs .orb {
+.avatar-orbs__orb {
   position: absolute;
   background: var(--ff-gold);
   width: 20px;
@@ -394,25 +394,22 @@
   transform-origin: 130px;
   box-shadow: 0 0 15px rgba(230, 165, 83, 0.7), inset 0 0 5px rgba(255, 255, 255, 0.8);
   z-index: 1;
-}
-
-.orb-1 {
   margin-top: -10px;
   margin-left: -10px;
 }
 
-.orb-2 {
-  margin-top: -10px;
-  margin-left: -10px;
-  background: var(--ff-purple-light) !important;
-  box-shadow: 0 0 15px rgba(153, 102, 204, 0.7), inset 0 0 5px rgba(255, 255, 255, 0.8) !important;
+// AC-211: BEM-flattened to equal specificity (0,1,0 vs 0,1,0) with
+// .avatar-orbs__orb above -- the four forced-priority overrides this used to
+// need (to beat .avatar-orbs .orb's 0,2,0) are gone; last-selector-wins now
+// resolves it honestly.
+.avatar-orbs__orb--2 {
+  background: var(--ff-purple-light);
+  box-shadow: 0 0 15px rgba(153, 102, 204, 0.7), inset 0 0 5px rgba(255, 255, 255, 0.8);
 }
 
-.orb-3 {
-  margin-top: -10px;
-  margin-left: -10px;
-  background: var(--ff-blue) !important;
-  box-shadow: 0 0 15px rgba(68, 153, 203, 0.7), inset 0 0 5px rgba(255, 255, 255, 0.8) !important;
+.avatar-orbs__orb--3 {
+  background: var(--ff-blue);
+  box-shadow: 0 0 15px rgba(68, 153, 203, 0.7), inset 0 0 5px rgba(255, 255, 255, 0.8);
 }
 
 @keyframes orbit {
@@ -442,7 +439,7 @@
   }
 }
 
-.block-badge {
+.sheet-block__badge {
   background: var(--ff-gold);
   color: var(--dnd-brown);
   padding: 0.4rem 0.8rem;
@@ -452,13 +449,13 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.block-content {
+.sheet-block__content {
   padding: 1.5rem;
   color: var(--text-primary);
   line-height: 1.6;
 }
 
-.bio-block .block-content {
+.sheet-block--bio .sheet-block__content {
   font-size: 1.05rem;
   color: var(--dnd-ink);
 }
@@ -507,7 +504,7 @@ strong {
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.2);
 
-    .minor-attributes-title {
+    .minor-attributes__title {
       font-size: 0.9rem;
       color: var(--ff-gold-ink);
       margin-bottom: 0.5rem;
@@ -515,14 +512,14 @@ strong {
       font-weight: 600;
     }
 
-    .minor-attributes-list {
+    .minor-attributes__list {
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
       justify-content: center;
     }
 
-    .minor-attribute-item {
+    .minor-attribute {
       display: flex;
       align-items: center;
       gap: 0.5rem;
@@ -542,12 +539,12 @@ strong {
         font-size: 0.9rem;
       }
 
-      .minor-attribute-name {
+      .minor-attribute__name {
         color: var(--ff-blue-dark);
         font-weight: 500;
       }
 
-      .minor-attribute-value {
+      .minor-attribute__value {
         color: var(--ff-purple-ink);
         font-weight: 600;
       }
@@ -582,7 +579,7 @@ strong {
   box-shadow: var(--shadow-medium);
 }
 
-.attribute-icon {
+.attribute-card__icon {
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -596,14 +593,14 @@ strong {
   box-shadow: 0 4px 10px rgba(153, 102, 204, 0.3);
 }
 
-.attribute-name {
+.attribute-card__name {
   font-size: 1.25rem;
   margin-bottom: 1rem;
   color: var(--dnd-brown);
   font-weight: 600;
 }
 
-.attribute-bar {
+.attribute-card__bar {
   // AC-038: was `height: 20px` + `overflow: hidden` -- .attribute-value's
   // text sat absolutely positioned inside a hard-clipped box, so a 1.4.12
   // text-spacing override would have been invisibly cut off. min-height
@@ -642,7 +639,7 @@ strong {
   border-right: 1px solid var(--stat-fill-edge);
 }
 
-.attribute-value {
+.attribute-card__value {
   position: absolute;
   top: 50%;
   right: 10px;
@@ -653,7 +650,7 @@ strong {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-.attribute-description {
+.attribute-card__description {
   font-size: 0.9rem;
   color: var(--text-secondary);
 }
@@ -880,24 +877,24 @@ strong {
   border-left: 3px solid var(--ff-gold);
 }
 
-.quest-title {
+.quest__title {
   font-weight: 600;
   color: var(--dnd-brown);
   margin-bottom: 0.25rem;
   font-size: 1.1rem;
 }
 
-.quest-location {
+.quest__location {
   color: var(--ff-purple-ink);
   margin-bottom: 0.5rem;
 }
 
-.quest-period {
+.quest__period {
   font-size: 0.85rem;
   color: var(--text-light);
 }
 
-.quest-badge {
+.quest__badge {
   position: absolute;
   top: -5px;
   right: 15px;
@@ -999,23 +996,23 @@ strong {
     // -- 4s total, well under 5s.
     animation: ultimate-glow 2s ease-in-out 2 alternate forwards;
 
-    .ability-name {
+    .ability-card__name {
       color: var(--ff-gold);
       font-size: 1.4rem;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
-    .ability-description {
+    .ability-card__description {
       color: rgba(255, 255, 255, 0.9);
       font-size: 1rem;
     }
 
-    .ability-icon {
+    .ability-card__icon {
       background: var(--ff-gold);
       box-shadow: 0 0 15px rgba(230, 165, 83, 0.5);
     }
 
-    .ability-mana {
+    .ability-card__mana {
       background: rgba(230, 165, 83, 0.2);
       color: var(--ff-gold);
       border: 1px solid var(--ff-gold);
@@ -1043,7 +1040,7 @@ strong {
   background: linear-gradient(90deg, var(--ff-blue), var(--ff-purple));
 }
 
-.ability-icon {
+.ability-card__icon {
   width: 50px;
   height: 50px;
   border-radius: 50%;
@@ -1057,21 +1054,21 @@ strong {
   box-shadow: 0 4px 8px rgba(68, 153, 203, 0.3);
 }
 
-.ability-name {
+.ability-card__name {
   font-size: 1.2rem;
   font-weight: 600;
   color: var(--dnd-brown);
   margin-bottom: 0.75rem;
 }
 
-.ability-description {
+.ability-card__description {
   color: var(--text-secondary);
   margin-bottom: 1rem;
   font-size: 0.95rem;
   line-height: 1.5;
 }
 
-.ability-mana {
+.ability-card__mana {
   color: var(--ff-blue-dark);
   font-size: 0.9rem;
   font-weight: 600;
@@ -1116,7 +1113,7 @@ strong {
   box-shadow: var(--shadow-medium);
 }
 
-.trait-icon {
+.trait-card__icon {
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -1160,19 +1157,19 @@ strong {
   }
 }
 
-.trait-card:hover .trait-icon {
+.trait-card:hover .trait-card__icon {
   transform: scale(1.1);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-.trait-name {
+.trait-card__name {
   font-size: 1.1rem;
   font-weight: 600;
   color: var(--dnd-brown);
   margin-bottom: 0.75rem;
 }
 
-.trait-description {
+.trait-card__description {
   color: var(--text-secondary);
   font-size: 0.9rem;
   line-height: 1.5;
@@ -1199,27 +1196,27 @@ strong {
   z-index: 1;
 }
 
-.cta-content {
+.cta-section__content {
   position: relative;
   z-index: 2;
   max-width: 700px;
   margin: 0 auto;
 }
 
-.cta-title {
+.cta-section__title {
   color: var(--ff-gold);
   font-size: 2.5rem;
   margin-bottom: 1rem;
   font-weight: 700;
 }
 
-.cta-description {
+.cta-section__description {
   font-size: 1.2rem;
   margin-bottom: 2rem;
   opacity: 0.9;
 }
 
-.cta-button {
+.cta-section__button {
   display: inline-flex;
   align-items: center;
   background: var(--ff-gold);
@@ -1232,7 +1229,7 @@ strong {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-.cta-button:hover {
+.cta-section__button:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
   background: white;
@@ -1321,7 +1318,7 @@ strong {
   overflow: hidden;
 }
 
-.block-header {
+.sheet-block__header {
   background: linear-gradient(to right, var(--ff-purple-light), rgba(177, 156, 217, 0.5));
   padding: 1.25rem 1.5rem;
   display: flex;
@@ -1334,13 +1331,13 @@ strong {
     align-items: flex-start;
     gap: 0.5rem;
 
-    .block-badge {
+    .sheet-block__badge {
       align-self: flex-start;
     }
   }
 }
 
-.block-title {
+.sheet-block__title {
   font-size: 1.5rem;
   margin: 0;
   color: var(--ff-blue-dark);
@@ -1501,11 +1498,11 @@ strong {
 //                      (rgba(50,50,50,0.6)), so --text-primary/.skill-name
 //                      stays >= 4.5 against it (10.58) instead of the ~2.57 a
 //                      light tile over a dark card would measure.
-// `.timeline-marker` and `.cta-button:hover` also hardcode `background: white`
-// but their text (--ff-purple-ink) never flips and already clears 4.5 against
-// white in every theme -- flipping their surface without cause would introduce
-// a NEW failure, not repair one, so both are deliberately left untouched
-// (out of AC-106's enumerated defect set).
+// `.timeline-marker` and `.cta-section__button:hover` also hardcode
+// `background: white` but their text (--ff-purple-ink) never flips and
+// already clears 4.5 against white in every theme -- flipping their surface
+// without cause would introduce a NEW failure, not repair one, so both are
+// deliberately left untouched (out of AC-106's enumerated defect set).
 @include dark-mode {
   .attribute-card,
   .sheet-block,
@@ -1515,15 +1512,15 @@ strong {
     background: var(--dnd-parchment);
   }
 
-  .attribute-value {
+  .attribute-card__value {
     color: var(--ff-gold);
   }
 
-  .quest-location {
+  .quest__location {
     color: var(--ff-purple-light);
   }
 
-  .bio-block strong {
+  .sheet-block--bio strong {
     color: var(--ff-purple-light);
   }
 
@@ -1535,7 +1532,7 @@ strong {
     background: rgba(50, 50, 50, 0.6);
   }
 
-  .ability-mana {
+  .ability-card__mana {
     background: rgba(68, 153, 204, 0.05);
     color: var(--ff-blue);
   }

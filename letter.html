@@ -5,19 +5,19 @@ title: Send a Letter
 
 <section class="rpg-hero letter-hero">
   <div class="container">
-    <div class="hero-content">
-      <h1 class="hero-title fade-in">Magical Correspondence</h1>
-      <h2 class="hero-subtitle fade-in">Send a Letter</h2>
-      <p class="hero-description">Request an audience, propose a quest, or simply exchange knowledge</p>
+    <div class="hero__content">
+      <h1 class="hero__title fade-in">Magical Correspondence</h1>
+      <h2 class="hero__subtitle fade-in">Send a Letter</h2>
+      <p class="hero__description">Request an audience, propose a quest, or simply exchange knowledge</p>
     </div>
-    <div class="hero-letter">
+    <div class="hero__letter">
       <div class="letter-frame">
         <i class="fas fa-envelope-open-text letter-icon"></i>
         <div class="letter-seal"></div>
         <div class="letter-particles">
-          <div class="letter-glyph letter-glyph-1">✧</div>
-          <div class="letter-glyph letter-glyph-2">✦</div>
-          <div class="letter-glyph letter-glyph-3">✯</div>
+          <div class="letter-glyph letter-glyph--1">✧</div>
+          <div class="letter-glyph letter-glyph--2">✦</div>
+          <div class="letter-glyph letter-glyph--3">✯</div>
         </div>
       </div>
     </div>
@@ -88,11 +88,11 @@ title: Send a Letter
       <!-- Right column: Letter form -->
       <div class="letter-form-container">
         <div class="magical-parchment">
-          <div class="parchment-header">
-            <div class="wax-seal">
+          <div class="magical-parchment__header">
+            <div class="magical-parchment__seal">
               <i class="fas fa-envelope"></i>
             </div>
-            <h3 class="parchment-title">Compose a Letter</h3>
+            <h3 class="magical-parchment__title">Compose a Letter</h3>
           </div>
 
           <!-- Formspree form-hash ID supplied by the owner (2026-07-16); UNVERIFIED --
@@ -103,34 +103,34 @@ title: Send a Letter
                The owner must send ONE real test submission through the live site to
                confirm end-to-end delivery (D9). -->
           <form action="https://formspree.io/f/xjvapdgb" method="POST" id="contact-form" class="magical-form">
-            <div class="form-group">
-              <label for="name" class="form-label">Your Name</label>
-              <div class="input-container">
-                <i class="fas fa-user-circle input-icon"></i>
+            <div class="magical-form__group">
+              <label for="name" class="magical-form__label">Your Name</label>
+              <div class="magical-form__input-container">
+                <i class="fas fa-user-circle magical-form__input-icon"></i>
                 <input type="text" id="name" name="name" class="form-input" required>
               </div>
             </div>
 
-            <div class="form-group">
-              <label for="email" class="form-label">Your Magical Address</label>
-              <div class="input-container">
-                <i class="fas fa-at input-icon"></i>
+            <div class="magical-form__group">
+              <label for="email" class="magical-form__label">Your Magical Address</label>
+              <div class="magical-form__input-container">
+                <i class="fas fa-at magical-form__input-icon"></i>
                 <input type="email" id="email" name="_replyto" class="form-input" required>
               </div>
             </div>
 
-            <div class="form-group">
-              <label for="subject" class="form-label">Subject of Inquiry</label>
-              <div class="input-container">
-                <i class="fas fa-scroll input-icon"></i>
+            <div class="magical-form__group">
+              <label for="subject" class="magical-form__label">Subject of Inquiry</label>
+              <div class="magical-form__input-container">
+                <i class="fas fa-scroll magical-form__input-icon"></i>
                 <input type="text" id="subject" name="subject" class="form-input" required>
               </div>
             </div>
 
-            <div class="form-group">
-              <label for="message" class="form-label">Your Message</label>
-              <div class="input-container textarea-container">
-                <i class="fas fa-feather-alt input-icon"></i>
+            <div class="magical-form__group">
+              <label for="message" class="magical-form__label">Your Message</label>
+              <div class="magical-form__input-container magical-form__textarea-container">
+                <i class="fas fa-feather-alt magical-form__input-icon"></i>
                 <textarea id="message" name="message" class="form-textarea" rows="6" required></textarea>
               </div>
             </div>
@@ -148,22 +148,22 @@ title: Send a Letter
             <input type="text" name="_gotcha" style="display: none;">
           </form>
 
-          <div id="success-message" class="form-message success-message" style="display: none;">
-            <div class="message-icon">
+          <div id="success-message" class="form-message form-message--success" style="display: none;">
+            <div class="form-message__icon">
               <i class="fas fa-check-circle"></i>
             </div>
-            <div class="message-content">
-              <h4 class="message-title">Letter Sent!</h4>
+            <div class="form-message__content">
+              <h4 class="form-message__title">Letter Sent!</h4>
               <p>Your message has been sent successfully! I'll get back to you soon.</p>
             </div>
           </div>
 
-          <div id="error-message" class="form-message error-message" style="display: none;">
-            <div class="message-icon">
+          <div id="error-message" class="form-message form-message--error" style="display: none;">
+            <div class="form-message__icon">
               <i class="fas fa-exclamation-circle"></i>
             </div>
-            <div class="message-content">
-              <h4 class="message-title">Magical Interference!</h4>
+            <div class="form-message__content">
+              <h4 class="form-message__title">Magical Interference!</h4>
               <p>Oops! Something went wrong. Please try again later or contact me directly via email.</p>
             </div>
           </div>

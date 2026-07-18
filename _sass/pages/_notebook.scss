@@ -31,7 +31,7 @@
   }
 }
 
-.notebook-hero .hero-title {
+.notebook-hero .hero__title {
   color: white;
 
   @include max-width('xs') {
@@ -39,7 +39,7 @@
   }
 }
 
-.notebook-hero .hero-subtitle {
+.notebook-hero .hero__subtitle {
   color: var(--ff-gold);
 
   @include max-width('xs') {
@@ -47,7 +47,7 @@
   }
 }
 
-.notebook-hero .hero-description {
+.notebook-hero .hero__description {
   color: rgba(255, 255, 255, 0.9);
   font-size: 1.1rem;
   margin-top: 1rem;
@@ -60,7 +60,7 @@
   }
 }
 
-.hero-grimoire {
+.hero__grimoire {
   flex: 0 0 280px;
   perspective: 1000px;
   margin: 2rem 0;

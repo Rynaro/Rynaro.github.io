@@ -113,7 +113,7 @@ function animateOrbs() {
   // AC-031: finite (one orbit, then rest at the home position), not an
   // infinite loop -- the avatar orbs auto-start on load in parallel with the
   // hero name/level/status bars. delay(<=1s) + duration(<=3.2s) stays <= 5s.
-  const orbs = document.querySelectorAll('.avatar-orbs .orb');
+  const orbs = document.querySelectorAll('.avatar-orbs__orb');
   orbs.forEach((orb, index) => {
     orb.style.animation = `orbit ${2.4 + index * 0.4}s ease-out 1`;
     orb.style.animationDelay = `${index * 0.5}s`;
