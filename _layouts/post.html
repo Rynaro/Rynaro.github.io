@@ -219,7 +219,10 @@ layout: default
       </h2>
 
       <div class="related-scrolls">
-        {% assign related_posts = site.posts | where_exp: "post", "post.url != page.url" | sample: 3 %}
+        {% comment %} Most-recent 3 (excluding self). Deterministic by design: `sample: 3`
+        reshuffled on every build, giving each deploy a different related-scrolls block and
+        making the page impossible to regression-test. {% endcomment %}
+        {% assign related_posts = site.posts | where_exp: "post", "post.url != page.url" | slice: 0, 3 %}
         {% for post in related_posts %}
           <div class="related-scroll-item">
             <div class="related-scroll-card">
