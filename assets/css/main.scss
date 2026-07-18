@@ -3,21 +3,21 @@
 ---
 
 // Import partials
-@import "variables";
-@import 'breakpoints';
+@import "settings/variables";
+@import "tools/breakpoints";
 // self-host-fonts: @font-face declarations must land before `base` (the
 // first partial that sets `font-family: 'Inter', ...` etc.) so the families
 // are registered before anything consumes them.
-@import "fonts";
-@import "base";
-@import "layout";
-@import "navigation";
-@import "components";
-@import "home";
-@import "about";
-@import "notebook";
-@import "laboratory";
-@import "post";
-@import "letter";
-@import "pages";
-@import "utilities";
+@import "generic/fonts";
+@import "generic/base";
+@import "objects/layout";
+@import "objects/navigation";
+@import "components/components";
+@import "pages/home";
+@import "pages/about";
+@import "pages/notebook";
+@import "pages/laboratory";
+@import "pages/post";
+@import "pages/letter";
+@import "pages/pages";
+@import "utilities/utilities";

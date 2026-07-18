@@ -9,8 +9,8 @@
 // `--dnd-parchment:#2c2c2c`) no longer appear, and that the built
 // `_site/assets/css/main.css` shows each dark token once per selector context.
 
-import { readFileSync, readdirSync, existsSync } from 'node:fs';
-import { join } from 'node:path';
+import { readFileSync, existsSync } from 'node:fs';
+import { listScssFiles } from './lib/scss-scan.mjs';
 
 const root = new URL('../', import.meta.url).pathname;
 const sassDir = root + '_sass/';
@@ -24,8 +24,12 @@ const ok = (msg) => console.log(`ok: ${msg}`);
 // block across every _sass/*.scss partial. "Authoring site" = a `:root { ... }`
 // rule (custom-property declarations) nested inside a dark-mode at-rule
 // (`@media (prefers-color-scheme: dark)` or the `@include dark-mode` mixin,
-// which expands to the same at-rule). ---
-const files = readdirSync(sassDir).filter((f) => f.endsWith('.scss')).map((f) => join(sassDir, f));
+// which expands to the same at-rule). AC-201 (normalize-p2): uses the shared
+// recursive scss-scan.mjs walker rather than this suite's own former flat
+// `readdirSync(sassDir).filter(...)`, so an ITCSS split into subdirectories
+// (`_sass/pages/`, `_sass/objects/`, etc.) doesn't silently blind this
+// suite the way the old flat scan would have.
+const files = listScssFiles(sassDir);
 
 function stripComments(src) {
   return src
@@ -75,6 +79,11 @@ if (authoringSites.length !== 1) {
 }
 
 // --- 2. the three enumerated dead declarations no longer appear anywhere in _sass/ ---
+// AC-201: looked up by BASENAME against the recursive `files` list above
+// (rather than a hardcoded `join(sassDir, file)` flat path), so this stays
+// correct regardless of which ITCSS subdirectory `_notebook.scss` /
+// `_laboratory.scss` live in.
+const filesByBasename = new Map(files.map((f) => [f.split('/').pop(), f]));
 const deadDeclarations = [
   { file: '_notebook.scss', pattern: /--dnd-parchment\s*:\s*#2c2c2c/ },
   { file: '_notebook.scss', pattern: /--dnd-ink\s*:\s*#d0d0d0/ },
@@ -82,7 +91,13 @@ const deadDeclarations = [
 ];
 let deadFound = 0;
 for (const { file, pattern } of deadDeclarations) {
-  const src = readFileSync(join(sassDir, file), 'utf8');
+  const fullPath = filesByBasename.get(file);
+  if (!fullPath) {
+    fail(`could not locate ${file} anywhere under _sass/ -- relocated without updating this check?`);
+    deadFound++;
+    continue;
+  }
+  const src = readFileSync(fullPath, 'utf8');
   if (pattern.test(src)) {
     fail(`${file} still contains the dead declaration matching ${pattern}`);
     deadFound++;

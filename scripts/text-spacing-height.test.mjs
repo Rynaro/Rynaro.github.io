@@ -50,7 +50,7 @@ else console.log(`ok: ${coverage.message}`);
 // Same anti-vacuity discipline as the palette manifest's usage_exemptions:
 // short, explicit, one reason each -- not a blanket escape hatch.
 const EXEMPTIONS = new Set([
-  '_sass/_about.scss:.badge-icon', // 24x24 circular icon swatch inside .status-badge; text lives in the sibling .badge-name, not here.
+  '_sass/pages/_about.scss:.badge-icon', // 24x24 circular icon swatch inside .status-badge; text lives in the sibling .badge-name, not here.
 ]);
 
 let scanned = 0;

@@ -40,7 +40,7 @@ meta:
   # `_sass/settings/`, this list grows to include that glob entry alongside
   # (or instead of) this one, with no change needed to the test's shape.
   source:
-    - _sass/_variables.scss
+    - _sass/settings/_variables.scss
   declared_backgrounds:
     cream: "#F8F5F2"
     light: "#F0ECE9"
@@ -477,7 +477,7 @@ usage_exemptions:
   # are NOT bound -- each has a documented reason and, where feasible, an
   # independently measured ratio. This list is deliberately short; it is the
   # anti-vacuity discipline, generalized from the logotype selector-set carve-out.
-  - file: _sass/_about.scss
+  - file: _sass/pages/_about.scss
     line: 360
     selector: ".social-link:hover"
     property: border-color
@@ -487,13 +487,13 @@ usage_exemptions:
       carried by an obvious, large background-color change on the same rule
       (background: var(--ff-gold) two lines up) -- the border does not
       independently convey the state.
-  - file: _sass/_about.scss
+  - file: _sass/pages/_about.scss
     line: 848
     selector: ".current-quest .timeline-marker"
     property: border-color
     token: --ff-gold
     reason: "Same pattern -- border-color matches background: var(--ff-gold) on the same rule."
-  - file: _sass/_about.scss
+  - file: _sass/pages/_about.scss
     lines: [960, 976, 993]
     selector: ".ability-type-ultimate, .ability-ultimate .ability-name/.ability-mana"
     property: "color"
@@ -512,7 +512,7 @@ usage_exemptions:
       dark-gradient context (e.g. a near-white with a gold text-shadow), which
       is a small design decision, not a token swap -- out of this bounded
       pass. Logged for Phase 4b/5, not silently exempted as "fine."
-  - file: _sass/_about.scss
+  - file: _sass/pages/_about.scss
     line: 1183
     selector: ".cta-title"
     property: color
@@ -521,7 +521,7 @@ usage_exemptions:
       Same category as the ability-ultimate cluster above: background is
       linear-gradient(135deg, var(--ff-blue-dark), var(--ff-purple)), not a
       declared background. Not independently verified passing; logged, not fixed.
-  - file: _sass/_notebook.scss
+  - file: _sass/pages/_notebook.scss
     line: 163
     selector: ".glyph"
     property: color
@@ -532,7 +532,7 @@ usage_exemptions:
       `aria-hidden="true"` in Story 4.6 (AC-032, Phase 4b), which formalizes
       its decorative-only status; currently NOT aria-hidden, a gap logged
       for that pass.
-  - file: _sass/_home.scss
+  - file: _sass/pages/_home.scss
     line: 104
     selector: ".hero-description"
     property: color
@@ -542,7 +542,7 @@ usage_exemptions:
       passing against both declared hero-gradient stops: 9.86:1 / 8.12:1.
       No -ink variant needed since the base hex already clears 4.5:1 in its
       only content context.
-  - file: _sass/_home.scss
+  - file: _sass/pages/_home.scss
     line: 115
     selector: ".hero-trademark"
     property: color
@@ -550,19 +550,19 @@ usage_exemptions:
     reason: >-
       Real content (copyright text), independently measured by alpha-blending
       against both hero-gradient stops before computing contrast: 6.12:1 / 5.19:1.
-  - file: _sass/_home.scss
+  - file: _sass/pages/_home.scss
     line: 63
     selector: ".hero-content"
     property: color
     token: $background-cream
     reason: "Sets the default hero text color; independently measured against both hero-gradient stops: 15.18:1 / 12.49:1."
-  - file: _sass/_home.scss
+  - file: _sass/pages/_home.scss
     line: 79
     selector: ".hero-title"
     property: color
     token: $background-cream
     reason: "Same hero-gradient pairing as .hero-content, restated: 15.18:1 / 12.49:1."
-  - file: _sass/_home.scss
+  - file: _sass/pages/_home.scss
     line: 352
     selector: ".alchemy-symbol, .rune"
     property: color
@@ -572,7 +572,7 @@ usage_exemptions:
       scope, see not_manifest_scope) -- every actual rune element sets
       --symbol-color inline, so the $pastel-purple fallback never renders in
       practice. Decorative icon fill, not body text.
-  - file: _sass/_components.scss
+  - file: _sass/components/_components.scss
     line: 89
     selector: ".social-icon (--linkedin/--github/--dev)"
     property: color
@@ -589,7 +589,7 @@ usage_exemptions:
       to .button--primary/--outlined hover states (_components.scss:21,32),
       which had the identical defect shape and WERE fixed here (--ink-color
       clears 5.24:1 / 7.34:1 against those two fills).
-  - file: _sass/_laboratory.scss
+  - file: _sass/pages/_laboratory.scss
     lines: [626, 627, 628, 629]
     selector: ".item-rarity-label, &--rare, &--epic, &--legendary, &--uncommon"
     property: border-color
@@ -612,7 +612,7 @@ usage_exemptions:
   # deliberately CHOSEN ink for this dark pairing, not an accidental leak of
   # a decorative hue into body text) -- see _sass/_about.scss's own "Dark
   # Mode Support" header comment for the measured ratios.
-  - file: _sass/_about.scss
+  - file: _sass/pages/_about.scss
     selector: ".attribute-value"
     property: color
     token: "--ff-gold"
@@ -621,7 +621,7 @@ usage_exemptions:
       (content/ink, 2.36 against the new #232323 card ground). --ff-gold
       itself measures 7.39 against #232323 -- verified >= 4.5, chosen
       deliberately for this one dark pairing.
-  - file: _sass/_about.scss
+  - file: _sass/pages/_about.scss
     selector: ".quest-location"
     property: color
     token: "--ff-purple-light"
@@ -630,7 +630,7 @@ usage_exemptions:
       (content/ink, 2.32 against the new #232323 card ground). --ff-purple-light
       measures 6.46 against #232323 -- verified >= 4.5, chosen deliberately
       for this one dark pairing.
-  - file: _sass/_about.scss
+  - file: _sass/pages/_about.scss
     selector: ".bio-block strong"
     property: color
     token: "--ff-purple-light"
@@ -641,7 +641,7 @@ usage_exemptions:
       $pastel-purple-ink measures 2.29 against #232323; --ff-purple-light
       measures 6.46 -- verified >= 4.5, chosen deliberately for this one
       dark pairing.
-  - file: _sass/_about.scss
+  - file: _sass/pages/_about.scss
     selector: ".highlight"
     property: color
     token: "--ff-gold"
@@ -651,7 +651,7 @@ usage_exemptions:
       surface flips, --ff-gold-ink measures 2.36 against #232323. --ff-gold
       itself measures 7.39 -- verified >= 4.5, chosen deliberately for this
       one dark pairing (same re-pairing as .attribute-value above).
-  - file: _sass/_about.scss
+  - file: _sass/pages/_about.scss
     selector: ".ability-mana"
     property: color
     token: "--ff-blue"
