@@ -1,4 +1,7 @@
 /* RPG-Styled Laboratory Page */
+
+@use "../tools/breakpoints" as *;
+
 /* Laboratory Hero Section - based on rpg-hero but with unique elements */
 .laboratory-hero {
   background: linear-gradient(135deg, #217aa3, #7244a1);

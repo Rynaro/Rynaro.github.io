@@ -17,6 +17,8 @@
 // not just its dark override, once both live in the same document-scoped
 // custom-property namespace.
 
+@use "../tools/breakpoints" as *;
+
 /* Notebook Hero Section - based on rpg-hero but with unique elements */
 .notebook-hero {
   background: linear-gradient(135deg, #7244a1, #a65a95);

@@ -2,6 +2,9 @@
 // ALCHEMIST HOME PAGE STYLES
 // ==========================================================================
 
+@use "../settings/variables" as *;
+@use "../tools/breakpoints" as *;
+
 // Prevent scrolling on home page
 body.home {
   overflow: hidden;

@@ -2,6 +2,8 @@
 // BASE STYLES
 // ==========================================================================
 
+@use "../settings/variables" as *;
+
 html, body {
   margin: 0;
   padding: 0;

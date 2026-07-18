@@ -1,5 +1,8 @@
 /* RPG-Styled Letter Page */
 
+@use "../settings/variables" as *;
+@use "../tools/breakpoints" as *;
+
 /* Letter Hero Section - based on rpg-hero but with unique elements */
 .letter-hero {
   background: linear-gradient(135deg, var(--letter-gradient-start), var(--letter-gradient-end));

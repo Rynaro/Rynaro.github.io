@@ -1,4 +1,8 @@
 /* RPG-Styled Blog Post Template */
+
+@use "../settings/variables" as *;
+@use "../tools/breakpoints" as *;
+
 :root {
   /* Post specific variables */
   --post-gradient-start: #7244a1;

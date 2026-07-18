@@ -2,6 +2,9 @@
 // LAYOUT & GRID
 // ==========================================================================
 
+@use "../settings/variables" as *;
+@use "../tools/breakpoints" as *;
+
 .container {
   width: 100%;
   max-width: $content-max-width;

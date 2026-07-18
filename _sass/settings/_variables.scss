@@ -2,6 +2,8 @@
 // VARIABLES & CONFIGURATION
 // ==========================================================================
 
+@use "sass:color";
+
 // Color Palette
 $pastel-pink: #F8D1E0;      // Soft pastel pink
 $pastel-lavender: #E5D4F1;  // Light pastel lavender
@@ -33,8 +35,8 @@ $text-light: #5c5c5c;        // Light gray for tertiary text (AC-026 ink fix)
 // (cream / light / parchment-dark). The base $pastel-purple hex is untouched --
 // every surface/fill usage keeps its exact color (Story 4.1's "every pastel
 // keeps its exact hex").
-$pastel-purple-ink: darken($pastel-purple, 36%);
-$pastel-purple-ink-hover: darken($pastel-purple, 41%);
+$pastel-purple-ink: color.adjust($pastel-purple, $lightness: -36%);
+$pastel-purple-ink-hover: color.adjust($pastel-purple, $lightness: -41%);
 
 // Aliases for backward compatibility
 $soft-pink: $pastel-pink;
@@ -65,7 +67,7 @@ $mobile-breakpoint: 480px;
   // happen to sit on. Darkened 2% further -- 5.57 / 5.15 / 4.57 -- a change
   // small enough to be visually indistinguishable in its ornament (gradient)
   // usages.
-  --ff-blue-dark: #{darken(#306d9a, 2%)};
+  --ff-blue-dark: #{color.adjust(#306d9a, $lightness: -2%)};
   --ff-gold: #e6a553;
   --ff-purple: #9966cc;
   --ff-purple-light: #b19cd9;
@@ -78,11 +80,11 @@ $mobile-breakpoint: 480px;
   // verified in scripts/palette-contrast.test.mjs (its output matches Dart
   // Sass's own darken() byte-for-byte -- checked directly against `bundle
   // exec sass`, not just self-consistently).
-  --ff-gold-ink: #{darken(#e6a553, 32%)};         // 6.14 / 5.67 / 5.03
-  --ff-purple-ink: #{darken(#9966cc, 13%)};        // 6.23 / 5.76 / 5.11
-  --ff-purple-light-ink: #{darken(#b19cd9, 25%)};  // 6.29 / 5.82 / 5.16
-  --ff-green-ink: #{darken(#2ecc71, 24%)};         // 6.28 / 5.81 / 5.15
-  --ff-red-ink: #{darken(#e74c3c, 18%)};           // 6.17 / 5.71 / 5.06
+  --ff-gold-ink: #{color.adjust(#e6a553, $lightness: -32%)};         // 6.14 / 5.67 / 5.03
+  --ff-purple-ink: #{color.adjust(#9966cc, $lightness: -13%)};        // 6.23 / 5.76 / 5.11
+  --ff-purple-light-ink: #{color.adjust(#b19cd9, $lightness: -25%)};  // 6.29 / 5.82 / 5.16
+  --ff-green-ink: #{color.adjust(#2ecc71, $lightness: -24%)};         // 6.28 / 5.81 / 5.15
+  --ff-red-ink: #{color.adjust(#e74c3c, $lightness: -18%)};           // 6.17 / 5.71 / 5.06
 
   // D&D inspired colors
   --dnd-parchment: #f9f3e6;
@@ -90,7 +92,7 @@ $mobile-breakpoint: 480px;
   // forbid rounding a near-miss into a pass). Darkened 8% -- 6.40 / 5.92 / 5.25.
   // Used only as `color:` sitewide (34 usages, zero ornament/background use),
   // so this is a safe in-place darken rather than a token split.
-  --dnd-brown: #{darken(#8a6d3b, 8%)};
+  --dnd-brown: #{color.adjust(#8a6d3b, $lightness: -8%)};
   --dnd-red: #a94442; // unreferenced anywhere in _sass/ -- dead token, left in place (not rescued; see report)
   --dnd-ink: #4e342e;
 
@@ -99,10 +101,10 @@ $mobile-breakpoint: 480px;
   // AC-026 / D17: --text-secondary (#666) was 5.29 / 4.89 / 4.33 -- fails
   // parchment-dark. Darkened 4% (light-theme value only; the .dark-mode
   // override two lines down is untouched, it already targets dark surfaces).
-  --text-secondary: #{darken(#666666, 4%)};
+  --text-secondary: #{color.adjust(#666666, $lightness: -4%)};
   // AC-026 / D17: --text-light (#898989) was 3.22 / 2.98 / 2.64 -- never legal
   // body text. Darkened 18% -- 6.25 / 5.78 / 5.13.
-  --text-light: #{darken(#898989, 18%)};
+  --text-light: #{color.adjust(#898989, $lightness: -18%)};
 
   // Visual effects
   --border-light: rgba(153, 102, 204, 0.2);

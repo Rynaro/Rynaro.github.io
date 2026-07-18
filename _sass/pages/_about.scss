@@ -1,5 +1,8 @@
 /* RPG Character Sheet Styles - Final Fantasy meets D&D */
 
+@use "../settings/variables" as *;
+@use "../tools/breakpoints" as *;
+
 /* Hero Section */
 .rpg-hero {
   background: linear-gradient(135deg, var(--ff-blue-dark), var(--ff-purple));

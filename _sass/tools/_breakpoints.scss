@@ -2,6 +2,8 @@
 // RESPONSIVE BREAKPOINTS
 // ==========================================================================
 
+@use "sass:map";
+
 // Breakpoint variables
 $breakpoints: (
   'xs': 400px,    // Extra small devices
@@ -14,34 +16,34 @@ $breakpoints: (
 
 // Mixin for min-width media queries
 @mixin min-width($breakpoint) {
-  @if map-has-key($breakpoints, $breakpoint) {
-    @media (min-width: map-get($breakpoints, $breakpoint)) {
+  @if map.has-key($breakpoints, $breakpoint) {
+    @media (min-width: map.get($breakpoints, $breakpoint)) {
       @content;
     }
   } @else {
-    @warn "Invalid breakpoint: #{$breakpoint}. Available breakpoints are: #{map-keys($breakpoints)}";
+    @warn "Invalid breakpoint: #{$breakpoint}. Available breakpoints are: #{map.keys($breakpoints)}";
   }
 }
 
 // Mixin for max-width media queries
 @mixin max-width($breakpoint) {
-  @if map-has-key($breakpoints, $breakpoint) {
-    @media (max-width: map-get($breakpoints, $breakpoint) - 1px) {
+  @if map.has-key($breakpoints, $breakpoint) {
+    @media (max-width: map.get($breakpoints, $breakpoint) - 1px) {
       @content;
     }
   } @else {
-    @warn "Invalid breakpoint: #{$breakpoint}. Available breakpoints are: #{map-keys($breakpoints)}";
+    @warn "Invalid breakpoint: #{$breakpoint}. Available breakpoints are: #{map.keys($breakpoints)}";
   }
 }
 
 // Mixin for range media queries (min-width and max-width)
 @mixin between($min, $max) {
-  @if map-has-key($breakpoints, $min) and map-has-key($breakpoints, $max) {
-    @media (min-width: map-get($breakpoints, $min)) and (max-width: map-get($breakpoints, $max) - 1px) {
+  @if map.has-key($breakpoints, $min) and map.has-key($breakpoints, $max) {
+    @media (min-width: map.get($breakpoints, $min)) and (max-width: map.get($breakpoints, $max) - 1px) {
       @content;
     }
   } @else {
-    @warn "Invalid breakpoint range. Available breakpoints are: #{map-keys($breakpoints)}";
+    @warn "Invalid breakpoint range. Available breakpoints are: #{map.keys($breakpoints)}";
   }
 }
 

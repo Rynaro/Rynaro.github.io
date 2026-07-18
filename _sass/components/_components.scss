@@ -2,6 +2,9 @@
 // COMMON COMPONENTS
 // ==========================================================================
 
+@use "sass:color";
+@use "../settings/variables" as *;
+
 // Buttons
 .button {
   display: inline-block;
@@ -17,7 +20,7 @@
     color: $pastel-purple-ink;
 
     &:hover {
-      background-color: darken($pastel-purple, 10%);
+      background-color: color.adjust($pastel-purple, $lightness: -10%);
       // AC-026-adjacent: was `$background-cream` (near-white) on this
       // saturated hover fill -- measured 2.43:1, a real failure found while
       // auditing $background-cream's other `color:` usages (outside the
@@ -94,7 +97,7 @@
       background-color: #6E93B5;  // Pastel version of LinkedIn blue
 
       &:hover {
-        background-color: darken(#6E93B5, 10%);
+        background-color: color.adjust(#6E93B5, $lightness: -10%);
       }
     }
 
@@ -102,7 +105,7 @@
       background-color: #7B7B7B;  // Pastel version of GitHub black
 
       &:hover {
-        background-color: darken(#7B7B7B, 10%);
+        background-color: color.adjust(#7B7B7B, $lightness: -10%);
       }
     }
 
@@ -110,7 +113,7 @@
       background-color: #777;  // Pastel version of Dev.to black
 
       &:hover {
-        background-color: darken(#777, 10%);
+        background-color: color.adjust(#777, $lightness: -10%);
       }
     }
   }
