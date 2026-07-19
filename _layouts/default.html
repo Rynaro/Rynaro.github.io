@@ -11,6 +11,11 @@
   <link rel="icon" href="{{ "/assets/images/favicon.png" | relative_url }}">
 </head>
 <body {% if page.url == "/" %}class="home"{% endif %}>
+<!-- WCAG 2.4.1 (Bypass Blocks): first focusable element in the document, before the
+     nav, so keyboard/screen-reader users can skip straight to the main content. The
+     .skip-to-content style already existed (off-screen until :focus); this is the
+     missing markup that actually renders it. -->
+<a class="skip-to-content" href="#main-content">Skip to content</a>
 <!-- Horizontal Sigil Navigation -->
 <nav class="sigil-nav" aria-label="Main navigation">
   <div class="sigil-nav-items">
@@ -51,7 +56,7 @@
   </div>
 </nav>
 
-  <main class="main-content">
+  <main class="main-content" id="main-content">
     {{ content }}
   </main>
 
