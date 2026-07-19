@@ -97,10 +97,7 @@ layout: default
      pattern, rather than hardcoding a post list. -->
 <section class="rpg-scrolls home-scrolls">
   <div class="container">
-    <h2 class="section-title">
-      <i class="fas fa-scroll section-icon"></i>
-      Recent Scrolls
-    </h2>
+    {% include components/section-title.html icon="fas fa-scroll" title="Recent Scrolls" %}
 
     <div class="scrolls-collection">
       {% for post in site.posts limit: 3 %}
@@ -121,10 +118,7 @@ layout: default
 {% if featured_posts.size > 0 %}
 <section class="rpg-scrolls home-scrolls home-scrolls--featured">
   <div class="container">
-    <h2 class="section-title">
-      <i class="fas fa-award section-icon"></i>
-      Favorites from the Grimoire
-    </h2>
+    {% include components/section-title.html icon="fas fa-award" title="Favorites from the Grimoire" %}
 
     <div class="scrolls-collection">
       {% for post in featured_posts %}

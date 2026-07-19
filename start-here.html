@@ -23,10 +23,7 @@ resume: "A curated route through the Grimoire, by theme instead of by date"
 <section class="rpg-scrolls">
   <div class="container">
     {% for section in site.data.start_here.sections %}
-      <h2 class="section-title">
-        <i class="{{ section.icon }} section-icon"></i>
-        {{ section.title }}
-      </h2>
+      {% include components/section-title.html icon=section.icon title=section.title %}
 
       <div class="related-scrolls start-here-scrolls">
         {% for entry in section.entries %}

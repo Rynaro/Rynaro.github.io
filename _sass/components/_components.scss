@@ -4,6 +4,7 @@
 
 @use "sass:color";
 @use "../settings/variables" as *;
+@use "../tools/breakpoints" as *;
 
 // Buttons
 .button {
@@ -120,23 +121,76 @@
 }
 
 // Section titles
+//
+// normalize-p3 (AC-302/306): consolidated from 5 divergent standalone
+// `.section-title` defs (this file + _about.scss/_laboratory.scss/
+// _notebook.scss/_letter.scss). All were GLOBAL, unscoped selectors at
+// equal specificity -- so despite 5 source-level definitions, only ONE
+// final look ever won the cascade site-wide (the last `@use`-imported
+// partial's rule, per assets/css/main.scss's @use order: pages/letter last
+// among these). Verified empirically (computed style, every page carrying
+// this class: about/laboratory/notebook/letter/index/uses/log/now/404/
+// codex/accessibility/start-here) -- margin-bottom was already 3rem
+// (letter's value), font-size 2.5rem centered dnd-brown (about/laboratory/
+// notebook/letter's shared shape, NOT this file's own original 2.25rem/
+// pink-underline look). That original look never rendered anywhere on any
+// page -- it was fully shadowed dead weight -- so it's dropped outright
+// here rather than kept as an unused modifier (owner decision: consolidate
+// to the one look that actually renders; don't add dead CSS preserving a
+// look nothing uses).
 .section-title {
   position: relative;
   display: inline-block;
-  margin-bottom: 2.5rem;
-  font-size: 2.25rem;
-  color: $pastel-purple-ink;
+  text-align: center;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 3rem;
+  font-size: 2.5rem;
+  color: var(--dnd-brown);
+  z-index: 1;
 
-  &:after {
+  @include max-width('lg') {
+    font-size: 2rem;
+  }
+
+  &::after {
     content: '';
     position: absolute;
-    bottom: -0.75rem;
+    bottom: -10px;
     left: 50%;
     transform: translateX(-50%);
-    width: 80px;
+    width: 150px;
     height: 3px;
-    background-color: $pastel-pink;
+    background: linear-gradient(90deg, transparent, var(--ff-purple), transparent);
   }
+}
+
+// Section icon -- normalize-p3 (AC-301/302/306, D-D reversed after the
+// finding below). Every `.section-icon` site -- the post TOC header AND
+// all ~21 heading icons (about/laboratory/notebook/letter/index/uses/log/
+// now/404/codex/accessibility/start-here/notebook's 3 category pages, plus
+// `.related-title`'s icon) -- already rendered as this SAME purple
+// circular badge before this phase, verified empirically (computed style +
+// screenshot): the deleted _sass/pages/_post.scss badge rule bled
+// background/border-radius/display/padding/font-size onto every
+// `.section-icon` on every page (equal-specificity, later-import-wins),
+// and the per-page "inline" defs' own margin-right/color never actually
+// reset that chrome -- there was only ever ONE rendered role, not two.
+// D-D originally called for splitting into two named blocks (badge vs.
+// plain inline); the owner reversed that after seeing this finding --
+// unifying to one badge definition matches what every page already shows,
+// so nothing changes visually anywhere, including the post TOC (now a bare
+// `<i>` instead of a wrapping `<div>`, but styled identically).
+.section-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ff-purple-light);
+  border-radius: 50%;
+  color: var(--ff-purple-ink);
+  padding: 8px;
+  margin-right: 0.75rem;
+  font-size: 0.9rem;
 }
 
 // Generic page header

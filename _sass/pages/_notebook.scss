@@ -223,37 +223,13 @@
 }
 
 /* Section Title - same as in rpg-about.scss */
-.section-title {
-  text-align: center;
-  margin-bottom: 2.5rem;
-  font-size: 2.5rem;
-  color: var(--dnd-brown);
-  position: relative;
-  display: inline-block;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1;
-
-  @include max-width('md') {
-    font-size: 2rem;
-  }
-}
-
-.section-title::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 150px;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, var(--ff-purple), transparent);
-}
-
-.section-icon {
-  margin-right: 1rem;
-  color: var(--ff-purple-ink);
-}
+/* Section Title / Section Icon -- normalize-p3 (AC-302/306): this page's
+   standalone `.section-title`/`.section-title::after`/`.section-icon` defs
+   were fully shadowed dead weight (see the cascade note in
+   _sass/components/_components.scss) and have been consolidated to the
+   single base + `.section-title .section-icon` context there. Removed here,
+   not moved -- nothing on this page opted into these values distinctly from
+   what the consolidated base now provides. */
 
 /* Scroll Navigation */
 .scroll-navigation {

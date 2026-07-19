@@ -217,37 +217,17 @@
   z-index: 0;
 }
 
-.section-title {
-  text-align: center;
-  margin-bottom: 3rem;
-  font-size: 2.5rem;
-  color: var(--dnd-brown);
-  position: relative;
-  display: inline-block;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1;
-
-  @include max-width('lg') {
-    font-size: 2rem;
-  }
-}
-
-.section-title::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 150px;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, var(--ff-purple), transparent);
-}
-
-.section-icon {
-  margin-right: 0.75rem;
-  color: var(--ff-purple-ink);
-}
+/* Section Title / Section Icon -- normalize-p3 (AC-302/306): this page's
+   standalone `.section-title`/`.section-title::after`/`.section-icon` defs
+   were fully shadowed dead weight (see the cascade note in
+   _sass/components/_components.scss) and have been consolidated to the
+   single base + `.section-title .section-icon` context there. Removed here,
+   not moved -- nothing on this page opted into these values distinctly from
+   what the consolidated base now provides. (This includes the value that
+   looked letter-specific -- `.section-icon`'s 0.75rem margin-right -- which
+   the cascade had ALREADY made the site-wide winning value on every page
+   with this class, not a letter-only look; see the note in
+   _sass/components/_components.scss.) */
 
 /* Correspondence Grid */
 .correspondence-grid {
@@ -901,9 +881,11 @@
     margin-bottom: 2rem;
   }
 
-  .section-title {
-    font-size: 2rem;
-  }
+  // normalize-p3 (AC-302/306): the `.section-title { font-size: 2rem; }`
+  // that used to live here is now redundant -- the consolidated base in
+  // _sass/components/_components.scss already applies `font-size: 2rem` at
+  // this same breakpoint (max-width('lg') = 992px) site-wide. Removed, not
+  // moved; no rendered change (same breakpoint, same value).
 
   .magical-parchment {
     padding: 1.5rem;
