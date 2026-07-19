@@ -1,0 +1,12 @@
+{
+  "esl_version": "1.1",
+  "change_id": "home-atelier",
+  "status": "verified",
+  "tier": "full",
+  "maker": "opus-orchestrator",
+  "checker": "kupo",
+  "acceptance_checks": [],
+  "spec_ref": ".spectra/changes/home-atelier/spec.md",
+  "drift_checked": true,
+  "has_code": true
+}

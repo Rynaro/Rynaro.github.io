@@ -556,6 +556,29 @@ usage_exemptions:
     token: $background-cream
     reason: "Same hero-gradient pairing as .hero-content, restated: 15.18:1 / 12.49:1."
   - file: _sass/pages/_home.scss
+    line: 744
+    selector: ".transmutation-reveal__motto"
+    property: color
+    token: --ff-gold
+    reason: >-
+      change `home-atelier`: the hidden-spell (Konami) reveal is light-on-dark,
+      like the hero wordmark -- it renders on its OWN dark scrim
+      (.transmutation-reveal::before, radial rgba(20,16,30,0.82)), never a
+      declared light background. Measured against the underlying hero-gradient
+      stops (the guaranteed backdrop) at 7.75:1 / 6.38:1; the semi-transparent
+      scrim only darkens the effective bg further (worst case, scrim over the
+      bright pastel orb: 6.11:1 -- still > 4.5). The light-background
+      --ff-gold-ink would be WRONG here (a dark ink on a dark surface).
+  - file: _sass/pages/_home.scss
+    line: 752
+    selector: ".transmutation-reveal__sub"
+    property: color
+    token: $background-cream
+    reason: >-
+      change `home-atelier`: sub-line of the same dark-surface reveal; same
+      hero-gradient pairing as .hero__content, restated: 15.18:1 / 12.49:1
+      (worst-case scrim-over-orb 11.96:1).
+  - file: _sass/pages/_home.scss
     line: 352
     selector: ".alchemy-symbol, .rune"
     property: color

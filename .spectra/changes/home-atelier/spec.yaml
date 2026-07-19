@@ -1,0 +1,114 @@
+# spec.yaml — ESL machine-readable contract for change `home-atelier`.
+artifact: spec
+change_id: home-atelier
+tier: full
+version: 0.1.0
+maker: opus-orchestrator
+checker: kupo
+title: "Homepage rework — The Alchemist's Observatory"
+branch: rework/home-atelier
+chained_off: normalize/tokens
+complexity:
+  score: 7
+  verdict: extended
+depends_on:
+- normalize
+criteria_source: .spectra/changes/home-atelier/spec.md
+owner_decisions:
+- id: D1
+  decision: Single-screen atelier — keep the homepage one immersive locked viewport;
+    remove the below-fold Recent Scrolls + Favorites sections (they were in the DOM
+    but unreachable under body.home position:fixed/overflow:hidden). Posts stay
+    reachable via nav → Notebook and the sitewide footer.
+- id: D2
+  decision: Living nebula background — a first-party canvas layer (drifting stardust
+    + soft nebula, tiny local pointer reactivity). One static frame under reduced motion.
+- id: D3
+  decision: Signature interactions — living constellation + dev homage (FPS readout,
+    console sigil, Konami transmutation). The gamified "Great Work" sequence was declined.
+acceptance_checks:
+- id: AC-A01
+  given: the homepage was a scroll-locked hero with content stranded below the fold
+  when: a visitor loads the homepage
+  then: the hero SHALL fill one viewport with no vertical scroll (single-screen atelier)
+  verify_method: Playwright probe — getComputedStyle(body).position === 'fixed'; visual-baseline
+    index height dropped from 320x3702 to 320x1283 (below-fold sections removed)
+- id: AC-A02
+  given: Recent Scrolls + Favorites lived only on the homepage
+  when: the homepage renders
+  then: it SHALL NOT emit those sections, and the posts SHALL stay reachable via nav (Notebook) and footer
+  verify_method: grep _site/index.html — 0 '<section class="rpg-scrolls'; footer nav + Notebook link present
+- id: AC-A03
+  given: an auto-drifting starfield would otherwise auto-start continuous motion
+  when: prefers-reduced-motion:reduce is set
+  then: the canvas SHALL paint one static frame and start NO rAF loop (no-motion-first; WCAG 2.2.2/AC-024 lineage)
+  verify_method: Playwright reducedMotion:'reduce' — FPS readout shows '—', toggle aria-label='Play ambient motion'
+- id: AC-A04
+  given: AC-031 made hero animations finite
+  when: motion is permitted
+  then: every auto-starting hero animation SHALL stay finite (<=5s, non-infinite iteration)
+  verify_method: npm run test:motion exits 0 (grep "infinite" outside motion-ok = 0)
+- id: AC-A05
+  given: the canvas overlays the hero
+  when: the pointer moves over the hero
+  then: the nebula/constellation SHALL react locally AND the canvas SHALL be pointer-events:none (never intercept clicks)
+  verify_method: CSS .observatory { pointer-events:none }; axe target-size + focusable checks pass on Home
+- id: AC-A06
+  given: the FPS readout is decorative
+  when: assistive tech reads the page
+  then: the readout SHALL be aria-hidden and not announced
+  verify_method: observatory.js sets aria-hidden='true' on the fps span; axe 0 violations on Home
+- id: AC-A07
+  given: a hidden spell should reward the curious
+  when: the Konami sequence (↑↑↓↓←→←→ B A) is entered
+  then: a one-shot transmutation flourish SHALL play with NO navigation/content-state change
+  verify_method: Playwright key sequence — .transmutation-reveal appears with motto 'Solve et Coagula'; URL unchanged
+- id: AC-A08
+  given: the alchemy circle is the personal-brand centerpiece
+  when: the rework ships
+  then: the circle SHALL remain drag-to-rotate and its sigils hover/tap interactive (no regression)
+  verify_method: home.js circle drag + symbol handlers retained verbatim; manual/probe confirms
+- id: AC-A09
+  given: AC-047 forbids ornament tokens as text color on declared light backgrounds
+  when: the reveal renders light-on-dark
+  then: reveal text SHALL meet AA on its own dark scrim (documented, measured exemptions)
+  verify_method: npm run test:token-usage exits 0; measured --ff-gold 7.75/6.38, $background-cream 15.18/12.49 vs hero stops
+- id: AC-A10
+  given: a continuous canvas loop could peg the CPU
+  when: the loop runs
+  then: it SHALL bound the mote budget AND pause on visibilitychange when the tab is hidden
+  verify_method: observatory.js starBudget cap (<=150) + document 'visibilitychange' -> stop(); code review
+- id: AC-A11
+  given: AC-020 requires the sitewide disclaimer on every page
+  when: the homepage renders
+  then: the footer include SHALL remain present in the homepage DOM
+  verify_method: grep _site/index.html footer__disclaimer == 1
+gates_must_stay_green:
+- npm run test:a11y-static   # manifest, token-usage, contrast, rarity, motion, dark-cascade, dead-class, clamp, text-spacing, a11y-page
+- npm run test:axe           # headless Playwright + axe-core, all pages
+non_ci_safety_net:
+- gate: npm run test:visual
+  note: not a CI gate; index baseline refreshed for the intentional redesign. Starfield
+    seeded (mulberry32) so the reduced-motion static frame is byte-deterministic; all
+    other pages verified 0.0000% pixel drift.
+files_touched:
+- index.html
+- assets/js/observatory.js   # new — ambient canvas engine + HUD + console homage
+- assets/js/home.js          # + Konami transmutation (existing circle interactions preserved)
+- _sass/pages/_home.scss     # observatory/HUD/transmutation styling
+- _data/palette-manifest.yml # 2 documented, measured usage_exemptions for the dark-surface reveal text
+gate_status:
+  esl_verify: pending transition; C1/C2a/C2b pass, C3 satisfied by this spec.yaml
+  build: bundle exec jekyll build exit 0
+  test_a11y_static: PASS (0 failures)
+  test_axe: PASS (0 violations across Home/About/Notebook/Laboratory/Letter, light + dark)
+  test_motion: PASS (AC-031)
+  visual_behavior_probe: PASS (default loop 60fps; reduced static 'FPS —'; Konami reveal 'Solve et Coagula')
+  visual_baseline_scope: only index changed; all other pages 0.0000% pixel drift
+  confidence:
+    score: 82
+    verdict: VALIDATE
+    note: AUTHOR-SCORED. Verification is objective-gate-based (deterministic scripts +
+      headless axe + Playwright behavior probe), not a subjective critic. The project's
+      checker role (kupo) is sandbox-scoped without npm/node access, so the orchestrator
+      ran the gate suite; all green.

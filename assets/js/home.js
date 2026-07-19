@@ -282,4 +282,70 @@ document.addEventListener('DOMContentLoaded', function() {
       alchemyCircle.style.transform = 'rotate(0deg)';
     }, 200);
   });
+
+  // -------------------------------------------------------------------------
+  // The Great Work -- a hidden transmutation for those who know the old spell.
+  // Konami code (↑ ↑ ↓ ↓ ← → ← → B A). Purely a flourish: it changes no
+  // navigation and no content state (AC-A07). Motion is gated behind
+  // no-preference; a reduced-motion visitor gets a calm opacity reveal of the
+  // motto instead of the sigil cascade. The console greeting (observatory.js)
+  // is what points a curious dev at this spell.
+  // -------------------------------------------------------------------------
+  (function initTransmutation() {
+    const SPELL = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
+                   'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+    let progress = 0;
+    let sealed = false; // debounce while a transmutation is already playing
+
+    document.addEventListener('keydown', function (e) {
+      const key = e.key && e.key.length === 1 ? e.key.toLowerCase() : e.key;
+      if (key === SPELL[progress]) {
+        progress++;
+        if (progress === SPELL.length) {
+          progress = 0;
+          castTransmutation();
+        }
+      } else {
+        // A wrong key that is itself the opening note restarts cleanly.
+        progress = (key === SPELL[0]) ? 1 : 0;
+      }
+    });
+
+    function castTransmutation() {
+      if (sealed) return;
+      sealed = true;
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Ask the sky to flare (no-op if observatory.js didn't load).
+      if (window.Observatory && typeof window.Observatory.flare === 'function') {
+        window.Observatory.flare();
+      }
+
+      // Light every element sigil in sequence -- reuse the existing activated
+      // look. Skipped under reduced motion (the reveal below is enough).
+      if (!reduce) {
+        symbols.forEach((sym, i) => {
+          setTimeout(() => {
+            sym.classList.add('activated');
+            setTimeout(() => sym.classList.remove('activated'), 900);
+          }, i * 90);
+        });
+      }
+
+      // Reveal the motto in the core of the circle.
+      const reveal = document.createElement('div');
+      reveal.className = 'transmutation-reveal';
+      reveal.setAttribute('role', 'status');
+      reveal.innerHTML =
+        '<span class="transmutation-reveal__motto">Solve et Coagula</span>' +
+        '<span class="transmutation-reveal__sub">— dissolve, and bind anew —</span>';
+      (alchemyCircle || document.querySelector('.alchemist-hero') || document.body)
+        .appendChild(reveal);
+      requestAnimationFrame(() => reveal.classList.add('is-visible'));
+
+      const life = reduce ? 2200 : 2600;
+      setTimeout(() => reveal.classList.remove('is-visible'), life - 500);
+      setTimeout(() => { reveal.remove(); sealed = false; }, life);
+    }
+  })();
 });
