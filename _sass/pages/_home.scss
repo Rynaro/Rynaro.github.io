@@ -1,11 +1,19 @@
 // ==========================================================================
-// ALCHEMIST HOME PAGE STYLES
+// ALCHEMIST HOME PAGE — "Solve et Coagula" transmutation hero
+// (change `hero-transmutation`)
+//
+// The whole left-of-hero apparatus (alchemy circle, orbital rings, floating
+// element sigils + Nordic runes, ripple/particle DOM) is GONE from the markup:
+// those glyphs are now rasterised and rendered as living dust by
+// observatory.js. This partial styles the hero chrome (text, HUD, reveal) and
+// the two canvas layers; it deliberately no longer carries any of the old
+// `.alchemy-circle` / `.alchemy-symbol` / `.rune` CSS.
 // ==========================================================================
 
 @use "../settings/variables" as *;
 @use "../tools/breakpoints" as *;
 
-// Prevent scrolling on home page
+// Single-screen lock (unchanged): the homepage is one immersive viewport.
 body.home {
   overflow: hidden;
   height: 100vh;
@@ -18,86 +26,82 @@ html.home {
   height: 100%;
 }
 
+html, body {
+  overflow-x: hidden;
+}
+
+// The hero shell. Its `background` is the no-JS fallback (a layered violet slab
+// with a soft aurum glow left-of-centre, where the dust coagulates); with JS,
+// observatory.js's opaque dithered ground canvas paints over it. Content is
+// pushed to the RIGHT so the transmuting figure owns the left (research §3.5:
+// keep the effect out of the headline zone).
 .alchemist-hero {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   min-height: 100vh;
-  background: linear-gradient(135deg, #211C30, #312A45);
-  padding: 2rem;
   position: relative;
-  overflow: visible;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image:
-      radial-gradient(circle at 20% 30%, rgba(103, 58, 183, 0.15) 0%, transparent 20%),
-      radial-gradient(circle at 80% 70%, rgba(63, 81, 181, 0.15) 0%, transparent 20%);
-    z-index: 1;
-  }
+  overflow: hidden;
+  // clamp: max/min <= 2.5 and a rem-anchored middle term (AC-034 / F94).
+  padding: 2rem clamp(2.5rem, 1.5rem + 4vw, 6rem) 2rem 2rem;
+  background:
+    radial-gradient(ellipse 42% 55% at 31% 52%, rgba(103, 58, 183, 0.28), transparent 72%),
+    radial-gradient(circle at 24% 62%, rgba(230, 165, 83, 0.06), transparent 55%),
+    linear-gradient(135deg, #1c1830, #241f3a);
 
   @include max-width('lg') {
     flex-direction: column;
-    padding: 2rem 1rem;
-    min-height: auto;
-    padding-top: 4rem;
-    padding-bottom: 4rem;
-  }
-
-  @include max-width('sm') {
-    padding: 2rem 1rem;
-    min-height: calc(100vh - 4rem);
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 1.5rem 13vh; // comfortable bottom breathing room on the locked screen
+    min-height: 100vh;
+    background:
+      radial-gradient(ellipse 66% 28% at 50% 26%, rgba(103, 58, 183, 0.3), transparent 72%),
+      linear-gradient(160deg, #1c1830, #241f3a);
   }
 }
 
-/* Hero Content */
+// Hero content — right-aligned block on desktop, lower-centre on narrow screens.
 .hero__content {
-  flex: 1;
-  max-width: 600px;
-  margin-left: 2rem;
-  margin-right: 4rem;
+  max-width: 540px;
+  width: 100%;
   position: relative;
   z-index: 3;
   color: $background-cream;
 
   @include max-width('lg') {
-    margin: 2rem 0 0 0;
     text-align: center;
     max-width: 100%;
   }
+}
 
-  @include max-width('sm') {
-    margin: 1.5rem 0 0 0;
-  }
+// _about.scss leaks a global `.hero__content { flex: 1 }` (imported AFTER this
+// partial, so it wins the cascade). On the home column layout that stretches
+// the content to full viewport height and strands the text at the top with the
+// figure overlapping it. Scope + specificity (body.home) override it so the
+// home content keeps its natural height: it then sits at flex-end — the bottom
+// on mobile, the right on desktop.
+body.home .hero__content {
+  flex: 0 1 auto;
 }
 
 .hero__title {
-  font-size: 3.5rem;
+  font-size: clamp(2.5rem, 1.6rem + 3.4vw, 3.75rem);
   margin-bottom: 0.5rem;
   color: $background-cream;
   font-weight: 700;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-
-  @include max-width('sm') {
-    font-size: 2.5rem;
-  }
+  letter-spacing: -0.01em;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
 }
 
 .hero__subtitle {
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 1rem + 1.8vw, 2rem);
   margin-bottom: 1.5rem;
   color: var(--ff-gold);
   font-family: 'Nothing You Could Do', cursive;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
 
-  @include max-width('sm') {
-    font-size: 1.5rem;
-  }
+  @include max-width('sm') { margin-bottom: 1rem; }
 }
 
 .hero__description {
@@ -105,6 +109,12 @@ html.home {
   margin-bottom: 2rem;
   line-height: 1.6;
   color: $pastel-blue;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+
+  @include max-width('sm') {
+    font-size: 1.04rem;
+    margin-bottom: 1.25rem;
+  }
 }
 
 .hero-trademark {
@@ -120,476 +130,48 @@ html.home {
   text-shadow: 0 0 10px rgba($pastel-purple, 0.3);
   z-index: 10;
 
-  &__copyright {
-    font-size: 1.1rem;
-  }
+  &__copyright { font-size: 1.1rem; }
+  &__year { font-weight: 300; }
+  &__name { font-weight: 500; }
 
-  &__year {
-    font-weight: 300;
-  }
-
-  &__name {
-    font-weight: 500;
-  }
-
+  // On phones the fixed trademark collides with the centred social row at the
+  // bottom of the single-screen hero; it's a decorative echo of the footer
+  // copyright, so hide it here rather than fight the overlap.
   @include max-width('sm') {
-    bottom: 1.5rem;
-    right: 1.5rem;
-    font-size: 0.8rem;
-  }
-}
-
-/* Alchemy Circle */
-.alchemy-circle {
-  position: relative;
-  width: 480px;
-  height: 480px;
-  margin: 0 auto;
-  z-index: 2;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  @include max-width('lg') {
-    width: 300px;
-    height: 300px;
-    margin: 0 0 2rem 0;
-  }
-
-  @include max-width('sm') {
-    width: 250px;
-    height: 250px;
-    margin: 4rem 0 1.5rem 0;
-  }
-
-  @include max-width('xs') {
-    width: 220px;
-    height: 220px;
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    background: radial-gradient(
-      circle at var(--glow-x, 50%),
-      var(--glow-y, 50%),
-      rgba(205, 180, 219, 0.5) 0%,
-      transparent 70%
-    );
-    opacity: var(--glow-strength, 0);
-    transition: opacity 0.3s ease;
-    z-index: -1;
-  }
-
-  &.interacting {
-    cursor: grabbing;
-  }
-}
-
-.alchemy-circle__inner {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background: radial-gradient(circle, $pastel-purple, #6A5687);
-  box-shadow: 0 0 25px rgba(205, 180, 219, 0.7);
-  z-index: 2;
-
-  @include max-width('sm') {
-    width: 70px;
-    height: 70px;
-  }
-
-  @include max-width('xs') {
-    width: 60px;
-    height: 60px;
-  }
-}
-
-.alchemy-circle__ring {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  border-radius: 50%;
-  border: 1.5px solid var(--ring-color, rgba(205, 180, 219, 0.3));
-  transform: translate(-50%, -50%) rotate(var(--settle-angle, 0deg));
-
-  // AC-031 / Story 4.5: was `rotate 40s|60s|80s linear infinite` -- ALL THREE
-  // conditions of WCAG 2.2.2 held (auto-starts on load, presented in
-  // parallel with the hero name/subtitle/tagline/social row, and a single
-  // rotation already took 40-80s, let alone forever). research-ui-a11y.md
-  // §3.2's cheapest reconciliation: make the loop finite and it "does not
-  // apply at all, and you owe no pause button" -- a circle that inscribes,
-  // flares, and settles is also better theater than an idle spin. Each ring
-  // settles at a fixed --settle-angle (held via `forwards`) instead of
-  // spinning forever; re-triggers naturally on every full page load, since
-  // this is a static multi-page site with no client-side routing to
-  // re-trigger against.
-  &--1 {
-    width: 180px;
-
-    height: 180px;
-    animation: circle-settle 2.2s cubic-bezier(0.22, 1, 0.36, 1) 1 forwards;
-    --ring-color: rgba(205, 180, 219, 0.4);
-    --settle-angle: 35deg;
-  }
-
-  &--2 {
-    width: 300px;
-    height: 300px;
-    animation: circle-settle 3.1s cubic-bezier(0.22, 1, 0.36, 1) 0.3s 1 forwards;
-    --ring-color: rgba(185, 201, 230, 0.4);
-    --settle-angle: -50deg;
-  }
-
-  &--3 {
-    width: 420px;
-    height: 420px;
-    animation: circle-settle 3.8s cubic-bezier(0.22, 1, 0.36, 1) 0.6s 1 forwards;
-    --ring-color: rgba(248, 209, 224, 0.4);
-    --settle-angle: 70deg;
-  }
-
-  @include max-width('lg') {
-    &--1 {
-      width: 120px;
-      height: 120px;
-    }
-
-    &--2 {
-      width: 200px;
-      height: 200px;
-    }
-
-    &--3 {
-      width: 280px;
-      height: 280px;
-    }
-  }
-
-  @include max-width('sm') {
-    &--1 {
-      width: 100px;
-      height: 100px;
-    }
-
-    &--2 {
-      width: 170px;
-      height: 170px;
-    }
-
-    &--3 {
-      width: 230px;
-      height: 230px;
-    }
-  }
-
-  @include max-width('xs') {
-    &--1 {
-      width: 90px;
-      height: 90px;
-    }
-
-    &--2 {
-      width: 150px;
-      height: 150px;
-    }
-
-    &--3 {
-      width: 210px;
-      height: 210px;
-    }
-  }
-}
-
-// AC-031 / Story 4.5: "inscribes, flares, and settles" -- opacity fades in,
-// a brief scale overshoot around 65% reads as the "flare," and the ring
-// comes to rest at its own --settle-angle (held via `forwards`). Every ring
-// finishes well inside 5s (see the per-ring delay+duration above); 2.2.2
-// "does not apply at all" once the loop is finite, per research-ui-a11y.md.
-@keyframes circle-settle {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) rotate(calc(var(--settle-angle, 0deg) - 90deg)) scale(0.7);
-  }
-  65% {
-    opacity: 1;
-    transform: translate(-50%, -50%) rotate(calc(var(--settle-angle, 0deg) * 0.85)) scale(1.06);
-  }
-  100% {
-    opacity: 1;
-    transform: translate(-50%, -50%) rotate(var(--settle-angle, 0deg)) scale(1);
-  }
-}
-
-/* Alchemy Symbols & Runes */
-.alchemy-symbol, .rune {
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  color: var(--symbol-color, $pastel-purple);
-  filter: drop-shadow(0 0 8px var(--symbol-color, rgba(205, 180, 219, 0.5)));
-  transition: all 0.3s ease;
-  z-index: 3;
-  transform: translateY(0);
-  // AC-031: was `float 3s ease-in-out infinite` (undefined locally -- see
-  // _sass/_base.scss's drift-settle note for the cross-partial `float`
-  // keyframe collision this rode on). assets/js/home.js overrides this
-  // inline on load with a finite (2-iteration) version of `float-glyphs`;
-  // this is the no-JS / pre-hydration fallback, now finite too.
-  animation: float-glyphs 1.8s ease-in-out 2;
-
-  svg {
-    width: 100%;
-    height: 100%;
-  }
-
-  &.activated {
-    filter: brightness(2) drop-shadow(0 0 20px var(--symbol-color));
-    animation: pulse-activate 1s ease-out;
-  }
-
-  @include max-width('sm') {
-    width: 35px;
-    height: 35px;
-  }
-
-  @include max-width('xs') {
-    width: 30px;
-    height: 30px;
-  }
-}
-
-.alchemy-symbol.hovered, .rune.hovered {
-  filter: brightness(1.5) drop-shadow(0 0 12px var(--symbol-color));
-  transform: translateY(-10px) scale(1.3);
-  z-index: 5;
-  animation: none;
-
-  &::after {
-    content: attr(title);
-    position: absolute;
-    bottom: -30px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(33, 28, 48, 0.85);
-    color: var(--symbol-color);
-    padding: 0.35rem 0.75rem;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    white-space: nowrap;
-    opacity: 1;
-    visibility: visible;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    z-index: 10;
-    animation: nameAppear 0.3s ease-out;
-    border: 1px solid rgba(205, 180, 219, 0.2);
-    text-shadow: 0 0 8px var(--symbol-color);
-  }
-}
-
-@keyframes float-glyphs {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  25% {
-    transform: translateY(-8px);
-  }
-  50% {
-    transform: translateY(-12px);
-  }
-  75% {
-    transform: translateY(-8px);
-  }
-}
-
-@keyframes pulse-activate {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.5);
-    opacity: 0.8;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes nameAppear {
-  from {
-    opacity: 0;
-    transform: translateX(-50%) translateY(5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-}
-
-/* Position symbols with fixed classes instead of direct positioning */
-.alchemy-symbol--fire {
-  top: 15%;
-  left: 25%;
-}
-
-.alchemy-symbol--water {
-  bottom: 20%;
-  left: 20%;
-}
-
-.alchemy-symbol--air {
-  top: 20%;
-  right: 20%;
-}
-
-.alchemy-symbol--earth {
-  bottom: 25%;
-  right: 25%;
-}
-
-.alchemy-symbol--quintessence {
-  top: 50%;
-  left: 15%;
-}
-
-/* Position runes */
-.rune--ansuz {
-  top: 15%;
-  right: 15%;
-}
-
-.rune--kenaz {
-  bottom: 15%;
-  right: 15%;
-}
-
-.rune--raidho {
-  left: 50%;
-  bottom: 15%;
-}
-
-.rune--laguz {
-  top: 50%;
-  right: 15%;
-}
-
-/* Ripple effect on click */
-.alchemy-ripple {
-  position: absolute;
-  border-radius: 50%;
-  transform: scale(0);
-  background: radial-gradient(circle,
-    rgba(255, 255, 255, 0.9) 0%,
-    rgba(255, 255, 255, 0.3) 50%,
-    transparent 70%);
-  width: 200px;
-  height: 200px;
-  margin-left: -100px;
-  margin-top: -100px;
-  opacity: 0;
-  animation: ripple 1s ease-out forwards;
-  pointer-events: none;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-}
-
-@keyframes ripple {
-  0% {
-    transform: scale(0);
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.8;
-  }
-  100% {
-    transform: scale(1.5);
-    opacity: 0;
-  }
-}
-
-/* Accessibility improvements */
-@media (prefers-reduced-motion: reduce) {
-  .alchemy-circle__ring {
-    animation: none;
-  }
-
-  .alchemy-circle {
-    transition: none;
-  }
-
-  .alchemy-symbol, .rune {
-    transition: none;
-    animation: none;
-  }
-}
-
-html, body {
-  overflow-x: hidden;
-}
-
-/* Particle effects */
-.alchemy-particle {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  background: white;
-  border-radius: 50%;
-  pointer-events: none;
-  animation: particle-fade 1s ease-out forwards;
-  box-shadow: 0 0 10px white;
-}
-
-@keyframes particle-fade {
-  0% {
-    transform: translate(0, 0) scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(var(--tx, 0), var(--ty, 0)) scale(0);
-    opacity: 0;
+    display: none;
   }
 }
 
 // ==========================================================================
-// THE ALCHEMIST'S OBSERVATORY  (change `home-atelier`)
-// Ambient nebula/stardust canvas + dev-homage HUD + the hidden transmutation.
+// THE TRANSMUTATION CANVASES
+// observatory.js creates two viewport-sized, pointer-transparent, aria-hidden
+// canvases: `--ground` (static dithered prima-materia slab, z 0) and `--dust`
+// (the trailed particle transmutation, z 1). Both fixed so their drawing
+// buffers match the viewport 1:1, both below the circle-less hero content (z 3)
+// and HUD (z 10).
 // ==========================================================================
-
-// The living sky. observatory.js sizes the drawing buffer to the VIEWPORT, so
-// the element is `position: fixed` (a 1:1 match, no CSS scaling) and
-// pointer-events:none so it never intercepts a hero click (AC-A05). z-index 1
-// sits it above the base gradient and below the circle (2) and content (3).
 .observatory {
   position: fixed;
   inset: 0;
   width: 100%;
   height: 100%;
-  z-index: 1;
   pointer-events: none;
-  // The stars "come out": opacity is vestibular-safe for everyone (Val Head),
-  // so this gentle fade-in is allowed even without a motion preference. Made
-  // instant under `reduce` below, honoring no-motion-first.
-  opacity: 0;
-  transition: opacity 1.2s ease;
+  opacity: 0;                       // fades in once lit by JS (opacity = safe)
+  transition: opacity 1s ease;
 
-  &.is-lit {
-    opacity: 1;
-  }
+  &.is-lit { opacity: 1; }
+
+  &--ground { z-index: 0; }
+  &--dust { z-index: 1; }
 }
 
-// Dev-homage HUD: the FPS readout + the motion pause/play control. The pause
-// control is the WCAG 2.2.2 mechanism (research-ui-a11y.md §3.2) that lets a
-// continuously-drifting, auto-started, parallel-to-content starfield be
-// legal -- honoring prefers-reduced-motion alone does NOT discharge 2.2.2.
-// Top-right corner: the sigil-nav owns top-left, the trademark bottom-right.
+// ==========================================================================
+// DEV-HOMAGE HUD — FPS readout + the WCAG 2.2.2 motion pause control.
+// The pause control is the required 2.2.2 mechanism: the resting figure's
+// opacity breath is continuous auto-motion, and prefers-reduced-motion alone
+// does NOT discharge 2.2.2 (research-hero-backgrounds.md §5). Top-right —
+// sigil-nav owns top-left, trademark bottom-right.
+// ==========================================================================
 .observatory-hud {
   position: fixed;
   top: 1.5rem;
@@ -598,16 +180,12 @@ html, body {
   display: flex;
   align-items: center;
   gap: 0.55rem;
-  // System monospace only -- no new self-hosted-font request (preserves the
-  // self-host / cookie-free invariant).
   font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
   opacity: 0.7;
   transition: opacity 0.3s ease;
 
   &:hover,
-  &:focus-within {
-    opacity: 1;
-  }
+  &:focus-within { opacity: 1; }
 
   @include max-width('sm') {
     top: 1rem;
@@ -625,7 +203,7 @@ html, body {
   border-radius: 50%;
   border: 1px solid rgba(205, 180, 219, 0.6);
   background: rgba(33, 28, 48, 0.55);
-  color: #e7dcf1; // icon color -- light lavender, high contrast on the dark disk
+  color: #e7dcf1;
   cursor: pointer;
   transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 
@@ -641,8 +219,8 @@ html, body {
   }
 }
 
-// Icon: two bars while the sky is PLAYING (click => pause). The `.is-paused`
-// state on the HUD swaps it for a play triangle (click => play).
+// Icon: two bars while transmuting (click => pause); `.is-paused` swaps to a
+// play triangle (click => resume).
 .observatory-hud__icon {
   position: relative;
   display: inline-block;
@@ -677,33 +255,30 @@ html, body {
     border-radius: 0;
   }
 
-  &::after {
-    display: none;
-  }
+  &::after { display: none; }
 }
 
 .observatory-hud__fps {
   font-size: 0.72rem;
   letter-spacing: 0.04em;
-  color: #c7d2ea; // decorative (aria-hidden); light blue clears AA regardless
+  color: #c7d2ea;
   font-variant-numeric: tabular-nums;
-  min-width: 4.4em; // reserve space so the changing number never shifts layout
+  min-width: 4.4em;
   user-select: none;
 
-  // On the smallest screens keep only the pause control (the 2.2.2 mechanism);
-  // the FPS number is pure decoration and can go.
-  @include max-width('xs') {
-    display: none;
-  }
+  @include max-width('xs') { display: none; }
 }
 
-// The Great Work reveal -- the motto surfaces in the core of the circle when
-// the hidden spell (Konami) is cast (home.js). Its own dark backing guarantees
-// contrast no matter which star or orb sits behind it. One-shot, user-invoked.
+// ==========================================================================
+// THE GREAT WORK reveal — the motto surfaces over the figure when the hidden
+// spell (Konami) is cast (home.js). Its own dark backing guarantees contrast
+// over any dust/glow behind it. One-shot, user-invoked. Positioned on the
+// figure (left-of-centre desktop, upper-centre mobile).
+// ==========================================================================
 .transmutation-reveal {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  left: 31%;
+  top: 52%;
   transform: translate(-50%, -50%) scale(0.9);
   z-index: 6;
   display: flex;
@@ -715,14 +290,19 @@ html, body {
   opacity: 0;
   transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 
+  @include max-width('lg') {
+    left: 50%;
+    top: 26%;
+  }
+
   &::before {
     content: '';
     position: absolute;
-    inset: -55% -70%;
+    inset: -60% -75%;
     z-index: -1;
     border-radius: 50%;
     background: radial-gradient(ellipse at center,
-      rgba(20, 16, 30, 0.82) 0%,
+      rgba(20, 16, 30, 0.85) 0%,
       rgba(20, 16, 30, 0.55) 45%,
       transparent 75%);
   }
@@ -739,7 +319,7 @@ html, body {
 // _data/palette-manifest.yml -- both are light-on-dark, measured passing).
 .transmutation-reveal__motto {
   font-family: 'Nothing You Could Do', cursive;
-  font-size: 1.9rem;
+  font-size: 2rem;
   line-height: 1.1;
   color: var(--ff-gold); // 7.75:1 / 6.38:1 vs hero-gradient stops (light-on-dark)
   text-shadow: 0 0 18px rgba(230, 165, 83, 0.7), 0 2px 4px rgba(0, 0, 0, 0.45);
@@ -753,7 +333,7 @@ html, body {
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
 }
 
-// The sky flares gold (rubedo) at the instant of transmutation. Triggered ONLY
+// The sky flares gold (rubedo) at the instant of the grand work. Triggered ONLY
 // by the hidden spell -- it never auto-starts, so 2.2.2 does not apply -- and
 // finite (<= 2.6s). z-index 4 washes briefly over the whole hero.
 .alchemist-hero.is-transmuting::after {
@@ -762,7 +342,7 @@ html, body {
   inset: 0;
   z-index: 4;
   pointer-events: none;
-  background: radial-gradient(circle at 50% 45%,
+  background: radial-gradient(circle at 31% 50%,
     rgba(230, 165, 83, 0.30) 0%,
     rgba(230, 165, 83, 0.06) 35%,
     transparent 65%);
@@ -775,21 +355,18 @@ html, body {
   100% { opacity: 0; }
 }
 
-// Reduced-motion: substitute, don't delete (research-ui-a11y.md §3.3). The sky
-// appears instantly, the reveal cross-fades without the scale, and the flare
-// becomes a steady soft wash (opacity only) for the life of the spell.
+// Reduced-motion: substitute, don't delete (research §3.3 / §5). The canvases
+// appear instantly (observatory.js already paints the coagulated figure as a
+// static still), the reveal cross-fades without the scale, and the grand-work
+// flare becomes a steady soft wash for the life of the spell.
 @media (prefers-reduced-motion: reduce) {
-  .observatory {
-    transition: none;
-  }
+  .observatory { transition: none; }
 
   .transmutation-reveal {
     transition: opacity 0.4s ease;
     transform: translate(-50%, -50%);
 
-    &.is-visible {
-      transform: translate(-50%, -50%);
-    }
+    &.is-visible { transform: translate(-50%, -50%); }
   }
 
   .alchemist-hero.is-transmuting::after {

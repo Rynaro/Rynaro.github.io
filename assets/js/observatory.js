@@ -1,30 +1,31 @@
 /*
- * observatory.js -- "The Alchemist's Observatory"
+ * observatory.js — "Solve et Coagula" (the Alchemist's Observatory, rework)
  * ---------------------------------------------------------------------------
- * A first-party, dependency-free canvas that turns the homepage hero into a
- * living night sky: drifting stardust, soft nebula clouds, and a constellation
- * that wakes where the pointer travels. Inspired by earendil.com's live-render
- * ethos (the reason its HUD carries an FPS readout).
+ * The hero background enacts the motto. A few thousand motes of prima materia
+ * endlessly cycle between two states:
+ *   · SOLVE   — the assembled figure DISSOLVES into divergence-free curl-noise
+ *               turbulence (matter unbound);
+ *   · COAGULA — the cloud CONDENSES onto an alchemical figure sampled from the
+ *               site's own sigil geometry (matter re-formed).
+ * The dust is grounded on a static slab of dithered "prima materia" (nigredo
+ * violet shot with rare gold veins, quantised through a Bayer-8 matrix for a
+ * 16-bit-era grain). This deliberately replaces the old starfield + constellation
+ * (proximity lines are the canvas-tutorial cliché — deleted at the root).
  *
- * Accessibility contract (see .claude/rebrand/research-ui-a11y.md §3.2, and the
- * change spec .spectra/changes/home-atelier/spec.md):
+ * First-party only (vanilla Canvas 2D, hand-rolled value/curl noise — no libs).
+ * Research basis + citations: .claude/rebrand/research-hero-backgrounds.md
+ * (Concept A over Concept B).
  *
- *   - No-motion-first (Tatiana Mac): the animation loop starts ONLY when the OS
- *     expresses no reduced-motion preference AND the visitor has not paused it.
- *     Otherwise a single static frame is painted -- premium, not blank.
- *
- *   - WCAG 2.2.2 (Pause, Stop, Hide): a drifting starfield auto-starts, lasts
- *     >5s, and sits in parallel with the hero text -- all three conditions hold,
- *     so honoring prefers-reduced-motion is NOT enough (the single most-believed
- *     false thing in this area, per the research doc). The HUD's pause/play
- *     button IS the required mechanism, available to everyone, and it persists.
- *
- *   - Substitution over deletion: a reduced-motion visitor may still opt IN via
- *     the same control -- agency, not a wall.
- *
- *   - Pointer reactivity is LOCAL (stars near the cursor drift toward it and
- *     link up) with only a whisper of whole-scene parallax (<=6px), keeping it
- *     off the high-risk end of Val Head's vestibular taxonomy.
+ * Accessibility (research §5/§6, and .claude/rebrand/research-ui-a11y.md §3.2):
+ *   · No-motion-first: the rAF loop starts ONLY under
+ *     prefers-reduced-motion:no-preference and when not paused. Otherwise a
+ *     premium STILL of the coagulated figure is drawn — never a blank.
+ *   · WCAG 2.2.2: load runs ONE condense (≤ ~3.5s) then the figure rests with a
+ *     faint opacity breath. Because the breath is continuous, the HUD pause/play
+ *     button is the required 2.2.2 mechanism (prefers-reduced-motion alone does
+ *     NOT discharge 2.2.2). Pointer/click motion is user-initiated (2.3.3) and
+ *     decays well under 5s.
+ *   · Pointer response is MATERIAL (dust scatters/stirs), not diagrammatic.
  */
 (function () {
   'use strict';
@@ -35,382 +36,452 @@
   var reduceQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
   var STORE_KEY = 'observatory-motion'; // 'on' | 'off' | null (follow OS)
 
-  // ---- Motion policy ------------------------------------------------------
-  function storedPref() {
-    try { return localStorage.getItem(STORE_KEY); } catch (e) { return null; }
-  }
-  function savePref(v) {
-    try { localStorage.setItem(STORE_KEY, v); } catch (e) { /* private mode: fine */ }
-  }
-  // The effective "should the loop run" decision. Explicit user choice wins;
-  // absent one, we follow the OS (no-motion-first).
+  function storedPref() { try { return localStorage.getItem(STORE_KEY); } catch (e) { return null; } }
+  function savePref(v) { try { localStorage.setItem(STORE_KEY, v); } catch (e) {} }
   function motionEnabled() {
-    var pref = storedPref();
-    if (pref === 'off') return false;
-    if (pref === 'on') return true;
+    var p = storedPref();
+    if (p === 'off') return false;
+    if (p === 'on') return true;
     return !reduceQuery.matches;
   }
 
-  // ---- Canvas + offscreen nebula ------------------------------------------
-  var canvas = document.createElement('canvas');
-  canvas.className = 'observatory';
-  canvas.setAttribute('aria-hidden', 'true');
-  var ctx = canvas.getContext('2d');
-  hero.insertBefore(canvas, hero.firstChild);
+  // ---- Palette (from _sass/settings/_variables.scss) -----------------------
+  var NIGREDO = [33, 28, 48];    // #211C30
+  var VIOLET = [49, 42, 69];     // #312A45
+  var AURUM = [230, 165, 83];    // #e6a553  (gold)
+  var LAVENDER = [177, 156, 217]; // #b19cd9  (dissolved dust tint)
 
-  var nebula = document.createElement('canvas'); // offscreen, pre-rendered once per resize
-  var nctx = nebula.getContext('2d');
+  // ---- Canvases: static dithered ground + trailed particle layer -----------
+  var bg = document.createElement('canvas');
+  bg.className = 'observatory observatory--ground';
+  bg.setAttribute('aria-hidden', 'true');
+  var bctx = bg.getContext('2d');
 
-  var dpr = Math.min(window.devicePixelRatio || 1, 2);
-  var W = 0, H = 0;                 // CSS pixels
-  var stars = [];
-  var pointer = { x: -9999, y: -9999, active: false };
-  var scene = { px: 0, py: 0 };     // eased parallax offset (<=6px)
-  var rafId = null;
-  var running = false;
+  var fg = document.createElement('canvas');
+  fg.className = 'observatory observatory--dust';
+  fg.setAttribute('aria-hidden', 'true');
+  var fctx = fg.getContext('2d');
 
-  // Palette drawn from _sass/settings/_variables.scss (pastels over the
-  // #211C30 -> #312A45 hero gradient).
-  var STAR_TINTS = [
-    'rgba(248,245,242,',   // cream
-    'rgba(205,180,219,',   // pastel purple
-    'rgba(185,201,230,',   // pastel blue
-    'rgba(230,165,83,',    // ff-gold (sparingly)
-    'rgba(248,209,224,'    // pastel pink
-  ];
-  var NEBULA_BLOBS = [
-    { xr: 0.22, yr: 0.28, col: 'rgba(103,58,183,',  a: 0.16 }, // purple
-    { xr: 0.80, yr: 0.68, col: 'rgba(63,81,181,',   a: 0.14 }, // indigo
-    { xr: 0.62, yr: 0.20, col: 'rgba(248,209,224,', a: 0.07 }, // pink whisper
-    { xr: 0.35, yr: 0.82, col: 'rgba(230,165,83,',  a: 0.05 }  // gold whisper
-  ];
+  hero.insertBefore(fg, hero.firstChild);
+  hero.insertBefore(bg, hero.firstChild);
 
-  // Seeded PRNG (mulberry32) so the sky is REPRODUCIBLE: a fixed constellation
-  // every load (which is also how a real night sky behaves), and -- crucially --
-  // a byte-identical static frame for the pixel-diff visual-baseline harness,
-  // which runs under reducedMotion:'reduce' and would otherwise diff a random
-  // starfield on every run.
-  function makeRng(seed) {
-    return function () {
-      seed |= 0; seed = (seed + 0x6d2b79f5) | 0;
-      var t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
-      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-    };
+  var dpr = 1, W = 0, H = 0;
+  var figureCX = 0, figureCY = 0, figureSize = 0;
+
+  // ---- First-party value noise + 2D curl (divergence-free) -----------------
+  function hash(x, y) {
+    var n = Math.sin(x * 127.1 + y * 311.7) * 43758.5453;
+    return n - Math.floor(n);
+  }
+  function vnoise(x, y) {
+    var xi = Math.floor(x), yi = Math.floor(y);
+    var xf = x - xi, yf = y - yi;
+    var u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
+    var a = hash(xi, yi), b = hash(xi + 1, yi), c = hash(xi, yi + 1), d = hash(xi + 1, yi + 1);
+    return a * (1 - u) * (1 - v) + b * u * (1 - v) + c * (1 - u) * v + d * u * v;
+  }
+  // curl of a scalar noise potential => (∂n/∂y, −∂n/∂x): swirls, never clumps.
+  var NS = 0.0016; // spatial scale of the field
+  function curl(x, y, t, out) {
+    var e = 1.0;
+    var n1 = vnoise(x * NS, (y + e) * NS + t) - vnoise(x * NS, (y - e) * NS + t);
+    var n2 = vnoise((x + e) * NS, y * NS + t) - vnoise((x - e) * NS, y * NS + t);
+    out[0] = n1; out[1] = -n2;
   }
 
-  function starBudget() {
-    // Scale with area, but stay bounded so the loop never pegs the CPU
-    // (AC-A10). ~1 star per 12k CSS px^2, hard-capped.
-    return Math.max(40, Math.min(150, Math.round((W * H) / 12000)));
-  }
+  // ---- Figures: the site's own sigils, rasterised to target points ---------
+  // Polyline segments in a 50-unit box (the original inline-SVG sigil coords).
+  var SIGILS = {
+    fire: [[[25, 5], [25, 45]], [[15, 15], [35, 35]], [[15, 35], [35, 15]]],
+    water: [[[15, 25], [35, 25]], [[15, 15], [35, 15]], [[15, 35], [35, 35]]],
+    air: [[[25, 5], [25, 45]], [[15, 15], [35, 15]]],
+    earth: [[[15, 15], [35, 15]], [[25, 15], [25, 35]], [[15, 35], [35, 35]]],
+    ansuz: [[[20, 8], [31, 8], [19, 44]]],
+    laguz: [[[25, 8], [25, 44], [37, 20]]]
+  };
 
-  function seedStars() {
-    var rand = makeRng(0x5eed);          // reset each seeding -> stable layout
-    var n = starBudget();
-    stars = [];
-    for (var i = 0; i < n; i++) {
-      stars.push({
-        x: rand() * W,
-        y: rand() * H,
-        z: 0.4 + rand() * 0.9,           // depth: size + parallax weight + speed
-        r: 0.5 + rand() * 1.4,           // radius
-        vx: (rand() - 0.5) * 0.06,       // slow ambient drift (CSS px / frame)
-        vy: (rand() - 0.5) * 0.06,
-        tw: rand() * Math.PI * 2,         // twinkle phase
-        tws: 0.6 + rand() * 1.2,          // twinkle speed
-        base: 0.35 + rand() * 0.5,        // base opacity
-        tint: STAR_TINTS[(rand() * STAR_TINTS.length) | 0]
-      });
-    }
-  }
-
-  function renderNebula() {
-    // Pre-render the soft clouds ONCE per resize into an offscreen buffer with
-    // a margin so the whole-scene parallax never exposes an edge. Each frame
-    // then only blits this (cheap) instead of rebuilding gradients.
-    var margin = 24;
-    nebula.width = (W + margin * 2) * dpr;
-    nebula.height = (H + margin * 2) * dpr;
-    nctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    nctx.clearRect(0, 0, W + margin * 2, H + margin * 2);
-    for (var i = 0; i < NEBULA_BLOBS.length; i++) {
-      var b = NEBULA_BLOBS[i];
-      var cx = margin + b.xr * W;
-      var cy = margin + b.yr * H;
-      var rad = Math.max(W, H) * 0.45;
-      var g = nctx.createRadialGradient(cx, cy, 0, cx, cy, rad);
-      g.addColorStop(0, b.col + b.a + ')');
-      g.addColorStop(1, b.col + '0)');
-      nctx.fillStyle = g;
-      nctx.fillRect(0, 0, W + margin * 2, H + margin * 2);
-    }
-  }
-
-  function resize() {
-    W = window.innerWidth;
-    H = window.innerHeight;
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = W * dpr;
-    canvas.height = H * dpr;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    seedStars();
-    renderNebula();
-  }
-
-  // ---- Rendering ----------------------------------------------------------
-  function drawFrame(dt, animate) {
-    ctx.clearRect(0, 0, W, H);
-
-    // Ease the scene parallax toward the pointer (whisper only: <=6px).
-    var targetPx = 0, targetPy = 0;
-    if (pointer.active && animate) {
-      targetPx = ((pointer.x / W) - 0.5) * -12; // opposite the cursor, subtle
-      targetPy = ((pointer.y / H) - 0.5) * -12;
-    }
-    scene.px += (targetPx - scene.px) * 0.06;
-    scene.py += (targetPy - scene.py) * 0.06;
-
-    // Nebula (blitted, parallax-shifted). Margin was 24px; center the buffer.
-    ctx.drawImage(nebula, -24 + scene.px * 0.6, -24 + scene.py * 0.6, W + 48, H + 48);
-
-    // Stars
-    var influence = 150;         // pointer influence radius
-    var linkDist = 116;          // constellation link distance
-    var near = [];               // stars inside the pointer's influence
-    for (var i = 0; i < stars.length; i++) {
-      var s = stars[i];
-      if (animate) {
-        s.x += s.vx * s.z * dt;
-        s.y += s.vy * s.z * dt;
-        s.tw += 0.02 * s.tws * dt;
-        // wrap
-        if (s.x < -4) s.x = W + 4; else if (s.x > W + 4) s.x = -4;
-        if (s.y < -4) s.y = H + 4; else if (s.y > H + 4) s.y = -4;
-      }
-
-      var dx = 0, dy = 0, drawX = s.x + scene.px * s.z, drawY = s.y + scene.py * s.z;
-      var glow = 0;
-      if (pointer.active) {
-        dx = pointer.x - s.x;
-        dy = pointer.y - s.y;
-        var d2 = dx * dx + dy * dy;
-        if (d2 < influence * influence) {
-          var d = Math.sqrt(d2) || 1;
-          var pull = (1 - d / influence);
-          glow = pull;
-          if (animate) {
-            // LOCAL attraction: nudge toward the cursor (short distance, small
-            // area -> low vestibular risk).
-            drawX += (dx / d) * pull * 6;
-            drawY += (dy / d) * pull * 6;
-          } else {
-            drawX += (dx / d) * pull * 6; // static frame still shows the halo shape
-          }
-          near.push({ s: s, x: drawX, y: drawY });
-        }
-      }
-
-      var tw = animate ? (0.72 + 0.28 * Math.sin(s.tw)) : 0.85;
-      var alpha = Math.min(1, s.base * tw + glow * 0.5);
+  function strokeSegments(ctx, segs, s, lw) {
+    var k = s / 50;
+    ctx.lineWidth = lw; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.strokeStyle = '#fff';
+    for (var i = 0; i < segs.length; i++) {
+      var seg = segs[i];
       ctx.beginPath();
-      ctx.arc(drawX, drawY, s.r + glow * 0.9, 0, Math.PI * 2);
-      ctx.fillStyle = s.tint + alpha.toFixed(3) + ')';
+      for (var j = 0; j < seg.length; j++) {
+        var px = seg[j][0] * k, py = seg[j][1] * k;
+        if (j === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      }
+      ctx.stroke();
+    }
+  }
+
+  // The default figure: the alchemy circle itself, re-expressed as dust.
+  function drawAlchemyCircle(ctx, s) {
+    var k = s / 50, c = 25 * k, lw = Math.max(2, s * 0.014);
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = lw; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.arc(c, c, 21 * k, 0, Math.PI * 2); ctx.stroke();
+    ctx.beginPath(); ctx.arc(c, c, 13 * k, 0, Math.PI * 2); ctx.stroke();
+    // inner cross
+    strokeSegments(ctx, [[[25, 9], [25, 41]], [[9, 25], [41, 25]]], s, lw);
+    // four cardinal nodes on the outer ring
+    var r = 21 * k;
+    for (var a = 0; a < 4; a++) {
+      var ang = a * Math.PI / 2;
+      ctx.beginPath();
+      ctx.arc(c + Math.cos(ang) * r, c + Math.sin(ang) * r, lw * 1.1, 0, Math.PI * 2);
       ctx.fill();
     }
+  }
 
-    // Constellation: link near-pointer stars to each other, and to the cursor.
-    // Only the small `near` subset is considered, so this stays cheap.
-    if (near.length > 1) {
-      for (var a = 0; a < near.length; a++) {
-        for (var b2 = a + 1; b2 < near.length; b2++) {
-          var lx = near[a].x - near[b2].x, ly = near[a].y - near[b2].y;
-          var ld = Math.sqrt(lx * lx + ly * ly);
-          if (ld < linkDist) {
-            var la = (1 - ld / linkDist) * 0.5;
-            ctx.beginPath();
-            ctx.moveTo(near[a].x, near[a].y);
-            ctx.lineTo(near[b2].x, near[b2].y);
-            ctx.strokeStyle = 'rgba(205,180,219,' + la.toFixed(3) + ')';
-            ctx.lineWidth = 0.6;
-            ctx.stroke();
+  function drawSigil(name) {
+    return function (ctx, s) { strokeSegments(ctx, SIGILS[name], s, Math.max(2, s * 0.02)); };
+  }
+
+  // Ordered figure set — starts on the alchemy circle (the brand centrepiece,
+  // now formed from living dust), clicks cycle through the elements + runes.
+  var FIGURE_DEFS = [
+    drawAlchemyCircle,
+    drawSigil('fire'), drawSigil('water'), drawSigil('air'),
+    drawSigil('earth'), drawSigil('ansuz'), drawSigil('laguz')
+  ];
+  var figures = [];      // each: array of {x,y} target points (figure-local, centred)
+  var figureIndex = 0;
+
+  function rasterizeFigures() {
+    figures = [];
+    var s = figureSize;
+    var pad = Math.max(8, s * 0.12);
+    var dim = Math.ceil(s + pad * 2);
+    var oc = document.createElement('canvas');
+    oc.width = dim; oc.height = dim;
+    var octx = oc.getContext('2d');
+    for (var f = 0; f < FIGURE_DEFS.length; f++) {
+      octx.clearRect(0, 0, dim, dim);
+      octx.save();
+      octx.translate(pad, pad);
+      FIGURE_DEFS[f](octx, s);
+      octx.restore();
+      var img = octx.getImageData(0, 0, dim, dim).data;
+      var pts = [];
+      var stride = 2;
+      for (var y = 0; y < dim; y += stride) {
+        for (var x = 0; x < dim; x += stride) {
+          if (img[(y * dim + x) * 4 + 3] > 80) {
+            pts.push({ x: x - dim / 2, y: y - dim / 2 }); // centred on figure
           }
         }
       }
+      figures.push(pts.length ? pts : [{ x: 0, y: 0 }]);
     }
   }
 
-  // ---- Loop + FPS ---------------------------------------------------------
-  var lastTs = 0, frames = 0, fpsAccum = 0, fps = 0;
+  // ---- Particles -----------------------------------------------------------
+  var particles = [];
+  function particleBudget() {
+    return Math.max(1300, Math.min(2600, Math.round((W * H) / 620)));
+  }
+  function assignTargets(idx) {
+    var pts = figures[idx];
+    var m = pts.length, n = particles.length;
+    for (var i = 0; i < n; i++) {
+      // spread N particles EVENLY across ALL M target points (never just the
+      // first N), so the whole figure is covered whether N<M or N>M.
+      var t = pts[Math.floor(i * m / n) % m];
+      particles[i].tx = figureCX + t.x + (hash(i, idx) - 0.5) * 2.5;
+      particles[i].ty = figureCY + t.y + (hash(i + 7, idx) - 0.5) * 2.5;
+    }
+  }
+  function seedParticles() {
+    var n = particleBudget();
+    particles = [];
+    for (var i = 0; i < n; i++) {
+      // scattered in a disc around the figure — the void it condenses from
+      var ang = hash(i, 1) * Math.PI * 2;
+      var rad = (0.4 + hash(i, 2) * 1.3) * figureSize;
+      particles.push({
+        x: figureCX + Math.cos(ang) * rad,
+        y: figureCY + Math.sin(ang) * rad,
+        vx: 0, vy: 0, tx: figureCX, ty: figureCY,
+        sz: hash(i, 3) < 0.15 ? 2 : 1,     // a few brighter grains
+        seed: hash(i, 4)
+      });
+    }
+    assignTargets(figureIndex);
+  }
 
+  // ---- Phase machine -------------------------------------------------------
+  var phase = 'coagula';        // 'coagula' | 'rest' | 'solve'
+  var phaseT = 0;               // ms into the current phase
+  var COAG_MS = 3200, SOLVE_MS = 1500;
+  var warm = 1;                 // 0 = dissolved violet, 1 = coagulated gold
+  var pointer = { x: -9999, y: -9999, active: false };
+
+  function startSolve() {
+    if (phase === 'solve') return;
+    phase = 'solve'; phaseT = 0;
+  }
+
+  function stepParticles(dt, ms, animate) {
+    phaseT += ms;
+    var targetWarm = phase === 'solve' ? 0.12 : 1;
+    warm += (targetWarm - warm) * Math.min(1, 0.06 * dt);
+
+    var EASE = phase === 'coagula' ? 0.06 : 0.028;
+    var DAMP = phase === 'solve' ? 0.94 : 0.84;
+    var CURL = 2.6;
+    var R = 128, RF = 1.05;
+    var out = [0, 0];
+    var t = phaseT * 0.00006;
+
+    for (var i = 0; i < particles.length; i++) {
+      var p = particles[i];
+      if (phase === 'solve' && animate) {
+        curl(p.x, p.y, t, out);
+        p.vx += out[0] * CURL; p.vy += out[1] * CURL;
+      } else {
+        p.vx += (p.tx - p.x) * EASE; p.vy += (p.ty - p.y) * EASE;
+      }
+      // Pointer = the alchemist's hand. It NEVER fights coagulation (so the
+      // figure always forms cleanly); it STIRS the dissolved matter during
+      // solve and SCATTERS the settled dust at rest (which then re-gathers) —
+      // a material response, not a diagram.
+      if (pointer.active && animate && phase !== 'coagula') {
+        var dx = p.x - pointer.x, dy = p.y - pointer.y;
+        var d2 = dx * dx + dy * dy;
+        if (d2 < R * R) {
+          var d = Math.sqrt(d2) || 1, force = (1 - d / R) * RF;
+          if (phase === 'solve') {                       // swirl
+            p.vx += (-dy / d) * force + (dx / d) * force * 0.25;
+            p.vy += (dx / d) * force + (dy / d) * force * 0.25;
+          } else {                                        // scatter, then re-gather
+            p.vx += (dx / d) * force; p.vy += (dy / d) * force;
+          }
+        }
+      }
+      p.vx *= DAMP; p.vy *= DAMP;
+      p.x += p.vx * dt; p.y += p.vy * dt;
+    }
+
+    if (phase === 'coagula' && phaseT >= COAG_MS) { phase = 'rest'; phaseT = 0; }
+    else if (phase === 'solve' && phaseT >= SOLVE_MS) {
+      figureIndex = (figureIndex + 1) % figures.length;
+      assignTargets(figureIndex);
+      phase = 'coagula'; phaseT = 0;
+    }
+  }
+
+  // ---- Rendering -----------------------------------------------------------
+  function drawGround() {
+    // nigredo→violet slab, gold aurum glows massed to the LEFT (behind the
+    // figure, away from the headline zone), then a Bayer-8 ordered dither for
+    // 16-bit grain. Drawn ONCE per resize — static, zero vestibular cost.
+    var g = bctx.createLinearGradient(0, 0, W, H);
+    g.addColorStop(0, 'rgb(19,16,30)');   // nigredo — dark so the aurum dust pops
+    g.addColorStop(1, 'rgb(27,22,42)');
+    bctx.fillStyle = g; bctx.fillRect(0, 0, W, H);
+
+    function glow(cx, cy, rad, col, a) {
+      var rg = bctx.createRadialGradient(cx, cy, 0, cx, cy, rad);
+      rg.addColorStop(0, 'rgba(' + col.join(',') + ',' + a + ')');
+      rg.addColorStop(1, 'rgba(' + col.join(',') + ',0)');
+      bctx.fillStyle = rg; bctx.fillRect(0, 0, W, H);
+    }
+    glow(figureCX, figureCY, figureSize * 1.45, [96, 60, 156], 0.34);           // contained violet aura
+    glow(figureCX + figureSize * 0.05, figureCY, figureSize * 0.72, AURUM, 0.10); // warm gold heart under the figure
+    glow(W * 0.86, H * 0.12, Math.max(W, H) * 0.5, [66, 60, 138], 0.07);        // faint cool corner
+
+    ditherGround();
+  }
+
+  var BAYER8 = [
+    0, 32, 8, 40, 2, 34, 10, 42, 48, 16, 56, 24, 50, 18, 58, 26,
+    12, 44, 4, 36, 14, 46, 6, 38, 60, 28, 52, 20, 62, 30, 54, 22,
+    3, 35, 11, 43, 1, 33, 9, 41, 51, 19, 59, 27, 49, 17, 57, 25,
+    15, 47, 7, 39, 13, 45, 5, 37, 63, 31, 55, 23, 61, 29, 53, 21
+  ];
+  function ditherGround() {
+    // Ordered Bayer dither for a 16-bit-era grain — but broken up with a small
+    // per-pixel hash so it reads as GRAIN, not a regular screen-door mesh, and
+    // kept subtle (L high) so it's a texture you feel, not a pattern you see.
+    var L = 11, w = bg.width, h = bg.height;
+    var img = bctx.getImageData(0, 0, w, h), d = img.data;
+    var q = (L - 1);
+    for (var y = 0; y < h; y++) {
+      var row = (y & 7) * 8;
+      for (var x = 0; x < w; x++) {
+        var thr = (BAYER8[row + (x & 7)] + 0.5) / 64 - 0.5;
+        thr += (hash(x, y) - 0.5) * 0.55; // grain, not weave
+        var o = (y * w + x) * 4;
+        for (var c = 0; c < 3; c++) {
+          var v = d[o + c] / 255 * q + thr;
+          v = Math.round(v < 0 ? 0 : v > q ? q : v);
+          d[o + c] = (v / q) * 255;
+        }
+      }
+    }
+    bctx.putImageData(img, 0, 0);
+  }
+
+  function drawStill() {
+    // reduced-motion / paused substitute: the coagulated figure as a long
+    // exposure — particles at their targets, no motion, no loop.
+    fctx.clearRect(0, 0, W, H);
+    fctx.globalCompositeOperation = 'lighter';
+    var col = 'rgba(' + AURUM.join(',') + ',';
+    for (var i = 0; i < particles.length; i++) {
+      var p = particles[i];
+      fctx.fillStyle = col + (0.62 + p.seed * 0.45).toFixed(3) + ')';
+      fctx.fillRect(p.tx, p.ty, p.sz + 0.5, p.sz + 0.5);
+    }
+    fctx.globalCompositeOperation = 'source-over';
+    setFps(null);
+  }
+
+  function mix(a, b, t) { return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t]; }
+
+  function drawDust() {
+    // trail fade (destination-out keeps the layer transparent over the ground)
+    fctx.globalCompositeOperation = 'destination-out';
+    fctx.fillStyle = 'rgba(0,0,0,' + (phase === 'solve' ? 0.10 : 0.16) + ')';
+    fctx.fillRect(0, 0, W, H);
+
+    fctx.globalCompositeOperation = 'lighter';
+    var c = mix(LAVENDER, AURUM, warm);
+    var breath = phase === 'rest' ? (0.82 + 0.18 * Math.sin(phaseT * 0.0016)) : 1;
+    var head = 'rgb(' + (c[0] | 0) + ',' + (c[1] | 0) + ',' + (c[2] | 0) + ')';
+    fctx.fillStyle = head;
+    for (var i = 0; i < particles.length; i++) {
+      var p = particles[i];
+      fctx.globalAlpha = (0.35 + p.seed * 0.5) * breath;
+      fctx.fillRect(p.x, p.y, p.sz, p.sz);
+    }
+    fctx.globalAlpha = 1;
+    fctx.globalCompositeOperation = 'source-over';
+  }
+
+  // ---- Loop + FPS ----------------------------------------------------------
+  var rafId = null, running = false, lastTs = 0, frames = 0, fpsAccum = 0;
   function loop(ts) {
     if (!running) return;
-    var dt = lastTs ? Math.min((ts - lastTs) / 16.667, 3) : 1; // frames elapsed, clamped
+    var ms = lastTs ? Math.min(ts - lastTs, 60) : 16.7;
+    var dt = ms / 16.7;
     lastTs = ts;
-
-    drawFrame(dt, true);
-
-    // FPS readout, refreshed ~twice a second.
-    frames++;
-    fpsAccum += ts - (loop._prev || ts);
-    loop._prev = ts;
-    if (fpsAccum >= 500) {
-      fps = Math.round((frames * 1000) / fpsAccum);
-      frames = 0; fpsAccum = 0;
-      setFps(fps);
-    }
-
+    stepParticles(dt, ms, true);
+    drawDust();
+    frames++; fpsAccum += ms;
+    if (fpsAccum >= 500) { setFps(Math.round(frames * 1000 / fpsAccum)); frames = 0; fpsAccum = 0; }
     rafId = window.requestAnimationFrame(loop);
   }
-
   function start() {
     if (running) return;
-    running = true;
-    lastTs = 0; loop._prev = 0; frames = 0; fpsAccum = 0;
+    running = true; lastTs = 0; frames = 0; fpsAccum = 0;
     rafId = window.requestAnimationFrame(loop);
   }
-  function stop() {
-    running = false;
-    if (rafId) { window.cancelAnimationFrame(rafId); rafId = null; }
-    setFps(null);
-  }
-  function staticFrame() {
-    // One premium still frame -- no loop, no motion.
-    drawFrame(1, false);
-    setFps(null);
-  }
+  function stop() { running = false; if (rafId) { window.cancelAnimationFrame(rafId); rafId = null; } setFps(null); }
 
-  // ---- HUD (FPS readout + the 2.2.2 pause control) ------------------------
+  // ---- HUD (FPS readout + the 2.2.2 pause control) -------------------------
   var hud = document.createElement('div');
   hud.className = 'observatory-hud';
-
   var toggle = document.createElement('button');
-  toggle.type = 'button';
-  toggle.className = 'observatory-hud__toggle';
+  toggle.type = 'button'; toggle.className = 'observatory-hud__toggle';
   var icon = document.createElement('span');
-  icon.className = 'observatory-hud__icon';
-  icon.setAttribute('aria-hidden', 'true');
+  icon.className = 'observatory-hud__icon'; icon.setAttribute('aria-hidden', 'true');
   toggle.appendChild(icon);
-
   var fpsEl = document.createElement('span');
-  fpsEl.className = 'observatory-hud__fps';
-  fpsEl.setAttribute('aria-hidden', 'true');
+  fpsEl.className = 'observatory-hud__fps'; fpsEl.setAttribute('aria-hidden', 'true');
   fpsEl.textContent = 'FPS —';
-
-  hud.appendChild(toggle);
-  hud.appendChild(fpsEl);
+  hud.appendChild(toggle); hud.appendChild(fpsEl);
   hero.appendChild(hud);
 
-  function setFps(v) {
-    fpsEl.textContent = 'FPS ' + (v == null ? '—' : v);
-  }
-
+  function setFps(v) { fpsEl.textContent = 'FPS ' + (v == null ? '—' : v); }
   function reflectToggle(on) {
-    // aria-pressed = "is motion paused". on === animating.
     toggle.setAttribute('aria-pressed', on ? 'false' : 'true');
-    toggle.setAttribute('aria-label', on ? 'Pause ambient motion' : 'Play ambient motion');
-    toggle.title = on ? 'Pause the observatory' : 'Wake the observatory';
+    toggle.setAttribute('aria-label', on ? 'Pause the transmutation' : 'Resume the transmutation');
+    toggle.title = on ? 'Pause the transmutation' : 'Resume the transmutation';
     hud.classList.toggle('is-paused', !on);
   }
-
-  // Apply the current policy: run the loop or hold a static frame.
   function apply() {
     var on = motionEnabled();
     reflectToggle(on);
-    if (on) start(); else { stop(); staticFrame(); }
+    if (on) { phase = 'coagula'; phaseT = 0; warm = 0.2; start(); }
+    else { stop(); drawStill(); }
   }
-
   toggle.addEventListener('click', function () {
     var on = motionEnabled();
-    savePref(on ? 'off' : 'on'); // explicit choice overrides the OS default
+    savePref(on ? 'off' : 'on');
     apply();
   });
 
-  // ---- Pointer, resize, visibility ----------------------------------------
+  // ---- Input, resize, visibility ------------------------------------------
   function onPointer(e) {
     var t = e.touches ? e.touches[0] : e;
     if (!t) return;
-    pointer.x = t.clientX;
-    pointer.y = t.clientY;
-    pointer.active = true;
-    // A paused/static observatory still reveals the constellation on hover --
-    // it's pointer-driven (2.3.3), not auto-play, so it stays available even
-    // when the ambient loop is stopped.
-    if (!running) staticFrame();
+    pointer.x = t.clientX; pointer.y = t.clientY; pointer.active = true;
   }
-  function clearPointer() {
-    pointer.active = false;
-    if (!running) staticFrame();
-  }
+  function clearPointer() { pointer.active = false; }
   window.addEventListener('mousemove', onPointer, { passive: true });
   window.addEventListener('touchmove', onPointer, { passive: true });
   window.addEventListener('mouseleave', clearPointer);
   window.addEventListener('touchend', clearPointer);
+  // click anywhere on the hero backdrop triggers a transmutation to the next
+  // figure (ignored on interactive elements so links/buttons still work).
+  hero.addEventListener('click', function (e) {
+    if (e.target.closest('a, button')) return;
+    if (running) startSolve();
+  });
 
-  var resizeTimer;
+  function sizeFor() {
+    W = window.innerWidth; H = window.innerHeight;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    // figure: left-of-centre on wide screens, upper-centre on narrow ones
+    if (W >= 900) { figureCX = W * 0.32; figureCY = H * 0.52; figureSize = Math.min(460, H * 0.6, W * 0.44); }
+    else { figureCX = W * 0.5; figureCY = H * 0.26; figureSize = Math.min(228, W * 0.6, H * 0.3); }
+    [bg, fg].forEach(function (cv) {
+      cv.width = W * dpr; cv.height = H * dpr;
+      cv.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0);
+    });
+  }
+  function rebuild(keepPhase) {
+    sizeFor();
+    rasterizeFigures();
+    if (!particles.length) seedParticles(); else assignTargets(figureIndex);
+    drawGround();
+    if (running) { fctx.clearRect(0, 0, W, H); } else drawStill();
+  }
+  var rt;
   window.addEventListener('resize', function () {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(function () {
-      resize();
-      if (running) { /* loop keeps going */ } else { staticFrame(); }
-    }, 200);
+    clearTimeout(rt); rt = setTimeout(function () { rebuild(true); }, 200);
   });
-
-  // Never burn cycles on a hidden tab (AC-A10).
   document.addEventListener('visibilitychange', function () {
-    if (document.hidden) {
-      if (running) stop();
-    } else {
-      if (motionEnabled()) start();
-    }
+    if (document.hidden) { if (running) stop(); }
+    else if (motionEnabled() && !running) { start(); }
   });
-
-  // React live to an OS reduced-motion change (only matters when the visitor
-  // hasn't made an explicit choice).
   var onReduceChange = function () { if (storedPref() == null) apply(); };
   if (reduceQuery.addEventListener) reduceQuery.addEventListener('change', onReduceChange);
   else if (reduceQuery.addListener) reduceQuery.addListener(onReduceChange);
 
-  // ---- Console homage (earendil-style dev wink) ---------------------------
-  function consoleSigil() {
-    var sigil = [
-      '',
-      '        .  *  .   ·   *   .  ·  *  .',
-      '     ·   ╭─────────────────────╮   *',
-      '   *     │   ☿   THE  ATELIER   │  ·',
-      '     .   │   ⚗   OBSERVATORY    │    .',
-      '   ·     ╰─────────────────────╯  *  .',
-      '        *   .   ·    *   .   ·   *',
-      ''
-    ].join('\n');
-    try {
-      console.log('%c' + sigil, 'color:#cdb4db; font-family:monospace; line-height:1.15;');
-      console.log(
-        '%cSolve et Coagula.%c  You found the console — a true alchemist always looks beneath the surface.\n' +
-        'The stars remember those who look up. Some old spells still work on keyboards: %c↑ ↑ ↓ ↓ ← → ← → B A%c',
-        'color:#e6a553; font-weight:bold; font-family:monospace;',
-        'color:#b9c9e6; font-family:monospace;',
-        'color:#f8d1e0; font-family:monospace;',
-        'color:#b9c9e6; font-family:monospace;'
-      );
-    } catch (e) { /* no console: fine */ }
-  }
+  // ---- Console homage ------------------------------------------------------
+  try {
+    console.log('%c  ☿ ⚗  SOLVE ET COAGULA  ⚗ ☿',
+      'color:#e6a553;font-family:monospace;font-weight:bold;');
+    console.log('%cDissolve, and bind anew. You found the console — every alchemist looks beneath the surface.\n' +
+      'Old spells still work on keyboards: %c↑ ↑ ↓ ↓ ← → ← → B A',
+      'color:#b9c9e6;font-family:monospace;', 'color:#f8d1e0;font-family:monospace;');
+  } catch (e) {}
 
-  // ---- Boot ---------------------------------------------------------------
-  resize();
-  // Fade the sky in (opacity is vestibular-safe for everyone).
-  requestAnimationFrame(function () { canvas.classList.add('is-lit'); });
-  apply();
-  consoleSigil();
-
-  // Expose a tiny hook so home.js's Konami payoff can ask the sky to flare
-  // without either file reaching into the other's internals.
+  // ---- Public API for home.js's Konami payoff ------------------------------
   window.Observatory = {
+    transmute: function () { if (running) startSolve(); },
     flare: function () {
-      if (!hero) return;
       hero.classList.add('is-transmuting');
       window.setTimeout(function () { hero.classList.remove('is-transmuting'); }, 2600);
+      if (running) { figureIndex = 0; startSolve(); } // grand work returns to the circle
     },
     isRunning: function () { return running; }
   };
+
+  // ---- Boot ----------------------------------------------------------------
+  rebuild(false);
+  window.requestAnimationFrame(function () { bg.classList.add('is-lit'); fg.classList.add('is-lit'); });
+  apply();
 })();

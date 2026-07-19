@@ -578,16 +578,10 @@ usage_exemptions:
       change `home-atelier`: sub-line of the same dark-surface reveal; same
       hero-gradient pairing as .hero__content, restated: 15.18:1 / 12.49:1
       (worst-case scrim-over-orb 11.96:1).
-  - file: _sass/pages/_home.scss
-    line: 352
-    selector: ".alchemy-symbol, .rune"
-    property: color
-    token: "var(--symbol-color, $pastel-purple)"
-    reason: >-
-      $pastel-purple here is a fallback for --symbol-color (out of manifest
-      scope, see not_manifest_scope) -- every actual rune element sets
-      --symbol-color inline, so the $pastel-purple fallback never renders in
-      practice. Decorative icon fill, not body text.
+  # (removed) `.alchemy-symbol, .rune` exemption: change `hero-transmutation`
+  # deleted those DOM elements + their SCSS -- the sigils are now rendered as
+  # canvas dust by observatory.js, so there is no longer a palette-token color
+  # usage to exempt.
   - file: _sass/components/_components.scss
     line: 89
     selector: ".social-icon (--linkedin/--github/--dev)"

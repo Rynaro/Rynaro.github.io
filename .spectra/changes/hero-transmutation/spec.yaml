@@ -1,0 +1,121 @@
+# spec.yaml — ESL machine-readable contract for change `hero-transmutation`.
+artifact: spec
+change_id: hero-transmutation
+tier: full
+version: 0.1.0
+maker: opus-orchestrator
+checker: kupo
+title: "Hero rework — Solve et Coagula particle transmutation"
+branch: rework/home-atelier
+supersedes_visual: home-atelier   # replaces the atelier's starfield/constellation hero
+complexity:
+  score: 8
+  verdict: extended
+research_of_record: .claude/rebrand/research-hero-backgrounds.md   # Fable deep-research; Concept A over B
+context: >-
+  The atelier hero (starfield + nebula + cursor-proximity constellation lines)
+  read as generic — the owner's verdict: "almost no animation" and "looks like
+  every canvas tutorial on the internet." Proximity-line linking is THE
+  canvas-tutorial cliché (particles.js/tsParticles). Fable's deep research
+  recommended Concept A (particle transmutation onto the site's own sigils)
+  grounded on Concept B (dithered prima-materia field). Full creative authority
+  granted, including removing/modifying the sigils.
+acceptance_checks:
+- id: AC-T01
+  given: proximity-line linking ("constellation") is the cliché under indictment
+  when: the hero is reworked
+  then: the mechanic SHALL be removed at the root — no line-linking in any reskin,
+    and the starfield retired
+  verify_method: observatory.js contains no line-drawing between particles; old
+    starfield/constellation code deleted
+- id: AC-T02
+  given: the motto is "Solve et Coagula"
+  when: the field animates
+  then: particles SHALL dissolve into divergence-free curl-noise turbulence (solve)
+    and condense onto rasterised sigil geometry (coagula), cycling figures on click
+  verify_method: Playwright — load condenses the alchemy circle; click dissolves
+    (violet swirl w/ trails) then re-condenses the next sigil (fire)
+- id: AC-T03
+  given: the sigils were static DOM/SVG clip-art
+  when: the rework ships
+  then: the DOM alchemy-circle + element sigils + runes SHALL be removed from markup
+    and rendered as living dust instead
+  verify_method: grep _site/index.html — 0 .alchemy-circle / .alchemy-symbol / .rune
+- id: AC-T04
+  given: an auto-drifting field would auto-start continuous motion
+  when: prefers-reduced-motion:reduce
+  then: the canvas SHALL paint the coagulated figure as a STATIC long-exposure still
+    (no rAF), FPS readout '—', toggle offering resume (no-motion-first + substitution)
+  verify_method: Playwright reducedMotion:'reduce' — static figure, isRunning()===false
+- id: AC-T05
+  given: the resting figure breathes (continuous opacity motion)
+  when: motion is on
+  then: the HUD SHALL provide the WCAG 2.2.2 pause/resume control (prefers-reduced-motion
+    alone does not discharge 2.2.2), persisted, initialised from the OS preference
+  verify_method: toggle has aria-pressed + aria-label; axe 0 violations on Home
+- id: AC-T06
+  given: cursor-line linking is diagrammatic; award heroes respond materially
+  when: the pointer moves over the hero
+  then: the response SHALL be material (stir during solve, scatter-then-regather at
+    rest) and SHALL never fight coagulation, so the figure always forms cleanly
+  verify_method: stepParticles skips pointer force when phase==='coagula'; canvas is
+    pointer-events:none (never intercepts links)
+- id: AC-T07
+  given: a smooth violet field risks the "AI-slop" purple-gradient signature
+  when: the ground renders
+  then: it SHALL be a nigredo slab finished with a broken-up Bayer dither (grain, not
+    mesh), static (zero vestibular cost)
+  verify_method: drawGround/ditherGround run once per resize; screenshots show grain
+- id: AC-T08
+  given: a continuous canvas loop could peg CPU/battery
+  when: the loop runs
+  then: it SHALL bound the particle budget (<=2600), stop on visibilitychange, and use
+    a seeded PRNG so the still is deterministic
+  verify_method: particleBudget cap; document 'visibilitychange' -> stop(); seeded hash
+- id: AC-T09
+  given: gold veining/dust must not harm headline legibility
+  when: text sits over the ground
+  then: hero title/subtitle/tagline SHALL meet WCAG AA (effect massed left, text right)
+  verify_method: npm run test:axe — color-contrast 0 violations on Home, light + dark
+- id: AC-T10
+  given: the effect must degrade without JS
+  when: JavaScript is off
+  then: the hero SHALL show its layered-gradient background with no empty canvas
+  verify_method: canvases are created by observatory.js; .alchemist-hero has a CSS bg
+- id: AC-T11
+  given: the project's a11y gates must stay green
+  when: the suites run
+  then: test:a11y-static and test:axe SHALL exit 0 (incl. motion: no infinite outside
+    motion-ok; clamp: max/min<=2.5 + rem-anchored middle)
+  verify_method: npm run test:a11y-static (exit 0); npm run test:axe (PASS)
+- id: AC-T12
+  given: prior invariants must not regress
+  when: the homepage renders
+  then: the footer disclaimer SHALL remain in the DOM (AC-020) and the Konami spell
+    SHALL still reveal "Solve et Coagula"
+  verify_method: grep footer__disclaimer==1; home.js Konami -> Observatory.flare + reveal
+gates_must_stay_green:
+- npm run test:a11y-static
+- npm run test:axe
+non_ci_safety_net:
+- gate: npm run test:visual
+  note: not a CI gate; index baseline will need a refresh (intentional redesign).
+    Ground + still are deterministic (seeded PRNG); other pages unaffected.
+files_touched:
+- assets/js/observatory.js   # full rewrite — transmutation engine
+- assets/js/home.js          # gutted to the Konami bridge
+- index.html                 # removed DOM alchemy-circle + sigils
+- _sass/pages/_home.scss     # removed dead circle/symbol styling; content-right layout
+- _data/palette-manifest.yml # removed obsolete .alchemy-symbol/.rune exemption
+gate_status:
+  build: bundle exec jekyll build exit 0
+  test_a11y_static: PASS (exit 0)
+  test_axe: PASS (0 violations across all pages, light + dark)
+  test_motion: PASS (AC-031; 0 "infinite" in the new JS)
+  visual_behavior_probe: PASS (load-condense / rest / click solve->coagula / reduced still); 0 JS errors
+  confidence:
+    score: 84
+    verdict: VALIDATE
+    note: AUTHOR-SCORED. Verification is objective-gate-based (deterministic scripts +
+      headless axe + Playwright behaviour probe with screenshot review). Checker role
+      (kupo) is sandbox-scoped without npm/node, so the orchestrator ran the gates.
