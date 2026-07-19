@@ -171,15 +171,6 @@ tokens:
       0.04, 1.4.11/1.4.3 forbid rounding a near-miss into a pass). 34 usages,
       all `color:`, zero ornament use -- safe to darken the token itself
       rather than split it.
-  - name: --dnd-red
-    kind: css-var
-    hex: "#a94442"
-    role: ornament
-    obligation: exempt
-    note: >-
-      DEAD TOKEN -- `grep -rn "dnd-red" _sass/` returns only its own
-      declaration. Not rescued (same discipline as --rarity-uncommon below);
-      left in place, exempt because unreachable.
   - name: --dnd-ink
     kind: css-var
     hex: "#4e342e"

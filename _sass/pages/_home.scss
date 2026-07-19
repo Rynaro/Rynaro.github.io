@@ -139,25 +139,6 @@ html.home {
   }
 }
 
-.hero__actions {
-  margin-top: 2rem;
-
-  .button {
-    margin-right: 1rem;
-  }
-
-  @include max-width('sm') {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-
-    .button {
-      margin-right: 0;
-      width: 100%;
-    }
-  }
-}
-
 /* Alchemy Circle */
 .alchemy-circle {
   position: relative;

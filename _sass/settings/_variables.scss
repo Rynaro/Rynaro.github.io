@@ -93,7 +93,6 @@ $mobile-breakpoint: 480px;
   // Used only as `color:` sitewide (34 usages, zero ornament/background use),
   // so this is a safe in-place darken rather than a token split.
   --dnd-brown: #{color.adjust(#8a6d3b, $lightness: -8%)};
-  --dnd-red: #a94442; // unreferenced anywhere in _sass/ -- dead token, left in place (not rescued; see report)
   --dnd-ink: #4e342e;
 
   // Text colors
