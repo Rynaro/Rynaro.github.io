@@ -1,7 +1,7 @@
 {
   "esl_version": "1.1",
   "change_id": "normalize-p3",
-  "status": "in_progress",
+  "status": "verified",
   "tier": "full",
   "maker": "vivi",
   "checker": "kupo",
@@ -58,6 +58,7 @@
   ],
   "spec_ref": ".spectra/changes/normalize-p3/spec.md",
   "supersedes": "normalize",
+  "drift_checked": true,
   "has_code": true,
   "memory_preflight": {
     "ran": true,
