@@ -22,6 +22,15 @@ members:
   - name: idg
     version: "^1.11.0"
     source: github:Rynaro/IDG
+  - name: gilgamesh
+    version: "^1.1.0"
+    source: github:Rynaro/Gilgamesh
+  - name: kupo
+    version: "^1.4.0"
+    source: github:Rynaro/Kupo
+  - name: forge
+    version: "^1.11.0"
+    source: github:Rynaro/FORGE
 
 # Optional documentation of the intended pipeline:
 # composition:
