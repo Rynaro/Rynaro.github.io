@@ -1,4 +1,4 @@
 name = "atlas"
 description = "ATLAS methodology agent; canonical content is installed under .eidolons/atlas."
-instructions = "Load .eidolons/atlas/PERSONA.md and .eidolons/atlas/SPEC.md."
+developer_instructions = "Load .eidolons/atlas/PERSONA.md and .eidolons/atlas/SPEC.md."
 # generated_by: eidolons

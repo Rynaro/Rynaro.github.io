@@ -1,0 +1,4 @@
+name = "kupo"
+description = "KUPO methodology agent; canonical content is installed under .eidolons/kupo."
+developer_instructions = "Load .eidolons/kupo/PERSONA.md and .eidolons/kupo/SPEC.md."
+# generated_by: eidolons

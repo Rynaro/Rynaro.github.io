@@ -1,4 +1,4 @@
 name = "vivi"
 description = "VIVI methodology agent; canonical content is installed under .eidolons/vivi."
-instructions = "Load .eidolons/vivi/PERSONA.md and .eidolons/vivi/SPEC.md."
+developer_instructions = "Load .eidolons/vivi/PERSONA.md and .eidolons/vivi/SPEC.md."
 # generated_by: eidolons
