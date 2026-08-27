@@ -1,0 +1,4 @@
+name = "forge"
+description = "FORGE methodology agent; canonical content is installed under .eidolons/forge."
+developer_instructions = "Load .eidolons/forge/PERSONA.md and .eidolons/forge/SPEC.md."
+# generated_by: eidolons

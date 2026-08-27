@@ -1,0 +1,4 @@
+name = "gilgamesh"
+description = "GILGAMESH methodology agent; canonical content is installed under .eidolons/gilgamesh."
+developer_instructions = "Load .eidolons/gilgamesh/PERSONA.md and .eidolons/gilgamesh/SPEC.md."
+# generated_by: eidolons

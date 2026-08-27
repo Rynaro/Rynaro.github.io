@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "atlas-aci": {
+      "command": "/bin/sh",
+      "args": [
+        "-c",
+        "exec docker run --rm -i --user \"$(id -u):$(id -g)\" --read-only --label eidolons.project=rynaro-github-io -v \"$PWD:/repo:ro\" -v \"$PWD/.atlas/memex:/memex\" --cap-drop ALL --security-opt no-new-privileges ghcr.io/rynaro/atlas-aci@sha256:e2542ef8d569882c560065f0bcaed9ef2a7398e7e61765e25b142a3c93ec7cf7 serve --repo /repo --memex-root /memex"
+      ]
+    },
+    "crystalium": {
+      "command": "/bin/sh",
+      "args": [
+        "-c",
+        "mkdir -p \"$HOME/.crystalium/rynaro-github-io\" && exec docker run --rm -i --label eidolons.project=rynaro-github-io -v \"$HOME/.crystalium/rynaro-github-io:/root/.crystalium/rynaro-github-io\" -e CRYSTALIUM_DATA_DIR=/root/.crystalium/rynaro-github-io -e CRYSTALIUM_CALLER_TIER=T1 --cap-drop ALL --security-opt no-new-privileges ghcr.io/rynaro/crystalium@sha256:75077ffe6b9bcded8f50c0fcb7092ead204128ec4f72af5103df1dfd036f82d5 python -m crystalium serve"
+      ]
+    }
+  }
+}
