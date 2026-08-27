@@ -7,6 +7,8 @@
 # CONFIGURATION
 # ======================================================
 
+alias docker=podman
+
 JEX_VERSION="1.0.0"
 DOCKER_IMAGE="jekyll-site"
 JEX_DIR="${HOME}/.jex"
