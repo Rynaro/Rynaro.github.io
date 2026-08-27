@@ -91,11 +91,15 @@ if (consistencyFailures === 0) ok('role "content" holds if and only if obligatio
 // exactly once. AC-203: reads every resolved sourceFile, not one hardcoded
 // path, so this stays correct once the settings layer splits. ---
 const varsSrc = sourceFiles.map((f) => readFileSync(f, 'utf8')).join('\n');
-const LAYOUT_VARS = new Set(['$sidebar-width', '$content-max-width', '$tablet-breakpoint', '$mobile-breakpoint']);
+const NON_PALETTE_SASS_VARS = new Set([
+  '$sidebar-width', '$content-max-width', '$tablet-breakpoint', '$mobile-breakpoint',
+  '$radius-3', '$radius-4', '$radius-5', '$radius-6', '$radius-8', '$radius-10',
+  '$radius-12', '$radius-20', '$radius-24', '$radius-30', '$radius-40',
+]);
 const ALIAS_VARS = new Set(['$soft-pink', '$soft-purple', '$soft-blue', '$background-white']); // aliases of already-manifested tokens
 
 const declaredSassVars = [...varsSrc.matchAll(/^\$([a-zA-Z0-9-]+):/gm)].map((m) => `$${m[1]}`)
-  .filter((v) => !LAYOUT_VARS.has(v) && !ALIAS_VARS.has(v));
+  .filter((v) => !NON_PALETTE_SASS_VARS.has(v) && !ALIAS_VARS.has(v));
 const declaredCssVars = [...varsSrc.matchAll(/^\s*(--[a-zA-Z0-9-]+):/gm)].map((m) => m[1]);
 
 const manifestNames = new Set(rows.map((r) => r.name));
@@ -104,7 +108,7 @@ const unclassified = declared.filter((name) => !manifestNames.has(name));
 if (unclassified.length > 0) {
   fail(`${unclassified.length} token(s) declared in the settings layer (meta.source) are NOT in the manifest: ${unclassified.join(', ')}`);
 } else {
-  ok(`every non-layout, non-alias token declared in the settings layer (meta.source) is classified (${declared.length} declared tokens)`);
+  ok(`every palette token declared in the settings layer (meta.source) is classified (${declared.length} declared tokens; non-palette dimensions and aliases excluded)`);
 }
 
 // Reverse check: no manifest row claims a name that isn't actually declared

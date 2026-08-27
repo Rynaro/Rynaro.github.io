@@ -17,6 +17,7 @@
 // not just its dark override, once both live in the same document-scoped
 // custom-property namespace.
 
+@use "../settings/variables" as *;
 @use "../tools/breakpoints" as *;
 
 /* Notebook Hero Section - based on rpg-hero but with unique elements */
@@ -278,7 +279,7 @@
   padding: .75rem 1.25rem;
   background: rgba(255, 255, 255, 0.5);
   border: 1px solid var(--border-light);
-  border-radius: 6px;
+  border-radius: $radius-6;
   color: var(--text-secondary);
   font-size: 0.9rem;
   cursor: pointer;
@@ -320,7 +321,7 @@
     width: 100%;
     padding: 0.75rem 1rem 0.75rem 2.5rem;
     border: 1px solid var(--border-light);
-    border-radius: 40px;
+    border-radius: $radius-40;
     background: rgba(255, 255, 255, 0.5);
     color: var(--text-primary);
     font-size: 0.9rem;
@@ -403,7 +404,7 @@
 /* Scroll Card */
 .scroll-card {
   background: var(--parchment-light);
-  border-radius: 10px;
+  border-radius: $radius-10;
   box-shadow: var(--scroll-shadow);
   position: relative;
   border: 1px solid rgba(153, 102, 204, 0.1);
@@ -531,7 +532,7 @@
   padding: 0.25rem 0.75rem;
   background: rgba(153, 102, 204, 0.1);
   color: var(--ff-purple-ink);
-  border-radius: 20px;
+  border-radius: $radius-20;
   font-weight: 500;
 }
 
@@ -738,7 +739,7 @@
   justify-content: center;
   padding: 4rem 2rem;
   background: rgba(255, 255, 255, 0.5);
-  border-radius: 10px;
+  border-radius: $radius-10;
   border: 1px solid var(--border-light);
   text-align: center;
   position: relative;
@@ -785,7 +786,7 @@
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
-  border-radius: 24px;
+  border-radius: $radius-24;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;

@@ -94,7 +94,7 @@
   background: var(--ff-gold);
   color: var(--dnd-brown);
   font-weight: 600;
-  border-radius: 20px;
+  border-radius: $radius-20;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -116,7 +116,7 @@
   align-items: center;
   gap: 0.4rem;
   padding: 0.4rem 1rem;
-  border-radius: 20px;
+  border-radius: $radius-20;
   font-weight: 600;
   font-size: 0.85rem;
   color: #4e342e;
@@ -155,7 +155,7 @@
   align-items: center;
   gap: 0.4rem;
   padding: 0.35rem 0.9rem;
-  border-radius: 20px;
+  border-radius: $radius-20;
   font-weight: 500;
   font-size: 0.8rem;
   color: var(--dnd-ink);
@@ -290,7 +290,7 @@
 /* Table of Contents */
 .toc-scroll {
   background: var(--post-sidebar-bg);
-  border-radius: 10px;
+  border-radius: $radius-10;
   padding: 1.5rem;
   box-shadow: var(--shadow-light);
   margin-bottom: 1.5rem;
@@ -385,7 +385,7 @@
 /* Post Actions */
 .post-actions {
   background: var(--post-sidebar-bg);
-  border-radius: 10px;
+  border-radius: $radius-10;
   padding: 1.5rem;
   box-shadow: var(--shadow-light);
   border: 1px solid var(--border-light);
@@ -567,7 +567,7 @@
 
 .post-scroll {
   background: var(--parchment-light);
-  border-radius: 10px;
+  border-radius: $radius-10;
   box-shadow: var(--scroll-shadow);
   border: 1px solid rgba(153, 102, 204, 0.1);
   position: relative;
@@ -746,7 +746,7 @@
   margin: 1.5rem 0;
   padding: 1.5rem;
   background: rgba(60, 60, 70, 0.05);
-  border-radius: 8px;
+  border-radius: $radius-8;
   overflow-x: auto;
   border: 1px solid rgba(153, 102, 204, 0.1);
   position: relative;
@@ -770,7 +770,7 @@
   font-size: 0.9em;
   padding: 0.2em 0.4em;
   background: rgba(153, 102, 204, 0.08);
-  border-radius: 3px;
+  border-radius: $radius-3;
   // AC-026: was `var(--ff-purple-dark)`, a token declared nowhere in
   // _sass/_variables.scss -- an undefined custom property, silently falling
   // back to inherited color. Found while auditing token usage for Story 4.1;
@@ -800,7 +800,7 @@
 .article-content figure img {
   max-width: 100%;
   height: auto;
-  border-radius: 8px;
+  border-radius: $radius-8;
   margin: 0 auto;
   display: block;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
@@ -819,7 +819,7 @@
 .article-content img {
   max-width: 100%;
   height: auto;
-  border-radius: 8px;
+  border-radius: $radius-8;
   margin: 2rem auto;
   display: block;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
@@ -843,7 +843,7 @@
   border-collapse: collapse;
   margin: 2rem 0;
   overflow: hidden;
-  border-radius: 8px;
+  border-radius: $radius-8;
   border: 1px solid rgba(153, 102, 204, 0.1);
 }
 
@@ -926,7 +926,7 @@
   align-items: center;
   background: white;
   padding: 1.25rem;
-  border-radius: 8px;
+  border-radius: $radius-8;
   box-shadow: var(--shadow-light);
   flex: 1;
   max-width: 48%;
@@ -1077,7 +1077,7 @@
 
 .related-scroll-card {
   background: var(--parchment-light);
-  border-radius: 10px;
+  border-radius: $radius-10;
   box-shadow: var(--scroll-shadow);
   position: relative;
   border: 1px solid rgba(153, 102, 204, 0.1);
@@ -1127,7 +1127,7 @@
   padding: 0.25rem 0.75rem;
   background: rgba(153, 102, 204, 0.1);
   color: var(--ff-purple-ink);
-  border-radius: 20px;
+  border-radius: $radius-20;
   font-weight: 500;
   margin-bottom: 0.75rem;
 }

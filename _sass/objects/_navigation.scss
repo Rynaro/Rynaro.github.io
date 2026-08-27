@@ -16,7 +16,7 @@
   display: flex;
   align-items: center;
   padding: 0.5rem;
-  border-radius: 30px;
+  border-radius: $radius-30;
   background: rgba(33, 28, 48, 0.75);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -111,7 +111,7 @@
   background: rgba(33, 28, 48, 0.9);
   color: white;
   padding: 0.5rem 0.8rem;
-  border-radius: 6px;
+  border-radius: $radius-6;
   font-size: 0.8rem;
   white-space: nowrap;
   opacity: 0;

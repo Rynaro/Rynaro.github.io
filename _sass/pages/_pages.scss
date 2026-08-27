@@ -3,6 +3,8 @@
    .rpg-scrolls, .section-title, and (on /start-here) the .related-scroll-* card
    from _post.scss rather than introducing a parallel component set. */
 
+@use "../settings/variables" as *;
+
 /* /now -- last-updated badge (AC-014 requires it be visible, not just present) */
 .now-last-updated {
   display: inline-flex;
@@ -12,7 +14,7 @@
   padding: 0.4rem 1rem;
   background: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 20px;
+  border-radius: $radius-20;
   font-size: 0.9rem;
   color: rgba(255, 255, 255, 0.95);
 }
@@ -66,7 +68,7 @@
 
 .uses-category {
   background: var(--parchment-light, #f8f5e6);
-  border-radius: 10px;
+  border-radius: $radius-10;
   padding: 1.5rem;
   box-shadow: var(--scroll-shadow, 0 5px 20px rgba(58, 41, 33, 0.1));
 

@@ -50,6 +50,19 @@ $content-max-width: 1200px;
 $tablet-breakpoint: 768px;
 $mobile-breakpoint: 480px;
 
+// Border radius scale
+$radius-3: 3px;
+$radius-4: 4px;
+$radius-5: 5px;
+$radius-6: 6px;
+$radius-8: 8px;
+$radius-10: 10px;
+$radius-12: 12px;
+$radius-20: 20px;
+$radius-24: 24px;
+$radius-30: 30px;
+$radius-40: 40px;
+
 // CSS Custom Properties (CSS Variables)
 :root {
   // Final Fantasy inspired colors -- ORNAMENT tokens (surfaces, gradients,

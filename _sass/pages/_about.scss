@@ -194,7 +194,7 @@
   color: var(--ff-blue-dark);
   font-weight: bold;
   padding: 0.5rem 0.75rem;
-  border-radius: 6px;
+  border-radius: $radius-6;
   font-size: 1.2rem;
   margin-right: 1rem;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
@@ -280,7 +280,7 @@
   // min-height-established box.
   min-height: 8px;
   background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
+  border-radius: $radius-4;
   position: relative;
 }
 
@@ -289,7 +289,7 @@
   top: 0;
   bottom: 0;
   left: 0;
-  border-radius: 4px;
+  border-radius: $radius-4;
   transition: width 0.3s ease;
   // AC-027-adjacent: measured (not manifest-token-driven, so outside the
   // automated palette-contrast test's declared-background set -- these are
@@ -443,7 +443,7 @@
   background: var(--ff-gold);
   color: var(--dnd-brown);
   padding: 0.4rem 0.8rem;
-  border-radius: 4px;
+  border-radius: $radius-4;
   font-size: 0.85rem;
   font-weight: 600;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -501,7 +501,7 @@ strong {
     margin-top: 1.5rem;
     padding: 0.5rem;
     background: rgba(255, 255, 255, 0.4);
-    border-radius: 8px;
+    border-radius: $radius-8;
     border: 1px solid rgba(255, 255, 255, 0.2);
 
     .minor-attributes__title {
@@ -525,7 +525,7 @@ strong {
       gap: 0.5rem;
       padding: 0.4rem 0.8rem;
       background: rgba(255, 255, 255, 0.05);
-      border-radius: 4px;
+      border-radius: $radius-4;
       font-size: 0.85rem;
       transition: all 0.2s ease;
 
@@ -554,7 +554,7 @@ strong {
 
 .attribute-card {
   background: white;
-  border-radius: 10px;
+  border-radius: $radius-10;
   padding: 1.5rem;
   box-shadow: var(--shadow-light);
   text-align: center;
@@ -609,7 +609,7 @@ strong {
   // identical fix on the HP/MP/ST/EXP bars.
   min-height: 20px;
   background: rgba(153, 102, 204, 0.1);
-  border-radius: 10px;
+  border-radius: $radius-10;
   position: relative;
   margin-bottom: 1rem;
   // AC-027 / Story 4.2: was `rgba(153, 102, 204, 0.2)` -- 1.4.11 binds the
@@ -631,7 +631,7 @@ strong {
   bottom: 0;
   left: 0;
   background: linear-gradient(to right, var(--ff-blue), var(--ff-purple));
-  border-radius: 10px;
+  border-radius: $radius-10;
   // AC-027: the fill/track boundary -- ff-blue (2.55:1) and ff-purple
   // (3.31:1) against the blended track are the "part of the graphic required
   // to understand the content" per 1.4.11's own Understanding text; the
@@ -657,7 +657,7 @@ strong {
 
 .minor-attribute-card {
   background: rgba(255, 255, 255, 0.4);
-  border-radius: 8px;
+  border-radius: $radius-8;
   padding: 1rem;
   text-align: center;
   transition: transform 0.3s ease;
@@ -729,7 +729,7 @@ strong {
   align-items: center;
   background: rgba(249, 243, 230, 0.5);
   padding: 0.75rem 1rem;
-  border-radius: 6px;
+  border-radius: $radius-6;
   transition: transform 0.2s ease;
 }
 
@@ -770,7 +770,7 @@ strong {
   width: 15px;
   height: 8px;
   background: rgba(153, 102, 204, 0.2);
-  border-radius: 4px;
+  border-radius: $radius-4;
 }
 
 .mastery-5 .skill-mastery span:nth-child(-n+5) {
@@ -806,7 +806,7 @@ strong {
     left: 30px;
     width: 3px;
     background: linear-gradient(to bottom, var(--ff-purple-light), var(--ff-blue));
-    border-radius: 3px;
+    border-radius: $radius-3;
 
     @include max-width('xs') {
       left: 20px;
@@ -855,7 +855,7 @@ strong {
 
 .timeline-content {
   background: white;
-  border-radius: 8px;
+  border-radius: $radius-8;
   padding: 1rem 1.25rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   border: 1px solid var(--border-light);
@@ -897,7 +897,7 @@ strong {
   background: var(--ff-gold);
   color: var(--dnd-brown);
   padding: 0.25rem 0.5rem;
-  border-radius: 3px;
+  border-radius: $radius-3;
   font-size: 0.75rem;
   font-weight: bold;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -945,7 +945,7 @@ strong {
 
 .ability-card {
   background: white;
-  border-radius: 8px;
+  border-radius: $radius-8;
   padding: 1.5rem;
   box-shadow: var(--shadow-light);
   border: 1px solid var(--border-light);
@@ -958,7 +958,7 @@ strong {
     top: 1rem;
     right: 1rem;
     padding: 0.25rem 0.75rem;
-    border-radius: 12px;
+    border-radius: $radius-12;
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -1071,7 +1071,7 @@ strong {
   display: inline-block;
   padding: 0.25rem 0.5rem;
   background: rgba(68, 153, 203, 0.1);
-  border-radius: 4px;
+  border-radius: $radius-4;
 }
 
 @keyframes ultimate-glow {
@@ -1093,7 +1093,7 @@ strong {
 
 .trait-card {
   background: white;
-  border-radius: 8px;
+  border-radius: $radius-8;
   padding: 1.25rem;
   box-shadow: var(--shadow-light);
   border: 1px solid var(--border-light);
@@ -1218,7 +1218,7 @@ strong {
   background: var(--ff-gold);
   color: var(--dnd-brown);
   padding: 0.75rem 1.5rem;
-  border-radius: 8px;
+  border-radius: $radius-8;
   font-weight: 600;
   font-size: 1.1rem;
   transition: all 0.3s ease;
@@ -1282,7 +1282,7 @@ strong {
 /* Block Components */
 .sheet-block {
   background: white;
-  border-radius: 10px;
+  border-radius: $radius-10;
   margin-bottom: 2.5rem;
   box-shadow: var(--shadow-light);
   position: relative;
@@ -1356,7 +1356,7 @@ strong {
     background: rgba(33, 28, 48, 0.9);
     color: white;
     padding: 0.5rem 1rem;
-    border-radius: 6px;
+    border-radius: $radius-6;
     font-size: 0.85rem;
     white-space: nowrap;
     opacity: 0;
@@ -1411,7 +1411,7 @@ strong {
   transform: translateX(-50%) translateY(5px);
   background: rgba(0, 0, 0, 0.6);
   padding: 0.25rem 0.5rem;
-  border-radius: 4px;
+  border-radius: $radius-4;
 
   @include max-width('sm') {
     font-size: 0.75rem;

@@ -69,7 +69,7 @@
   width: 220px;
   height: 260px;
   background: var(--letter-paper);
-  border-radius: 6px;
+  border-radius: $radius-6;
   position: relative;
   display: flex;
   align-items: center;
@@ -256,7 +256,7 @@
 
 .info-scroll {
   background: var(--letter-paper);
-  border-radius: 8px;
+  border-radius: $radius-8;
   box-shadow: var(--shadow-light);
   border: 1px solid var(--border-light);
   position: relative;
@@ -312,7 +312,7 @@
 /* Social Grimoire */
 .social-grimoire {
   background: var(--letter-paper);
-  border-radius: 8px;
+  border-radius: $radius-8;
   padding: 1.5rem;
   box-shadow: var(--shadow-light);
   border: 1px solid var(--border-light);
@@ -350,7 +350,7 @@
   align-items: center;
   background: rgba(255, 255, 255, 0.5);
   padding: 0.75rem 1.25rem;
-  border-radius: 8px;
+  border-radius: $radius-8;
   text-decoration: none;
   color: var(--text-primary);
   transition: all 0.3s ease;
@@ -402,7 +402,7 @@
 
 .magical-parchment {
   background: var(--letter-paper);
-  border-radius: 10px;
+  border-radius: $radius-10;
   padding: 2rem;
   box-shadow: var(--letter-shadow);
   position: relative;
@@ -421,7 +421,7 @@
   background:
     radial-gradient(circle at 20% 20%, rgba(232, 224, 192, 0.8) 0%, transparent 40%),
     radial-gradient(circle at 80% 80%, rgba(232, 224, 192, 0.6) 0%, transparent 40%);
-  border-radius: 10px;
+  border-radius: $radius-10;
   opacity: 0.5;
   pointer-events: none;
 }
@@ -498,12 +498,12 @@
 .magical-form__input-container {
   position: relative;
   border: 1px solid rgba(153, 102, 204, 0.3);
-  border-radius: 8px;
+  border-radius: $radius-8;
   background: rgba(255, 255, 255, 0.5);
   transition: all 0.3s ease;
 
   @include max-width('sm') {
-    border-radius: 6px;
+    border-radius: $radius-6;
   }
 }
 
@@ -606,7 +606,7 @@
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
-  border-radius: 8px;
+  border-radius: $radius-8;
   font-size: 1.1rem;
   font-weight: 500;
   cursor: pointer;
@@ -710,7 +710,7 @@
   display: flex;
   align-items: flex-start;
   background: white;
-  border-radius: 8px;
+  border-radius: $radius-8;
   padding: 1.5rem;
   margin-top: 2rem;
   box-shadow: var(--shadow-light);
@@ -960,7 +960,7 @@
   }
 
   .magical-form__input-container {
-    border-radius: 6px;
+    border-radius: $radius-6;
   }
 
   .magical-form__input-icon {

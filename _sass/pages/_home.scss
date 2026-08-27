@@ -381,7 +381,7 @@ html.home {
     background: rgba(33, 28, 48, 0.85);
     color: var(--symbol-color);
     padding: 0.35rem 0.75rem;
-    border-radius: 4px;
+    border-radius: $radius-4;
     font-size: 0.8rem;
     white-space: nowrap;
     opacity: 1;

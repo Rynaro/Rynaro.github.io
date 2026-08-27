@@ -10,9 +10,10 @@
 # not every CSS custom property in the codebase (`--symbol-color`,
 # `--ring-color`, `--post-text`, `--ff-purple-dark` are set/aliased locally in
 # individual partials, not in _variables.scss; see `not_manifest_scope` below
-# for what each of those actually is). Layout tokens ($sidebar-width,
-# $content-max-width, $tablet-breakpoint, $mobile-breakpoint) are declared in
-# the same file but are not colors -- "palette token" excludes them.
+# for what each of those actually is). Layout and dimension tokens
+# ($sidebar-width, $content-max-width, $tablet-breakpoint, $mobile-breakpoint,
+# and the $radius-* scale) are declared in the same file but are not colors --
+# "palette token" excludes them.
 #
 # Consumed by scripts/palette-manifest.test.mjs (AC-048: completeness +
 # role<=>obligation consistency + logotype usage-binding) and

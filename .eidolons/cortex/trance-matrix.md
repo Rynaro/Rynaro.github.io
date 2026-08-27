@@ -32,11 +32,14 @@ TRANCE is **never** the default. Auto-trigger requires **both** a complexity fla
 | Eidolon | TRANCE form | Granted | Forbidden at TRANCE |
 |---|---|---|---|
 | ATLAS | Scatter sub-agents per module | Parallel fan-out (G1); worktree isolation; Abstract-phase aggregation | Writing, editing — D2 refusal stands |
+| RAMZA | Evaluator-optimizer loop on draft spec | Generator + evaluator + termination gate (G3); cap 3 iterations | Implementing code; > 3 cycles |
 | SPECTRA | Evaluator-optimizer loop on draft spec | Generator + evaluator + termination gate (G3); cap 3 iterations | Implementing code; > 3 cycles |
+| Vivi | Parallel feature branches in worktrees + verifier cascade | Multi-track implementation (G4); per-track verifier; loop shape remains bounded | Writing in a shared tree without isolation; novel architecture |
 | APIVR-Δ | Parallel feature branches in worktrees + verifier cascade | Multi-track implementation (G4); per-track verifier; reflection memory bounded ≤ 3 retries | Re-attempting beyond category budget; writing in shared tree without `isolation: worktree` |
 | IDG | Parallel doc-section synthesis | Per-section parallelism with topological respect (G5); CHT verification per section | Retrieval; > 1 revision per section |
 | FORGE | Self-consistency on reasoning chains | N=3 (or N=5 high-stakes) sampled traces with majority-vote / judge-merge (G2) | Tool calls, retrieval, code emission; debate without heterogeneity |
 | VIGIL | Parallel hypothesis testing on isolated bisects | Counterfactual fan-out on worktrees (G6); 5-intervention budget preserved | Auto-apply patches; writing outside `verified-patch.diff` |
+| Gilgamesh | None (standard-only fallback) | Bounded Step-2(a) fallthrough work | TRANCE escalation; routing, spawning, specialist or underspecified work |
 
 ---
 
@@ -49,10 +52,13 @@ The tier ladder `light < standard < deep` assigns a vendor-neutral capability le
 | Eidolon | Suggested tier | Rationale |
 |---|---|---|
 | SPECTRA | deep | Planner; spec quality gates require full reasoning |
+| RAMZA | deep | Default planner; mission-critical requirements and decision quality |
 | FORGE | deep | Deliberation; self-consistency via N=3 traces |
 | VIGIL | deep | Forensic; counterfactual chains require depth |
 | ATLAS | standard | Scout; deterministic retrieval first, LLM second |
 | APIVR-Δ | standard | Coder; `loop_native:false` — deep is benchmark-gated |
+| Vivi | standard | Default coder; iterative implementation and verification |
+| Gilgamesh | standard | Bounded fallback generalist; autonomous non-specialist work |
 | IDG | light | Scriber; synthesis from provided context |
 | Kupo | light | Executor; localized micro-tasks |
 
