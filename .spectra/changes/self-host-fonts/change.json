@@ -1,0 +1,68 @@
+{
+  "esl_version": "1.1",
+  "change_id": "self-host-fonts",
+  "status": "in_progress",
+  "tier": "full",
+  "maker": "vivi",
+  "checker": "kupo",
+  "acceptance_checks": [
+    {
+      "id": "AC-001",
+      "given": "the built site",
+      "when": "_site/ is scanned for third-party font CDN references",
+      "then": "no fonts.googleapis, fonts.gstatic, or cdnjs.cloudflare substring appears anywhere in _site/",
+      "verify_method": "grep -rE 'fonts\\.googleapis|fonts\\.gstatic|cdnjs\\.cloudflare' _site/ ; zero matches"
+    },
+    {
+      "id": "AC-002",
+      "given": "the modified Sass source",
+      "when": "bundle exec jekyll build runs",
+      "then": "the build exits 0 and introduces no new Sass error",
+      "verify_method": "bundle exec jekyll build; exit code 0"
+    },
+    {
+      "id": "AC-003",
+      "given": "assets/fonts/",
+      "when": "the build runs",
+      "then": "assets/fonts/*.woff2 exist on disk and are copied into _site/assets/fonts/",
+      "verify_method": "7 .woff2 files present in both assets/fonts/ and _site/assets/fonts/"
+    },
+    {
+      "id": "AC-004",
+      "given": "the local Font Awesome stylesheet",
+      "when": "every @font-face src is inspected",
+      "then": "every url(...) resolves to a shipped local file",
+      "verify_method": "every url(...) in assets/fonts/fontawesome.min.css names a file that exists in the same directory"
+    },
+    {
+      "id": "AC-005",
+      "given": "font-family: \"Font Awesome 5 Free\" (weight 900) usage in _sass/",
+      "when": "the local Font Awesome CSS loads",
+      "then": "the v4/v5-compat alias resolves to the solid glyph set",
+      "verify_method": "fontawesome.min.css contains the alias; fontTools cmap confirms U+F073 and U+F017 in fa-solid-900.woff2"
+    },
+    {
+      "id": "AC-006",
+      "given": "fas fa-scroll, fas fa-flask, fab fa-github",
+      "when": "the local CSS and shipped webfonts are inspected",
+      "then": "each class has a content rule and a glyph at that codepoint",
+      "verify_method": "CSS content rules present; fontTools cmap confirms the codepoints"
+    },
+    {
+      "id": "AC-007",
+      "given": "npm run test:a11y-static is the project trust anchor",
+      "when": "the change lands",
+      "then": "npm run test:a11y-static still exits 0",
+      "verify_method": "npm run test:a11y-static; exit 0"
+    },
+    {
+      "id": "AC-008",
+      "given": "Inter, Roboto, Nothing You Could Do referenced across _sass/",
+      "when": "self-hosted @font-face rules replace the CDN stylesheet",
+      "then": "every family name and referenced weight resolves to a registered @font-face",
+      "verify_method": "grep -o '@font-face{[^}]*}' _site/assets/css/main.css lists exactly those 8 pairs"
+    }
+  ],
+  "spec_ref": ".spectra/changes/self-host-fonts/spec.md",
+  "has_code": true
+}

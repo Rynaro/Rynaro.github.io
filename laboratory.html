@@ -5,12 +5,12 @@ title: Laboratory
 
 <section class="rpg-hero laboratory-hero">
   <div class="container">
-    <div class="hero-content">
-      <h1 class="hero-title fade-in">Laboratory</h1>
-      <h2 class="hero-subtitle fade-in">Alchemical Experiments</h2>
-      <p class="hero-description">A collection of crafted artifacts, magical repositories, and transmuted code</p>
+    <div class="hero__content">
+      <h1 class="hero__title fade-in">Laboratory</h1>
+      <h2 class="hero__subtitle fade-in">Alchemical Experiments</h2>
+      <p class="hero__description">A collection of crafted artifacts, magical repositories, and transmuted code</p>
     </div>
-    <div class="hero-emblem">
+    <div class="hero__emblem">
       <div class="emblem-frame">
         <i class="fas fa-flask emblem-icon"></i>
         <div class="emblem-particles">
@@ -26,15 +26,12 @@ title: Laboratory
 
 <section class="rpg-inventory">
   <div class="container">
-    <h2 class="section-title">
-      <i class="fas fa-vials section-icon"></i>
-      Research Table
-    </h2>
+    {% include components/section-title.html icon="fas fa-vials" title="Research Table" %}
 
     <div class="inventory-controls">
       <div class="inventory-filter">
         <div class="filter-title">Archives:</div>
-        <div class="filter-buttons">
+        <div class="filter-buttons" role="tablist" aria-label="Filter projects by type">
           <button class="filter-button active" data-filter="all" role="tab" aria-selected="true">
             <i class="fas fa-scroll"></i>
             <span>All</span>
@@ -65,16 +62,28 @@ title: Laboratory
         <div class="project-item"
           {% if project.type %}data-type="{{ project.type }}"{% else %}data-type="library"{% endif %}>
           <div class="item-card">
+            {% assign project_rarity = project.rarity | default: "common" %}
             <div class="item-rarity-indicator"
-                 data-rarity="{% if project.rarity %}{{ project.rarity }}{% else %}common{% endif %}">
+                 data-rarity="{{ project_rarity }}"
+                 aria-hidden="true">
             </div>
             <div class="item-header">
-              <h3 class="item-name">{{ project.title }}</h3>
-              <div class="item-actions">
-                <a href="{{ project.url }}" class="item-action" target="_blank" rel="noopener" aria-label="View on GitHub">
-                  <i class="fab fa-github"></i>
-                </a>
+              <div class="item-header-top">
+                <h3 class="item-name">{{ project.title }}</h3>
+                <div class="item-actions">
+                  <a href="{{ project.url }}" class="item-action" target="_blank" rel="noopener" aria-label="View on GitHub">
+                    <i class="fab fa-github"></i>
+                  </a>
+                </div>
               </div>
+              <!-- AC-030 / D20: rarity SHALL be conveyed by a visible text label,
+                   never by chip colour alone (1.4.1). Rendered by Liquid at build
+                   time from project_rarity directly -- independent of whichever
+                   CSS class laboratory.js does or doesn't add, so the label holds
+                   with JS disabled too. The `.item-rarity-indicator` strip above is
+                   now aria-hidden (redundant with this label; one accessible
+                   source of truth). -->
+              <span class="item-rarity-label item-rarity-label--{{ project_rarity }}">{{ project_rarity | capitalize }}</span>
             </div>
 
             <div class="item-description">

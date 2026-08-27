@@ -1,0 +1,37 @@
+{
+  "name": "hlavezzo-me-a11y-checks",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Phase 4 (rebrand-p4) accessibility/contrast verification scripts. Not shipped -- Jekyll excludes node_modules/package.json/package-lock.json from _site (see _config.yml exclude:). Node scripts only; no Jekyll plugin (GitHub Pages safe mode).",
+  "type": "module",
+  "scripts": {
+    "test:contrast": "node scripts/palette-contrast.test.mjs",
+    "test:manifest": "node scripts/palette-manifest.test.mjs",
+    "test:token-usage": "node scripts/token-usage.test.mjs",
+    "test:motion": "node scripts/motion.test.mjs",
+    "test:rarity-label": "node scripts/rarity-label.test.mjs",
+    "test:clamp": "node scripts/clamp.test.mjs",
+    "test:text-spacing-height": "node scripts/text-spacing-height.test.mjs",
+    "test:accessibility-page": "node scripts/accessibility-page.test.mjs",
+    "test:dark-root-conflict": "node scripts/dark-root-conflict.test.mjs",
+    "test:dark-root-consolidation": "node scripts/dark-root-consolidation.test.mjs",
+    "test:dark-contrast": "node scripts/dark-cascade-contrast.test.mjs",
+    "test:dark-literal-noop": "node scripts/dark-literal-noop.test.mjs",
+    "test:dark-cascade": "npm run test:dark-contrast && npm run test:dark-literal-noop",
+    "test:dead-class-detect": "node scripts/dead-class-detect.test.mjs",
+    "test:4a": "npm run test:manifest && npm run test:token-usage && npm run test:contrast && npm run test:rarity-label && npm run test:motion && npm run test:dark-root-conflict && npm run test:dark-root-consolidation && npm run test:dead-class-detect",
+    "test:4b": "npm run test:clamp && npm run test:text-spacing-height && npm run test:accessibility-page",
+    "test:a11y-static": "npm run test:4a && npm run test:4b",
+    "test:axe": "node scripts/axe-audit.mjs",
+    "test:visual": "bundle exec jekyll build && node scripts/visual-baseline.mjs",
+    "test:visual:update": "bundle exec jekyll build && node scripts/visual-baseline.mjs --update"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
+    "http-server": "^14.1.1",
+    "js-yaml": "^4.1.0",
+    "pa11y-ci": "^4.1.1",
+    "playwright": "^1.61.1",
+    "wait-on": "^9.0.10"
+  }
+}

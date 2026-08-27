@@ -1,0 +1,559 @@
+// ==========================================================================
+// ALCHEMIST HOME PAGE STYLES
+// ==========================================================================
+
+@use "../settings/variables" as *;
+@use "../tools/breakpoints" as *;
+
+// Prevent scrolling on home page
+body.home {
+  overflow: hidden;
+  height: 100vh;
+  position: fixed;
+  width: 100%;
+}
+
+html.home {
+  overflow: hidden;
+  height: 100%;
+}
+
+.alchemist-hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #211C30, #312A45);
+  padding: 2rem;
+  position: relative;
+  overflow: visible;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(103, 58, 183, 0.15) 0%, transparent 20%),
+      radial-gradient(circle at 80% 70%, rgba(63, 81, 181, 0.15) 0%, transparent 20%);
+    z-index: 1;
+  }
+
+  @include max-width('lg') {
+    flex-direction: column;
+    padding: 2rem 1rem;
+    min-height: auto;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  @include max-width('sm') {
+    padding: 2rem 1rem;
+    min-height: calc(100vh - 4rem);
+  }
+}
+
+/* Hero Content */
+.hero__content {
+  flex: 1;
+  max-width: 600px;
+  margin-left: 2rem;
+  margin-right: 4rem;
+  position: relative;
+  z-index: 3;
+  color: $background-cream;
+
+  @include max-width('lg') {
+    margin: 2rem 0 0 0;
+    text-align: center;
+    max-width: 100%;
+  }
+
+  @include max-width('sm') {
+    margin: 1.5rem 0 0 0;
+  }
+}
+
+.hero__title {
+  font-size: 3.5rem;
+  margin-bottom: 0.5rem;
+  color: $background-cream;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+
+  @include max-width('sm') {
+    font-size: 2.5rem;
+  }
+}
+
+.hero__subtitle {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: var(--ff-gold);
+  font-family: 'Nothing You Could Do', cursive;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+
+  @include max-width('sm') {
+    font-size: 1.5rem;
+  }
+}
+
+.hero__description {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+  color: $pastel-blue;
+}
+
+.hero-trademark {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: rgba($pastel-purple, 0.8);
+  font-family: 'Nothing You Could Do', cursive;
+  text-shadow: 0 0 10px rgba($pastel-purple, 0.3);
+  z-index: 10;
+
+  &__copyright {
+    font-size: 1.1rem;
+  }
+
+  &__year {
+    font-weight: 300;
+  }
+
+  &__name {
+    font-weight: 500;
+  }
+
+  @include max-width('sm') {
+    bottom: 1.5rem;
+    right: 1.5rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* Alchemy Circle */
+.alchemy-circle {
+  position: relative;
+  width: 480px;
+  height: 480px;
+  margin: 0 auto;
+  z-index: 2;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @include max-width('lg') {
+    width: 300px;
+    height: 300px;
+    margin: 0 0 2rem 0;
+  }
+
+  @include max-width('sm') {
+    width: 250px;
+    height: 250px;
+    margin: 4rem 0 1.5rem 0;
+  }
+
+  @include max-width('xs') {
+    width: 220px;
+    height: 220px;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at var(--glow-x, 50%),
+      var(--glow-y, 50%),
+      rgba(205, 180, 219, 0.5) 0%,
+      transparent 70%
+    );
+    opacity: var(--glow-strength, 0);
+    transition: opacity 0.3s ease;
+    z-index: -1;
+  }
+
+  &.interacting {
+    cursor: grabbing;
+  }
+}
+
+.alchemy-circle__inner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, $pastel-purple, #6A5687);
+  box-shadow: 0 0 25px rgba(205, 180, 219, 0.7);
+  z-index: 2;
+
+  @include max-width('sm') {
+    width: 70px;
+    height: 70px;
+  }
+
+  @include max-width('xs') {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+.alchemy-circle__ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  border: 1.5px solid var(--ring-color, rgba(205, 180, 219, 0.3));
+  transform: translate(-50%, -50%) rotate(var(--settle-angle, 0deg));
+
+  // AC-031 / Story 4.5: was `rotate 40s|60s|80s linear infinite` -- ALL THREE
+  // conditions of WCAG 2.2.2 held (auto-starts on load, presented in
+  // parallel with the hero name/subtitle/tagline/social row, and a single
+  // rotation already took 40-80s, let alone forever). research-ui-a11y.md
+  // §3.2's cheapest reconciliation: make the loop finite and it "does not
+  // apply at all, and you owe no pause button" -- a circle that inscribes,
+  // flares, and settles is also better theater than an idle spin. Each ring
+  // settles at a fixed --settle-angle (held via `forwards`) instead of
+  // spinning forever; re-triggers naturally on every full page load, since
+  // this is a static multi-page site with no client-side routing to
+  // re-trigger against.
+  &--1 {
+    width: 180px;
+
+    height: 180px;
+    animation: circle-settle 2.2s cubic-bezier(0.22, 1, 0.36, 1) 1 forwards;
+    --ring-color: rgba(205, 180, 219, 0.4);
+    --settle-angle: 35deg;
+  }
+
+  &--2 {
+    width: 300px;
+    height: 300px;
+    animation: circle-settle 3.1s cubic-bezier(0.22, 1, 0.36, 1) 0.3s 1 forwards;
+    --ring-color: rgba(185, 201, 230, 0.4);
+    --settle-angle: -50deg;
+  }
+
+  &--3 {
+    width: 420px;
+    height: 420px;
+    animation: circle-settle 3.8s cubic-bezier(0.22, 1, 0.36, 1) 0.6s 1 forwards;
+    --ring-color: rgba(248, 209, 224, 0.4);
+    --settle-angle: 70deg;
+  }
+
+  @include max-width('lg') {
+    &--1 {
+      width: 120px;
+      height: 120px;
+    }
+
+    &--2 {
+      width: 200px;
+      height: 200px;
+    }
+
+    &--3 {
+      width: 280px;
+      height: 280px;
+    }
+  }
+
+  @include max-width('sm') {
+    &--1 {
+      width: 100px;
+      height: 100px;
+    }
+
+    &--2 {
+      width: 170px;
+      height: 170px;
+    }
+
+    &--3 {
+      width: 230px;
+      height: 230px;
+    }
+  }
+
+  @include max-width('xs') {
+    &--1 {
+      width: 90px;
+      height: 90px;
+    }
+
+    &--2 {
+      width: 150px;
+      height: 150px;
+    }
+
+    &--3 {
+      width: 210px;
+      height: 210px;
+    }
+  }
+}
+
+// AC-031 / Story 4.5: "inscribes, flares, and settles" -- opacity fades in,
+// a brief scale overshoot around 65% reads as the "flare," and the ring
+// comes to rest at its own --settle-angle (held via `forwards`). Every ring
+// finishes well inside 5s (see the per-ring delay+duration above); 2.2.2
+// "does not apply at all" once the loop is finite, per research-ui-a11y.md.
+@keyframes circle-settle {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(calc(var(--settle-angle, 0deg) - 90deg)) scale(0.7);
+  }
+  65% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(calc(var(--settle-angle, 0deg) * 0.85)) scale(1.06);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(var(--settle-angle, 0deg)) scale(1);
+  }
+}
+
+/* Alchemy Symbols & Runes */
+.alchemy-symbol, .rune {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  color: var(--symbol-color, $pastel-purple);
+  filter: drop-shadow(0 0 8px var(--symbol-color, rgba(205, 180, 219, 0.5)));
+  transition: all 0.3s ease;
+  z-index: 3;
+  transform: translateY(0);
+  // AC-031: was `float 3s ease-in-out infinite` (undefined locally -- see
+  // _sass/_base.scss's drift-settle note for the cross-partial `float`
+  // keyframe collision this rode on). assets/js/home.js overrides this
+  // inline on load with a finite (2-iteration) version of `float-glyphs`;
+  // this is the no-JS / pre-hydration fallback, now finite too.
+  animation: float-glyphs 1.8s ease-in-out 2;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  &.activated {
+    filter: brightness(2) drop-shadow(0 0 20px var(--symbol-color));
+    animation: pulse-activate 1s ease-out;
+  }
+
+  @include max-width('sm') {
+    width: 35px;
+    height: 35px;
+  }
+
+  @include max-width('xs') {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+.alchemy-symbol.hovered, .rune.hovered {
+  filter: brightness(1.5) drop-shadow(0 0 12px var(--symbol-color));
+  transform: translateY(-10px) scale(1.3);
+  z-index: 5;
+  animation: none;
+
+  &::after {
+    content: attr(title);
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(33, 28, 48, 0.85);
+    color: var(--symbol-color);
+    padding: 0.35rem 0.75rem;
+    border-radius: $radius-4;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    opacity: 1;
+    visibility: visible;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    animation: nameAppear 0.3s ease-out;
+    border: 1px solid rgba(205, 180, 219, 0.2);
+    text-shadow: 0 0 8px var(--symbol-color);
+  }
+}
+
+@keyframes float-glyphs {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-8px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+  75% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes pulse-activate {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes nameAppear {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Position symbols with fixed classes instead of direct positioning */
+.alchemy-symbol--fire {
+  top: 15%;
+  left: 25%;
+}
+
+.alchemy-symbol--water {
+  bottom: 20%;
+  left: 20%;
+}
+
+.alchemy-symbol--air {
+  top: 20%;
+  right: 20%;
+}
+
+.alchemy-symbol--earth {
+  bottom: 25%;
+  right: 25%;
+}
+
+.alchemy-symbol--quintessence {
+  top: 50%;
+  left: 15%;
+}
+
+/* Position runes */
+.rune--ansuz {
+  top: 15%;
+  right: 15%;
+}
+
+.rune--kenaz {
+  bottom: 15%;
+  right: 15%;
+}
+
+.rune--raidho {
+  left: 50%;
+  bottom: 15%;
+}
+
+.rune--laguz {
+  top: 50%;
+  right: 15%;
+}
+
+/* Ripple effect on click */
+.alchemy-ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  background: radial-gradient(circle,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 70%);
+  width: 200px;
+  height: 200px;
+  margin-left: -100px;
+  margin-top: -100px;
+  opacity: 0;
+  animation: ripple 1s ease-out forwards;
+  pointer-events: none;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .alchemy-circle__ring {
+    animation: none;
+  }
+
+  .alchemy-circle {
+    transition: none;
+  }
+
+  .alchemy-symbol, .rune {
+    transition: none;
+    animation: none;
+  }
+}
+
+html, body {
+  overflow-x: hidden;
+}
+
+/* Particle effects */
+.alchemy-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: particle-fade 1s ease-out forwards;
+  box-shadow: 0 0 10px white;
+}
+
+@keyframes particle-fade {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--tx, 0), var(--ty, 0)) scale(0);
+    opacity: 0;
+  }
+}

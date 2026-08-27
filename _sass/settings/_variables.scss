@@ -1,0 +1,246 @@
+// ==========================================================================
+// VARIABLES & CONFIGURATION
+// ==========================================================================
+
+@use "sass:color";
+
+// Color Palette
+$pastel-pink: #F8D1E0;      // Soft pastel pink
+$pastel-lavender: #E5D4F1;  // Light pastel lavender
+$pastel-purple: #CDB4DB;    // Muted pastel purple
+$pastel-blue: #B9C9E6;      // Soft pastel blue
+$pastel-mint: #C8E7D5;      // Complementary pastel mint
+
+// Background and text colors
+$background-cream: #F8F5F2;  // Warm off-white/cream background
+$background-light: #F0ECE9;  // Slightly darker background for sections
+$text-dark: #4A4A4A;         // Soft black for text
+// Story 4.1 / AC-026 / D17: $text-medium (#6D6D6D, unchanged) reached 4.76:1 on
+// cream but 4.41 on light and 3.91 on parchment-dark -- both < 4.5. Darkened 7%
+// (measured: 6.25 / 5.78 / 5.13 across cream / light / parchment-dark -- see
+// scripts/palette-contrast.test.mjs, which is the source of record for every
+// ratio in this file).
+$text-medium: #5b5b5b;       // Medium gray for secondary text (AC-026 ink fix)
+// Story 4.1 / AC-026 / D17: $text-light (#8A8A8A) was 3.18-3.22 on every
+// declared background -- never legal body text. Darkened 18% (measured:
+// 6.16 / 5.69 / 5.05).
+$text-light: #5c5c5c;        // Light gray for tertiary text (AC-026 ink fix)
+
+// Story 4.1 / AC-026 / AC-047: pastel-purple used directly as text color (links,
+// `<strong>`, section titles, tags, buttons) via ad hoc `darken($pastel-purple, N%)`
+// call sites that individually missed 4.5:1 (15% => 2.93:1, 25% => 4.29:1). Two
+// named ink tokens replace every ad hoc call site so the relationship to the base
+// pastel stays visible and the ratio is asserted once, not re-derived at each
+// call site. Measured: -ink 6.32 / 5.84 / 5.18, -ink-hover 7.47 / 6.91 / 6.12
+// (cream / light / parchment-dark). The base $pastel-purple hex is untouched --
+// every surface/fill usage keeps its exact color (Story 4.1's "every pastel
+// keeps its exact hex").
+$pastel-purple-ink: color.adjust($pastel-purple, $lightness: -36%);
+$pastel-purple-ink-hover: color.adjust($pastel-purple, $lightness: -41%);
+
+// Aliases for backward compatibility
+$soft-pink: $pastel-pink;
+$soft-purple: $pastel-purple;
+$soft-blue: $pastel-blue;
+$background-white: $background-cream;
+
+// Layout variables
+$sidebar-width: 60px;
+$content-max-width: 1200px;
+$tablet-breakpoint: 768px;
+$mobile-breakpoint: 480px;
+
+// Border radius scale
+$radius-3: 3px;
+$radius-4: 4px;
+$radius-5: 5px;
+$radius-6: 6px;
+$radius-8: 8px;
+$radius-10: 10px;
+$radius-12: 12px;
+$radius-20: 20px;
+$radius-24: 24px;
+$radius-30: 30px;
+$radius-40: 40px;
+
+// CSS Custom Properties (CSS Variables)
+:root {
+  // Final Fantasy inspired colors -- ORNAMENT tokens (surfaces, gradients,
+  // glows, backgrounds). Every hex here is UNCHANGED by Story 4.1 (AC-026 /
+  // AC-047 / AC-048): "every pastel/themed hue keeps its exact hex." Where a
+  // hue also renders body text or a meaning-bearing boundary, a sibling
+  // `-ink`/`-dark` CONTENT token carries that duty instead (below) -- see
+  // _data/palette-manifest.yml for the full role/obligation assignment and
+  // scripts/palette-contrast.test.mjs for the measured ratios.
+  --ff-blue: #4499cb;
+  // AC-026: pre-existing token, doubles as --ff-blue's ink partner (Story
+  // 4.1). #306d9a passed cream/light (5.12/4.73) but MISSED parchment-dark
+  // (4.19) -- caught by the palette-contrast test's cross-check against
+  // every declared background, not just the one its pre-existing 9 usages
+  // happen to sit on. Darkened 2% further -- 5.57 / 5.15 / 4.57 -- a change
+  // small enough to be visually indistinguishable in its ornament (gradient)
+  // usages.
+  --ff-blue-dark: #{color.adjust(#306d9a, $lightness: -2%)};
+  --ff-gold: #e6a553;
+  --ff-purple: #9966cc;
+  --ff-purple-light: #b19cd9;
+  --ff-red: #e74c3c;
+  --ff-green: #2ecc71;
+
+  // -ink siblings (CONTENT, obligation ink) -- AC-026/047/048. Each is the
+  // minimal darken() of its ornament sibling that clears 4.5:1 against every
+  // declared background (cream / light / parchment-dark), computed and
+  // verified in scripts/palette-contrast.test.mjs (its output matches Dart
+  // Sass's own darken() byte-for-byte -- checked directly against `bundle
+  // exec sass`, not just self-consistently).
+  --ff-gold-ink: #{color.adjust(#e6a553, $lightness: -32%)};         // 6.14 / 5.67 / 5.03
+  --ff-purple-ink: #{color.adjust(#9966cc, $lightness: -13%)};        // 6.23 / 5.76 / 5.11
+  --ff-purple-light-ink: #{color.adjust(#b19cd9, $lightness: -25%)};  // 6.29 / 5.82 / 5.16
+  --ff-green-ink: #{color.adjust(#2ecc71, $lightness: -24%)};         // 6.28 / 5.81 / 5.15
+  --ff-red-ink: #{color.adjust(#e74c3c, $lightness: -18%)};           // 6.17 / 5.71 / 5.06
+
+  // D&D inspired colors
+  --dnd-parchment: #f9f3e6;
+  // AC-026 / D17: --dnd-brown missed AA by 0.04 (4.46:1 on cream; 1.4.11/1.4.3
+  // forbid rounding a near-miss into a pass). Darkened 8% -- 6.40 / 5.92 / 5.25.
+  // Used only as `color:` sitewide (34 usages, zero ornament/background use),
+  // so this is a safe in-place darken rather than a token split.
+  --dnd-brown: #{color.adjust(#8a6d3b, $lightness: -8%)};
+  --dnd-ink: #4e342e;
+
+  // Text colors
+  --text-primary: #333;
+  // AC-026 / D17: --text-secondary (#666) was 5.29 / 4.89 / 4.33 -- fails
+  // parchment-dark. Darkened 4% (light-theme value only; the .dark-mode
+  // override two lines down is untouched, it already targets dark surfaces).
+  --text-secondary: #{color.adjust(#666666, $lightness: -4%)};
+  // AC-026 / D17: --text-light (#898989) was 3.22 / 2.98 / 2.64 -- never legal
+  // body text. Darkened 18% -- 6.25 / 5.78 / 5.13.
+  --text-light: #{color.adjust(#898989, $lightness: -18%)};
+
+  // Visual effects
+  --border-light: rgba(153, 102, 204, 0.2);
+  --shadow-light: 0 5px 15px rgba(153, 102, 204, 0.1);
+  --shadow-medium: 0 8px 25px rgba(153, 102, 204, 0.15);
+
+  // Stat-bar hairline (AC-027 / Story 4.2): the fill/track BOUNDARY carries
+  // the 1.4.11 non-text-contrast obligation, not the pastel fill itself (XAG
+  // 102's For Honor/Outer Worlds outline technique). Both bind to --dnd-ink
+  // (9.16:1 against the attribute-bar's blended track, 10.24:1 against
+  // --dnd-parchment -- see scripts/palette-contrast.test.mjs). Every pastel
+  // fill (--ff-blue, --ff-purple, ...) stays exactly as designed.
+  --stat-track-hairline: var(--dnd-ink);
+  --stat-fill-edge: var(--dnd-ink);
+
+  // Rarity colors
+  --rarity-common: #7c818c;
+  --rarity-uncommon: #1eff00;
+  --rarity-rare: #0070dd;
+  --rarity-epic: #a335ee;
+  --rarity-legendary: #ff8000;
+
+  // Notebook colors
+  --parchment-light: #f8f5e6;
+  --parchment-dark: #e8e0c0;
+  --ink-color: #3a2921;
+  --scroll-shadow: 0 5px 20px rgba(58, 41, 33, 0.1);
+
+  // Letter specific colors
+  --letter-gradient-start: #635b9c;
+  --letter-gradient-end: #a55b95;
+  --letter-paper: var(--parchment-light);
+  --letter-ink: var(--dnd-ink);
+  --wax-seal: #993333;
+  --letter-shadow: 0 8px 25px rgba(58, 41, 33, 0.15);
+
+  // Base canvas tokens (Story 3.5, AC-025 / D19). `html, body` reads these in
+  // _base.scss instead of the raw $background-cream / $text-dark Sass variables, so
+  // the OUTERMOST layer of every page -- present via _layouts/default.html on every
+  // route -- can respond to `prefers-color-scheme` below with zero JavaScript. Most
+  // page-section wrappers (.rpg-scrolls, .rpg-inventory, .rpg-correspondence,
+  // .character-sheet) already read var(--dnd-parchment), which _notebook.scss's dark
+  // media query already flips sitewide; this was the one universal layer still
+  // hardcoded.
+  --bg-primary: #{$background-cream};
+  --text-body: #{$text-dark};
+}
+
+// Story 3.5 / D19: "Dark-mode toggle is a dead affordance with JS disabled; only on
+// post pages." The JS + localStorage toggle (_layouts/post.html) stays as the
+// enhancement layer, but the baseline now comes from the OS preference alone, on every
+// page, with JavaScript off. Values match the dark tones _post.scss's `body.dark-mode`
+// and _laboratory.scss / _letter.scss / _notebook.scss's existing dark-mode blocks
+// already use, so this doesn't introduce a second, competing dark palette.
+//
+// normalize-p1 / AC-101,102,103 (Phase 1 dark-cascade consolidation): this is now the
+// ONE authoritative dark `:root` custom-property block for the whole site. Before P1,
+// FOUR separate `:root` blocks under `@media (prefers-color-scheme: dark)` (here,
+// _notebook.scss, _laboratory.scss, _letter.scss) wrote the same document-scoped
+// custom properties with CONFLICTING values; because `:root` is resolved per-property
+// last-import-wins across the single compiled `main.css`, the earlier-imported values
+// were silently dead (`_notebook.scss`'s `--dnd-parchment:#2c2c2c`/`--dnd-ink:#d0d0d0`,
+// `_laboratory.scss`'s `--dnd-parchment:#2c2c2c`) -- `_letter.scss` (imported last)
+// always won. This block keeps exactly those LAST-IMPORT-WINNING values (verified
+// against the compiled cascade, not a per-partial reading -- see
+// `.spectra/changes/normalize-p1/spec.md`), so consolidating is a no-op for every
+// token that was already resolving through the old cascade (AC-110 guards this).
+// D-C: emitted through BOTH `@media (prefers-color-scheme: dark)` (OS preference) AND
+// `:root[data-theme="dark"]` (the future toggle mechanism, not yet wired to any
+// attribute-setting code -- P3 owns that policy) so the two mechanisms share one
+// source of truth instead of drifting into a second dark palette. The three
+// now-dead declarations this block replaces (`_notebook.scss:805` `--dnd-parchment:
+// #2c2c2c`, `_notebook.scss:808` `--dnd-ink:#d0d0d0`, `_laboratory.scss:693`
+// `--dnd-parchment:#2c2c2c`) have been deleted from their source partials, which keep
+// only their non-`:root` per-selector dark rules (AC-102).
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-primary: #232323;
+    --text-body: #e0e0e0;
+    --text-primary: #e0e0e0;
+    --text-secondary: #b0b0b0;
+    --text-light: #909090;
+    --dnd-parchment: #232323;
+    --dnd-brown: #e0e0e0;
+    --dnd-ink: #e0e0e0;
+    --parchment-light: #323232;
+    --parchment-dark: #252525;
+    --letter-paper: #2c2c2c;
+    --border-light: rgba(153, 102, 204, 0.3);
+    --scroll-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    --letter-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg-primary: #232323;
+  --text-body: #e0e0e0;
+  --text-primary: #e0e0e0;
+  --text-secondary: #b0b0b0;
+  --text-light: #909090;
+  --dnd-parchment: #232323;
+  --dnd-brown: #e0e0e0;
+  --dnd-ink: #e0e0e0;
+  --parchment-light: #323232;
+  --parchment-dark: #252525;
+  --letter-paper: #2c2c2c;
+  --border-light: rgba(153, 102, 204, 0.3);
+  --scroll-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  --letter-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+// Story 4.5 / AC-031: the --motionOK gate (Adam Argyle / Open Props pattern --
+// research-ui-a11y.md §3.3, §6). Dart Sass (this project's compiler) has no
+// native `@custom-media`, so the gate is a mixin instead: one named,
+// grep-able chokepoint every reduced-motion-sensitive rule goes through,
+// rather than a per-site `prefers-reduced-motion` media query re-typed at
+// each call site (that was Phase 2/AC-024's shape; this makes it structural).
+// IMPORTANT: this does NOT by itself discharge WCAG 2.2.2 (AC-024's trap,
+// restated for 4a) -- content gated ONLY behind motion-ok must still be
+// finite (<=5s, non-infinite iteration-count) wherever it starts
+// automatically and runs in parallel with other content, because 2.2.2
+// applies in the "no preference expressed" state this mixin represents.
+@mixin motion-ok {
+  @media (prefers-reduced-motion: no-preference) {
+    @content;
+  }
+}

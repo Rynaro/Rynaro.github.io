@@ -1,16 +1,22 @@
 ---
 layout: default
 title: Notebook
+permalink: /notebook/
 ---
+<!-- Explicit permalink (Story 2.2): without it, `_site/notebook.html` (this file) and
+     `_site/notebook/{tech,hobby,llm}/` (the new category pages) coexist as ambiguous
+     siblings -- some static-file servers 301 `/notebook` -> `/notebook/` and then can't
+     find an index there. Forcing this page to `notebook/index.html` matches the same
+     directory shape the category pages already use and removes the ambiguity outright. -->
 
 <section class="rpg-hero notebook-hero">
   <div class="container">
-    <div class="hero-content">
-      <h1 class="hero-title fade-in">Notebook</h1>
-      <h2 class="hero-subtitle fade-in">Arcane Chronicles</h2>
-      <p class="hero-description">Scrolls of knowledge, technical spells, and adventures in code</p>
+    <div class="hero__content">
+      <h1 class="hero__title fade-in">Notebook</h1>
+      <h2 class="hero__subtitle fade-in">Arcane Chronicles</h2>
+      <p class="hero__description">Scrolls of knowledge, technical spells, and adventures in code</p>
     </div>
-    <div class="hero-grimoire">
+    <div class="hero__grimoire">
       <div class="grimoire-frame">
         <i class="fas fa-book-open grimoire-icon"></i>
         <div class="page-corner"></div>
@@ -27,33 +33,10 @@ title: Notebook
 
 <section class="rpg-scrolls">
   <div class="container">
-    <h2 class="section-title">
-      <i class="fas fa-feather-alt section-icon"></i>
-      Collected Scrolls
-    </h2>
+    {% include components/section-title.html icon="fas fa-feather-alt" title="Collected Scrolls" %}
 
     <div class="scroll-navigation">
-      <div class="scroll-categories">
-        <div class="categories-title">Archives:</div>
-        <div class="category-tabs">
-          <button class="category-tab active" data-category="all" role="tab" aria-selected="true">
-            <i class="fas fa-scroll"></i>
-            <span>All</span>
-          </button>
-          <button class="category-tab" data-category="tech" role="tab" aria-selected="false">
-            <i class="fas fa-code"></i>
-            <span>Tech</span>
-          </button>
-          <button class="category-tab" data-category="hobby" role="tab" aria-selected="false">
-            <i class="fas fa-gamepad"></i>
-            <span>Hobby</span>
-          </button>
-          <button class="category-tab" data-category="storybook" role="tab" aria-selected="false">
-            <i class="fas fa-book"></i>
-            <span>Story</span>
-          </button>
-        </div>
-      </div>
+      {% include notebook/category-tabs.html active="all" %}
 
       <div class="scroll-search">
         <input type="text" id="scroll-search" placeholder="Search scrolls..." aria-label="Search scrolls">
@@ -100,38 +83,7 @@ title: Notebook
 
       <!-- Regular scrolls -->
       {% for post in site.posts offset:1 %}
-        <div class="scroll-item" data-category="{{ post.categories | first }}">
-          <div class="scroll-card">
-            <div class="scroll-rarity
-              {% assign mod = forloop.index | modulo: 5 %}
-              {% if mod == 1 %}rare{% elsif mod == 3 %}epic{% else %}common{% endif %}
-            "></div>
-
-            <div class="scroll-header">
-              <div class="scroll-metadata">
-                <span class="scroll-date">{{ post.date | date: "%b %-d, %Y" }}</span>
-                <span class="scroll-category">{{ post.categories | first | capitalize }}</span>
-              </div>
-              <h3 class="scroll-title">{{ post.title }}</h3>
-            </div>
-
-            <div class="scroll-content">
-              <p class="scroll-excerpt">{{ post.resume | default: post.excerpt | strip_html | truncate: 120 }}</p>
-            </div>
-
-            <div class="scroll-footer">
-              <div class="scroll-tags">
-                {% for tag in post.tags limit:3 %}
-                  <span class="scroll-tag">#{{ tag }}</span>
-                {% endfor %}
-              </div>
-              <a href="{{ post.url }}" class="scroll-link">
-                <span>Read scroll</span>
-                <i class="fas fa-scroll"></i>
-              </a>
-            </div>
-          </div>
-        </div>
+        {% include notebook/scroll-item.html post=post index=forloop.index %}
       {% endfor %}
     </div>
 

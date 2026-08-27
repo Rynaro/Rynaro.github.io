@@ -1,0 +1,113 @@
+artifact: spec
+change_id: normalize-p1
+tier: full
+version: 0.2.0
+maker: vivi
+checker: kupo
+umbrella: normalize
+phase: 1
+title: Dark-cascade consolidation + contrast defect repair
+complexity:
+  score: 10
+  verdict: human_loop
+depends_on:
+- P0 (LANDED at R1 - test:visual + 84 baselines)
+criteria_source: .spectra/changes/normalize/normalize.criteria.md
+acceptance_checks:
+- id: AC-101
+  given: "the four dark :root blocks (_sass/_variables.scss:160, _sass/_notebook.scss:800, _sass/_laboratory.scss:688, _sass/_letter.scss:820) compile into one assets/css/main.css and today declare conflicting values for the same document-scoped token (--dnd-parchment is #2c2c2c at _notebook.scss:805/_laboratory.scss:693 but #232323 at _letter.scss:825; --dnd-ink is #d0d0d0 at _notebook.scss:808 but #e0e0e0 at _letter.scss:828), so the earlier-imported declarations are silently dead under last-import-wins"
+  when: "the compiled stylesheet's dark :root custom-property declarations are grouped by token name"
+  then: "no custom-property name SHALL resolve to more than one distinct value across the compiled dark :root scopes"
+  verify_method: "specified script scripts/dark-root-conflict.test.mjs reads the built _site/assets/css/main.css, collects every :root custom-property declaration inside a @media (prefers-color-scheme: dark) or [data-theme=\"dark\"] context, groups by name, and asserts each name has exactly one distinct value; exit 0"
+- id: AC-102
+  given: "the dark token flip is spread across four :root blocks carrying three provably-dead declarations - _sass/_notebook.scss:805 (--dnd-parchment:#2c2c2c), _sass/_notebook.scss:808 (--dnd-ink:#d0d0d0), _sass/_laboratory.scss:693 (--dnd-parchment:#2c2c2c) - each overridden sitewide by _sass/_letter.scss"
+  when: "the dark palette is consolidated"
+  then: "the dark token overrides SHALL be authored from exactly one canonical source"
+  verify_method: "specified script scripts/dark-root-consolidation.test.mjs asserts _sass/ contains exactly one authoring site for dark :root custom-property overrides, that the three enumerated dead declarations no longer appear, and that the built _site/assets/css/main.css shows each dark token once per selector context; exit 0"
+- id: AC-103
+  given: "D-C requires one dark token set reachable via BOTH @media (prefers-color-scheme: dark) (OS preference) and :root[data-theme=\"dark\"] (the future toggle), while the compiled CSS today contains zero data-theme selectors"
+  when: "the consolidated dark token set is compiled"
+  then: "the identical set of dark custom-property values SHALL be emitted under both a prefers-color-scheme: dark :root context and a :root[data-theme=\"dark\"] context"
+  verify_method: "scripts/dark-root-conflict.test.mjs asserts the {name,value} set emitted under @media (prefers-color-scheme: dark) :root equals the set under :root[data-theme=\"dark\"] in the built _site/assets/css/main.css; exit 0"
+- id: AC-104
+  given: "D-C reserves dark-toggle POLICY for P3 and forbids deleting the working body.dark-mode post toggle (_layouts/post.html #toggle-dark-mode button + handler, styles at _sass/_post.scss:1151) during P1"
+  when: "P1 converges the dark mechanism"
+  then: "the body.dark-mode post toggle SHALL remain functional"
+  verify_method: "grep confirms the #toggle-dark-mode control and its _layouts/post.html handler are unremoved, and the npm run test:visual post-target dark-class baseline still renders the dark palette (its screenshot differs from the post light baseline); exit 0"
+- id: AC-105
+  given: "P1 changes dark-mode surfaces and text bindings, and the only cascade-accurate measure of a rendered pair is the built output"
+  when: "the built _site is audited for text contrast in both the light (default) and dark (prefers-color-scheme: dark) cascades"
+  then: "every text-bearing element SHALL satisfy WCAG 1.4.3 minimum contrast against its cascade-resolved background"
+  verify_method: "npm run test:axe, extended to run axe-core's color-contrast rule against each built page under both a default and a colorScheme:'dark' browser context, reports zero color-contrast violations; exit 0"
+- id: AC-106
+  given: "two live AA text failures measured with scripts/lib/color-math.mjs against the compiled cascade - (a) /about dark, where the globally-flipped --dnd-brown (#e0e0e0) renders on _sass/_about.scss's never-flipped white surfaces at .attribute-name (:599), .category-title (:714), .quest-title (:882) and .ability-name (:1057), #e0e0e0 on #ffffff = 1.32; and (b) .scroll-seal (_sass/_notebook.scss:675) and .scroll-seal i (:693), whose var(--dnd-brown) text on the never-flipped var(--ff-gold) #e6a553 ground measures 3.27 in the default theme and 1.61 in dark"
+  when: "P1 repairs these surfaces and text pairings"
+  then: "each enumerated selector SHALL reach a computed contrast ratio of at least 4.5 against its cascade-resolved background in every theme it renders in"
+  verify_method: "specified script runs getComputedStyle (Playwright) on built _site/about.html (dark) and _site/notebook.html (light + dark), computes each enumerated selector's foreground-vs-resolved-background ratio with scripts/lib/color-math.mjs, and asserts every value >= 4.5; exit 0"
+- id: AC-107
+  given: ".item-rarity-label (_sass/_laboratory.scss:613) already clears AA in dark - its var(--dnd-brown) text resolves through the consolidated flip to #e0e0e0 on its var(--dnd-parchment) #232323 ground = 11.91 (NOT the 2.01/2.26 a per-partial reading falsely reports), so it is not a defect and must not be repaired"
+  when: "P1 consolidates the dark tokens and deletes dead per-selector literals"
+  then: ".item-rarity-label's dark-mode computed contrast SHALL remain at least 4.5"
+  verify_method: "specified script asserts getComputedStyle on built _site/laboratory.html (dark) gives .item-rarity-label a ratio >= 4.5 with a computed color equal to the consolidated flipped token value (no per-selector dark literal introduced); exit 0"
+- id: AC-108
+  given: "_data/palette-manifest.yml:32 declared_backgrounds covers only cream/light/parchment-dark plus two hero-gradients, so the contrast suite cannot see the gold ground --ff-gold #e6a553 (where .scroll-seal text sits, failing today) nor the dark canvas #232323"
+  when: "the manifest's declared backgrounds are extended"
+  then: "declared_backgrounds SHALL be extended to include the gold/dark ground set (#e6a553, #232323)"
+  verify_method: "npm run test:manifest exits 0; npm run test:contrast measures the .scroll-seal text-token/#e6a553 pair through a targeted theme-correct pairing (the hero-gradient pattern at palette-contrast.test.mjs:69-94, never a blanket cross-product that would false-positive light -ink tokens on #232323) and prints each new gold/dark pair with its numeric ratio; exit 0"
+- id: AC-109
+  given: "the consolidated dark flip now resolves selectors that previously carried a hand-written per-selector dark literal (e.g. the thirteen color: #e0e0e0 overrides across the dark blocks of _notebook.scss/_laboratory.scss/_letter.scss), some now redundant and some still load-bearing"
+  when: "a per-selector dark literal is deleted"
+  then: "the compiled computed style of that selector in dark mode SHALL be unchanged by the deletion"
+  verify_method: "specified script diffs getComputedStyle of each affected selector on built _site (dark) before and after each literal removal and asserts zero change; a literal whose removal alters the computed value is retained, not deleted; exit 0"
+- id: AC-110
+  given: "the authoritative visual baselines are being regenerated post-font-self-hosting, and P1 intentionally moves pixels ONLY at the repaired selectors - /about dark surfaces/text and .scroll-seal in both themes"
+  when: "npm run test:visual compares the built _site against the authoritative baselines"
+  then: "every target whose diff exceeds tolerance SHALL correspond to an enumerated expected-diff page (the about dark viewports or the notebook light and dark viewports)"
+  verify_method: "npm run test:visual (compare mode) diff report is cross-checked against the enumeration; a diff at any non-enumerated target, or any change to a margin/padding/border-radius computed value (git diff), fails the phase; exit 0"
+- id: AC-111
+  given: "npm run test:a11y-static is the project's trust anchor and passes at spec time"
+  when: "the a11y suite runs at the end of P1"
+  then: "npm run test:a11y-static SHALL exit 0"
+  verify_method: "npm run test:a11y-static; exit 0"
+- id: AC-112
+  given: "P1 is its own ESL change, independently revertable (AC-002)"
+  when: "P1's merge commit is reverted"
+  then: "the reverted tree SHALL still build and pass the a11y suite"
+  verify_method: "git revert of P1's merge commit leaves bundle exec jekyll build exit 0 and npm run test:a11y-static exit 0"
+gates_must_stay_green:
+- npm run test:a11y-static
+visual_gate:
+  command: npm run test:visual (compare mode)
+  baseline: authoritative baselines regenerated post-font-self-hosting
+  mode: intentionality-review (NOT zero-diff, NOT test:visual:update rubber-stamp)
+  expected_diff_pages:
+  - about (dark viewports)
+  - notebook (light and dark viewports)
+  fail_conditions:
+  - a diff at any non-enumerated target
+  - any change to a margin/padding/border-radius computed value
+criteria_sha256: 12ef6d3c252ae1a4d6b5a1299e2b093e5857539faba1f755660588f8cefdedbb
+gate_status:
+  ramza_lint: pass (full tier)
+  ramza_ears_lint: pass (38 criteria across the umbrella file)
+  esl_verify: 'tonberry 0.5.2 verify (project_root=/workspace): OK exit 0. C1 change_json_valid_json, C2a status_enum_legal, C2b tier_enum_legal, C3 tier_artifacts_present (MUST) all OK; C7 ears_acceptance_complete (SHOULD) OK for all 12 criteria AC-101..AC-112 - ZERO C7 failures. No MUST violation.'
+  critic: PENDING - author=ramza cannot self-approve (ramza-gate critic DENY); tier=full requires an independent critic before phase A. Plan STOPS at Test.
+  confidence:
+    score: 83
+    verdict: VALIDATE
+    note: 'ramza-score --rubric confidence (pattern_match 75, requirement_clarity 80, decomposition_stability 85, constraint_compliance 92). AUTHOR-SCORED, pre-critic; an independent critic may move it down.'
+  phase: T (Test) - re-entered from R2; A is gate-denied until an independent critic is recorded
+r2_note:
+  rejected_r1_score: 45/100 (independent critic)
+  r1_error: per-partial reasoning about document-scoped :root; last-imported _letter.scss dark block flips --dnd-brown #e0e0e0 sitewide, falsifying R1's central .item-rarity-label claim
+  retracted: [R1 AC-101 (proven no-op), R1 AC-110 (inverted/self-contradictory)]
+  real_defects:
+  - /about dark: #e0e0e0 text on never-flipped white surface = 1.32 (primary defect)
+  - .scroll-seal on --ff-gold #e6a553: 3.27 light (ships today) + 1.61 dark
+  - four conflicting prefers-dark :root blocks; _notebook.scss:805/:808 and _laboratory.scss:693 are DEAD
+  criteria_count_p1: 12 (was 11)
+criteria_amendment:
+  from: 826b187d4d4d9edfac7a64e35dc22d3f8e3fdd73f936f9f8065c8c3571733a38
+  to: 12ef6d3c252ae1a4d6b5a1299e2b093e5857539faba1f755660588f8cefdedbb
+  reason: R2 re-derivation on the compiled cascade after independent critic rejected R1 (45/100)
+  recorded_via: ramza-freeze --amend

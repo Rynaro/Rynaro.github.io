@@ -1,0 +1,199 @@
+{
+  "schema": "ramza/plan-state.v1",
+  "plan": "rebrand",
+  "created_at": "2026-07-16T16:58:40Z",
+  "tier": "full",
+  "phase": "DONE",
+  "phases_done": [
+    "RS",
+    "S",
+    "P",
+    "E",
+    "C",
+    "T",
+    "R",
+    "T",
+    "A",
+    "DONE"
+  ],
+  "rightsize": {
+    "score": 7,
+    "computed_tier": "full",
+    "inputs": {
+      "files_est": 32,
+      "new_dep": true,
+      "public_api": true,
+      "migration": true,
+      "security": false,
+      "novel": true,
+      "stakes": "med"
+    }
+  },
+  "refine_cycles": 1,
+  "skips": [],
+  "gates": [
+    {
+      "rubric": "explore",
+      "total": 87,
+      "dims": {
+        "alignment": 10,
+        "correctness": 9,
+        "maintainability": 9,
+        "performance": 8,
+        "simplicity": 7,
+        "risk": 8,
+        "innovation": 7
+      },
+      "verdict": "elite",
+      "at": "2026-07-16T16:58:57Z",
+      "label": "E5prime-E2-plus-ratchet"
+    },
+    {
+      "rubric": "refine",
+      "cycle": 1,
+      "total": 4,
+      "min": 4,
+      "dims": {
+        "clarity": 4,
+        "completeness": 4,
+        "actionability": 4,
+        "efficiency": 4,
+        "testability": 4
+      },
+      "verdict": "pass",
+      "at": "2026-07-16T17:06:21Z"
+    },
+    {
+      "rubric": "confidence",
+      "total": 78,
+      "dims": {
+        "pattern_match": 80,
+        "requirement_clarity": 82,
+        "decomposition_stability": 80,
+        "constraint_compliance": 70
+      },
+      "verdict": "VALIDATE",
+      "at": "2026-07-16T17:06:42Z"
+    },
+    {
+      "rubric": "refine",
+      "cycle": 2,
+      "total": 4.2,
+      "min": 4,
+      "dims": {
+        "clarity": 4,
+        "completeness": 4,
+        "actionability": 4,
+        "efficiency": 5,
+        "testability": 4
+      },
+      "verdict": "pass",
+      "at": "2026-07-16T17:16:49Z",
+      "label": "independent-critique-v0.3-criteria-layer"
+    },
+    {
+      "rubric": "confidence",
+      "total": 78,
+      "dims": {
+        "pattern_match": 80,
+        "requirement_clarity": 80,
+        "decomposition_stability": 80,
+        "constraint_compliance": 72
+      },
+      "verdict": "VALIDATE",
+      "at": "2026-07-16T17:16:49Z",
+      "label": "critic-independent-v0.3"
+    },
+    {
+      "rubric": "refine",
+      "cycle": 3,
+      "total": 4.4,
+      "min": 4,
+      "dims": {
+        "clarity": 5,
+        "completeness": 4,
+        "actionability": 4,
+        "efficiency": 5,
+        "testability": 4
+      },
+      "verdict": "pass",
+      "at": "2026-07-16T18:39:36Z",
+      "label": "v0.4-critic2-blocking-set-plus-owner-decisions"
+    },
+    {
+      "rubric": "confidence",
+      "total": 80,
+      "dims": {
+        "pattern_match": 80,
+        "requirement_clarity": 84,
+        "decomposition_stability": 81,
+        "constraint_compliance": 75
+      },
+      "verdict": "VALIDATE",
+      "at": "2026-07-16T18:39:50Z",
+      "label": "v0.4-self-post-critic2-owner-decided"
+    },
+    {
+      "rubric": "confidence",
+      "total": 81.5,
+      "dims": {
+        "pattern_match": 82,
+        "requirement_clarity": 84,
+        "decomposition_stability": 82,
+        "constraint_compliance": 78
+      },
+      "verdict": "VALIDATE",
+      "at": "2026-07-16T18:50:25Z",
+      "label": "critic-independent-v0.4"
+    }
+  ],
+  "amendments": [
+    {
+      "prev": "3b332eefdbd2fad191f071a6f22785a5140ff03510229b24af3e4ba14680f7b9",
+      "new": "62d7018292677e039405b4603a954b03a5ba1319e6f35c46abdb6f1fdb122c5b",
+      "reason": "v0.4: second critic pass (APPROVE-WITH-FIXES) blocking set + owner decisions. R-1: AC-059 added restoring EC-13's binding (post must state re-measured gz bytes, runtime/require/app-code decomposition, per-file-sum method, none of the retracted figures); AC-046 retains the value floor. C-1 residual: AC-048 two-axis manifest (role x obligation, content<->ink) + logotype hatch closed by usage; AC-047 logotype exception; AC-026 repointed at role==content with anti-vacuity clause. C-16 residual: AC-057 rewritten as set-inclusion vs _data/skills.yml (character_build.yml has zero language names), verified by execution against the critic's three attacks. Non-blocking: AC-041 payload-scoped, AC-050 behavioural clause, AC-051 THEN/VERIFY aligned, AC-052 single THEN, AC-053 requires go verdict. 58 -> 59 criteria.",
+      "at": "2026-07-16T18:38:44Z"
+    },
+    {
+      "prev": "62d7018292677e039405b4603a954b03a5ba1319e6f35c46abdb6f1fdb122c5b",
+      "new": "393f1e5948ef9e55a9b3ca812c11034942d1c2b9b2e8a9f1655f0a3408335fe5",
+      "reason": "v0.4 self-caught defect: AC-059's VERIFY demanded bytes equal to AC-042's CI-measured PAGE SUM while its THEN required the ARTIFACT's re-measured size -- two different numbers (143,453 artifact vs page total incl. 3,909 B of other scripts). VERIFY did not verify its THEN: the exact defect class the critic named at AC-051. Restated to the artifact's own component of AC-042's CI measurement, plus tier percentages summing to 100.",
+      "at": "2026-07-16T18:42:36Z"
+    }
+  ],
+  "declared_scope": [
+    "_config.yml",
+    "_data/*",
+    "_layouts/*",
+    "_includes/*",
+    "_posts/*",
+    "_sass/*",
+    "assets/images/*",
+    "assets/js/*",
+    "_opal/*",
+    ".github/workflows/*",
+    "index.html",
+    "about.html",
+    "notebook.html",
+    "laboratory.html",
+    "letter.html",
+    "404.html",
+    "now.*",
+    "uses.*",
+    "start-here.*",
+    "accessibility.*",
+    "Gemfile",
+    "Gemfile.lock",
+    "package.json",
+    ".pa11yci",
+    "robots.txt"
+  ],
+  "criteria_sha256": "393f1e5948ef9e55a9b3ca812c11034942d1c2b9b2e8a9f1655f0a3408335fe5",
+  "critic": {
+    "author": "ramza-author:job-ac6f42e7:v0.2",
+    "checker": "ramza-critic:opus-4.8:rebrand-plan-v0.2-critique",
+    "at": "2026-07-16T16:58:57Z"
+  },
+  "scope_declared_at": "2026-07-16T18:40:25Z",
+  "criteria_frozen_at": "2026-07-16T17:06:43Z"
+}

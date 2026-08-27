@@ -1,0 +1,732 @@
+/* RPG-Styled Laboratory Page */
+
+@use "../settings/variables" as *;
+@use "../tools/breakpoints" as *;
+
+/* Laboratory Hero Section - based on rpg-hero but with unique elements */
+.laboratory-hero {
+  background: linear-gradient(135deg, #217aa3, #7244a1);
+
+  .hero__title {
+    color: white;
+  }
+
+  .hero__subtitle {
+    color: var(--ff-gold);
+  }
+
+  .hero__description {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+    margin-top: 1rem;
+    max-width: 450px;
+  }
+
+  .container {
+    @include max-width('md') {
+      flex-direction: column-reverse;
+      text-align: center;
+    }
+  }
+
+  .hero__description {
+    @include max-width('md') {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  .hero__title {
+    @include max-width('xs') {
+      font-size: 2rem;
+    }
+  }
+
+  .hero__subtitle {
+    @include max-width('xs') {
+      font-size: 1.4rem;
+    }
+  }
+}
+
+.hero__emblem {
+  flex: 0 0 240px;
+  margin: 2rem 0;
+
+  @include max-width('md') {
+    margin-bottom: 2rem;
+  }
+
+  @include max-width('xs') {
+    margin-bottom: 0;
+  }
+}
+
+.emblem-frame {
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), inset 0 0 32px rgba(255, 255, 255, 0.15);
+
+  @include max-width('md') {
+    width: 180px;
+    height: 180px;
+  }
+
+  @include max-width('xs') {
+    width: 160px;
+    height: 160px;
+  }
+}
+
+.emblem-icon {
+  font-size: 6rem;
+  color: rgba(255, 255, 255, 0.8);
+  // AC-031: was `3s infinite alternate` -- auto-visible on load, in parallel
+  // with the search bar / filter tabs / project grid. 2 iterations (2.2s
+  // each, one full pulse) then holds -- 4.4s total.
+  animation: pulse 2.2s ease-in-out 2 alternate forwards;
+
+  @include max-width('md') {
+    font-size: 4rem;
+  }
+
+  @include max-width('xs') {
+    font-size: 3.5rem;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+.emblem-particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--ff-gold);
+  box-shadow: 0 0 10px var(--ff-gold), 0 0 5px rgba(255, 255, 255, 0.8);
+}
+
+.particle-1 {
+  top: 20%;
+  left: 20%;
+}
+
+.particle-2 {
+  top: 70%;
+  left: 25%;
+}
+
+.particle-3 {
+  top: 30%;
+  right: 20%;
+}
+
+.particle-4 {
+  top: 65%;
+  right: 25%;
+}
+
+// AC-031 / Story 4.5: this partial's own `@keyframes float` used to collide
+// with identically-named (but not identical) keyframes in _letter.scss and
+// _notebook.scss (global namespace; _letter.scss's import order made ITS
+// definition -- which includes a `rotate()` this one never had -- win
+// site-wide, silently). Consolidated into the shared, finite `drift-settle`
+// keyframe in _base.scss (assets/js/laboratory.js now references it directly).
+
+/* RPG Inventory Section */
+.rpg-inventory {
+  background-color: var(--dnd-parchment);
+  padding: 4rem 1rem;
+  position: relative;
+}
+
+.rpg-inventory::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23a75e40' fill-opacity='0.03'%3E%3Cpath d='M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4v2c-3.314 0-6-2.686-6-6 0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6zm25.464-1.95l8.486 8.486-1.414 1.414-8.486-8.486 1.414-1.414z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.8;
+  z-index: 0;
+}
+
+/* Section Title / Section Icon -- normalize-p3 (AC-302/306): this page's
+   standalone `.section-title`/`.section-title::after`/`.section-icon` defs
+   were fully shadowed dead weight (see the cascade note in
+   _sass/components/_components.scss) and have been consolidated to the
+   single base + `.section-title .section-icon` context there. Removed here,
+   not moved -- nothing on this page opted into these values distinctly from
+   what the consolidated base now provides. */
+
+/* Inventory Controls */
+.inventory-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  position: relative;
+  z-index: 1;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  @include max-width('md') {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.inventory-filter {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+
+  @include max-width('xs') {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.filter-title {
+  font-weight: 600;
+  color: var(--dnd-brown);
+  font-size: 1.1rem;
+  margin-right: 0.5rem;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+
+  @include max-width('md') {
+    justify-content: center;
+  }
+
+  @include max-width('xs') {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    justify-content: flex-start;
+  }
+}
+
+.filter-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--border-light);
+  padding: 0.75rem 1.25rem;
+  border-radius: $radius-8;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  i {
+    font-size: 1rem;
+    transition: transform 0.3s ease;
+  }
+
+  span {
+    position: relative;
+    z-index: 1;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.8);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    i {
+      transform: scale(1.1);
+    }
+  }
+
+  &.active {
+    background: var(--ff-purple);
+    color: white;
+    border-color: var(--ff-purple-ink);
+    box-shadow: 0 3px 8px rgba(153, 102, 204, 0.3);
+
+    i {
+      color: white;
+    }
+  }
+
+  @include max-width('xs') {
+    white-space: nowrap;
+    padding: 0.5rem 1rem;
+  }
+}
+
+.inventory-search {
+  position: relative;
+  width: 300px;
+
+  @include max-width('md') {
+    width: 100%;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 1px solid var(--border-light);
+    border-radius: $radius-40;
+    background: rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease;
+    font-size: 1rem;
+
+    &:focus {
+      outline: none;
+      background: rgba(255, 255, 255, 0.8);
+      border-color: var(--ff-purple-ink);
+      box-shadow: 0 0 0 3px rgba(153, 102, 204, 0.2);
+    }
+
+    @include max-width('xs') {
+      width: 80%;
+    }
+  }
+
+  i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+    pointer-events: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .inventory-search {
+    width: 100%;
+  }
+}
+
+/* Project Grid */
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  position: relative;
+  z-index: 1;
+
+  @include max-width('md') {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+
+  @include max-width('xs') {
+    grid-template-columns: 1fr;
+  }
+}
+
+.project-item {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.project-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.project-item.animate-in {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Item Card */
+.item-card {
+  background: white;
+  border-radius: $radius-10;
+  box-shadow: var(--shadow-light);
+  position: relative;
+  border: 1px solid var(--border-light);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  .item-name {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--dnd-brown);
+    margin: 0;
+    padding-right: 2rem;
+
+    @include max-width('xs') {
+      font-size: 1.1rem;
+    }
+  }
+
+  .item-actions {
+    display: flex;
+  }
+
+  .item-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgba(153, 102, 204, 0.1);
+    color: var(--ff-purple-ink);
+    transition: all 0.3s ease;
+    margin-left: 0.5rem;
+  }
+
+  .item-action:hover {
+    background-color: var(--ff-purple);
+    color: white;
+    transform: translateY(-3px);
+  }
+
+  .item-description {
+    padding: 1rem 1.25rem;
+    flex-grow: 1;
+  }
+
+  .item-description p {
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .item-stats {
+    padding: 0 1.25rem 1rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    @include max-width('xs') {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  .item-stat {
+    display: flex;
+    align-items: center;
+  }
+
+  .stat-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(153, 102, 204, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-right: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .stat-name, .stat-value {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+  }
+
+  .item-footer {
+    padding: 1rem 1.25rem;
+    border-top: 1px solid var(--border-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .item-link {
+    display: inline-flex;
+    align-items: center;
+    color: var(--ff-purple-ink);
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+  }
+
+  .item-link i {
+    margin-left: 0.5rem;
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+  }
+
+  .item-link:hover {
+    color: var(--ff-blue-dark);
+  }
+
+  .item-link:hover i {
+    transform: translateX(3px);
+  }
+
+  .item-type-badge {
+    font-size: 0.8rem;
+    padding: 0.25rem 0.75rem;
+    background: rgba(153, 102, 204, 0.1);
+    color: var(--ff-purple-ink);
+    border-radius: $radius-20;
+    font-weight: 500;
+  }
+
+  /* Item Particles for Hover Effect */
+  .item-particle {
+    position: absolute;
+    border-radius: 50%;
+    bottom: 0;
+    animation: particleRise 1s ease-out forwards;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  @keyframes particleRise {
+    0% {
+      transform: translateY(0) scale(1);
+      opacity: 0.8;
+    }
+    100% {
+      transform: translateY(-100px) scale(0);
+      opacity: 0;
+    }
+  }
+}
+
+.item-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-medium);
+}
+
+.item-rarity-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+}
+
+.item-rarity-indicator.common {
+  background: linear-gradient(to bottom, var(--rarity-common), transparent);
+}
+
+.item-rarity-indicator.rare {
+  background: linear-gradient(to bottom, var(--rarity-rare), transparent);
+}
+
+.item-rarity-indicator.epic {
+  background: linear-gradient(to bottom, var(--rarity-epic), rgba(163, 53, 238, 0.4));
+  box-shadow: 0 0 10px rgba(163, 53, 238, 0.2);
+}
+
+.item-rarity-indicator.legendary {
+  background: linear-gradient(to bottom, var(--rarity-legendary), rgba(255, 128, 0, 0.4));
+  box-shadow: 0 0 15px rgba(255, 128, 0, 0.3);
+  // AC-031: was `1.5s infinite alternate` -- every legendary card on the
+  // grid glowed forever in parallel with the rest of the page. 3 iterations
+  // ("flashier," matching the tier) then holds -- 4.5s total.
+  animation: legendaryGlow 1.5s ease-in-out 3 alternate forwards;
+}
+
+@keyframes legendaryGlow {
+  from { box-shadow: 0 0 5px rgba(255, 128, 0, 0.3); }
+  to { box-shadow: 0 0 15px rgba(255, 128, 0, 0.5); }
+}
+
+.item-header {
+  padding: 1.25rem 1.25rem 0.75rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.item-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+// AC-030 / D20 (Story 4.4a): the visible tier word -- 1.4.1 forbids conveying
+// rarity by chip colour alone. Ink text on parchment always reads regardless
+// of tier; the tier colour is a redundant 1px accent border only (never the
+// text or the fill), so it stays exempt from the contrast obligation
+// (Story 4.1 doctrine: reinforcement, not the information channel).
+.item-rarity-label {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: $radius-10;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--dnd-brown);
+  background: var(--dnd-parchment);
+  border: 1px solid var(--rarity-common);
+
+  &--rare { border-color: var(--rarity-rare); }
+  &--epic { border-color: var(--rarity-epic); }
+  &--legendary { border-color: var(--rarity-legendary); }
+  &--uncommon { border-color: var(--rarity-common); } // AC-030 note: --rarity-uncommon (#1eff00, 1.26:1) is
+  // dead code (no .uncommon rule exists; laboratory.js's rarity switch already
+  // falls through unknown tiers to "common" -- see report). Not rescued here;
+  // the label still renders the literal word "Uncommon" correctly from data,
+  // it just borrows the common accent color rather than reviving the
+  // unreachable token.
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: $radius-10;
+  border: 1px solid var(--border-light);
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.empty-state-icon {
+  font-size: 3rem;
+  color: var(--text-light);
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+.empty-state-title {
+  font-size: 1.5rem;
+  color: var(--dnd-brown);
+  margin-bottom: 0.5rem;
+}
+
+.empty-state-text {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  max-width: 400px;
+}
+
+.reset-search-button {
+  background: var(--ff-purple);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: $radius-24;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.reset-search-button:hover {
+  background: var(--ff-blue-dark);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark Mode Support */
+// normalize-p1 / AC-102: the `:root` custom-property override that used to live
+// here (--text-primary/--text-secondary/--text-light/--dnd-parchment/
+// --border-light) is now authored exactly once, in `_sass/_variables.scss` (the
+// consolidated dark token set) -- this partial keeps only its own per-selector
+// dark rules.
+// normalize-p1 / AC-107: `.item-rarity-label` (below, unchanged) is NOT touched
+// here -- its `var(--dnd-brown)` on `var(--dnd-parchment)` already clears AA in
+// dark through the consolidated flip (11.91), so it stays token-driven with no
+// per-selector literal.
+// normalize-p1 / AC-109: `.section-title`, `.filter-title`, `.inventory-search
+// input`, `.item-name`, `.empty-state-title` no longer carry a hand-written
+// `color: #e0e0e0` literal here. Each is gated on
+// `scripts/dark-literal-noop.test.mjs`'s computed-style before/after diff
+// (built `_site`, dark) -- a literal that changes the computed value is
+// reinstated, not left deleted (N4).
+@include dark-mode {
+  .rpg-inventory {
+    background-color: #232323;
+  }
+
+  .filter-button {
+    background: rgba(50, 50, 50, 0.6);
+    border-color: rgba(153, 102, 204, 0.3);
+    color: #b0b0b0;
+
+    &:hover {
+      background: rgba(70, 70, 70, 0.8);
+    }
+
+    &.active {
+      background: var(--ff-purple);
+      color: #f0f0f0;
+    }
+  }
+
+  .inventory-search input {
+    background: rgba(50, 50, 50, 0.6);
+    border-color: rgba(153, 102, 204, 0.3);
+
+    &:focus {
+      background: rgba(60, 60, 60, 0.8);
+    }
+  }
+
+  .item-card {
+    background: #2c2c2c;
+    border-color: rgba(153, 102, 204, 0.3);
+  }
+
+  .item-header {
+    border-bottom-color: rgba(153, 102, 204, 0.3);
+  }
+
+  .item-description p {
+    color: #b0b0b0;
+  }
+
+  .stat-name, .stat-value {
+    color: #b0b0b0;
+  }
+
+  .empty-state {
+    background: rgba(50, 50, 50, 0.6);
+  }
+
+}

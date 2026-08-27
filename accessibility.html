@@ -1,0 +1,124 @@
+---
+layout: default
+title: Accessibility
+permalink: /accessibility/
+resume: "The Code Alchemist's accessibility conformance statement -- target, method, and known gaps"
+---
+
+<!--
+  /accessibility -- AC-040 (Story 4.11, Phase 4b, ships LAST). Publishes the
+  conformance target, the automated method, and known gaps honestly -- "a
+  conformance claim the site does not meet is worse than no page"
+  (spec.yaml). Per research-ui-a11y.md §7.4/§4.5's D&D Beyond contrast: this
+  page is meant to beat the genre's canonical accessibility failure on
+  purpose, by being honest rather than by claiming more than is true.
+-->
+<section class="rpg-hero">
+  <div class="container">
+    <div class="hero__content">
+      <h1 class="hero__title fade-in">The Alchemist's Accessibility Ledger</h1>
+      <h2 class="hero__subtitle fade-in">/accessibility</h2>
+      <p class="hero__description">What this site targets, how it's checked, and what's still imperfect</p>
+    </div>
+  </div>
+</section>
+
+<section class="rpg-scrolls">
+  <div class="container">
+    {% include components/section-title.html icon="fas fa-shield-heart" title="Target &amp; Method" %}
+
+    <div class="now-content">
+      <p>
+        This site targets <strong>WCAG 2.2 Level AA</strong>. That is a deliberate choice, not a
+        vague aspiration: a themed, decorative, RPG-styled personal site can pass a real
+        accessibility bar without flattening the decoration into a generic gray box, and this
+        page exists to show the receipts rather than just assert it.
+      </p>
+      <p>
+        The fantasy skin stays on purpose. Where WCAG carves out an exemption for pure
+        decoration or a logotype, it's used deliberately and audited &mdash; a
+        <code>color</code>/<code>border-color</code>/<code>fill</code> usage manifest
+        (<a href="https://github.com/Rynaro/Rynaro.github.io/blob/master/_data/palette-manifest.yml" target="_blank" rel="noopener">committed to the repository</a>)
+        tracks every themed palette token and asserts, by script, that anything rendering real
+        body text or a meaning-bearing boundary resolves to a token measured &ge;4.5:1 (text) or
+        &ge;3:1 (non-text boundaries) &mdash; not by eye, and not rounded.
+      </p>
+
+      <h3>What's automated</h3>
+      <ul>
+        <li>
+          A palette contrast test asserts every themed &ldquo;ink&rdquo; token clears WCAG's
+          contrast minimums against the site's declared backgrounds, and that the HP/MP/ST/EXP
+          stat-bar boundary and rarity chips carry a real text label rather than color alone.
+        </li>
+        <li>
+          A motion lint fails the build if any animation loops forever while auto-starting
+          alongside other page content (WCAG 2.2.2) &mdash; this site's alchemy circle and ambient
+          glyphs inscribe, flare, and settle within five seconds rather than spinning
+          indefinitely; a reduced-motion preference removes the animation entirely.
+        </li>
+        <li>
+          <a href="https://github.com/dequelabs/axe-core" target="_blank" rel="noopener">axe-core</a>,
+          driven by <a href="https://github.com/pa11y/pa11y-ci" target="_blank" rel="noopener">pa11y-ci</a>
+          at the <code>WCAG2AA</code> standard, runs over every URL in this site's sitemap as a
+          <strong>blocking</strong> GitHub Actions check on every change.
+        </li>
+      </ul>
+
+      <h3>What's checked by hand</h3>
+      <p>
+        Automated tools catch roughly a third of accessibility issues &mdash; contrast, missing
+        labels, and structural problems, mostly &mdash; and this site's automation is aimed
+        squarely at that third, since a themed palette is exactly where it bites hardest. The
+        rest is checked manually at milestones, not on every commit: a keyboard-only walk of the
+        sigil navigation and every interactive element; a screen-reader pass (NVDA/VoiceOver)
+        confirming the character sheet's HP/MP/ST bars narrate as <code>meter</code>s and the EXP
+        bar as a <code>progressbar</code>, with real values, not bare percentages; 400% zoom on
+        the character sheet; <code>forced-colors</code> mode; and a colorblind simulation over the
+        Laboratory's rarity tiers, confirming the tier reads from its label, never its color alone.
+      </p>
+
+      <h3>Known gaps, honestly</h3>
+      <p>
+        Nothing here is hidden because it's inconvenient. As of this page's last update:
+      </p>
+      <ul>
+        <li>
+          A few gold-on-gradient accents on the About page's &ldquo;ultimate ability&rdquo; card
+          and the closing call-to-action measure below 4.5:1 against their own dark background
+          &mdash; found while auditing the rest of the palette, not yet redesigned (the
+          light-surface ink tokens elsewhere on the site are tuned for cream/parchment, not this
+          specific dark gradient, so fixing it needs a dedicated color choice, not a token swap).
+        </li>
+        <li>
+          The LinkedIn/GitHub/Dev.to icon links on the About page's hero use icon-fill colors
+          light enough that no available text/icon color reaches 4.5:1 against them &mdash; the
+          fill colors themselves need to darken, which hasn't happened yet.
+        </li>
+        <li>
+          The Laboratory's rarity color strip is a purely decorative, screen-reader-hidden accent
+          today (the tier itself is conveyed by a real text label next to it, which works with or
+          without JavaScript) &mdash; but the strip's own color still depends on JavaScript adding
+          a class that matches its data attribute. Cosmetic only, not an information loss, but not
+          fixed yet either.
+        </li>
+        <li>
+          Fluid, viewport-scaled type (CSS <code>clamp()</code>) isn't in use anywhere on the site
+          yet &mdash; headings use fixed sizes with breakpoint overrides instead. Not a defect (no
+          <code>clamp()</code> means no <code>clamp()</code> misuse), just not attempted.
+        </li>
+      </ul>
+      <p>
+        This list will get shorter over time, not quieter.
+      </p>
+
+      <h3>Report something</h3>
+      <p>
+        If something here doesn't work with your screen reader, your keyboard, your browser's
+        zoom, or anything else &mdash; that's the gap this page exists to surface. Mail
+        <a href="mailto:{{ site.email }}">{{ site.email }}</a> and it goes straight to a human,
+        not a queue.
+      </p>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,255 @@
+{
+  "schema": "ramza/plan-state.v1",
+  "plan": "normalize",
+  "created_at": "2026-07-17T12:50:45Z",
+  "tier": "full",
+  "phase": "T",
+  "phases_done": [
+    "RS",
+    "S",
+    "P",
+    "E",
+    "C",
+    "T",
+    "R",
+    "T",
+    "R",
+    "T"
+  ],
+  "rightsize": {
+    "score": 6,
+    "computed_tier": "full",
+    "inputs": {
+      "files_est": 40,
+      "new_dep": false,
+      "public_api": true,
+      "migration": true,
+      "security": false,
+      "novel": false,
+      "stakes": "high"
+    }
+  },
+  "refine_cycles": 2,
+  "skips": [],
+  "gates": [
+    {
+      "rubric": "complexity",
+      "total": 12,
+      "dims": {
+        "scope": 3,
+        "ambiguity": 3,
+        "dependencies": 3,
+        "risk": 3
+      },
+      "verdict": "human_loop",
+      "at": "2026-07-17T12:50:56Z",
+      "label": "normalize-umbrella"
+    },
+    {
+      "rubric": "explore",
+      "total": 65.5,
+      "dims": {
+        "alignment": 5,
+        "correctness": 8,
+        "maintainability": 5,
+        "performance": 7,
+        "simplicity": 9,
+        "risk": 9,
+        "innovation": 2
+      },
+      "verdict": "weak",
+      "at": "2026-07-17T12:53:48Z",
+      "label": "H-A: keep _variables.scss monolithic, forgo ITCSS token split"
+    },
+    {
+      "rubric": "explore",
+      "total": 75.5,
+      "dims": {
+        "alignment": 9,
+        "correctness": 8,
+        "maintainability": 8,
+        "performance": 7,
+        "simplicity": 6,
+        "risk": 6,
+        "innovation": 5
+      },
+      "verdict": "solid",
+      "at": "2026-07-17T12:53:48Z",
+      "label": "H-B: harness-first sub-phase (recurse scanner + glob meta.source) then split"
+    },
+    {
+      "rubric": "explore",
+      "total": 62,
+      "dims": {
+        "alignment": 7,
+        "correctness": 7,
+        "maintainability": 6,
+        "performance": 6,
+        "simplicity": 4,
+        "risk": 5,
+        "innovation": 7
+      },
+      "verdict": "weak",
+      "at": "2026-07-17T12:53:48Z",
+      "label": "H-C: codegen _variables.scss from manifest (single source of truth)"
+    },
+    {
+      "rubric": "explore",
+      "total": 70.5,
+      "dims": {
+        "alignment": 8,
+        "correctness": 9,
+        "maintainability": 8,
+        "performance": 4,
+        "simplicity": 5,
+        "risk": 5,
+        "innovation": 9
+      },
+      "verdict": "solid",
+      "at": "2026-07-17T12:53:48Z",
+      "label": "H-D: retarget harness at compiled CSS, decoupling it from source layout"
+    },
+    {
+      "rubric": "complexity",
+      "total": 10,
+      "dims": {
+        "scope": 2,
+        "ambiguity": 3,
+        "dependencies": 2,
+        "risk": 3
+      },
+      "verdict": "human_loop",
+      "at": "2026-07-17T12:59:23Z",
+      "label": "normalize-p1"
+    },
+    {
+      "rubric": "complexity",
+      "total": 11,
+      "dims": {
+        "scope": 3,
+        "ambiguity": 2,
+        "dependencies": 3,
+        "risk": 3
+      },
+      "verdict": "human_loop",
+      "at": "2026-07-17T12:59:23Z",
+      "label": "normalize-p2"
+    },
+    {
+      "rubric": "complexity",
+      "total": 9,
+      "dims": {
+        "scope": 2,
+        "ambiguity": 3,
+        "dependencies": 2,
+        "risk": 2
+      },
+      "verdict": "extended",
+      "at": "2026-07-17T12:59:23Z",
+      "label": "normalize-p3"
+    },
+    {
+      "rubric": "complexity",
+      "total": 7,
+      "dims": {
+        "scope": 2,
+        "ambiguity": 1,
+        "dependencies": 2,
+        "risk": 2
+      },
+      "verdict": "extended",
+      "at": "2026-07-17T12:59:23Z",
+      "label": "normalize-p4"
+    },
+    {
+      "rubric": "confidence",
+      "total": 75,
+      "dims": {
+        "pattern_match": 70,
+        "requirement_clarity": 55,
+        "decomposition_stability": 85,
+        "constraint_compliance": 90
+      },
+      "verdict": "VALIDATE",
+      "at": "2026-07-17T13:05:50Z",
+      "label": "normalize (AUTHOR-SCORED, pre-critic)"
+    },
+    {
+      "rubric": "refine",
+      "cycle": 1,
+      "total": 3.6,
+      "min": 3,
+      "dims": {
+        "clarity": 4,
+        "completeness": 3,
+        "actionability": 4,
+        "efficiency": 4,
+        "testability": 3
+      },
+      "verdict": "pass",
+      "at": "2026-07-17T13:09:12Z",
+      "label": "R1: P0 landed mid-session; AC-103 zero-diff premise falsified; uncompensated --dnd-brown AA failure discovered"
+    },
+    {
+      "rubric": "refine",
+      "cycle": 2,
+      "total": 4.4,
+      "min": 4,
+      "dims": {
+        "clarity": 5,
+        "completeness": 4,
+        "actionability": 4,
+        "efficiency": 4,
+        "testability": 5
+      },
+      "verdict": "pass",
+      "at": "2026-07-17T15:26:55Z",
+      "label": "R2: P1 re-derived on compiled cascade; retracted no-op AC-101 + inverted AC-110; consolidation + real-defect repair"
+    },
+    {
+      "rubric": "confidence",
+      "total": 83,
+      "dims": {
+        "pattern_match": 75,
+        "requirement_clarity": 80,
+        "decomposition_stability": 85,
+        "constraint_compliance": 92
+      },
+      "verdict": "VALIDATE",
+      "at": "2026-07-17T15:27:06Z",
+      "label": "normalize-p1 R2 (AUTHOR-SCORED, pre-critic)"
+    }
+  ],
+  "amendments": [
+    {
+      "prev": "e0bc0b1b27a38c95a6824e35a938b65ccfafa4b61a370d37c6a8d1d65c86d6b0",
+      "new": "826b187d4d4d9edfac7a64e35dc22d3f8e3fdd73f936f9f8065c8c3571733a38",
+      "reason": "R1: P0 landed mid-session (GAP-1 resolved); AC-103 zero-diff premise falsified by the uncompensated --dnd-brown enumeration; AC-110 (live WCAG 1.4.3 AA failure, #6d562f on #232323 = 2.26) and AC-111 (baselines record the bug) added",
+      "at": "2026-07-17T13:11:18Z"
+    },
+    {
+      "prev": "826b187d4d4d9edfac7a64e35dc22d3f8e3fdd73f936f9f8065c8c3571733a38",
+      "new": "12ef6d3c252ae1a4d6b5a1299e2b093e5857539faba1f755660588f8cefdedbb",
+      "reason": "R2: P1 re-derived on the COMPILED CASCADE after independent critic rejected R1 (45/100). R1 reasoned per-partial about document-scoped :root; the last-imported _letter.scss dark block flips --dnd-brown #e0e0e0 sitewide, so R1's central claim (.item-rarity-label #6d562f-on-#2c2c2c=2.01) was FALSE (actually #e0e0e0-on-#232323=11.91, PASSES). Retracted no-op AC-101 and inverted AC-110. New P1: consolidate 4 conflicting prefers-dark :root blocks into one (reachable via prefers-color-scheme AND :root[data-theme=dark], D-C); repair the REAL failures (/about dark #e0e0e0-on-white=1.32; .scroll-seal on gold #e6a553 light 3.27 + dark 1.61); extend declared_backgrounds to #e6a553/#232323; delete provably-dead per-selector literals via computed no-op gate. 11->12 criteria; every contrast claim getComputedStyle/compiled-cascade anchored.",
+      "at": "2026-07-17T15:18:49Z"
+    }
+  ],
+  "declared_scope": [
+    "_sass/*",
+    "_data/palette-manifest.yml",
+    "scripts/*",
+    "package.json",
+    "assets/css/main.scss",
+    "_layouts/*",
+    "_includes/*",
+    "*.html",
+    "notebook/*"
+  ],
+  "criteria_sha256": "12ef6d3c252ae1a4d6b5a1299e2b093e5857539faba1f755660588f8cefdedbb",
+  "critic": {
+    "author": null,
+    "checker": null
+  },
+  "scope_declared_at": "2026-07-17T13:05:50Z",
+  "criteria_frozen_at": "2026-07-17T13:05:50Z"
+}

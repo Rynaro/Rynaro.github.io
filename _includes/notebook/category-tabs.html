@@ -1,0 +1,55 @@
+<!--
+  Notebook category tab bar (AC-013 / D7, Story 2.2, Ruling 2). Ruling 2's binding verdict:
+  Ruby transmutes the site at build time, so this bar is real server-rendered <a> navigation
+  between static category pages, not a client-side JS toggle -- it works with JavaScript
+  disabled (correctness + a11y + SEO; see .spectra/changes/rebrand-p2/spec.md Invariant 1 --
+  this is NEVER about byte savings).
+
+  Tabs are generated from `site.categories` -- a phantom tab (the old `storybook`, D7) is
+  structurally impossible: a tab only renders for a category that has >=1 post.
+
+  Param: include.active -- "all" or the current category key, for the active/aria-current state.
+-->
+<div class="scroll-categories">
+  <div class="categories-title">Archives:</div>
+  <div class="category-tabs">
+    <a href="{{ '/notebook/' | relative_url }}"
+       class="category-tab{% if include.active == 'all' %} active{% endif %}"
+       data-category="all"
+       {% if include.active == 'all' %}aria-current="page"{% endif %}>
+      <i class="fas fa-scroll"></i>
+      <span>All</span>
+    </a>
+
+    {% assign rendered_categories = "," %}
+    {% for cat in site.data.notebook_categories.order %}
+      {% if site.categories[cat].size > 0 %}
+        {% assign rendered_categories = rendered_categories | append: cat | append: "," %}
+        {% assign cat_label = site.data.notebook_categories.labels[cat] %}
+        {% unless cat_label %}
+          {% assign cat_label = cat | capitalize %}
+        {% endunless %}
+        <a href="{{ '/notebook/' | append: cat | append: '/' | relative_url }}"
+           class="category-tab{% if include.active == cat %} active{% endif %}"
+           data-category="{{ cat }}"
+           {% if include.active == cat %}aria-current="page"{% endif %}>
+          <i class="{{ site.data.notebook_categories.icons[cat] | default: 'fas fa-scroll' }}"></i>
+          <span>{{ cat_label }}</span>
+        </a>
+      {% endif %}
+    {% endfor %}
+
+    {% for cat in site.categories %}
+      {% assign needle = "," | append: cat[0] | append: "," %}
+      {% unless rendered_categories contains needle %}
+        <a href="{{ '/notebook/' | append: cat[0] | append: '/' | relative_url }}"
+           class="category-tab{% if include.active == cat[0] %} active{% endif %}"
+           data-category="{{ cat[0] }}"
+           {% if include.active == cat[0] %}aria-current="page"{% endif %}>
+          <i class="fas fa-scroll"></i>
+          <span>{{ cat[0] | capitalize }}</span>
+        </a>
+      {% endunless %}
+    {% endfor %}
+  </div>
+</div>

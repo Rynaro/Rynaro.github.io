@@ -1,0 +1,125 @@
+{
+  "esl_version": "1.1",
+  "change_id": "rebrand-p4",
+  "status": "verified",
+  "tier": "full",
+  "maker": "vivi",
+  "checker": "kupo",
+  "acceptance_checks": [
+    {
+      "id": "AC-026",
+      "then": "every palette token whose manifest role is `content` SHALL reach a contrast ratio of at least 4.5:1 against each declared background it is used on",
+      "verify_method": "the palette contrast unit test enumerates every (token, background) pair in which a `content`-role token is used across the declared-background set -- cream, light, parchment-dark, and the hero gradient stops `#211C30`/`#312A45` -- and asserts every pair is \u003e= 4.5 without rounding; the test fails if the `content` set is empty"
+    },
+    {
+      "id": "AC-027",
+      "then": "every meaning-bearing non-text boundary SHALL reach a contrast ratio of at least 3:1 against its adjacent colour",
+      "verify_method": "the palette contrast test asserts the stat-bar track hairline and fill-edge tokens are \u003e= 3:1 against the adjacent surface without rounding"
+    },
+    {
+      "id": "AC-028",
+      "then": "each character-sheet HP, MP, and ST bar SHALL expose `role=\"meter\"` carrying `aria-valuenow`, `aria-valuemin`, `aria-valuemax`, and `aria-valuetext`",
+      "verify_method": "axe run on the About page reports each HP/MP/ST bar with role meter and a non-empty aria-valuetext such as \"85 of 100 hit points\""
+    },
+    {
+      "id": "AC-029",
+      "then": "the EXP bar SHALL expose `role=\"progressbar\"` rather than `role=\"meter\"`",
+      "verify_method": "axe run on the About page reports the EXP bar with role progressbar and the required aria-value attributes"
+    },
+    {
+      "id": "AC-030",
+      "given": "a project rendered with a rarity tier",
+      "when": "the rarity chip is presented",
+      "then": "the tier SHALL be conveyed by a visible text label, never by chip colour alone",
+      "verify_method": "each rarity chip in `_site` contains the tier word as text; Color Oracle simulation confirms tiers remain distinguishable without hue"
+    },
+    {
+      "id": "AC-031",
+      "given": "any auto-starting animation presented in parallel with other content on any page",
+      "when": "the page is loaded with no motion preference expressed",
+      "then": "the animation SHALL complete within five seconds rather than loop indefinitely",
+      "verify_method": "`grep -rn \"infinite\" _sass/ assets/js/` returns zero hits outside a `--motionOK` gated block; each remaining animation declares a finite duration \u003c= 5s and a non-infinite iteration count"
+    },
+    {
+      "id": "AC-032",
+      "then": "every purely decorative SVG ornament SHALL be hidden from assistive technology by exactly one method",
+      "verify_method": "each ornament SVG root carries `aria-hidden=\"true\"` and no ornament carries both `aria-hidden` and an empty `alt`"
+    },
+    {
+      "id": "AC-033",
+      "then": "every themed navigation item SHALL expose an accessible name that contains its visible themed label",
+      "verify_method": "the accessible name for the Notebook link contains the string \"Notebook\"; axe reports no label-in-name violation"
+    },
+    {
+      "id": "AC-034",
+      "given": "a fluid type rule expressed with `clamp()`",
+      "when": "the rule is evaluated",
+      "then": "its maximum value SHALL be no more than 2.5 times its minimum value",
+      "verify_method": "a script parses every `clamp()` in `_sass/` and asserts max/min \u003c= 2.5"
+    },
+    {
+      "id": "AC-035",
+      "given": "any page of the site",
+      "when": "it is viewed at a viewport width equivalent to 320 CSS pixels",
+      "then": "the content SHALL reflow without requiring scrolling in two dimensions",
+      "verify_method": "a 320px-wide render of Home, About, and one post shows no horizontal scrollbar"
+    },
+    {
+      "id": "AC-036",
+      "given": "any interactive element",
+      "when": "it receives keyboard focus",
+      "then": "its focus indicator SHALL remain visible and not be entirely obscured by the fixed sidebar or sticky chrome",
+      "verify_method": "keyboard walk of Home, About, and one post shows a visible focus ring on every interactive element with no element hidden behind the 60px sidebar"
+    },
+    {
+      "id": "AC-037",
+      "then": "every pointer target SHALL present a hit area of at least 24 by 24 CSS pixels or satisfy the 24px spacing exception",
+      "verify_method": "axe target-size check reports zero violations across the sigil nav and social icon row"
+    },
+    {
+      "id": "AC-038",
+      "given": "a themed chip, badge, banner, or stat row",
+      "when": "a user overrides text spacing to the 1.4.12 values",
+      "then": "no text SHALL be clipped by a fixed height",
+      "verify_method": "`grep -rnE '(^|[^-[:alnum:]])height:[[:space:]]*[0-9]' _sass/` returns zero hits within themed chip, badge, banner, or stat-row rule blocks (this pattern excludes `min-height`/`max-height`/`line-height`); the text-spacing bookmarklet clips nothing"
+    },
+    {
+      "id": "AC-039",
+      "then": "the continuous-integration pipeline SHALL fail the build when any sitemap URL reports a WCAG 2.2 AA violation",
+      "verify_method": "`pa11y-ci` with the axe runner and `standard: WCAG2AA` runs over the sitemap in GitHub Actions and exits non-zero on any violation"
+    },
+    {
+      "id": "AC-040",
+      "then": "the site SHALL publish an `/accessibility` page stating the conformance target and the known gaps",
+      "verify_method": "`_site/accessibility/` renders and names WCAG 2.2 AA, the automated axe check, and a contact route for reports"
+    },
+    {
+      "id": "AC-047",
+      "given": "a palette token referenced by a CSS `color`, `border-color`, or `fill` rule that renders body text or a meaning-bearing boundary, and whose manifest role is not `logotype`",
+      "when": "the token classification manifest is applied",
+      "then": "that token SHALL carry manifest role `content` with obligation `ink`, resolving to an `-ink` token rather than an `-ornament` one",
+      "verify_method": "a script cross-references every token usage in `_sass/` against the manifest and asserts every non-`logotype` body-text or meaning-bearing-boundary usage resolves to a token whose role is `content` and obligation is `ink`; zero such usages resolve to an `ornament` or `exempt` token"
+    },
+    {
+      "id": "AC-048",
+      "then": "the repository SHALL carry a committed manifest assigning every palette token exactly one `role` from ornament, logotype, or content together with exactly one `obligation` from ink or exempt, under the mapping in which `content` takes `ink` while `ornament` and `logotype` take `exempt`",
+      "verify_method": "a committed manifest enumerates every token declared in `_sass/_variables.scss` with exactly one role and one obligation each; zero tokens are unclassified; a script asserts that role `content` holds if and only if obligation `ink` for every row, and asserts that every `logotype`-role token is referenced only by rules inside the wordmark selector set (`.hero-subtitle` in `_home.scss` and `_about.scss`) and by no rule that renders body text"
+    },
+    {
+      "id": "AC-049",
+      "then": "the palette contrast test SHALL run as a blocking continuous-integration check from the first accessibility release onward",
+      "verify_method": "the CI workflow invokes the palette contrast test and exits non-zero on any failing token; the check is present in the same release that ships the ink token split"
+    },
+    {
+      "id": "AC-058",
+      "given": "a fluid type rule expressed with `clamp()`",
+      "when": "its middle term is inspected",
+      "then": "that middle term SHALL carry a `rem` or `px` component rather than a viewport unit alone",
+      "verify_method": "a script parses every `clamp()` in `_sass/` and asserts each middle term matches a `rem` or `px` component; zero `vw`-only middle terms remain"
+    }
+  ],
+  "spec_ref": ".claude/rebrand/rebrand-plan.md",
+  "supersedes": "rebrand",
+  "drift_checked": true,
+  "has_code": true
+}

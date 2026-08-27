@@ -1,0 +1,49 @@
+{
+  "envelope_version": "1.0",
+  "from": {
+    "eidolon": "in_progress"
+  },
+  "to": {
+    "eidolon": "verified"
+  },
+  "performative": "INFORM",
+  "objective": "Vivi (maker) completed the normalize-p1 implementation (dark-cascade consolidation + AC-105/106/107/108/109 contrast/no-op repairs) and hands off to Kupo (checker) for independent verification. maker != checker: vivi does not self-transition to verified.",
+  "context_delta": {
+    "acceptance_checks_green_locally": [
+      "AC-101",
+      "AC-102",
+      "AC-103",
+      "AC-104",
+      "AC-105",
+      "AC-106",
+      "AC-107",
+      "AC-108",
+      "AC-109",
+      "AC-110",
+      "AC-111"
+    ],
+    "files_touched": [
+      "_sass/_variables.scss",
+      "_sass/_notebook.scss",
+      "_sass/_laboratory.scss",
+      "_sass/_letter.scss",
+      "_sass/_about.scss",
+      "_data/palette-manifest.yml",
+      "scripts/palette-contrast.test.mjs",
+      "scripts/axe-audit.mjs",
+      "package.json"
+    ],
+    "new_verifier_scripts": [
+      "scripts/dark-root-conflict.test.mjs",
+      "scripts/dark-root-consolidation.test.mjs",
+      "scripts/dark-cascade-contrast.test.mjs",
+      "scripts/dark-literal-noop.test.mjs"
+    ],
+    "not_yet_gated": [
+      "AC-112 (revert-on-merge, requires an actual merge commit)"
+    ],
+    "regression_found_and_fixed": "removing _sass/_notebook.scss's redundant unconditional :root block (duplicate of _variables.scss base tokens) that was silently winning over the consolidated dark flip for --parchment-light/--parchment-dark/--scroll-shadow due to import-order cascade",
+    "tonberry_verify_c1_c7": "exit_code 0",
+    "visual_baseline": "regenerated via npm run test:visual:update after confirming intended-only diffs (about dark viewports, notebook light+dark viewports); npm run test:visual now 0 failures"
+  }
+}

@@ -1,0 +1,168 @@
+// ==========================================================================
+// UTILITY CLASSES
+// ==========================================================================
+
+@use "../settings/variables" as *;
+
+// Layout utilities
+.text-center {
+  text-align: center;
+}
+
+// Margin utilities
+.mt-3 {
+  margin-top: 1.5rem;
+}
+
+// Visibility utilities
+.hidden {
+  display: none;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.focus-visible:focus-visible {
+  outline: 2px solid $pastel-purple;
+  outline-offset: 2px;
+}
+
+// Print utilities
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  a {
+    text-decoration: underline;
+
+    &::after {
+      content: " (" attr(href) ") ";
+      font-size: 0.9em;
+      font-weight: normal;
+    }
+  }
+
+  .post-actions,
+  .post-navigation,
+  .related-posts,
+  .footer {
+    display: none !important;
+  }
+
+  .post-content .container {
+    display: block;
+    max-width: 100%;
+  }
+
+  .post-text {
+    font-size: 12pt;
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+
+  img, figure, table, pre {
+    page-break-inside: avoid;
+  }
+
+  p, h2, h3 {
+    orphans: 3;
+    widows: 3;
+  }
+}
+
+// Animation utilities
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slide-up {
+  animation: slideUp 0.5s ease-in-out forwards;
+}
+
+// Dark mode utilities
+.force-light-mode {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+.force-dark-mode {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+// Skip to main content link for keyboard navigation
+//
+// AC-305: background was $pastel-purple (#CDB4DB) with white text -- 1.88:1
+// contrast, well under the 4.5:1 WCAG AA floor for normal text. This went
+// undetected because no markup ever rendered the class (it was pure dead
+// CSS until this AC wired up the <a class="skip-to-content"> link). Reusing
+// $pastel-purple-ink -- the same darkened-for-text-contrast token the P1
+// dark-cascade consolidation introduced (AC-026/AC-047) -- gives 6.86:1
+// against white, comfortably clearing AA, without inventing a new color.
+.skip-to-content {
+  position: absolute;
+  // Two pixel-geometry hiding schemes were tried and rejected before this
+  // one, both caught only by the visual-regression suite (sub-2px, not
+  // visible by eye):
+  //   1. `top: -40px` -- the rendered box (padding + line-box) is ~41.6px
+  //      tall, ~1.6px MORE than the offset, so a sliver of the background
+  //      bled onto the very top of every page.
+  //   2. `transform: translateY(-100%)` -- mathematically pins the box's
+  //      bottom edge exactly to the containing block's top regardless of
+  //      computed height, but the transform promotes the box to its own
+  //      compositor layer, and the box's fractional height (41.59375px)
+  //      gives it a fractional edge position -- GPU edge/anti-aliasing
+  //      blending still bled ~1 row of partially-blended background color
+  //      onto row 0.
+  // `clip-path: inset(100%)` sidesteps geometry entirely: it clips the
+  // element's own paint area down to nothing, so there is no edge for
+  // anti-aliasing to blend regardless of box height/rounding -- verified
+  // zero-pixel-diff (not just under tolerance) with a targeted before/after
+  // DOM-removal screenshot diff. The element stays in the accessibility
+  // tree and in tab order throughout (unlike `display:none`), so Tab still
+  // reaches it and :focus reveals it via `inset(0)`.
+  top: 0;
+  left: 0;
+  clip-path: inset(100%);
+  padding: 8px 16px;
+  background-color: $pastel-purple-ink;
+  color: white;
+  z-index: 2000;
+  transition: clip-path 0.2s ease-in-out;
+
+  &:focus {
+    clip-path: inset(0);
+  }
+}

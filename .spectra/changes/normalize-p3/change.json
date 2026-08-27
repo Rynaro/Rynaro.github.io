@@ -1,0 +1,67 @@
+{
+  "esl_version": "1.1",
+  "change_id": "normalize-p3",
+  "status": "verified",
+  "tier": "full",
+  "maker": "vivi",
+  "checker": "kupo",
+  "acceptance_checks": [
+    {
+      "id": "AC-301",
+      "given": "'.section-icon' names TWO structurally different components sharing one class name: an inline icon (\u003ci class='fas fa-scroll section-icon'\u003e at codex.html:33 and about/notebook/laboratory/letter, styled margin-right/color; _about.scss:1305, _notebook.scss:242, _laboratory.scss:202 are byte-identical, _letter.scss:244 differs only in margin-right:0.75rem) and a circular badge wrapper (\u003cdiv class='section-icon'\u003e at _layouts/post.html:106, styled background/border-radius:50%/display:flex/color:white by _sass/_post.scss:314). The import-order collision (main.scss:16 post before :17 letter, equal specificity 0,1,0, letter wins) is a SYMPTOM of one name serving two structural roles",
+      "when": "the component is split",
+      "then": "each of the two structural roles SHALL be addressed by its own distinct block name",
+      "verify_method": "specified script asserts no class name is styled with both the badge signature (border-radius:50% + background) and the inline signature (bare margin-right + color) across _sass/; exit 0. NOT a cascade-order tweak and NOT an !important fix"
+    },
+    {
+      "id": "AC-302",
+      "given": "the inline-icon form is dominant (4 definitions, 21 of the 22 markup sites) while the badge form is the outlier (1 definition, 1 site)",
+      "when": "the inline-icon definitions are consolidated",
+      "then": "the inline icon SHALL have exactly one definition in the stylesheet sources",
+      "verify_method": "grep -rn for the inline-icon block's standalone definition in _sass/ returns exactly 1 match"
+    },
+    {
+      "id": "AC-303",
+      "given": "both badge foreground candidates were measured on the --ff-purple-light (#b19cd9) ground with scripts/lib/color-math.mjs: intended white = 2.43, actual --ff-purple-ink (#783cb4, forced by the later-imported _letter.scss:244) = 2.78, so the ACCIDENT IS BETTER THAN THE DESIGN and neither clears 3.0; #b19cd9 is not in declared_backgrounds so no test ever measured this badge in either state; the icon is DECORATIVE (adjacent \u003ch3 class='toc-title'\u003eContents\u003c/h3\u003e carries the meaning) so WCAG 1.4.11 does not bite",
+      "when": "the dual-component defect is repaired",
+      "then": "the repair SHALL NOT restore color: white on the badge ground",
+      "verify_method": "gate: the diff does not reintroduce color:white against an undarkened --ff-purple-light ground. D-D governs the final pair (owner-gated). NO 3.0/4.5 ratio threshold is asserted here - that would be a fabricated requirement for a decorative icon"
+    },
+    {
+      "id": "AC-304",
+      "given": "the decorative \u003ci class='fas fa-list-ul'\u003e at _layouts/post.html:107 lacks aria-hidden='true' and sits beside \u003ch3 class='toc-title'\u003eContents\u003c/h3\u003e, which carries the meaning (separate from the D-D contrast question; do not conflate)",
+      "when": "the post TOC header is rendered",
+      "then": "the decorative icon SHALL carry aria-hidden='true'",
+      "verify_method": "built _site post page: the TOC header \u003ci\u003e has aria-hidden='true'; npm run test:axe exits 0"
+    },
+    {
+      "id": "AC-305",
+      "given": ".skip-to-content is styled at _sass/_utilities.scss:203 but appears in NO markup - a missing WCAG 2.4.1 (Bypass Blocks) feature, NOT dead code",
+      "when": "any page is rendered",
+      "then": "that page SHALL expose a skip link targeting its main content",
+      "verify_method": "built _site: every page contains an \u003ca class='skip-to-content' href='#...'\u003e whose target id exists on the same page; npm run test:axe exits 0"
+    },
+    {
+      "id": "AC-306",
+      "given": "'.section-icon' (5 standalone definitions + 1 contextual at _sass/_post.scss:997) and '.section-title' (5 definitions) are GLOBAL selectors, so duplication is LIVE COLLISION rather than mere redundancy; other ranked candidates are .share-buttons/.share-button, .scroll-header/-title/-content, .reset-search-button, .grimoire-icon, .button-icon, and ~12 near-copy .hero-* blocks",
+      "when": "a component is extracted to a shared include",
+      "then": "that component SHALL have exactly one definition site in the stylesheet sources",
+      "verify_method": "specified script asserts each extracted block name has exactly 1 standalone definition across _sass/; the detector should read the COMPILED stylesheet, where the cascade is resolved (carried forward from rejected hypothesis H-D); exit 0"
+    },
+    {
+      "id": "AC-307",
+      "given": "P3 changes markup structure",
+      "when": "the a11y suite runs at the end of P3",
+      "then": "npm run test:a11y-static SHALL exit 0",
+      "verify_method": "npm run test:a11y-static; exit 0"
+    }
+  ],
+  "spec_ref": ".spectra/changes/normalize-p3/spec.md",
+  "supersedes": "normalize",
+  "drift_checked": true,
+  "has_code": true,
+  "memory_preflight": {
+    "ran": true,
+    "records": 2
+  }
+}

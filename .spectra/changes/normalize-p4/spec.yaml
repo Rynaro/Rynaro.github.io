@@ -1,0 +1,88 @@
+artifact: spec
+change_id: normalize-p4
+tier: full
+version: 0.1.0
+maker: vivi
+checker: kupo
+umbrella: normalize
+phase: 4
+title: Dead code removal
+complexity:
+  score: 7
+  verdict: extended
+depends_on:
+- normalize-p3
+criteria_source: .spectra/changes/normalize/normalize.criteria.md
+acceptance_checks:
+- id: AC-401
+  given: '''.hljs'' is styled at _sass/_post.scss:1146 while highlight.js is loaded nowhere in the repo,
+    and kramdown/rouge emits .highlight instead'
+  when: the dead rule is removed
+  then: _sass/ SHALL contain no .hljs rule
+  verify_method: grep -rn '\.hljs' _sass/ returns zero matches; npm run test:a11y-static exits 0
+- id: AC-402
+  given: --dnd-red is declared at _sass/_variables.scss:94 and mirrored by a manifest row at _data/palette-manifest.yml:148,
+    and scripts/palette-manifest.test.mjs:75 fails on a manifest row whose token is not declared in the
+    source, so it CANNOT be deleted alone
+  when: --dnd-red is deleted
+  then: its manifest row SHALL be deleted in the same commit
+  verify_method: npm run test:manifest exits 0 after the deletion; a source-only deletion fails the suite
+- id: AC-403
+  given: post-type-badge--{{ type_key }} (_includes/post-type-badge.html:19) and mastery-{{ skill.level
+    }} (about.html:197) are Liquid-interpolated class names that a naive grep reports as unused - the
+    TRAP that would delete live styles
+  when: dead-code detection runs
+  then: a Liquid-interpolated class SHALL NOT be reported as dead
+  verify_method: specified detector resolves {{ }} against _data/post_types.yml order and the skill levels
+    in about.html; a fixture asserts both names are classified LIVE
+- id: AC-404
+  given: .skip-to-content is a missing feature installed by AC-305, not dead code
+  when: dead-code removal runs
+  then: .skip-to-content SHALL be retained
+  verify_method: grep -rn 'skip-to-content' _sass/_utilities.scss still matches after P4; AC-305's markup
+    assertion still passes
+- id: AC-405
+  given: the HIGH-confidence dead set .architecture-icon, .hero-actions, .page-header, .post-toc-wrapper,
+    .col--offset-3
+  when: each is removed
+  then: each removal SHALL be justified by a detector run that resolves Liquid interpolation (AC-403)
+  verify_method: the detector reports each name as unreferenced in both markup and Liquid-resolved output
+    before its removal commit
+- id: AC-406
+  given: the MEDIUM-confidence set - the unused utility layer (d-flex, mb-1..4) and the mutually redundant,
+    both-unused .visually-hidden / .sr-only
+  when: the owner elects to remove the MEDIUM set
+  then: .visually-hidden and .sr-only SHALL NOT both be deleted, since the clip idiom is the standard
+    target for the AC-305 skip link and screen-reader-only text
+  verify_method: 'gate: at most one of the two is removed; the survivor retains its 11 !important clip
+    declarations (AC-212)'
+- id: AC-407
+  given: P4 removes code that should have no consumers
+  when: the a11y suite runs at the end of P4
+  then: npm run test:a11y-static SHALL exit 0
+  verify_method: npm run test:a11y-static; exit 0
+gates_must_stay_green:
+- npm run test:a11y-static
+gates_unavailable:
+- gate: npm run test:visual
+  reason: 'GAP-1: does not exist; no scripts/visual-baseline.mjs on any branch, no test:visual in package.json'
+blocked_on_p0: []
+criteria_sha256: 826b187d4d4d9edfac7a64e35dc22d3f8e3fdd73f936f9f8065c8c3571733a38
+gate_status:
+  ramza_lint: pass
+  ramza_ears_lint: pass (37 criteria)
+  esl_verify: OK (C1,C2a,C2b,C3 MUST; C7 SHOULD all pass — zero C7 failures)
+  critic: PENDING — author=ramza cannot self-approve (ramza-gate critic DENY); tier=full requires an independent
+    critic before phase A
+  confidence:
+    score: 75
+    verdict: VALIDATE
+    note: 'AUTHOR-SCORED, pre-critic. Prior art: the rebrand plan self-scored 84.25 and an independent
+      critic scored ~75 — expect this to move down, not up.'
+  phase: T (Test) — NOT assembled; A is gate-denied until a critic is recorded
+criteria_amendment:
+  from: e0bc0b1b27a38c95a6824e35a938b65ccfafa4b61a370d37c6a8d1d65c86d6b0
+  to: 826b187d4d4d9edfac7a64e35dc22d3f8e3fdd73f936f9f8065c8c3571733a38
+  reason: 'R1: P0 landed mid-session (GAP-1 resolved); AC-103 zero-diff premise falsified; AC-110/AC-111
+    added'
+  recorded_via: ramza-freeze --amend

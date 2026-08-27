@@ -14,7 +14,17 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function updateAnimations() {
+    // AC-024: no script-created animated node under a reduced-motion preference.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
     // Apply animations with more subtle effects on mobile
+    // AC-031: finite (2 bob cycles, then hold), not an infinite loop -- the
+    // alchemy-symbol/rune glyphs auto-start on page load in parallel with
+    // the hero name/subtitle/tagline, so WCAG 2.2.2 binds them the same way
+    // it binds the ring rotation below. Delay is capped (not unbounded by
+    // index) so delay + duration * iterations stays <= 5s.
     symbolNames.forEach((name, index) => {
       // Find the element
       let selector = `.alchemy-symbol--${name}, .rune--${name}`;
@@ -22,11 +32,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
       if (element) {
         // Set unique animation delays to stagger movement
-        const delay = (index * 0.5) % 2; // Stagger between 0-2 seconds
-        const duration = isMobile ? (3 + (index % 2)) : (3 + (index % 3)); // Shorter on mobile
+        const delay = Math.min(index * 0.2, 1); // Stagger, capped at 1s
+        const duration = isMobile ? 1.6 : 1.6 + (index % 2) * 0.3; // 1.6-1.9s
 
-        // Apply the animation style directly
-        element.style.animation = `float-glyphs ${duration}s ease-in-out ${delay}s infinite`;
+        // Apply the animation style directly -- 2 iterations (one full bob,
+        // there-and-back) then stop; delay(<=1) + duration*2(<=3.8) <= 4.8s.
+        element.style.animation = `float-glyphs ${duration}s ease-in-out ${delay}s 2`;
       }
     });
   }

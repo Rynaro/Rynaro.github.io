@@ -2,18 +2,30 @@
 title: Henrique A. Lavezzo
 author: Henrique A. Lavezzo
 email: hi@hlavezzo.me
+# Kept in sync by hand with _data/identity.yml's `tagline` (the real single source of
+# truth, AC-001). _config.yml is plain YAML -- Jekyll does not run Liquid over it, so it
+# cannot reference `site.data` here. jekyll-feed's <subtitle> reads `site.description`
+# directly; this is the one place that duplication is unavoidable. If _data/identity.yml's
+# tagline ever changes, update this too.
 description: >-
-  A Code Alchemist with a passion for weaving tales and inscribing transmutation circles in pure code.
+  An engineering lead who never stopped shipping — a Code Alchemist transmuting
+  chaos into scalable systems, now conducting AI familiars in the open.
 baseurl: ""
 url: "https://hlavezzo.me"
 github_username: Rynaro
-google_analytics: "UA-135917274-1"
+# Plausible Analytics (cookie-free, no consent banner) -- replaces the retired
+# UA-135917274-1 Universal Analytics property (sunset 2023, D8/AC-009). The owner must
+# have hlavezzo.me registered as a site in their Plausible account for this to collect
+# anything; see _includes/head/analytics.html.
+plausible_domain: "hlavezzo.me"
 
 # Build settings
 permalink: /:year/:month/:day/:title
 markdown: kramdown
 plugins:
   - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-redirect-from
   - jemoji
 
   # Sass settings
@@ -55,8 +67,23 @@ exclude:
   - vendor
   - .git
   - README.md
+  - CONVENTIONS.md
   - package.json
   - package-lock.json
   - docker-compose.yml
   - Dockerfile
   - .gitignore
+  # AC-039 / Story 4.10b: CI-only config override (see _config.ci.yml's own
+  # header) and the verification scripts it supports -- never shipped.
+  - _config.ci.yml
+  - scripts
+  - .pa11yci
+  # Agent and tooling configuration — Eidolons orchestrator, routing cortex, and
+  # local development scripts. These are never part of the published site.
+  - AGENTS.md
+  - CLAUDE.md
+  - EIDOLONS.md
+  - eidolons.yaml
+  - eidolons.lock
+  - eidolons.mcp.lock
+  - jex.sh

@@ -4,9 +4,9 @@ author: Henrique A. Lavezzo
 title:  "Setup simple SFTP server in minutes"
 resume: "Creating SFTP like a pro"
 date:   2019-12-12 14:25:55 -0300
-comments: true
 categories: tech
 tags: linux sysadmin sftp
+type: scroll
 ---
 
 ## Context

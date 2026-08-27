@@ -1,0 +1,30 @@
+# Display metadata for post-type badges (Story 3.1, AC-017; distinctness for the
+# 2026 re-type, AC-021). Phase 0's CONVENTIONS.md fixed the closed five-value
+# vocabulary; this file only supplies label/icon/order for rendering it --
+# `_includes/post-type-badge.html` falls back to rendering nothing for a `type:`
+# outside this closed set (or an untyped post), so an unrecognized value never
+# breaks the build and never fabricates a badge CONVENTIONS.md doesn't license.
+order:
+  - scroll
+  - cantrip
+  - log
+  - distillation
+  - transmutation
+labels:
+  scroll: "Scroll"
+  cantrip: "Cantrip"
+  log: "Alchemist's Log"
+  distillation: "Distillation"
+  transmutation: "Transmutation"
+icons:
+  scroll: "fas fa-scroll"
+  cantrip: "fas fa-bolt"
+  log: "fas fa-feather-alt"
+  distillation: "fas fa-flask"
+  transmutation: "fas fa-hat-wizard"
+glosses:
+  scroll: "The handcrafted long-form essay"
+  cantrip: "A quick, small technique or tip"
+  log: "A cadence-anchor journal entry"
+  distillation: "A condensed digest or summary of a broader topic"
+  transmutation: "A research-dump / AI-assisted deep-dive"

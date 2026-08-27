@@ -1,0 +1,119 @@
+/* Shared styling for the small utility pages added in Phase 2 (Story 2.3/2.4):
+   /now, /uses, /start-here. Deliberately minimal -- these reuse .rpg-hero,
+   .rpg-scrolls, .section-title, and (on /start-here) the .related-scroll-* card
+   from _post.scss rather than introducing a parallel component set. */
+
+@use "../settings/variables" as *;
+
+/* /now -- last-updated badge (AC-014 requires it be visible, not just present) */
+.now-last-updated {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding: 0.4rem 1rem;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: $radius-20;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.now-content,
+.uses-familiars-intro,
+.uses-familiars-note,
+.codex-content,
+.log-content {
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  color: var(--text-secondary, #5a5a5a);
+  line-height: 1.7;
+
+  p {
+    margin-bottom: 1.25rem;
+  }
+
+  // AC-039-adjacent (1.4.1 Use of Color / axe `link-in-text-block`): a
+  // hover/focus-only underline is invisible to axe's static analysis (and
+  // to a sighted mouse user who never hovers this exact link) -- the
+  // default, unfocused state is what "distinguishable by more than color
+  // alone" actually binds. Underlined by default now; kept subtly lighter
+  // via text-decoration-color so it doesn't read as heavier than the
+  // themed nav's intentionally-underline-free links.
+  a {
+    color: var(--ff-purple-ink);
+    text-decoration: underline;
+    text-decoration-color: rgba(120, 60, 180, 0.35);
+    text-underline-offset: 2px;
+
+    &:hover,
+    &:focus-visible {
+      text-decoration-color: currentColor;
+    }
+  }
+}
+
+.now-disclaimer {
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+/* /uses -- daily-driver grid */
+.uses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+}
+
+.uses-category {
+  background: var(--parchment-light, #f8f5e6);
+  border-radius: $radius-10;
+  padding: 1.5rem;
+  box-shadow: var(--scroll-shadow, 0 5px 20px rgba(58, 41, 33, 0.1));
+
+  h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--dnd-brown);
+    margin-bottom: 1rem;
+
+    i {
+      color: var(--ff-purple-ink);
+    }
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      padding: 0.4rem 0;
+      color: var(--text-secondary, #5a5a5a);
+      line-height: 1.5;
+
+      i {
+        width: 1.25rem;
+        color: var(--ff-purple-ink);
+      }
+    }
+  }
+}
+
+.uses-category--familiars {
+  grid-column: 1 / -1;
+}
+
+.uses-familiars-intro,
+.uses-familiars-note {
+  margin-left: 0;
+  margin-right: 0;
+  max-width: none;
+}
+
+/* /start-here -- section rhythm when multiple curated groups stack */
+.start-here-scrolls {
+  margin-bottom: 3rem;
+}

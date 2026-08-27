@@ -1,0 +1,112 @@
+// ==========================================================================
+// SELF-HOSTED WEB FONTS
+// ==========================================================================
+//
+// self-host-fonts change: replaces the Google Fonts CDN with locally-vendored
+// woff2 files under assets/fonts/.
+// Rationale: visitor privacy (no more IP leak to Google on every page load --
+// the site already moved to cookie-free Plausible for the same reason),
+// render performance (removes render-blocking third-party requests), and
+// visual-baseline determinism (the CDN's network race was the source of the
+// 1-50px page-height drift between baseline runs).
+//
+// Imported EARLY in assets/css/main.scss (before `base`, which is the first
+// partial to reference these families) so the families are registered before
+// anything consumes them.
+//
+// Every @font-face block below is a byte-for-byte mirror of what the Google
+// Fonts css2 endpoint itself served for this exact family/weight/display
+// request (same src file, same unicode-range, same font-display) -- only
+// the URL now points at the vendored local copy. This is a deliberate
+// zero-diff-in-behavior swap: same bytes, same weights, same family names,
+// just fetched from same-origin instead of a third party.
+//
+// Inter and Roboto are shipped as ONE variable-font woff2 per family (each
+// covers the wght axis 100-900 -- confirmed via the font's `fvar` table);
+// Google's own CSS declares one @font-face block per static weight against
+// that same variable file rather than a single `font-weight: 100 900` range,
+// so we mirror that exact structure here for parity with the CDN behavior
+// being replaced. Nothing You Could Do ships only weight 400 (its only cut).
+//
+// unicode-range is the "latin" subset (not latin-ext) -- sufficient for this
+// English-language site and the smallest of the subsets Google offers.
+
+// Inter -- body/UI sans-serif (_base.scss)
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('../fonts/inter-latin-var.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/inter-latin-var.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../fonts/inter-latin-var.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../fonts/inter-latin-var.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+// Roboto -- secondary sans-serif fallback (_base.scss, _notebook.scss)
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url('../fonts/roboto-latin-var.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url('../fonts/roboto-latin-var.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url('../fonts/roboto-latin-var.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+// Nothing You Could Do -- decorative script accent (_about.scss, _home.scss, _layout.scss)
+@font-face {
+  font-family: 'Nothing You Could Do';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/nothing-you-could-do-latin-400.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+// Font Awesome is NOT declared here: it ships as its own vendored, pre-built
+// stylesheet (assets/fonts/fontawesome.min.css, linked directly in
+// _includes/head/fonts.html) rather than through the Sass pipeline -- it is
+// a complete third-party CSS package (icon-content rules, sizing/animation
+// utilities, the v4/v5-compat family aliases), not house-authored Sass, so
+// running it through this build would add compile cost for zero benefit.

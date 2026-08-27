@@ -2,17 +2,27 @@
 # Main Sass file with front matter for Jekyll processing
 ---
 
-// Import partials
-@import "variables";
-@import 'breakpoints';
-@import "base";
-@import "layout";
-@import "navigation";
-@import "components";
-@import "home";
-@import "about";
-@import "notebook";
-@import "laboratory";
-@import "post";
-@import "letter";
-@import "utilities";
+// Module partials (converted from @import per normalize-p2/AC-208). @use
+// loads each module ONCE, emitting its CSS at the FIRST @use encountered in
+// compilation order -- so this list's order IS the emitted CSS order, exactly
+// as the old @import list was. Keep this order in sync with any partial's own
+// @use of the same module (each partial only brings members into scope; it
+// does not re-emit or reorder CSS already loaded here first).
+@use "settings/variables";
+@use "tools/breakpoints";
+// self-host-fonts: @font-face declarations must land before `base` (the
+// first partial that sets `font-family: 'Inter', ...` etc.) so the families
+// are registered before anything consumes them.
+@use "generic/fonts";
+@use "generic/base";
+@use "objects/layout";
+@use "objects/navigation";
+@use "components/components";
+@use "pages/home";
+@use "pages/about";
+@use "pages/notebook";
+@use "pages/laboratory";
+@use "pages/post";
+@use "pages/letter";
+@use "pages/pages";
+@use "utilities/utilities";

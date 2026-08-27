@@ -1,0 +1,29 @@
+{
+  "esl_version": "1.1",
+  "change_id": "rebrand-p0",
+  "status": "verified",
+  "tier": "lite",
+  "maker": "vivi",
+  "checker": "kupo",
+  "acceptance_checks": [
+    {
+      "id": "AC-001",
+      "then": "the site SHALL define the canonical compound identity line in exactly one `_data` field consumed verbatim by the homepage hero, the About page, and the meta description",
+      "verify_method": "grep finds the identity string defined once under `_data/`; index.html, about.html, `_includes/head/meta.html` each reference that field"
+    },
+    {
+      "id": "AC-002",
+      "then": "the site SHALL present one canonical job title identically in `_data/character_build.yml` and `_data/jobs.yaml`, replacing the Director-of-Development vs Director-of-Engineering split",
+      "verify_method": "the job title in character_build.yml equals jobs.yaml[0].title; `grep -rn \"Director of\" _data` yields a single distinct title"
+    },
+    {
+      "id": "AC-003",
+      "then": "the repository SHALL document the five themed post-types as the closed set of allowed `type` front-matter values in a committed conventions file",
+      "verify_method": "a conventions doc enumerates {scroll, cantrip, log, distillation, transmutation} as the permitted `type:` values"
+    }
+  ],
+  "spec_ref": ".claude/rebrand/rebrand-plan.md",
+  "supersedes": "rebrand",
+  "drift_checked": true,
+  "has_code": true
+}

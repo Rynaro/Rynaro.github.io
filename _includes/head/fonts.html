@@ -1,7 +1,19 @@
-<!-- Google Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Nothing+You+Could+Do&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<!--
+  self-host-fonts: fonts are vendored locally under assets/fonts/ -- no more
+  Google Fonts CDN or Font Awesome (cdnjs) CDN requests of any kind. This
+  fixes visitor privacy (no third-party IP leak on every page load, the same
+  reason the site moved to cookie-free Plausible), render performance (three
+  fewer render-blocking third-party requests), and visual-baseline
+  determinism (the CDN race was the source of the page-height drift between
+  baseline runs). preconnect/preload hints to those third parties are gone
+  along with the requests they were hinting at.
 
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  Inter / Roboto / Nothing You Could Do: declared as @font-face rules in
+  _sass/_fonts.scss (imported early in assets/css/main.scss), not linked
+  here -- they ship inside main.css so the browser doesn't need a second
+  stylesheet request to discover them.
+-->
+
+<!-- Font Awesome 6.4.2 (Free) -- vendored verbatim from cdnjs, webfonts co-located
+     in assets/fonts/; see assets/fonts/fontawesome.min.css for provenance/license. -->
+<link rel="stylesheet" href="{{ "/assets/fonts/fontawesome.min.css" | relative_url }}">

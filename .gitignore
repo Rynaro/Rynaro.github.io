@@ -3,6 +3,8 @@ _site
 .jekyll-cache
 .jekyll-metadata
 vendor
+node_modules
+.bundle
 
 # <!-- eidolon:gitignore start -->
 # Managed by eidolons. Recreated by `eidolons sync`. Do not edit between markers.

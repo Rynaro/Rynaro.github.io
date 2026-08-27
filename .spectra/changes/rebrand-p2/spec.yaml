@@ -1,0 +1,241 @@
+# spec.yaml — ESL machine-readable contract for change `rebrand-p2`.
+# PER-PHASE PROJECTION of the frozen umbrella `rebrand` (v0.4.0).
+# GENERATED — DO NOT HAND-EDIT. Introduces no requirement the plan does not carry.
+# Where this file and the plan could disagree, THE PLAN AND THE FROZEN CRITERIA GOVERN.
+spec_version: '1.0'
+kind: spec
+eidolon: ramza
+version: 0.4.0
+created_at: '2026-07-16'
+projection_of:
+  umbrella_change_id: rebrand
+  umbrella_spec: .spectra/changes/rebrand/spec.yaml
+  phase: 2
+  method: mechanical filter of the frozen criteria through phases[2].acceptance; round-trip verified against
+    the frozen source
+  governs: THE PLAN AND THE FROZEN CRITERIA FILE GOVERN where this file could disagree
+esl:
+  change_id: rebrand-p2
+  tier: full
+  maker: vivi
+  checker: kupo
+  has_code: true
+  status_at_emission: proposed
+  spec_ref: .claude/rebrand/rebrand-plan.md
+  supersedes: rebrand
+plan:
+  name: rebrand
+  version: 0.4.0
+  site: hlavezzo.me
+  target_repos:
+  - Rynaro.github.io
+  persona: Code Alchemist (Henrique A. Lavezzo / Rynaro)
+  stories_count: 33
+  phases_count: 6
+  defects_count: 22
+  intent_class: STRATEGIC
+  doctrine: persona-as-moat; substance-in-skin; blog-as-alchemist-journal; AI-into-the-frame; fence-the-gimmick
+criteria:
+  count: 7
+  acceptance:
+  - AC-012
+  - AC-013
+  - AC-014
+  - AC-015
+  - AC-016
+  - AC-023
+  - AC-024
+  source: .claude/rebrand/rebrand.criteria.md
+  sha256: 393f1e5948ef9e55a9b3ca812c11034942d1c2b9b2e8a9f1655f0a3408335fe5
+  frozen_at: '2026-07-16T17:06:43Z'
+  umbrella_total: 59
+  distribution:
+    phase_0: 3
+    phase_1: 12
+    phase_2: 7
+    phase_3: 7
+    phase_4a: 7
+    phase_4b: 12
+    phase_5: 11
+    total: 59
+  partition: 3/12/7/7/19/11 = 59 across rebrand-p0..p5; zero overlap, zero gaps
+  inlined_in: spec.md
+  note: Bodies in spec.md are byte-identical slices of the frozen source. Re-rendering all six per-phase
+    spec.md reproduces sha256 393f1e59 exactly.
+phase:
+  id: 2
+  name: Content Architecture & Navigability
+  headline: true
+  stories:
+  - '2.1'
+  - '2.2'
+  - '2.3'
+  - '2.4'
+  - '2.5'
+  - '2.6'
+  - '2.7'
+  acceptance:
+  - AC-012
+  - AC-013
+  - AC-014
+  - AC-015
+  - AC-016
+  - AC-023
+  - AC-024
+  depends_on:
+  - 0
+  - 1
+  defects:
+  - D5
+  - D7
+  - D15
+  - D16
+  note: 'Ruling 2 = build-time transmutation. Marquee: 2.2 (AC-013 server-rendered categories), 2.5 (AC-023
+    TOC, kills D15), 2.6 (AC-024 sitewide motion guards), 2.7 (build-time nav state). Narrate as CRAFT,
+    never as speed.'
+dependency_spine: P0 unblocks all -> P1 stabilizes before P2 expands -> P3 needs P0's vocabulary + P2's
+  taxonomy -> P4 is craft on a stable base -> P5 is indulgence, last, optional
+dependency_note: '''Independently shippable'' overstates it: every phase depends on Phase 0, directly
+  or transitively. These six changes are a DAG shippable in dependency order, not in an arbitrary one.
+  depends_on is carried here and restated in prose in spec.md so an executor reading only this folder
+  cannot miss it.'
+invariants:
+- id: INV-1
+  rule: Ruling 2 is justified on CORRECTNESS + A11Y + SEO, NEVER on speed.
+  evidence: The heaviest page ships 4,778 B gzipped. There was never a performance problem.
+  status: Critic verified ZERO perf residue across 17 grep hits. Do not reintroduce any.
+  note: OWNER 8's 'insight' licenses CRAFT satisfaction only -- not a revival of the withdrawn performance
+    claim.
+- id: INV-2
+  rule: 'The retracted figures must never be published as fact: 7,862 B / 7.9 KB / 17.8x / 18.25x.'
+  correct:
+    per_file_sum_b: 11028
+    heaviest_page_b: 4778
+    ratios:
+    - 30.0
+    - 13.0
+  enforced_by: AC-059 greps the post for exactly the retracted four and fails on any hit.
+  note: They are enumerated in opal_measurement.RETRACTED for RECOGNITION -- the mechanism that keeps
+    them out. Never restate them as live figures.
+- id: INV-3
+  rule: The Formspree form-hash ID is an OWNER-SUPPLIED CREDENTIAL; the contact-form story cannot complete
+    without it.
+  see: external_dependencies
+- id: INV-4
+  rule: Phase 5 is OPTIONAL and OWNER-GATED, hard-gated behind Phase 1 (EC-1), sequenced after Phase 4;
+    AC-053 requires a dated `go` record predating any _opal/ commit.
+  disposition: probably not, and that is a fine outcome
+  note: OWNER 8's reframe-as-insight closes FORGE RISK-5 and narrows Phase 5's justification to JOY ALONE.
+traps:
+- AC-024 does NOT discharge WCAG 2.2.2 -- that is AC-031. prefers-reduced-motion is not a 2.2.2 mechanism.
+  Two defects, two criteria, two phases.
+- Do NOT sell Ruling 2 (Phase 2 JS reduction) as a performance win. The heaviest page ships 4,778 B gz.
+- Do NOT publish the four retracted figures. See invariants.INV-2 / opal_measurement.RETRACTED.
+- opal -c appends a source map by default -- --no-source-map or the payload 3.5x's silently.
+- The require list IS the budget (~4,212 B each), not the feature count (~15.6 B gz/line). Net headroom
+  is ~6,238 B, not 10,147.
+- home.js is NOT an Opal migration target. Ever. (EC-2/EC-4)
+- AC-040 (/accessibility) is Phase 4 ONLY and ships LAST -- a claim the site doesn't meet is worse than
+  no page.
+- D16 is a FIVE-file defect (home, about, letter, notebook, laboratory), not home.js alone.
+- '--dnd-ink is 10.43:1 on cream, NOT 12.7:1 (that is --ink-color #3a2921). Figures from the research''s
+  PROSE are unreliable; figures from its TABLES reproduce exactly.'
+- EC-13 is bound by AC-059, NOT AC-046. AC-046 = the value floor (is it worth it?); AC-059 = the measurement.
+  v0.3 collapsed the two and LOST EC-13 entirely.
+- 'The palette manifest is TWO-AXIS: role {ornament,logotype,content} + obligation {ink,exempt}, content
+  <-> ink. A one-axis read reopens the logotype hatch that took 4a green on an illegible site.'
+- AC-057 tests SET INCLUSION against _data/skills.yml -- NOT a literal keyword string, and NOT character_build.yml
+  (zero language names). Reordering the same four words defeated the v0.3 check.
+- '''One page-specific file per page'' is FALSE -- About loads two (exp-bar.js + about.js = 4,113 B).
+  Measure page totals; never infer them.'
+- The reframe landing as 'insight' [OWNER 8] licenses CRAFT satisfaction ONLY. DECISION-C stands.
+- The Formspree form ID is a CREDENTIAL ONLY THE OWNER CAN SUPPLY. D9 cannot be executor-closed. Do not
+  let it block the rest of Story 1.1.
+declared_scope:
+- _config.yml
+- _data/*
+- _layouts/*
+- _includes/*
+- _posts/*
+- _sass/*
+- assets/images/*
+- assets/js/*
+- _opal/*
+- .github/workflows/*
+- index.html
+- about.html
+- notebook.html
+- laboratory.html
+- letter.html
+- 404.html
+- now.*
+- uses.*
+- start-here.*
+- accessibility.*
+- Gemfile
+- Gemfile.lock
+- package.json
+- .pa11yci
+- robots.txt
+executor_hint: micro = economy/Haiku single-file mechanical; feature/mid = Sonnet template logic; frontier
+  for persona copy (About eras, identity line, /accessibility, the Transmutation post)
+provenance:
+  chain: scout -> research -> FORGE -> measurement -> plan -> 3 critic passes -> owner decisions -> this
+    spec
+  artifacts:
+    scout:
+      path: .claude/rebrand/scout-report.md
+      note: ATLAS; 45 anchored findings; 45/45 cited
+    research:
+    - .claude/rebrand/research-personal-site.md
+    - .claude/rebrand/research-blog-journal.md
+    - .claude/rebrand/research-ui-a11y.md
+    forge:
+      path: .claude/rebrand/forge-opal-verdict.md
+      version: '0.2'
+      confidence: 90
+      verdict: BOUNDED-ADOPT
+      binding: true
+    measurement:
+      path: .claude/rebrand/opal-measurement.md
+      note: corrected; refuted the plan's own headline numbers
+    plan:
+      path: .claude/rebrand/rebrand-plan.md
+      version: 0.4.0
+      frozen: true
+    critique:
+      path: .claude/rebrand/plan-v0.2-critique.md
+      passes: 3
+      final_verdict: APPROVE - executor-ready
+    owner_decisions:
+      path: .claude/rebrand/owner-decisions.md
+      at: '2026-07-16'
+      binding: true
+      closed: 8/8
+    state:
+      path: .claude/rebrand/rebrand.state.json
+      note: the audit trail; authoritative for position
+    state_history:
+      path: .claude/rebrand/rebrand-v0.2.state.json
+      note: preserved -- write-new, never hard-delete
+    calibration:
+      path: .claude/rebrand/ramza-calibration.jsonl
+  hop_verification:
+  - 'ramza-freeze --verify -> ok: criteria match frozen hash (393f1e59...)'
+  - 'ramza-ears-lint -> ok: 59 criteria pass EARS lint'
+  - AC bodies in spec.md diffed against the frozen criteria file -> 59/59, ZERO normative drift
+  open_at_this_hop:
+  - NONE BLOCKING. The plan's stated open item -- 'constraint_compliance 75 has no independent reading;
+    the prescribed close is a targeted re-check of AC-026/047/048/057/059 only' -- was performed by critic
+    pass 3, which returned APPROVE - executor-ready ('All five bind').
+  - 'One executor dependency remains and is not resolvable by any executor: the Formspree form ID [OWNER
+    6].'
+  - 'ATLAS owes one probe: opal-browser gz cost (FORGE RISK-6) -- Phase 5 only, Story 5.1, and Phase 5
+    is optional.'
+downstream:
+  next: orchestrator owns the lifecycle transition (CRITIQUE -> deliberated | DELEGATE -> in_progress).
+    This hop performed NO transition.
+  implementer: vivi
+  checker: kupo
+  note: The critic states a third full critique is NOT required and another rewrite emphatically is not
+    -- pass 3 already performed the prescribed targeted re-check and closed the cycle. Hand it to an executor.

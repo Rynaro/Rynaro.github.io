@@ -1,17 +1,22 @@
 document.addEventListener('DOMContentLoaded', function() {
-  // Filter functionality
-  const categoryTabs = document.querySelectorAll('.category-tab');
+  // Filter functionality (search only -- category filtering is now real navigation
+  // between server-rendered category pages: AC-013/Ruling 2, `_includes/notebook/category-tabs.html`)
   const scrollItems = document.querySelectorAll('.scroll-item');
   const searchInput = document.getElementById('scroll-search');
   const emptyArchive = document.querySelector('.empty-archive');
   const resetButton = document.querySelector('.reset-search-button');
 
-  // Animate glyphs
+  // Animate glyphs (AC-024: no script-created animated node under reduced motion;
+  // AC-031: finite drift-settle, not an infinite loop -- see _sass/_base.scss for the
+  // keyframe and the collision it replaced. Delay is capped so total run time
+  // (delay + duration) stays <= 5s regardless of glyph count.)
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const glyphs = document.querySelectorAll('.glyph');
   glyphs.forEach((glyph, index) => {
-    const delay = index * 0.7;
-    const duration = 3 + Math.random() * 2;
-    glyph.style.animation = `float ${duration}s ease-in-out ${delay}s infinite alternate`;
+    if (prefersReducedMotion) return;
+    const delay = Math.min(index * 0.15, 1.2);
+    const duration = 1.8 + Math.random() * 1;
+    glyph.style.animation = `drift-settle ${duration}s ease-out ${delay}s 1 forwards`;
   });
 
   // Add rarity classes and effects
@@ -28,26 +33,23 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  // Filter scrolls by category and search term
+  // Filter scrolls by search term (category is now fixed per-page -- see the tab bar note above)
   function filterScrolls() {
-    const activeCategory = document.querySelector('.category-tab.active').getAttribute('data-category');
     const searchTerm = searchInput.value.toLowerCase();
 
     let visibleCount = 0;
 
     scrollItems.forEach(item => {
-      const category = item.getAttribute('data-category');
       const title = item.querySelector('.scroll-title').textContent.toLowerCase();
       const excerpt = item.querySelector('.scroll-excerpt').textContent.toLowerCase();
       const tags = Array.from(item.querySelectorAll('.scroll-tag')).map(tag => tag.textContent.toLowerCase());
 
-      const matchesCategory = activeCategory === 'all' || category === activeCategory;
       const matchesSearch = searchTerm === '' ||
                           title.includes(searchTerm) ||
                           excerpt.includes(searchTerm) ||
                           tags.some(tag => tag.includes(searchTerm));
 
-      if (matchesCategory && matchesSearch) {
+      if (matchesSearch) {
         item.classList.remove('hidden');
         visibleCount++;
       } else {
@@ -56,47 +58,30 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Show empty state if no results
-    emptyArchive.style.display = visibleCount === 0 ? 'flex' : 'none';
+    if (emptyArchive) {
+      emptyArchive.style.display = visibleCount === 0 ? 'flex' : 'none';
+    }
   }
 
-  // Tab click event
-  categoryTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      // Update active tab
-      categoryTabs.forEach(t => {
-        t.classList.remove('active');
-        t.setAttribute('aria-selected', 'false');
-      });
-      tab.classList.add('active');
-      tab.setAttribute('aria-selected', 'true');
-
-      // Filter scrolls
-      filterScrolls();
-    });
-  });
-
   // Search input event
-  searchInput.addEventListener('input', filterScrolls);
+  if (searchInput) {
+    searchInput.addEventListener('input', filterScrolls);
+  }
 
   // Reset search button
   if (resetButton) {
     resetButton.addEventListener('click', () => {
-      searchInput.value = '';
-      categoryTabs.forEach(tab => {
-        if (tab.getAttribute('data-category') === 'all') {
-          tab.classList.add('active');
-          tab.setAttribute('aria-selected', 'true');
-        } else {
-          tab.classList.remove('active');
-          tab.setAttribute('aria-selected', 'false');
-        }
-      });
+      if (searchInput) {
+        searchInput.value = '';
+      }
       filterScrolls();
     });
   }
 
   // Initialize with all scrolls visible
-  filterScrolls();
+  if (searchInput) {
+    filterScrolls();
+  }
 
   // Add hover effects
   const scrollCards = document.querySelectorAll('.scroll-card');

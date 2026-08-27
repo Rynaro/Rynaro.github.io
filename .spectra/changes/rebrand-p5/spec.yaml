@@ -1,0 +1,454 @@
+# spec.yaml — ESL machine-readable contract for change `rebrand-p5`.
+# PER-PHASE PROJECTION of the frozen umbrella `rebrand` (v0.4.0).
+# GENERATED — DO NOT HAND-EDIT. Introduces no requirement the plan does not carry.
+# Where this file and the plan could disagree, THE PLAN AND THE FROZEN CRITERIA GOVERN.
+spec_version: '1.0'
+kind: spec
+eidolon: ramza
+version: 0.4.0
+created_at: '2026-07-16'
+projection_of:
+  umbrella_change_id: rebrand
+  umbrella_spec: .spectra/changes/rebrand/spec.yaml
+  phase: 5
+  method: mechanical filter of the frozen criteria through phases[5].acceptance; round-trip verified against
+    the frozen source
+  governs: THE PLAN AND THE FROZEN CRITERIA FILE GOVERN where this file could disagree
+esl:
+  change_id: rebrand-p5
+  tier: full
+  maker: vivi
+  checker: kupo
+  has_code: true
+  status_at_emission: proposed
+  spec_ref: .claude/rebrand/rebrand-plan.md
+  supersedes: rebrand
+plan:
+  name: rebrand
+  version: 0.4.0
+  site: hlavezzo.me
+  target_repos:
+  - Rynaro.github.io
+  persona: Code Alchemist (Henrique A. Lavezzo / Rynaro)
+  stories_count: 33
+  phases_count: 6
+  defects_count: 22
+  intent_class: STRATEGIC
+  doctrine: persona-as-moat; substance-in-skin; blog-as-alchemist-journal; AI-into-the-frame; fence-the-gimmick
+criteria:
+  count: 11
+  acceptance:
+  - AC-041
+  - AC-042
+  - AC-043
+  - AC-044
+  - AC-045
+  - AC-046
+  - AC-050
+  - AC-051
+  - AC-052
+  - AC-053
+  - AC-059
+  source: .claude/rebrand/rebrand.criteria.md
+  sha256: 393f1e5948ef9e55a9b3ca812c11034942d1c2b9b2e8a9f1655f0a3408335fe5
+  frozen_at: '2026-07-16T17:06:43Z'
+  umbrella_total: 59
+  distribution:
+    phase_0: 3
+    phase_1: 12
+    phase_2: 7
+    phase_3: 7
+    phase_4a: 7
+    phase_4b: 12
+    phase_5: 11
+    total: 59
+  partition: 3/12/7/7/19/11 = 59 across rebrand-p0..p5; zero overlap, zero gaps
+  inlined_in: spec.md
+  note: Bodies in spec.md are byte-identical slices of the frozen source. Re-rendering all six per-phase
+    spec.md reproduces sha256 393f1e59 exactly.
+phase:
+  id: 5
+  name: The Transmutation Circle
+  optional: true
+  owner_gated: true
+  stories:
+  - '5.0'
+  - '5.1'
+  - '5.2'
+  - '5.3'
+  - '5.4'
+  acceptance:
+  - AC-041
+  - AC-042
+  - AC-043
+  - AC-044
+  - AC-045
+  - AC-046
+  - AC-050
+  - AC-051
+  - AC-052
+  - AC-053
+  - AC-059
+  depends_on:
+  - 1
+  sequence_after:
+  - 4
+  recommended_after:
+  - 2
+  defects:
+  - D18
+  realistic_disposition: probably not, and that is a fine outcome
+  justification_scope: joy alone -- the island no longer carries C7 (owner joy / craft-identity) because
+    Ruling 2 now does
+  entry_gate: AC-053 -- a committed, DATED `go` record whose timestamp PRECEDES the first _opal/ commit.
+    A `no-go` followed by any _opal/ commit FAILS.
+  deliverable: the POST, not the widget
+  budget:
+    ceiling_gz_kib: 150
+    scope: PAGE_TOTAL_not_artifact
+    measured_artifact_gz_b: 143453
+    net_headroom_b:
+      laboratory_host: 6238
+      bare_page: 7858
+    raise: FORBIDDEN
+    note: one require ~4,212 B, so at 6,238 a second require consumes most of the budget and RC-7 fires.
+      MEASURE the page total; never infer it.
+  mandatory_flags:
+  - --no-source-map
+  recommended_flags:
+  - --no-method-missing
+  acceptance_constraints:
+  - EC-1
+  - EC-2
+  - EC-3
+  - EC-4
+  - EC-5
+  - EC-6
+  - EC-7a
+  - EC-7b
+  - EC-7c
+  - EC-7d
+  - EC-9
+  - EC-10
+  - EC-11
+  - EC-12
+  - EC-13
+  discharged_constraints:
+  - id: EC-8
+    conditional_on: RC-2
+    recheck: any major Ruby/Opal upgrade
+    verified_at: opal 1.8.3, 2026-07-16
+    note: point-in-time; Phase 5 is sequenced LAST, which makes RC-2 live
+  reversal_conditions:
+  - RC-1
+  - RC-2
+  - RC-3
+  - RC-5
+  - RC-6
+  - RC-7
+  - RC-8
+dependency_spine: P0 unblocks all -> P1 stabilizes before P2 expands -> P3 needs P0's vocabulary + P2's
+  taxonomy -> P4 is craft on a stable base -> P5 is indulgence, last, optional
+dependency_note: '''Independently shippable'' overstates it: every phase depends on Phase 0, directly
+  or transitively. These six changes are a DAG shippable in dependency order, not in an arbitrary one.
+  depends_on is carried here and restated in prose in spec.md so an executor reading only this folder
+  cannot miss it.'
+invariants:
+- id: INV-1
+  rule: Ruling 2 is justified on CORRECTNESS + A11Y + SEO, NEVER on speed.
+  evidence: The heaviest page ships 4,778 B gzipped. There was never a performance problem.
+  status: Critic verified ZERO perf residue across 17 grep hits. Do not reintroduce any.
+  note: OWNER 8's 'insight' licenses CRAFT satisfaction only -- not a revival of the withdrawn performance
+    claim.
+- id: INV-2
+  rule: 'The retracted figures must never be published as fact: 7,862 B / 7.9 KB / 17.8x / 18.25x.'
+  correct:
+    per_file_sum_b: 11028
+    heaviest_page_b: 4778
+    ratios:
+    - 30.0
+    - 13.0
+  enforced_by: AC-059 greps the post for exactly the retracted four and fails on any hit.
+  note: They are enumerated in opal_measurement.RETRACTED for RECOGNITION -- the mechanism that keeps
+    them out. Never restate them as live figures.
+- id: INV-3
+  rule: The Formspree form-hash ID is an OWNER-SUPPLIED CREDENTIAL; the contact-form story cannot complete
+    without it.
+  see: external_dependencies
+- id: INV-4
+  rule: Phase 5 is OPTIONAL and OWNER-GATED, hard-gated behind Phase 1 (EC-1), sequenced after Phase 4;
+    AC-053 requires a dated `go` record predating any _opal/ commit.
+  disposition: probably not, and that is a fine outcome
+  note: OWNER 8's reframe-as-insight closes FORGE RISK-5 and narrows Phase 5's justification to JOY ALONE.
+traps:
+- AC-024 does NOT discharge WCAG 2.2.2 -- that is AC-031. prefers-reduced-motion is not a 2.2.2 mechanism.
+  Two defects, two criteria, two phases.
+- Do NOT sell Ruling 2 (Phase 2 JS reduction) as a performance win. The heaviest page ships 4,778 B gz.
+- Do NOT publish the four retracted figures. See invariants.INV-2 / opal_measurement.RETRACTED.
+- opal -c appends a source map by default -- --no-source-map or the payload 3.5x's silently.
+- The require list IS the budget (~4,212 B each), not the feature count (~15.6 B gz/line). Net headroom
+  is ~6,238 B, not 10,147.
+- home.js is NOT an Opal migration target. Ever. (EC-2/EC-4)
+- AC-040 (/accessibility) is Phase 4 ONLY and ships LAST -- a claim the site doesn't meet is worse than
+  no page.
+- D16 is a FIVE-file defect (home, about, letter, notebook, laboratory), not home.js alone.
+- '--dnd-ink is 10.43:1 on cream, NOT 12.7:1 (that is --ink-color #3a2921). Figures from the research''s
+  PROSE are unreliable; figures from its TABLES reproduce exactly.'
+- EC-13 is bound by AC-059, NOT AC-046. AC-046 = the value floor (is it worth it?); AC-059 = the measurement.
+  v0.3 collapsed the two and LOST EC-13 entirely.
+- 'The palette manifest is TWO-AXIS: role {ornament,logotype,content} + obligation {ink,exempt}, content
+  <-> ink. A one-axis read reopens the logotype hatch that took 4a green on an illegible site.'
+- AC-057 tests SET INCLUSION against _data/skills.yml -- NOT a literal keyword string, and NOT character_build.yml
+  (zero language names). Reordering the same four words defeated the v0.3 check.
+- '''One page-specific file per page'' is FALSE -- About loads two (exp-bar.js + about.js = 4,113 B).
+  Measure page totals; never infer them.'
+- The reframe landing as 'insight' [OWNER 8] licenses CRAFT satisfaction ONLY. DECISION-C stands.
+- The Formspree form ID is a CREDENTIAL ONLY THE OWNER CAN SUPPLY. D9 cannot be executor-closed. Do not
+  let it block the rest of Story 1.1.
+declared_scope:
+- _config.yml
+- _data/*
+- _layouts/*
+- _includes/*
+- _posts/*
+- _sass/*
+- assets/images/*
+- assets/js/*
+- _opal/*
+- .github/workflows/*
+- index.html
+- about.html
+- notebook.html
+- laboratory.html
+- letter.html
+- 404.html
+- now.*
+- uses.*
+- start-here.*
+- accessibility.*
+- Gemfile
+- Gemfile.lock
+- package.json
+- .pa11yci
+- robots.txt
+executor_hint: micro = economy/Haiku single-file mechanical; feature/mid = Sonnet template logic; frontier
+  for persona copy (About eras, identity line, /accessibility, the Transmutation post)
+provenance:
+  chain: scout -> research -> FORGE -> measurement -> plan -> 3 critic passes -> owner decisions -> this
+    spec
+  artifacts:
+    scout:
+      path: .claude/rebrand/scout-report.md
+      note: ATLAS; 45 anchored findings; 45/45 cited
+    research:
+    - .claude/rebrand/research-personal-site.md
+    - .claude/rebrand/research-blog-journal.md
+    - .claude/rebrand/research-ui-a11y.md
+    forge:
+      path: .claude/rebrand/forge-opal-verdict.md
+      version: '0.2'
+      confidence: 90
+      verdict: BOUNDED-ADOPT
+      binding: true
+    measurement:
+      path: .claude/rebrand/opal-measurement.md
+      note: corrected; refuted the plan's own headline numbers
+    plan:
+      path: .claude/rebrand/rebrand-plan.md
+      version: 0.4.0
+      frozen: true
+    critique:
+      path: .claude/rebrand/plan-v0.2-critique.md
+      passes: 3
+      final_verdict: APPROVE - executor-ready
+    owner_decisions:
+      path: .claude/rebrand/owner-decisions.md
+      at: '2026-07-16'
+      binding: true
+      closed: 8/8
+    state:
+      path: .claude/rebrand/rebrand.state.json
+      note: the audit trail; authoritative for position
+    state_history:
+      path: .claude/rebrand/rebrand-v0.2.state.json
+      note: preserved -- write-new, never hard-delete
+    calibration:
+      path: .claude/rebrand/ramza-calibration.jsonl
+  hop_verification:
+  - 'ramza-freeze --verify -> ok: criteria match frozen hash (393f1e59...)'
+  - 'ramza-ears-lint -> ok: 59 criteria pass EARS lint'
+  - AC bodies in spec.md diffed against the frozen criteria file -> 59/59, ZERO normative drift
+  open_at_this_hop:
+  - NONE BLOCKING. The plan's stated open item -- 'constraint_compliance 75 has no independent reading;
+    the prescribed close is a targeted re-check of AC-026/047/048/057/059 only' -- was performed by critic
+    pass 3, which returned APPROVE - executor-ready ('All five bind').
+  - 'One executor dependency remains and is not resolvable by any executor: the Formspree form ID [OWNER
+    6].'
+  - 'ATLAS owes one probe: opal-browser gz cost (FORGE RISK-6) -- Phase 5 only, Story 5.1, and Phase 5
+    is optional.'
+downstream:
+  next: orchestrator owns the lifecycle transition (CRITIQUE -> deliberated | DELEGATE -> in_progress).
+    This hop performed NO transition.
+  implementer: vivi
+  checker: kupo
+  note: The critic states a third full critique is NOT required and another rewrite emphatically is not
+    -- pass 3 already performed the prescribed targeted re-check and closed the cycle. Hand it to an executor.
+acceptance_constraints_detail:
+  EC-1: No Opal work begins until Phase 1 (AC-004..AC-011) is closed. THE WHOLE VERDICT; everything else
+    is engineering. The bytes were never the question -- the hours are.
+  EC-2: Opal output loads on exactly ONE dedicated page. 0 bytes on / and article pages. home.js is NOT
+    a migration target. The island's product is the POST, not widget complexity; the widget must be genuinely
+    interactive and honest -- A TOKEN SPINNER IS FORBIDDEN.
+  EC-3: Widget script deferred, loaded only on its page, never render-blocking. [bound by AC-052]
+  EC-4: 'Opal owns NONE of: dark toggle, TOC, notebook filter/search, nav active-state, progress bar,
+    share links. Empirically anchored at 30.0x the heaviest page.'
+  EC-5: 'The widget page must remain meaningful with JS disabled: <noscript> + a static inline SVG of
+    the circle + prose. STRENGTHENED -- a 143 KB payload failing on a slow link is a MEASURED scenario,
+    not hypothetical. [bound by AC-045]'
+  EC-6: 'Precompile locally; commit output to assets/js/; commit .rb source in _opal/, excluded from Jekyll
+    output. No change to the Pages build source. NO `opal` in jekyll_plugins. --no-source-map is MANDATORY
+    (inline source maps ship to every visitor -- the 3.5x error). --no-method-missing recommended: free
+    4,028 B gz. If a map is wanted, emit a SEPARATE .map file, never inline.'
+  EC-7a: 0 bytes of Opal on every page except the island. [bound by AC-041]
+  EC-7b: Island PAGE TOTAL JS <= 150 KiB gz. Number NOT raised. [bound by AC-042]
+  EC-7c: The `require` list IS the budget. Enumerate and cap it. `native` (+4,212 B gz) pre-authorized.
+    Every other require -- opal-browser especially (UNMEASURED) -- must be measured BEFORE adoption and
+    re-checked against EC-7b. Requires cost ~270 Ruby lines each; features are ~free. [bound by AC-044]
+  EC-7d: VALUE FLOOR. The island must be worth 135 KiB of runtime to a reader. A token/decorative circle
+    FAILS this gate. If it cannot clear the floor, DO NOT BUILD IT -> fall back to Ruling 2. This gate
+    is what makes EC-7b's disclosure honest rather than incriminating. [bound by AC-046 -- irreducibly
+    social, enforced AS A DISCLOSURE]
+  EC-8: Opal health/compat. DISCHARGED -- opal 1.8.3 verified healthy under project Ruby. Demoted to a
+    re-check condition; see discharged_constraints + RC-2.
+  EC-9: 'A11y. (1) prefers-reduced-motion does NOT discharge WCAG 2.2.2 -- ''the most commonly-believed
+    false thing in this whole area''. (2) Prefer a FINITE animation <=5s (inscribe -> flare -> settle):
+    2.2.2 then does not apply at all and you owe no pause control. (3) If an infinite loop is non-negotiable,
+    a visible themed pause control is MANDATORY -- budget it as a persona feature. (4) No-motion-first:
+    default animation:none, enable under --motionOK. (5) Substitute, don''t delete under `reduce` -- rotation
+    -> static sigil + opacity breath. (6) Inline SVG, NOT canvas -- SVG has a DOM, so it can be made accessible;
+    survives forced-colors. (7) Keyboard-operable; visible focus; no focus trap; aria-hidden on pure ornament,
+    ONE method, never stacked with alt=''''. [bound by AC-050, AC-051]'
+  EC-10: 'Drift gate: CI/pre-commit asserts committed JS matches compiled source. MUST PIN THE EXACT FLAG
+    SET (--no-source-map, --no-method-missing, require list) -- a drift check that doesn''t pin flags
+    cannot detect a source map creeping back in. [bound by AC-043]'
+  EC-11: 'The ratchet is explicit: any expansion beyond one island -- including ''just the toggle too''
+    -- is a NEW DECISION REQUIRING A NEW VERDICT, not an increment.'
+  EC-12: Ruling 2's work is plan-internal (Phases 2/3, AC-013) and proceeds INDEPENDENTLY of any Opal
+    decision. Sell it as correctness/a11y/SEO, NOT performance.
+  EC-13: Re-measure the real artifact before commit. 143,453 is a PROXY built for the probe, not the shipped
+    widget. Record final gz bytes + the tier decomposition. That number is the post's spine. [bound by
+    AC-059 -- NOT AC-046; v0.3 collapsed the two and LOST EC-13 entirely]
+reversal_conditions_detail:
+  RC-1: If a future Opal brings runtime+corelib+app within the current total JS byte budget (~2x of hand-written
+    JS), Ruling 1 is void -> re-open H1. TESTED AT 30.0x -- DID NOT FIRE. The margin is not close, so
+    the conclusion is insensitive to measurement error.
+  RC-2: Re-check Opal/Ruby health on any major upgrade. EC-8's discharge is CONDITIONAL ON THIS. Live,
+    because Phase 5 is sequenced last.
+  RC-3: If the owner drops the alchemist metaphor, the island loses its content rationale -> H2/H4 win
+    outright.
+  RC-5: If Phase 1 has not closed within a period the owner considers reasonable, EC-1 HARDENS FROM GATE
+    TO NO.
+  RC-6: If the boundary is breached once (Opal on / or in post.html), the gate has failed -> revert to
+    Ruling 2.
+  RC-7: If opal-browser or any second require is measured and pushes the island past EC-7b, the island
+    ships WITHOUT it or NOT AT ALL. The require list is not negotiable upward after the fact.
+  RC-8: 'If the widget cannot clear EC-7d''s value floor, DO NOT BUILD IT -- write the post from the probe
+    data already in hand. ALREADY SATISFIED: the 96.6/2.9/0.49 decomposition is a complete, publishable
+    insight that requires building NOTHING.'
+owner_decisions:
+  resolved_count: 8
+  of: 8
+  at: '2026-07-16'
+  binding: true
+  source: .claude/rebrand/owner-decisions.md
+  blocks_phases_0_to_4: false
+  items:
+  - id: 1
+    topic: identity_line
+    ruling: An engineering lead who never stopped shipping - a Code Alchemist transmuting chaos into scalable
+      systems, now conducting AI familiars in the open.
+    storage: once under _data/, consumed verbatim by the homepage hero, the About lead, the meta/OG description,
+      and social bios
+    closes:
+    - AC-001
+    accepted_tradeoff: the longest candidate; the hero subtitle may need TWO LINES
+    layout_input:
+      phase: 4
+      story: '4.8'
+      element: .hero-description at index.html:72
+      not_element: .hero-subtitle (index.html:71) -- the 2rem gold cursive wordmark, NOT a prose slot
+      contrast_checked: 'pastel-blue #B9C9E6 on the hero gradient = 8.12-9.86:1 -- contrast is NOT a blocker;
+        this is PURELY a wrap/measure question'
+  - id: 2
+    topic: canonical_job_title
+    ruling: Director of Engineering
+    action: _data/jobs.yaml:1 updates to match _data/character_build.yml:5 (which already reads it --
+      verified)
+    closes:
+    - D10
+    - AC-002
+    story: '0.2'
+  - id: 3
+    topic: retro_post_type_labels
+    ruling: yes, lightweight
+    mapping:
+      scroll:
+      - 2019-12-12 sftp
+      - 2020-01-13 clojure
+      - 2023-02-10 use-cases
+      - 2023-02-16 domains
+      transmutation_plus_assay:
+      - 2026-02-18 llm-routing
+      log_candidate:
+      - 2019-03-06 my-notebook (the launch/meta post)
+    closes:
+    - AC-021
+    story: '3.3'
+    note: makes the voice split deliberate rather than accidental, at near-zero cost
+  - id: 4
+    topic: pt_br_locale
+    ruling: DROP og:locale:alternate pt_BR at _includes/head/meta.html:18; no PT-BR content is planned
+    closes:
+    - D11
+    - AC-056
+  - id: 5
+    topic: analytics_vendor
+    ruling: Plausible
+    rationale: cookie-free, no consent banner, ~1 KB script -- consistent with the text-first substance
+      layer
+    sequencing: UA REMOVAL (AC-009 / D8) ships in Phase 1 INDEPENDENTLY -- wiring Plausible does not gate
+      it, and an unwired Plausible does not block the retirement
+  - id: 6
+    topic: contact_form_endpoint
+    ruling: real Formspree form-hash ID at letter.html:98
+    closes:
+    - D9
+    keeps: the themed 'Magical Correspondence' UX
+    external_dependency: formspree_form_id
+  - id: 7
+    topic: phase_5_opal_island
+    ruling: DECIDE AT THE PHASE 5 GATE, not now
+    note: Phase 5 stays optional + owner-gated; hard-gated behind Phase 1 (EC-1) and sequenced after Phase
+      4 regardless; AC-053's committed dated `go` record governs. Deciding now buys nothing and forecloses
+      information the owner will have later.
+  - id: 8
+    topic: the_reframe
+    ruling: IT LANDS AS INSIGHT, NOT A SUBSTITUTE
+    quote: It's insight - that's genuinely satisfying.
+    significance: the highest-signal input in the set; it moves the plan's centre of gravity
+    consequences:
+    - FORGE RISK-5 CLOSED -- 'owner rejects Ruling 2 as a substitute good and reads the verdict as a soft
+      no' was LIVE and UNMITIGATED, and mitigable by nobody but the owner. Affirmatively accepted on its
+      own terms.
+    - Ruling 2 PROMOTED from groundwork to HEADLINE DELIVERABLE (AC-013, AC-023, CSS smooth-scroll, AC-025
+      prefers-color-scheme). Stories 2.5/2.6/2.7/3.5 are the marquee.
+    - Phase 5's justification NARROWS TO JOY ALONE -- the island no longer carries C7; RC-8 holds (the
+      post is writable from data in hand).
+    - 'FRAMING DISCIPLINE UNCHANGED: DECISION-C stands -- correctness + a11y + SEO, NEVER speed. Do not
+      regress the zero-perf-residue result.'
+  previously_resolved:
+  - id: opal_byte_ceiling
+    by: FORGE v0.2 s2.4
+    ruling: keep 150 KiB gz; do not raise
+    note: Do not inflate a budget merely because measurement proved you can hit it -- that is how budgets
+      stop being budgets.

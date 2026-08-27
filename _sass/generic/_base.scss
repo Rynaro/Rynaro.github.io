@@ -1,0 +1,100 @@
+// ==========================================================================
+// BASE STYLES
+// ==========================================================================
+
+@use "../settings/variables" as *;
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  // Story 3.5, AC-025 / D19: var(--text-body) / var(--bg-primary) (defined in
+  // _variables.scss) resolve dark automatically under `prefers-color-scheme: dark`,
+  // with no JavaScript required -- this was the one layer of site chrome (present on
+  // every page via _layouts/default.html) still hardcoded to the light SCSS variables.
+  color: var(--text-body);
+  background-color: var(--bg-primary);
+}
+
+// Story 4.5 / AC-031 / D22: `scroll-behavior: smooth` was sitewide and
+// UNGUARDED -- a motion defect the plan's own Story 2.7 (v0.2) tried to
+// migrate *to* without noticing it already existed. Gated behind --motionOK
+// so a `prefers-reduced-motion: reduce` visitor gets instant (non-animated)
+// scrolling, matching every other motion affordance in this phase.
+@include motion-ok {
+  html, body {
+    scroll-behavior: smooth;
+  }
+}
+
+// Story 4.5 / AC-031: the shared "drift and settle" keyframe -- replaces
+// three near-duplicate, ACCIDENTALLY-COLLIDING `@keyframes float` blocks
+// that used to live in _letter.scss, _notebook.scss, and _laboratory.scss
+// (CSS keyframes are global, not partial-scoped; because Sass compiles all
+// three into one stylesheet, the last `@import`ed definition silently won
+// site-wide -- letter's definition was overriding notebook's and
+// laboratory's own local float keyframes, and _home.scss's `.alchemy-symbol,
+// .rune` rule was riding on that same collision without ever defining its
+// own `float`. Found auditing every `infinite` hit for this AC; fixed as
+// part of the same edit rather than left as a second, undocumented defect).
+// A single finite pass (opacity/rotate/translate settle) replaces every
+// `infinite alternate` bob -- 2.2.2 requires a finite end for anything that
+// auto-starts in parallel with other content, and `alternate` has no natural
+// stopping point without an iteration-count.
+@keyframes drift-settle {
+  0% {
+    opacity: 0;
+    transform: translate(0, 14px) rotate(-6deg);
+  }
+  55% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, -4px) rotate(3deg);
+  }
+}
+
+// Typography
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Roboto', 'Segoe UI', sans-serif;
+  font-weight: 300;
+  margin-top: 0;
+  color: $text-dark;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 1.25rem;
+}
+
+h3 {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+}
+
+h4 {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+p {
+  margin-bottom: 1.5rem;
+}
+
+a {
+  color: $pastel-purple-ink;
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+
+  &:hover {
+    color: $pastel-purple-ink-hover;
+  }
+}

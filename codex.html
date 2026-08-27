@@ -1,0 +1,83 @@
+---
+layout: default
+title: "The Alchemist's Codex"
+permalink: /codex/
+resume: "Terms of Transmutation — the right to be wrong, the promise to fix it, and an open invitation to disagree"
+---
+
+<!--
+  /codex -- "The Alchemist's Codex: Terms of Transmutation" (Story 3.2, AC-019). A
+  swyx-style garden-TOS analog / Xe Iaso-pattern reader contract: reserves the right to
+  be wrong, promises corrections and revisions, invites disagreement. This is the
+  reputational insurance that makes publishing raw journal entries (Alchemist's Log,
+  Story 3.4) and AI-assisted research dumps (Transmutation posts, AC-021) safe -- it's
+  what turns "informal dump blog" into "deliberate public notebook." Persona-as-moat:
+  the contract lives inside the fantasy skin, same voice register as the rest of the
+  site (casual, first-person, self-deprecating, parenthetical asides -- scout-report.md
+  §3.3).
+-->
+<section class="rpg-hero">
+  <div class="container">
+    <div class="hero__content">
+      <h1 class="hero__title fade-in">The Alchemist's Codex</h1>
+      <h2 class="hero__subtitle fade-in">Terms of Transmutation</h2>
+      <p class="hero__description">The fine print on what you're reading, written in plain(ish) language</p>
+    </div>
+  </div>
+</section>
+
+<section class="rpg-scrolls">
+  <div class="container">
+    <div class="codex-content">
+      {% include components/section-title.html icon="fas fa-scroll" title="The Right to Be Wrong" %}
+      <p>
+        Everything in this notebook — Scrolls, Cantrips, Distillations, the occasional
+        Transmutation — is a snapshot of what I believed at the moment I hit publish, not a
+        certified spellbook. I reserve the right to have been wrong (I already have been,
+        more than once — ask me about the "definitely final" architecture decision from
+        2021). Treat every post as a lab notebook entry from a working alchemist, not a
+        peer-reviewed grimoire.
+      </p>
+
+      {% include components/section-title.html icon="fas fa-flask" title="A Living Document, Not a Monument" %}
+      <p>
+        Posts here get revised. When I learn something that contradicts an earlier scroll,
+        I'd rather update the potion than pretend the old formula still works. If a post
+        changes materially after publication, I'll say so in the post itself rather than
+        quietly editing history — but I won't promise a changelog for every typo fix or
+        rewritten paragraph. The <a href="{{ '/notebook/' | relative_url }}">Notebook</a> is
+        a workshop, not a museum.
+      </p>
+
+      {% include components/section-title.html icon="fas fa-hat-wizard" title="On the Transmutations (and the Other AI Familiars)" %}
+      <p>
+        Some posts are marked <strong>Transmutation</strong> — research-dump / AI-assisted
+        deep-dives, conducted with an AI familiar (Claude, mostly) rather than handcrafted
+        line by line the way the older Scrolls were. That's a deliberate, branded stream,
+        not a secret. The <a href="{{ '/now/' | relative_url }}">/now</a> and
+        <a href="{{ '/uses/' | relative_url }}">/uses</a> pages talk about how that
+        conducting actually works day to day. Distillations are condensed link-plus-commentary
+        posts, and both carry an <em>assay</em> label — my own read on how battle-tested the
+        claims inside actually are, from speculative to proven — right alongside the post-type
+        badge. None of that changes the first two rules above: AI-assisted or handcrafted,
+        it's all still subject to being wrong and subject to revision.
+      </p>
+
+      {% include components/section-title.html icon="fas fa-comments" title="Disagree With Me? Good." %}
+      <p>
+        If something here is wrong, incomplete, or has aged badly, I'd rather hear about it
+        than have it sit uncorrected. <a href="{{ '/letter' | relative_url }}">Send a
+        letter</a> — magical correspondence is what that page is for. I can't promise I'll
+        agree, but I can promise I'll read it, and that being told I'm wrong in public is a
+        risk I've already accepted by publishing in the open.
+      </p>
+
+      {% include components/section-title.html icon="fas fa-user-tie" title="Whose Opinions Are These, Anyway?" %}
+      <p>
+        Mine. Just mine. Nothing published here represents the views, roadmap, or official
+        position of any employer, past or present — see the fine print at the bottom of
+        every page for the short version.
+      </p>
+    </div>
+  </div>
+</section>

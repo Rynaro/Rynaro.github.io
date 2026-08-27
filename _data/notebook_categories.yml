@@ -1,0 +1,23 @@
+# Display metadata for the Notebook category tabs (AC-013 / D7, Story 2.2, Ruling 2).
+# Tabs are GENERATED from `site.categories` (Jekyll core, no plugin) -- a category only
+# gets a tab if at least one post actually uses it, so a phantom tab (e.g. the old
+# `storybook`) can never appear again. This file only supplies a nicer label/icon/order
+# for categories we know about; `_includes/notebook/category-tabs.html` falls back to a
+# generic capitalized label + scroll icon for anything not listed here, so a brand-new
+# category never breaks the build -- it just renders plainly until this file is updated.
+#
+# NOTE: because GitHub Pages runs Jekyll in safe mode (no custom plugins/generators),
+# each category still needs its own static page under `notebook/<key>.html` for its tab
+# to resolve. Adding a row here does not, by itself, create that page.
+order:
+  - tech
+  - hobby
+  - llm
+labels:
+  tech: "Tech"
+  hobby: "Hobby"
+  llm: "AI/LLM"
+icons:
+  tech: "fas fa-code"
+  hobby: "fas fa-gamepad"
+  llm: "fas fa-robot"

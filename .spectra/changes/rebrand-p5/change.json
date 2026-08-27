@@ -1,0 +1,80 @@
+{
+  "esl_version": "1.1",
+  "change_id": "rebrand-p5",
+  "status": "proposed",
+  "tier": "full",
+  "maker": "vivi",
+  "checker": "kupo",
+  "acceptance_checks": [
+    {
+      "id": "AC-041",
+      "given": "the compiled Opal island artifact",
+      "when": "any page other than the island page is built",
+      "then": "it SHALL ship zero bytes of Opal runtime",
+      "verify_method": "a script builds the set of every page in `_site` that loads Opal runtime bytes -- resolving each page's `\u003cscript src\u003e` references and matching those referenced payloads against `Opal` -- and asserts that set equals exactly {`_site/laboratory/transmutation-circle/index.html`}; the check inspects the referenced `.js` payloads, not the HTML text"
+    },
+    {
+      "id": "AC-042",
+      "then": "the island page total JavaScript SHALL be at most 150 KiB gzipped",
+      "verify_method": "gzipped byte sum of every script the island page loads is \u003c= 153600"
+    },
+    {
+      "id": "AC-043",
+      "given": "the committed Opal artifact",
+      "when": "the drift gate recompiles the source",
+      "then": "the committed output SHALL match a recompile that pins the exact flag set including `--no-source-map`",
+      "verify_method": "CI recompiles with the pinned flag list and byte-compares against the committed artifact; no `sourceMappingURL` appears in the committed output"
+    },
+    {
+      "id": "AC-044",
+      "then": "the island's Ruby `require` list SHALL be enumerated in a committed manifest with a measured gzipped cost recorded per require",
+      "verify_method": "a committed manifest lists each require with its measured gz delta; every entry beyond `native` carries a measurement predating its adoption"
+    },
+    {
+      "id": "AC-045",
+      "given": "the island page",
+      "when": "it is loaded with JavaScript disabled",
+      "then": "it SHALL present a static inline SVG of the circle with explanatory prose",
+      "verify_method": "JS-disabled fetch of the island page shows a `\u003cnoscript\u003e` region containing an inline `\u003csvg\u003e` and descriptive text"
+    },
+    {
+      "id": "AC-046",
+      "then": "the island SHALL ship together with a `type: transmutation` post stating, in the owner's own words, what the widget does that justifies 135 KiB of runtime to a reader",
+      "verify_method": "the post contains an explicit value-floor paragraph naming what the widget does for the reader; a reviewer can answer \"would someone visit this for its own sake?\" from that paragraph alone"
+    },
+    {
+      "id": "AC-050",
+      "given": "the Opal island's transmutation circle animation",
+      "when": "the island page is loaded with no motion preference expressed",
+      "then": "the animation SHALL complete within five seconds rather than loop indefinitely",
+      "verify_method": "a headless run of the island page records zero transform or style mutation on the circle between t=5s and t=15s with no user input; additionally `grep -n \"infinite\"` over the island's compiled artifact and stylesheet returns zero hits -- the behavioural clause governs, so a `requestAnimationFrame` loop that declares no duration still fails"
+    },
+    {
+      "id": "AC-051",
+      "given": "the Opal island widget",
+      "when": "a keyboard user tabs to it and operates it with arrow keys",
+      "then": "every interactive control SHALL be keyboard-operable -- reachable, showing a visible focus indicator, and releasing focus on Tab",
+      "verify_method": "keyboard walk of the island page reaches each control, shows a visible focus ring, and exits the widget by Tab without a focus trap"
+    },
+    {
+      "id": "AC-052",
+      "given": "the island's compiled script tag",
+      "when": "the site is built",
+      "then": "the island's compiled script SHALL be loaded only by the island page and only with the `defer` attribute",
+      "verify_method": "the island page's script tag matches `defer`; `grep -rl \"transmutation-circle\" _site --include='*.html'` returns exactly the island page"
+    },
+    {
+      "id": "AC-053",
+      "then": "the owner's value-floor decision SHALL exist as a committed record stating a `go` verdict before any island source is written",
+      "verify_method": "given island source exists in `_opal/`, a committed decision record states a dated `go` verdict on the value floor and its commit timestamp precedes the first commit touching `_opal/`; a `no-go` record followed by any `_opal/` commit fails"
+    },
+    {
+      "id": "AC-059",
+      "then": "the `type: transmutation` post SHALL state the shipped island artifact's re-measured gzipped size together with its runtime/require/app-code tier decomposition",
+      "verify_method": "the post states the shipped artifact's final measured gzipped bytes, equal to the artifact's own component of the CI measurement AC-042 performs on the island page (the artifact figure, not the page total -- the two differ by the page's other scripts), states the three tier percentages (runtime / require / app code) summing to 100, names the per-file-sum method for the site-JS baseline (each file gzipped separately, as served), and `grep -nE \"7,?862|7\\.9 ?KB|17\\.8|18\\.25\" \u003cpost\u003e` returns zero matches"
+    }
+  ],
+  "spec_ref": ".claude/rebrand/rebrand-plan.md",
+  "supersedes": "rebrand",
+  "has_code": true
+}

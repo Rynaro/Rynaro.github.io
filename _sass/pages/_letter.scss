@@ -1,0 +1,990 @@
+/* RPG-Styled Letter Page */
+
+@use "../settings/variables" as *;
+@use "../tools/breakpoints" as *;
+
+/* Letter Hero Section - based on rpg-hero but with unique elements */
+.letter-hero {
+  background: linear-gradient(135deg, var(--letter-gradient-start), var(--letter-gradient-end));
+
+  @include max-width('lg') {
+    padding: 4rem 0 2.5rem;
+  }
+
+  @include max-width('md') {
+    padding: 3rem 0 2rem;
+  }
+}
+
+.letter-hero .hero__title {
+  color: white;
+
+  @include max-width('lg') {
+    font-size: 2.5rem;
+  }
+
+  @include max-width('md') {
+    font-size: 2.2rem;
+  }
+
+  @include max-width('sm') {
+    font-size: 2rem;
+  }
+}
+
+.letter-hero .hero__subtitle {
+  color: var(--ff-gold);
+
+  @include max-width('lg') {
+    font-size: 1.4rem;
+  }
+
+  @include max-width('sm') {
+    font-size: 1.2rem;
+  }
+}
+
+.letter-hero .hero__description {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  max-width: 450px;
+
+  @include max-width('md') {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.hero__letter {
+  flex: 0 0 260px;
+  perspective: 1000px;
+
+  @include max-width('lg') {
+    margin-bottom: 2rem;
+  }
+}
+
+.letter-frame {
+  width: 220px;
+  height: 260px;
+  background: var(--letter-paper);
+  border-radius: $radius-6;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.2),
+    inset 0 0 10px rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(153, 102, 204, 0.3);
+  transform-style: preserve-3d;
+  transform: rotateY(-15deg) rotateX(5deg);
+  transition: transform 0.5s ease;
+
+  @include max-width('sm') {
+    width: 180px;
+    height: 220px;
+    margin: 2rem 0 0 0
+  }
+}
+
+.letter-frame:hover {
+  transform: rotateY(-25deg) rotateX(10deg);
+}
+
+.letter-icon {
+  font-size: 5rem;
+  color: var(--ff-purple-ink);
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 0 10px rgba(153, 102, 204, 0.5));
+  // AC-031: was `3s infinite alternate` -- auto-visible on load, in parallel
+  // with the contact form. 2 iterations (2.2s each) then holds -- 4.4s total.
+  animation: letterGlow 2.2s ease-in-out 2 alternate forwards;
+}
+
+@keyframes letterGlow {
+  0% {
+    filter: drop-shadow(0 0 5px rgba(153, 102, 204, 0.3));
+    transform: scale(1);
+  }
+  100% {
+    filter: drop-shadow(0 0 15px rgba(153, 102, 204, 0.7));
+    transform: scale(1.05);
+  }
+}
+
+.letter-seal {
+  position: absolute;
+  top: 40px;
+  right: -20px;
+  width: 60px;
+  height: 60px;
+  background: var(--wax-seal);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: rotate(15deg);
+  z-index: 3;
+}
+
+.letter-seal::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 85%;
+  height: 85%;
+  border-radius: 50%;
+  border: 2px dashed rgba(255, 255, 255, 0.6);
+  transform: translate(-50%, -50%);
+}
+
+.letter-seal::after {
+  content: '';
+  position: absolute;
+  width: 90%;
+  height: 20px;
+  background: linear-gradient(to right, transparent, var(--letter-paper), transparent);
+  top: 50%;
+  left: -80%;
+  transform: translateY(-50%) rotate(-15deg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: -1;
+}
+
+.letter-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.letter-glyph {
+  position: absolute;
+  color: var(--ff-purple-ink);
+  font-size: 1.5rem;
+  opacity: 0.6;
+  filter: drop-shadow(0 0 5px rgba(153, 102, 204, 0.5));
+}
+
+.letter-glyph--1 {
+  top: 30%;
+  left: 20%;
+}
+
+.letter-glyph--2 {
+  top: 60%;
+  right: 25%;
+}
+
+.letter-glyph--3 {
+  bottom: 25%;
+  left: 30%;
+}
+
+// AC-031 / Story 4.5: this partial's own `@keyframes float` used to collide
+// with identically-named (but not identical) keyframes in _notebook.scss and
+// _laboratory.scss -- CSS keyframes are global, so the last `@import`ed
+// definition (this one, since _letter.scss loads after both) silently won
+// site-wide. Consolidated into the shared, finite `drift-settle` keyframe in
+// _base.scss (assets/js/letter.js now references it directly).
+
+/* Correspondence Section */
+.rpg-correspondence {
+  background-color: var(--dnd-parchment);
+  padding: 4rem 0;
+  position: relative;
+}
+
+.rpg-correspondence::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23a75e40' fill-opacity='0.03'%3E%3Cpath d='M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4v2c-3.314 0-6-2.686-6-6 0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6zm25.464-1.95l8.486 8.486-1.414 1.414-8.486-8.486 1.414-1.414z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.8;
+  z-index: 0;
+}
+
+/* Section Title / Section Icon -- normalize-p3 (AC-302/306): this page's
+   standalone `.section-title`/`.section-title::after`/`.section-icon` defs
+   were fully shadowed dead weight (see the cascade note in
+   _sass/components/_components.scss) and have been consolidated to the
+   single base + `.section-title .section-icon` context there. Removed here,
+   not moved -- nothing on this page opted into these values distinctly from
+   what the consolidated base now provides. (This includes the value that
+   looked letter-specific -- `.section-icon`'s 0.75rem margin-right -- which
+   the cascade had ALREADY made the site-wide winning value on every page
+   with this class, not a letter-only look; see the note in
+   _sass/components/_components.scss.) */
+
+/* Correspondence Grid */
+.correspondence-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 3rem;
+  position: relative;
+  z-index: 1;
+
+  @include max-width('lg') {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  @include max-width('sm') {
+    padding: 0 1rem;
+  }
+}
+
+/* Contact Info Column */
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.info-scroll {
+  background: var(--letter-paper);
+  border-radius: $radius-8;
+  box-shadow: var(--shadow-light);
+  border: 1px solid var(--border-light);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.info-scroll:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-medium);
+}
+
+.scroll-header {
+  display: flex;
+  align-items: center;
+  padding: 1.25rem;
+  border-bottom: 1px solid var(--border-light);
+  background: linear-gradient(90deg, rgba(153, 102, 204, 0.1), transparent);
+}
+
+.header-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--ff-purple-light);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  margin-right: 1rem;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.scroll-title {
+  font-size: 1.2rem;
+  margin: 0;
+  color: var(--dnd-brown);
+  font-weight: 600;
+}
+
+.scroll-content {
+  padding: 1.25rem;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.scroll-content p {
+  margin: 0;
+}
+
+/* Social Grimoire */
+.social-grimoire {
+  background: var(--letter-paper);
+  border-radius: $radius-8;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-light);
+  border: 1px solid var(--border-light);
+  margin-top: 1rem;
+}
+
+.grimoire-title {
+  font-size: 1.25rem;
+  color: var(--dnd-brown);
+  margin: 0 0 1.25rem;
+  text-align: center;
+  position: relative;
+  padding-bottom: 0.75rem;
+}
+
+.grimoire-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 2px;
+  background: var(--ff-purple-light);
+}
+
+.grimoire-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.grimoire-link {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 0.75rem 1.25rem;
+  border-radius: $radius-8;
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(153, 102, 204, 0.1);
+}
+
+.grimoire-link:hover {
+  transform: translateX(8px);
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.grimoire-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  margin-right: 1rem;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.grimoire-icon.github {
+  background: linear-gradient(135deg, #333, #666);
+}
+
+.grimoire-icon.linkedin {
+  background: linear-gradient(135deg, #0077b5, #00a0dc);
+}
+
+.grimoire-icon.devto {
+  background: linear-gradient(135deg, #000, #333);
+}
+
+.grimoire-text {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+/* Letter Form Container */
+.letter-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.magical-parchment {
+  background: var(--letter-paper);
+  border-radius: $radius-10;
+  padding: 2rem;
+  box-shadow: var(--letter-shadow);
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  border: 1px solid rgba(153, 102, 204, 0.1);
+}
+
+.magical-parchment::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(232, 224, 192, 0.8) 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(232, 224, 192, 0.6) 0%, transparent 40%);
+  border-radius: $radius-10;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.magical-parchment__header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 1;
+
+  @include max-width('md') {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+.magical-parchment__seal {
+  width: 50px;
+  height: 50px;
+  background: var(--wax-seal);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.8);
+  margin-right: 1.25rem;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+
+  @include max-width('md') {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+
+  @include max-width('sm') {
+    width: 50px;
+    height: 50px;
+    right: -15px;
+    top: 30px;
+  }
+}
+
+.magical-parchment__title {
+  font-size: 1.5rem;
+  color: var(--dnd-brown);
+  margin: 0;
+  font-weight: 600;
+
+  @include max-width('sm') {
+    font-size: 1.3rem;
+  }
+}
+
+/* Magical Form Styles */
+.magical-form {
+  position: relative;
+  z-index: 1;
+}
+
+.magical-form__group {
+  margin-bottom: 1.5rem;
+}
+
+.magical-form__label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--dnd-brown);
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.magical-form__input-container {
+  position: relative;
+  border: 1px solid rgba(153, 102, 204, 0.3);
+  border-radius: $radius-8;
+  background: rgba(255, 255, 255, 0.5);
+  transition: all 0.3s ease;
+
+  @include max-width('sm') {
+    border-radius: $radius-6;
+  }
+}
+
+.magical-form__input-container.input-focused {
+  border-color: var(--ff-purple-ink);
+  box-shadow: 0 0 0 3px rgba(153, 102, 204, 0.2);
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.magical-form__input-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ff-purple-ink);
+  font-size: 1rem;
+  opacity: 0.7;
+
+  @include max-width('sm') {
+    font-size: 0.9rem;
+  }
+}
+
+.magical-form__textarea-container .magical-form__input-icon {
+  top: 1.25rem;
+  transform: none;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 3rem;
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  color: var(--text-primary);
+  font-family: inherit;
+
+  @include max-width('sm') {
+    font-size: 0.95rem;
+    padding-left: 2.5rem;
+  }
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  outline: none;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+  padding-top: 1rem;
+  line-height: 1.6;
+}
+
+/* Input sparkle effect */
+.input-sparkle {
+  position: absolute;
+  top: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: white;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 2;
+  animation: sparkle 1s ease-out forwards;
+}
+
+@keyframes sparkle {
+  0% {
+    transform: translateY(0) scale(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-20px) scale(0);
+    opacity: 0;
+  }
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+
+  @include max-width('md') {
+    justify-content: center;
+  }
+}
+
+.submit-button {
+  display: inline-flex;
+  align-items: center;
+  background: var(--ff-purple);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: $radius-8;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(153, 102, 204, 0.3);
+  position: relative;
+  overflow: hidden;
+
+  @include max-width('sm') {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+.submit-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.submit-button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(153, 102, 204, 0.4);
+  background: var(--ff-purple-light);
+}
+
+.submit-button:hover::before {
+  left: 100%;
+}
+
+.button-text {
+  margin-right: 0.75rem;
+}
+
+.button-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  transition: transform 0.3s ease;
+}
+
+.submit-button:hover .button-icon {
+  transform: translateX(3px);
+}
+
+.submit-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.submit-button.is-loading {
+  color: transparent;
+}
+
+// AC-031: the loading spinner is user-triggered (form submit), not an
+// auto-starting animation, so 2.2.2's "starts automatically" condition never
+// applies to it -- unlike every other `infinite` fix in this phase, it does
+// not need to become finite. It still needs the literal `infinite` moved
+// behind a motion-ok gate (this is the one deliberately-infinite exception,
+// not an oversight), and per no-motion-first (Tatiana Mac /
+// research-ui-a11y.md §3.3), the BASELINE is a finite, motion-free
+// substitute -- a brief opacity pulse -- rather than a spinning ring with the
+// spin subtracted out under `reduce`.
+.submit-button.is-loading::after {
+  content: '';
+  position: absolute;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  animation: spinner-pulse 0.8s ease-in-out 3 alternate;
+
+  @include motion-ok {
+    animation: spinner 0.8s linear infinite;
+  }
+}
+
+@keyframes spinner-pulse {
+  from { opacity: 0.4; }
+  to { opacity: 1; }
+}
+
+@keyframes spinner {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Form Messages */
+.form-message {
+  display: flex;
+  align-items: flex-start;
+  background: white;
+  border-radius: $radius-8;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  box-shadow: var(--shadow-light);
+  border: 1px solid rgba(153, 102, 204, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.form-message__icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  font-size: 1.2rem;
+
+  @include max-width('sm') {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+}
+
+.form-message--success .form-message__icon {
+  background: rgba(46, 204, 113, 0.1);
+  color: var(--ff-green-ink);
+}
+
+.form-message--error .form-message__icon {
+  background: rgba(231, 76, 60, 0.1);
+  color: var(--ff-red-ink);
+}
+
+.form-message__content {
+  flex-grow: 1;
+}
+
+.form-message__title {
+  font-size: 1.2rem;
+  margin: 0 0 0.5rem;
+  font-weight: 600;
+  color: var(--dnd-brown);
+
+  @include max-width('sm') {
+    font-size: 1.1rem;
+  }
+}
+
+.form-message__content p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+/* Success Message Animation */
+.magical-burst {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, rgba(46, 204, 113, 0.8) 0%, transparent 70%);
+  border-radius: 50%;
+  opacity: 0;
+  animation: burst 1.5s ease-out forwards;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes burst {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.8;
+  }
+  100% {
+    width: 300px;
+    height: 300px;
+    opacity: 0;
+  }
+}
+
+/* Dark Mode Support */
+// normalize-p1 / AC-102: the `:root` custom-property override that used to live
+// here (--text-primary/--text-secondary/--text-light/--dnd-parchment/
+// --letter-paper/--dnd-brown/--dnd-ink/--border-light/--letter-shadow) is now
+// authored exactly once, in `_sass/_variables.scss` (the consolidated dark token
+// set -- this was the LAST-imported block, so every value here is preserved
+// verbatim as the winning value) -- this partial keeps only its own
+// per-selector dark rules.
+// normalize-p1 / AC-109: `.section-title`, `.grimoire-text`, `.form-input`/
+// `.form-textarea` no longer carry a hand-written `color: #e0e0e0` literal
+// here. Each is gated on `scripts/dark-literal-noop.test.mjs`'s computed-style
+// before/after diff (built `_site`, dark) -- a literal that changes the
+// computed value is reinstated, not left deleted (N4).
+@include dark-mode {
+  .rpg-correspondence {
+    background-color: #232323;
+  }
+
+  .info-scroll,
+  .social-grimoire,
+  .magical-parchment {
+    background: #2c2c2c;
+    border-color: rgba(153, 102, 204, 0.3);
+  }
+
+  .magical-parchment::before {
+    background:
+      radial-gradient(circle at 20% 20%, rgba(60, 60, 60, 0.8) 0%, transparent 40%),
+      radial-gradient(circle at 80% 80%, rgba(50, 50, 50, 0.6) 0%, transparent 40%);
+  }
+
+  .scroll-header {
+    background: linear-gradient(90deg, rgba(153, 102, 204, 0.2), transparent);
+    border-bottom-color: rgba(153, 102, 204, 0.3);
+  }
+
+  .scroll-content,
+  .form-message__content p {
+    color: #b0b0b0;
+  }
+
+  .grimoire-link {
+    background: rgba(50, 50, 50, 0.5);
+    border-color: rgba(153, 102, 204, 0.3);
+  }
+
+  .grimoire-link:hover {
+    background: rgba(60, 60, 60, 0.8);
+  }
+
+  .magical-form__input-container {
+    background: rgba(50, 50, 50, 0.5);
+    border-color: rgba(153, 102, 204, 0.3);
+  }
+
+  .magical-form__input-container.input-focused {
+    background: rgba(60, 60, 60, 0.8);
+  }
+
+  .form-message {
+    background: #2c2c2c;
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+  .letter-hero {
+    padding: 4rem 0 2.5rem;
+  }
+
+  .hero__title {
+    font-size: 2.5rem;
+  }
+
+  .hero__subtitle {
+    font-size: 1.4rem;
+  }
+
+  .hero__letter {
+    margin-bottom: 2rem;
+  }
+
+  // normalize-p3 (AC-302/306): the `.section-title { font-size: 2rem; }`
+  // that used to live here is now redundant -- the consolidated base in
+  // _sass/components/_components.scss already applies `font-size: 2rem` at
+  // this same breakpoint (max-width('lg') = 992px) site-wide. Removed, not
+  // moved; no rendered change (same breakpoint, same value).
+
+  .magical-parchment {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .rpg-hero .container {
+    flex-direction: column-reverse;
+    text-align: center;
+  }
+
+  .hero__description {
+    margin-left: auto;
+    margin-right: auto;
+
+    @include max-width('sm') {
+      padding: 0 1rem;
+    }
+  }
+
+  .letter-hero {
+    padding: 3rem 0 2rem;
+  }
+
+  .hero__title {
+    font-size: 2.2rem;
+  }
+
+  .magical-parchment__header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .magical-parchment__seal {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+
+  .form-actions {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero__title {
+    font-size: 2rem;
+  }
+
+  .hero__subtitle {
+    font-size: 1.2rem;
+  }
+
+  .letter-frame {
+    width: 180px;
+    height: 220px;
+  }
+
+  .letter-icon {
+    font-size: 4rem;
+  }
+
+  .letter-seal {
+    width: 50px;
+    height: 50px;
+    right: -15px;
+    top: 30px;
+  }
+
+  .magical-parchment__title {
+    font-size: 1.3rem;
+  }
+
+  .magical-form__input-container {
+    border-radius: $radius-6;
+  }
+
+  .magical-form__input-icon {
+    font-size: 0.9rem;
+  }
+
+  .form-input,
+  .form-textarea {
+    font-size: 0.95rem;
+    padding-left: 2.5rem;
+  }
+
+  .submit-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .form-message__icon {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+
+  .form-message__title {
+    font-size: 1.1rem;
+  }
+}

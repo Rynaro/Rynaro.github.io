@@ -1,0 +1,155 @@
+// ==========================================================================
+// LAYOUT & GRID
+// ==========================================================================
+
+@use "../settings/variables" as *;
+@use "../tools/breakpoints" as *;
+
+.container {
+  width: 100%;
+  max-width: $content-max-width;
+  margin: 0 auto;
+}
+
+.main-content {
+  min-height: 100vh;
+  padding: 0;
+
+  @include max-width('md') {
+    border-top: 10px solid var(--border-light);
+    margin-left: 0;
+  }
+}
+
+// Grid system
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -0.75rem;
+  margin-left: -0.75rem;
+}
+
+.col {
+  flex: 1;
+  padding: 0 0.75rem;
+
+  &--12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  &--6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+
+    @include max-width('xs') {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+  }
+
+  &--4 {
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+
+    @include max-width('md') {
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
+
+    @include max-width('xs') {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+  }
+
+  &--3 {
+    flex: 0 0 25%;
+    max-width: 25%;
+
+    @include max-width('md') {
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
+
+    @include max-width('xs') {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+  }
+}
+
+// Footer
+.footer {
+  padding: 2rem 0;
+  text-align: center;
+  background-color: $pastel-lavender;
+
+  &__copyright {
+    font-size: 0.875rem;
+    color: $text-medium;
+  }
+
+  &__signature {
+    font-family: 'Nothing You Could Do', cursive;
+    font-size: 1.5rem;
+    margin-top: 0.5rem;
+    color: $pastel-purple-ink;
+  }
+
+  &__links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-top: 0.75rem;
+  }
+
+  &__link {
+    font-size: 0.875rem;
+    color: $text-medium;
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      color: $pastel-purple-ink;
+      text-decoration: underline;
+    }
+  }
+
+  &__feed-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+    color: $text-medium;
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      color: $pastel-purple-ink;
+      text-decoration: underline;
+    }
+  }
+
+  // Sitewide disclaimer (Story 3.2, AC-020) -- deliberately understated, matching the
+  // rest of the footer's small print rather than calling attention to itself.
+  &__disclaimer {
+    max-width: 480px;
+    margin: 1rem auto 0;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: $text-light;
+
+    a {
+      color: $text-light;
+      text-decoration: underline;
+
+      &:hover,
+      &:focus-visible {
+        color: $pastel-purple-ink;
+      }
+    }
+  }
+}
