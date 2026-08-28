@@ -1,7 +1,22 @@
 # Canonical compound identity line (AC-001 / ESL change `rebrand`, Phase 0, Story 0.1).
-# Single source of truth: consumed verbatim by the homepage hero (index.html),
-# the About lead (about.html), and the meta description (_includes/head/meta.html).
+# Single source of truth for the homepage hero and the default page description
+# when a page does not provide its own resume or description.
 # Owner-chosen line (owner-decisions.md #1) -- do not paraphrase or duplicate elsewhere.
 tagline: >-
-  An engineering lead who never stopped shipping — a Code Alchemist transmuting
+  An engineering leader who never stopped shipping — a Code Alchemist transmuting
   chaos into scalable systems, now conducting AI familiars in the open.
+facts_reviewed_at: "2026-08-28"
+professional:
+  generic_role: Engineering leader
+  current_title: Director of Engineering
+  current_company: ElectionBuddy Inc.
+  current_since: "2022-08"
+location:
+  born_in: Brazil
+  lives_in: Brazil
+practice:
+  broad_ai_term: AI-assisted engineering
+personal:
+  learning:
+    - Chinese
+  home_glimpse: "Home is shared with cats, a fish, plants, terrariums, and small ecosystems tended with the same curiosity I bring to software."

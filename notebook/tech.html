@@ -1,47 +1,7 @@
 ---
 layout: default
-title: Notebook — Tech
+title: Field Notes — Engineering
 permalink: /notebook/tech/
+resume: "Architecture, code, and the systems around them."
 ---
-
-<section class="rpg-hero notebook-hero">
-  <div class="container">
-    <div class="hero__content">
-      <h1 class="hero__title fade-in">Notebook</h1>
-      <h2 class="hero__subtitle fade-in">Tech Archives</h2>
-      <p class="hero__description">Scrolls filed under Tech — the spells that actually compiled</p>
-    </div>
-  </div>
-</section>
-
-<section class="rpg-scrolls">
-  <div class="container">
-    {% include components/section-title.html icon="fas fa-code" title="Tech Archives" %}
-
-    <div class="scroll-navigation">
-      {% include notebook/category-tabs.html active="tech" %}
-
-      <div class="scroll-search">
-        <input type="text" id="scroll-search" placeholder="Search scrolls..." aria-label="Search scrolls">
-        <i class="fas fa-search"></i>
-      </div>
-    </div>
-
-    <div class="scrolls-collection">
-      {% for post in site.categories.tech %}
-        {% include notebook/scroll-item.html post=post index=forloop.index %}
-      {% endfor %}
-    </div>
-
-    <div class="empty-archive" style="display: none;">
-      <div class="empty-archive-icon">
-        <i class="fas fa-book"></i>
-      </div>
-      <h3 class="empty-archive-title">No Scrolls Found</h3>
-      <p class="empty-archive-text">The archives contain no scrolls matching your search criteria.</p>
-      <button class="reset-search-button">Reset Search</button>
-    </div>
-  </div>
-</section>
-
-<script src="{{ '/assets/js/notebook.js' | relative_url }}" defer></script>
+{% include notebook/archive.html posts=site.categories.tech active="tech" %}

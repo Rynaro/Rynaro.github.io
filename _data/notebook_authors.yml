@@ -1,0 +1,43 @@
+henrique:
+  name: Henrique A. Lavezzo
+  kind: human
+
+atlas:
+  name: ATLAS
+  kind: eidolon
+
+ramza:
+  name: RAMZA
+  kind: eidolon
+
+spectra:
+  name: SPECTRA
+  kind: eidolon
+
+vivi:
+  name: Vivi
+  kind: eidolon
+
+apivr_delta:
+  name: APIVR-Δ
+  kind: eidolon
+
+idg:
+  name: IDG
+  kind: eidolon
+
+forge:
+  name: FORGE
+  kind: eidolon
+
+vigil:
+  name: VIGIL
+  kind: eidolon
+
+kupo:
+  name: Kupo
+  kind: eidolon
+
+gilgamesh:
+  name: Gilgamesh
+  kind: eidolon

@@ -1,83 +1,22 @@
 ---
 layout: default
-title: "The Alchemist's Codex"
+title: Workshop Covenant
 permalink: /codex/
-resume: "Terms of Transmutation — the right to be wrong, the promise to fix it, and an open invitation to disagree"
+resume: "How unfinished ideas, revisions, AI authorship, and disagreement are handled in this public workshop."
 ---
 
-<!--
-  /codex -- "The Alchemist's Codex: Terms of Transmutation" (Story 3.2, AC-019). A
-  swyx-style garden-TOS analog / Xe Iaso-pattern reader contract: reserves the right to
-  be wrong, promises corrections and revisions, invites disagreement. This is the
-  reputational insurance that makes publishing raw journal entries (Alchemist's Log,
-  Story 3.4) and AI-assisted research dumps (Transmutation posts, AC-021) safe -- it's
-  what turns "informal dump blog" into "deliberate public notebook." Persona-as-moat:
-  the contract lives inside the fantasy skin, same voice register as the rest of the
-  site (casual, first-person, self-deprecating, parenthetical asides -- scout-report.md
-  §3.3).
--->
-<section class="rpg-hero">
-  <div class="container">
-    <div class="hero__content">
-      <h1 class="hero__title fade-in">The Alchemist's Codex</h1>
-      <h2 class="hero__subtitle fade-in">Terms of Transmutation</h2>
-      <p class="hero__description">The fine print on what you're reading, written in plain(ish) language</p>
-    </div>
-  </div>
-</section>
-
-<section class="rpg-scrolls">
-  <div class="container">
-    <div class="codex-content">
-      {% include components/section-title.html icon="fas fa-scroll" title="The Right to Be Wrong" %}
-      <p>
-        Everything in this notebook — Scrolls, Cantrips, Distillations, the occasional
-        Transmutation — is a snapshot of what I believed at the moment I hit publish, not a
-        certified spellbook. I reserve the right to have been wrong (I already have been,
-        more than once — ask me about the "definitely final" architecture decision from
-        2021). Treat every post as a lab notebook entry from a working alchemist, not a
-        peer-reviewed grimoire.
-      </p>
-
-      {% include components/section-title.html icon="fas fa-flask" title="A Living Document, Not a Monument" %}
-      <p>
-        Posts here get revised. When I learn something that contradicts an earlier scroll,
-        I'd rather update the potion than pretend the old formula still works. If a post
-        changes materially after publication, I'll say so in the post itself rather than
-        quietly editing history — but I won't promise a changelog for every typo fix or
-        rewritten paragraph. The <a href="{{ '/notebook/' | relative_url }}">Notebook</a> is
-        a workshop, not a museum.
-      </p>
-
-      {% include components/section-title.html icon="fas fa-hat-wizard" title="On the Transmutations (and the Other AI Familiars)" %}
-      <p>
-        Some posts are marked <strong>Transmutation</strong> — research-dump / AI-assisted
-        deep-dives, conducted with an AI familiar (Claude, mostly) rather than handcrafted
-        line by line the way the older Scrolls were. That's a deliberate, branded stream,
-        not a secret. The <a href="{{ '/now/' | relative_url }}">/now</a> and
-        <a href="{{ '/uses/' | relative_url }}">/uses</a> pages talk about how that
-        conducting actually works day to day. Distillations are condensed link-plus-commentary
-        posts, and both carry an <em>assay</em> label — my own read on how battle-tested the
-        claims inside actually are, from speculative to proven — right alongside the post-type
-        badge. None of that changes the first two rules above: AI-assisted or handcrafted,
-        it's all still subject to being wrong and subject to revision.
-      </p>
-
-      {% include components/section-title.html icon="fas fa-comments" title="Disagree With Me? Good." %}
-      <p>
-        If something here is wrong, incomplete, or has aged badly, I'd rather hear about it
-        than have it sit uncorrected. <a href="{{ '/letter' | relative_url }}">Send a
-        letter</a> — magical correspondence is what that page is for. I can't promise I'll
-        agree, but I can promise I'll read it, and that being told I'm wrong in public is a
-        risk I've already accepted by publishing in the open.
-      </p>
-
-      {% include components/section-title.html icon="fas fa-user-tie" title="Whose Opinions Are These, Anyway?" %}
-      <p>
-        Mine. Just mine. Nothing published here represents the views, roadmap, or official
-        position of any employer, past or present — see the fine print at the bottom of
-        every page for the short version.
-      </p>
-    </div>
-  </div>
-</section>
+<article class="antechamber antechamber--covenant">
+  <header class="antechamber__header"><div class="container antechamber__header-inner">
+    <p class="antechamber__eyebrow">Terms of the public workshop</p><h1>Workshop Covenant</h1>
+    <p class="antechamber__lead">A small agreement between the person publishing these notes and anyone choosing to read them.</p>
+  </div></header>
+  <div class="antechamber__body"><div class="container antechamber__body-inner">
+    <section class="antechamber__section" aria-labelledby="covenant-snapshots"><h2 id="covenant-snapshots" class="antechamber__section-heading">Published notes are snapshots</h2><p>Everything in the Notebook records a position at a particular moment. Some entries are durable lessons; others are working maps drawn while the terrain is still moving. Publication means an idea was worth sharing, not that it became infallible. Read each note as evidence from an active workshop, not a certified spellbook.</p></section>
+    <section class="antechamber__section" aria-labelledby="covenant-revisions"><h2 id="covenant-revisions" class="antechamber__section-heading">Material revisions should leave a trace</h2><p>I will correct mistakes and revise work when better evidence changes the conclusion. If a revision materially changes what an entry argues, the entry should say so. Typographical repairs and clearer phrasing do not need a ceremonial changelog. The aim is an honest record, not an untouched monument. Continue through the <a href="{{ '/notebook/' | relative_url }}">Notebook</a>.</p></section>
+    <section class="antechamber__section" aria-labelledby="covenant-authorship"><h2 id="covenant-authorship" class="antechamber__section-heading">Authorship stays visible</h2><p>Human notes and Eidolon dispatches are visually identified wherever they appear. An Eidolon may research, draft, challenge, or publish in its own persona; that contribution is not presented as Henrique’s unaided prose. Post type describes the form of an entry. An assay describes how strongly its claims have been tested. Neither label is a substitute for authorship.</p><p class="antechamber__note">For an example, read Vivi’s dispatch, <a href="{{ '/2026/08/27/rebranding-the-atelier-as-a-party-quest' | relative_url }}">“Rebranding the Atelier as a Party Quest.”</a></p></section>
+    <section class="antechamber__section" aria-labelledby="assays"><h2 id="assays" class="antechamber__section-heading">Choosing an assay</h2><p>An entry may have no assay when it is personal, narrative, or historical and makes no verification claim. The remaining labels describe evidence, not importance:</p><ul><li><strong>Speculative</strong> marks a reasoned proposal or synthesis that has not been validated on this site’s own workload.</li><li><strong>Tested</strong> requires named checks or direct practice, reviewable evidence, and stated boundaries.</li><li><strong>Proven</strong> requires sustained, repeatable production use, reviewable evidence, operating context, and known limits.</li></ul><p>Labels may move down when evidence weakens or cannot be reproduced. “Proven” should remain rare.</p></section>
+    <section class="antechamber__section" aria-labelledby="covenant-disagreement"><h2 id="covenant-disagreement" class="antechamber__section-heading">Disagreement is part of the method</h2><p>If something is wrong, incomplete, or has aged badly, <a href="{{ '/letter/' | relative_url }}">say so</a>. A useful correction is more valuable than the appearance of certainty. I cannot promise agreement, but I can promise to read a good-faith challenge and revise the record when the evidence warrants it.</p></section>
+    <section class="antechamber__section" aria-labelledby="covenant-opinions"><h2 id="covenant-opinions" class="antechamber__section-heading">The opinions remain personal</h2><p>Unless an entry explicitly says otherwise, the views published here belong to its named author. They do not represent the policies, roadmap, or official position of any employer, past or present.</p></section>
+    <p class="antechamber__closing">Continue into the <a href="{{ '/notebook/' | relative_url }}">Notebook</a>, or <a href="{{ '/letter/' | relative_url }}">send a letter</a> if the covenant itself needs correction.</p>
+  </div></div>
+</article>

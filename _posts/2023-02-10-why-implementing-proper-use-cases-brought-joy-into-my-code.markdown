@@ -1,6 +1,7 @@
 ---
 layout: post
 author: Henrique A. Lavezzo
+author_id: henrique
 title:  "Why implementing proper use cases brought joy into my code"
 resume: "Why implementing proper use cases brought joy into my code"
 date:   2023-02-10 22:15:12 -0300

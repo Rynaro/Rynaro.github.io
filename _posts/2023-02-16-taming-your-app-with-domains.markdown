@@ -1,6 +1,7 @@
 ---
 layout: post
 author: Henrique A. Lavezzo
+author_id: henrique
 title:  "Taming your App with Domains"
 resume: "Applying concepts, not influence"
 date:   2023-02-16 22:15:12 -0300

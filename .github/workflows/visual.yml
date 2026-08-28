@@ -1,0 +1,99 @@
+name: Visual regression
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: visual-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  reference:
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/master')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: bundle exec jekyll build
+      - run: npm run ci:visual:reference
+      - uses: actions/upload-artifact@v7
+        with:
+          name: visual-reference
+          path: |
+            .visual/reference/
+            .visual/reference-report.json
+          retention-days: 30
+          if-no-files-found: error
+
+  compare:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Find latest accepted master reference
+        id: reference
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const runs = await github.paginate(github.rest.actions.listWorkflowRuns, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'visual.yml',
+              branch: 'master',
+              event: 'push',
+              status: 'success',
+              per_page: 100
+            });
+            const run = runs.find(item => item.head_branch === 'master');
+            if (!run) core.setFailed('No successful master visual reference exists. Run Visual regression on master once to seed it.');
+            else core.setOutput('run-id', String(run.id));
+      - name: Download accepted reference
+        uses: actions/download-artifact@v8
+        with:
+          name: visual-reference
+          path: .visual/download
+          github-token: ${{ github.token }}
+          run-id: ${{ steps.reference.outputs.run-id }}
+      - name: Place reference at the comparison path
+        run: mv .visual/download/reference .visual/reference
+      - run: bundle exec jekyll build
+      - name: Compare candidate with accepted reference
+        run: npm run ci:visual:compare
+      - name: Upload visual review
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: visual-review
+          path: |
+            .visual/reference/
+            .visual/candidate/
+            .visual/report.json
+          retention-days: 7
+          if-no-files-found: warn

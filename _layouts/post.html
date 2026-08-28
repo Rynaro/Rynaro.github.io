@@ -1,379 +1,51 @@
 ---
 layout: default
 ---
+{% assign words = content | number_of_words %}
+{% assign reading_minutes = words | divided_by: 200 %}{% if reading_minutes < 1 %}{% assign reading_minutes = 1 %}{% endif %}
+{% assign toc_items = "" %}
+{% assign toc_sections = content | split: '<h2 id="' %}
+{% for chunk in toc_sections %}{% unless forloop.first %}{% assign head = chunk | split: '</h2>' | first %}{% assign heading_id = head | split: '">' | first %}{% assign marker = heading_id | append: '">' %}{% assign heading_text = head | remove_first: marker | strip_html %}{% assign toc_items = toc_items | append: '<li><a class="toc-link" href="#' | append: heading_id | append: '">' | append: heading_text | append: '</a></li>' %}{% endunless %}{% endfor %}
 
-<div class="rpg-post-container">
-  <!-- Post Hero Banner -->
-  <section class="post-hero">
-    <div class="container">
-      <div class="post-hero-content">
-        <!-- Post metadata -->
-        <div class="post-metadata">
-          <div class="post-category-wrapper">
-            {% if page.categories.size > 0 %}
-              <span class="post-category">{{ page.categories | first | capitalize }}</span>
-            {% endif %}
-          </div>
-          <!-- Post-type badge + assay label (Story 3.1, AC-017/AC-018; AC-021 for the
-               2026 transmutation post's visibly-distinct badge). -->
-          {% include post-type-badge.html type=page.type %}
-          {% include post-assay-label.html assay=page.assay %}
-          <time class="post-date" datetime="{{ page.date | date_to_xmlschema }}">
-            {{ page.date | date: "%b %-d, %Y" }}
-          </time>
-          <span class="post-reading-time">
-            {% assign words = content | number_of_words %}
-            {% if words < 360 %}
-              1 min read
-            {% else %}
-              {{ words | divided_by: 180 }} mins read
-            {% endif %}
-          </span>
-        </div>
-        <!-- Post title -->
-        <h1 class="post-title">{{ page.title }}</h1>
-        <!-- Post subtitle/resume if available -->
-        {% if page.resume %}
-          <p class="post-subtitle">{{ page.resume }}</p>
-        {% endif %}
-        <!-- Author if specified -->
-        {% if page.author %}
-          <div class="post-author">
-            <span>{{ page.author }}</span>
-          </div>
-        {% endif %}
-
-        <!-- Post tags -->
-        {% if page.tags.size > 0 %}
-          <div class="post-tags">
-            {% for tag in page.tags %}
-              <span class="post-tag">#{{ tag }}</span>
-            {% endfor %}
-          </div>
-        {% endif %}
+<div class="journal-post" data-post>
+  <div class="reading-progress" data-reading-progress aria-hidden="true"></div>
+  <header class="post-header">
+    <div class="post-reading-shell">
+      <a class="post-back" href="{{ '/notebook/' | relative_url }}">← Back to Field Notes</a>
+      <div class="post-metadata">
+        {% if page.categories.size > 0 %}<a class="post-category" href="{{ '/notebook/' | append: page.categories.first | append: '/' | relative_url }}">{{ site.data.notebook.categories[page.categories.first].label | default: page.categories.first | capitalize }}</a>{% endif %}
+        {% assign assay_description_id = 'assay-description-' | append: page.assay %}
+        {% include post-type-badge.html type=page.type %}{% include post-assay-label.html assay=page.assay description_id=assay_description_id %}
+        <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%d %B %Y" }}</time><span>{{ reading_minutes }} min read</span>
       </div>
+      <h1>{{ page.title }}</h1>
+      {% if page.resume %}<p class="post-deck">{{ page.resume }}</p>{% endif %}
+      <div class="post-byline">{% include notebook/authorship.html author_id=page.author_id %}{% if page.tags.size > 0 %}<ul aria-label="Tags">{% for tag in page.tags %}<li>#{{ tag }}</li>{% endfor %}</ul>{% endif %}</div>
+      {% if site.data.assay.labels[page.assay] %}<p class="post-assay-description" id="{{ assay_description_id }}"><strong>{{ site.data.assay.labels[page.assay] }} assay:</strong> {{ site.data.assay.glosses[page.assay] }}{% if page.reviewed_at %} Reviewed <time datetime="{{ page.reviewed_at | date: '%Y-%m-%d' }}">{{ page.reviewed_at | date: '%-d %B %Y' }}</time>.{% endif %} <a href="{{ '/codex/#assays' | relative_url }}">How assays are chosen</a>.</p>{% endif %}
     </div>
-  </section>
+  </header>
 
-  <!-- Main Content Area -->
-  <section class="post-content-section">
-    <div class="container">
-      <div class="post-grid">
-        <!-- Left sidebar -->
-        <aside class="post-sidebar">
-          <!-- Table of Contents (Story 2.5, AC-023 / D15). Server-rendered at build time
-               by parsing `content`'s already-kramdown-assigned heading ids (auto_ids is
-               on by default) -- correctness for JS-disabled readers, not a byte play
-               (Ruling 2, Invariant 1: never sell this as a speed win). No post markdown
-               is touched; this only enumerates the h2/h3 headings that were always there. -->
-          {% assign toc_items = "" %}
-          {% assign toc_h2_sections = content | split: '<h2 id="' %}
-          {% for h2_chunk in toc_h2_sections %}
-            {% assign toc_h3_source = h2_chunk %}
-            {% unless forloop.first %}
-              {% comment %}
-                Split on the closing tag FIRST (unique per heading) rather than on `">`
-                (which also matches every other quoted attribute -- links, code langs --
-                inside the section body and would truncate the match). `remove_first`
-                then peels off only the id/quote/bracket prefix, leaving the heading's
-                own inline markup (e.g. a link inside the heading text) intact for
-                strip_html.
-              {% endcomment %}
-              {% assign toc_h2_head_and_body = h2_chunk | split: '</h2>' %}
-              {% assign toc_h2_head = toc_h2_head_and_body[0] %}
-              {% assign toc_h3_source = toc_h2_head_and_body[1] %}
-              {% assign toc_h2_id = toc_h2_head | split: '">' | first %}
-              {% assign toc_h2_id_marker = toc_h2_id | append: '">' %}
-              {% assign toc_h2_text = toc_h2_head | remove_first: toc_h2_id_marker | strip_html %}
-              {% assign toc_items = toc_items | append: '<li class="toc-item"><a class="toc-link" href="#' | append: toc_h2_id | append: '">' | append: toc_h2_text | append: '</a></li>' %}
-            {% endunless %}
-            {% assign toc_h3_sections = toc_h3_source | split: '<h3 id="' %}
-            {% for h3_chunk in toc_h3_sections %}
-              {% unless forloop.first %}
-                {% assign toc_h3_head_and_body = h3_chunk | split: '</h3>' %}
-                {% assign toc_h3_head = toc_h3_head_and_body[0] %}
-                {% assign toc_h3_id = toc_h3_head | split: '">' | first %}
-                {% assign toc_h3_id_marker = toc_h3_id | append: '">' %}
-                {% assign toc_h3_text = toc_h3_head | remove_first: toc_h3_id_marker | strip_html %}
-                {% assign toc_items = toc_items | append: '<li class="toc-item toc-h3"><a class="toc-link" href="#' | append: toc_h3_id | append: '">' | append: toc_h3_text | append: '</a></li>' %}
-              {% endunless %}
-            {% endfor %}
-          {% endfor %}
-
-          {% if toc_items != "" %}
-          <div class="toc-scroll">
-            <div class="toc-header">
-              <i class="fas fa-list-ul section-icon" aria-hidden="true"></i>
-              <h3 class="toc-title">Contents</h3>
-            </div>
-            <div class="toc-content" id="toc-content">
-              <ul class="toc-list">{{ toc_items }}</ul>
-            </div>
-          </div>
-          {% endif %}
-
-          <!-- Post actions -->
-          <div class="post-actions">
-            <button class="action-button" id="toggle-dark-mode">
-              <div class="action-icon">
-                <i class="fas fa-moon"></i>
-              </div>
-              <span class="action-text">Dark mode</span>
-            </button>
-            <div class="share-actions">
-              <div class="share-label">Share this scroll:</div>
-              <div class="share-buttons">
-                <a href="https://twitter.com/intent/tweet?text={{ page.title | uri_escape }}&url={{ site.url }}{{ page.url | uri_escape }}"
-                   target="_blank"
-                   rel="noopener"
-                   class="share-button x"
-                   aria-label="Share on X">
-                  <i class="fab fa-x-twitter"></i>
-                </a>
-                <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ site.url }}{{ page.url | uri_escape }}&title={{ page.title | uri_escape }}"
-                   target="_blank"
-                   rel="noopener"
-                   class="share-button linkedin"
-                   aria-label="Share on LinkedIn">
-                  <i class="fab fa-linkedin-in"></i>
-                </a>
-                <a href="https://www.facebook.com/sharer/sharer.php?u={{ site.url }}{{ page.url | uri_escape }}"
-                   target="_blank"
-                   rel="noopener"
-                   class="share-button facebook"
-                   aria-label="Share on Facebook">
-                  <i class="fab fa-facebook-f"></i>
-                </a>
-                <a href="https://www.reddit.com/submit?url={{ site.url }}{{ page.url | uri_escape }}&title={{ page.title | uri_escape }}"
-                   target="_blank"
-                   rel="noopener"
-                   class="share-button reddit"
-                   aria-label="Share on Reddit">
-                  <i class="fab fa-reddit-alien"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-        </aside>
-
-        <!-- Main post content -->
-        <article class="post-content">
-          <div class="post-scroll">
-            <!-- Decorative elements -->
-            <div class="scroll-top-ornament"></div>
-            <div class="scroll-bottom-ornament"></div>
-
-            <!-- Article content -->
-            <div class="article-content">
-              {{ content }}
-            </div>
-          </div>
-        </article>
-      </div>
+  <div class="post-main">
+    <div class="post-layout{% if toc_items == "" %} post-layout--without-toc{% endif %}">
+      {% if toc_items != "" %}<aside class="post-toc" aria-label="On this page"><p>On this page</p><ol>{{ toc_items }}</ol></aside>{% endif %}
+      <article class="post-article">
+        <div class="article-content">{{ content }}</div>
+        <div class="post-quiet-actions"><button type="button" data-copy-link>Copy link</button><span data-copy-status aria-live="polite"></span></div>
+      </article>
     </div>
-  </section>
+  </div>
 
-  <!-- Post navigation (prev/next) -->
-  <section class="post-navigation-section">
-    <div class="container">
-      <div class="post-navigation">
-        {% if page.previous.url %}
-          <a class="post-nav-item previous" href="{{ page.previous.url }}">
-            <div class="nav-arrow">
-              <i class="fas fa-arrow-left"></i>
-            </div>
-            <div class="nav-content">
-              <span class="nav-label">Previous Scroll</span>
-              <span class="nav-title">{{ page.previous.title }}</span>
-            </div>
-          </a>
-        {% else %}
-          <div class="post-nav-item empty"></div>
-        {% endif %}
+  <nav class="post-navigation" aria-label="Adjacent entries">
+    {% if page.previous.url %}<a href="{{ page.previous.url | relative_url }}"><span>Older entry</span><strong>← {{ page.previous.title }}</strong></a>{% else %}<span></span>{% endif %}
+    {% if page.next.url %}<a href="{{ page.next.url | relative_url }}"><span>Newer entry</span><strong>{{ page.next.title }} →</strong></a>{% endif %}
+  </nav>
 
-        {% if page.next.url %}
-          <a class="post-nav-item next" href="{{ page.next.url }}">
-            <div class="nav-content">
-              <span class="nav-label">Next Scroll</span>
-              <span class="nav-title">{{ page.next.title }}</span>
-            </div>
-            <div class="nav-arrow">
-              <i class="fas fa-arrow-right"></i>
-            </div>
-          </a>
-        {% else %}
-          <div class="post-nav-item empty"></div>
-        {% endif %}
-      </div>
-    </div>
-  </section>
-
-  <!-- Related posts -->
-  <section class="related-posts-section">
-    <div class="container">
-      <h2 class="related-title">
-        <i class="fas fa-scroll section-icon"></i>
-        Related Scrolls
-      </h2>
-
-      <div class="related-scrolls">
-        {% comment %} Most-recent 3 (excluding self). Deterministic by design: `sample: 3`
-        reshuffled on every build, giving each deploy a different related-scrolls block and
-        making the page impossible to regression-test. {% endcomment %}
-        {% assign related_posts = site.posts | where_exp: "post", "post.url != page.url" | slice: 0, 3 %}
-        {% for post in related_posts %}
-          <div class="related-scroll-item">
-            <div class="related-scroll-card">
-              <div class="related-scroll-rarity
-                {% assign mod = forloop.index | modulo: 3 %}
-                {% if mod == 1 %}rare{% elsif mod == 2 %}epic{% else %}common{% endif %}
-              "></div>
-
-              <div class="related-scroll-header">
-                {% if post.categories.size > 0 %}
-                  <span class="related-scroll-category">{{ post.categories | first | capitalize }}</span>
-                {% endif %}
-                <h3 class="related-scroll-title">{{ post.title }}</h3>
-              </div>
-
-              <div class="related-scroll-content">
-                <p class="related-scroll-excerpt">{{ post.resume | default: post.excerpt | strip_html | truncate: 80 }}</p>
-              </div>
-
-              <div class="related-scroll-footer">
-                <span class="related-scroll-date">{{ post.date | date: "%b %-d, %Y" }}</span>
-                <a href="{{ post.url }}" class="related-scroll-link">Read scroll</a>
-              </div>
-            </div>
-          </div>
-        {% endfor %}
-      </div>
-    </div>
+  <section class="more-notes" aria-labelledby="more-notes-title">
+    <div class="post-wide-shell"><p class="journal-kicker">Keep reading</p><h2 id="more-notes-title">More Field Notes</h2><div class="more-notes__grid">
+      {% assign related_count = 0 %}{% assign related_urls = '|' | append: page.url | append: '|' %}
+      {% for post in site.posts %}{% if related_count < 3 and post.categories.first == page.categories.first and post.url != page.url %}{% include notebook/scroll-item.html post=post index=forloop.index %}{% assign related_urls = related_urls | append: post.url | append: '|' %}{% assign related_count = related_count | plus: 1 %}{% endif %}{% endfor %}
+      {% for post in site.posts %}{% assign post_marker = '|' | append: post.url | append: '|' %}{% unless related_urls contains post_marker %}{% if related_count < 3 %}{% include notebook/scroll-item.html post=post index=forloop.index %}{% assign related_count = related_count | plus: 1 %}{% endif %}{% endunless %}{% endfor %}
+    </div></div>
   </section>
 </div>
-
-<!-- Scroll progress indicator -->
-<div class="reading-progress-bar"></div>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // Table of Contents is now server-rendered (AC-023) -- this just wires up the
-    // JS enhancements (smooth-scroll, active-state highlighting, hover particles)
-    // against the headings and toc-links that already exist in the markup.
-    const headings = document.querySelectorAll('.article-content h2[id], .article-content h3[id]');
-
-    // Smooth scrolling for ToC links
-    document.querySelectorAll('.toc-link').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-
-        const targetId = this.getAttribute('href');
-        const targetElement = document.querySelector(targetId);
-
-        if (targetElement) {
-          window.scrollTo({
-            top: targetElement.offsetTop - 100,
-            behavior: 'smooth'
-          });
-
-          // Update URL without page jump
-          history.pushState(null, null, targetId);
-        }
-      });
-    });
-
-    // Active state for ToC items during scroll
-    const tocLinks = document.querySelectorAll('.toc-link');
-    const observerOptions = {
-      rootMargin: '-100px 0px -70% 0px',
-      threshold: 0
-    };
-
-    const headingObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        const id = entry.target.getAttribute('id');
-        const link = document.querySelector(`.toc-link[href="#${id}"]`);
-
-        if (entry.isIntersecting) {
-          tocLinks.forEach(l => l.classList.remove('active'));
-          if (link) link.classList.add('active');
-        }
-      });
-    }, observerOptions);
-
-    headings.forEach(heading => {
-      headingObserver.observe(heading);
-    });
-
-    // Dark mode toggle
-    const darkModeToggle = document.getElementById('toggle-dark-mode');
-    const isDarkMode = localStorage.getItem('darkMode') === 'true';
-
-    // Set initial state
-    if (isDarkMode) {
-      document.body.classList.add('dark-mode');
-      darkModeToggle.querySelector('i').classList.remove('fa-moon');
-      darkModeToggle.querySelector('i').classList.add('fa-sun');
-      darkModeToggle.querySelector('.action-text').textContent = 'Light mode';
-    }
-
-    darkModeToggle.addEventListener('click', function() {
-      document.body.classList.toggle('dark-mode');
-
-      if (document.body.classList.contains('dark-mode')) {
-        localStorage.setItem('darkMode', 'true');
-        this.querySelector('i').classList.remove('fa-moon');
-        this.querySelector('i').classList.add('fa-sun');
-        this.querySelector('.action-text').textContent = 'Light mode';
-      } else {
-        localStorage.setItem('darkMode', 'false');
-        this.querySelector('i').classList.remove('fa-sun');
-        this.querySelector('i').classList.add('fa-moon');
-        this.querySelector('.action-text').textContent = 'Dark mode';
-      }
-    });
-
-    // Reading progress bar
-    const progressBar = document.querySelector('.reading-progress-bar');
-
-    window.addEventListener('scroll', function() {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const progress = (scrollTop / scrollHeight) * 100;
-
-      progressBar.style.width = progress + '%';
-    });
-
-    // Add magical particle effects to headings
-    headings.forEach(heading => {
-      heading.addEventListener('mouseenter', function() {
-        // Create magical particles
-        const particleCount = 5;
-        for (let i = 0; i < particleCount; i++) {
-          const particle = document.createElement('div');
-          particle.className = 'magic-particle';
-
-          // Randomize particle properties
-          const size = 2 + Math.random() * 3;
-          const posX = Math.random() * 100;
-          const delay = Math.random() * 0.5;
-          const duration = 0.5 + Math.random() * 1;
-
-          particle.style.width = `${size}px`;
-          particle.style.height = `${size}px`;
-          particle.style.left = `${posX}%`;
-          particle.style.top = '50%';
-          particle.style.animationDelay = `${delay}s`;
-          particle.style.animationDuration = `${duration}s`;
-
-          this.appendChild(particle);
-
-          // Remove particle after animation
-          setTimeout(() => {
-            particle.remove();
-          }, (delay + duration) * 1000);
-        }
-      });
-    });
-  });
-</script>
+<script src="{{ '/assets/js/post.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>

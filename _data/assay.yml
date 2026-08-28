@@ -16,6 +16,6 @@ icons:
   tested: "fas fa-flask-vial"
   proven: "fas fa-mortar-pestle"
 glosses:
-  speculative: "An untested idea or hypothesis"
-  tested: "Verified in practice, but not yet battle-hardened"
-  proven: "Established, production-proven knowledge"
+  speculative: "A reasoned proposal or synthesis that has not been validated on this site's own workload."
+  tested: "Claims were exercised through named checks or direct practice, with reviewable evidence and stated boundaries."
+  proven: "Claims have sustained repeatable production use, with reviewable evidence and known limits."

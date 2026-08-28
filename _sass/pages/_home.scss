@@ -1,559 +1,312 @@
-// ==========================================================================
-// ALCHEMIST HOME PAGE STYLES
-// ==========================================================================
-
+// The Cartographer's Atelier — homepage-only visual system.
 @use "../settings/variables" as *;
-@use "../tools/breakpoints" as *;
 
-// Prevent scrolling on home page
-body.home {
+.atelier-home {
+  --atelier-night: #151526;
+  --atelier-indigo: #25233e;
+  --atelier-parchment: #f2ead8;
+  --atelier-paper: #faf5e9;
+  --atelier-ink: #302a27;
+  --atelier-brass: #bd8b47;
+  --atelier-brass-ink: #765321;
+  --atelier-ember: #b74d35;
+  --atelier-leaf: #476e57;
+  background: var(--atelier-parchment);
+  color: var(--atelier-ink);
   overflow: hidden;
-  height: 100vh;
-  position: fixed;
-  width: 100%;
 }
 
-html.home {
-  overflow: hidden;
-  height: 100%;
+.atelier-shell {
+  width: min(1120px, calc(100% - 3rem));
+  margin-inline: auto;
 }
 
-.alchemist-hero {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #211C30, #312A45);
-  padding: 2rem;
+.atelier-kicker {
+  margin: 0 0 1rem;
+  color: var(--atelier-brass-ink);
+  font-size: .74rem;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.atelier-threshold {
   position: relative;
-  overflow: visible;
+  box-sizing: border-box;
+  min-height: min(860px, 100vh);
+  display: grid;
+  align-items: center;
+  padding: 8.5rem 0 6rem;
+  color: #f4eedf;
+  background:
+    radial-gradient(circle at 75% 42%, rgba(189, 139, 71, .14), transparent 28rem),
+    linear-gradient(135deg, var(--atelier-night), var(--atelier-indigo));
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+  }
 
   &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image:
-      radial-gradient(circle at 20% 30%, rgba(103, 58, 183, 0.15) 0%, transparent 20%),
-      radial-gradient(circle at 80% 70%, rgba(63, 81, 181, 0.15) 0%, transparent 20%);
-    z-index: 1;
+    inset: 1.5rem;
+    border: 1px solid rgba(189, 139, 71, .25);
   }
 
-  @include max-width('lg') {
-    flex-direction: column;
-    padding: 2rem 1rem;
-    min-height: auto;
-    padding-top: 4rem;
-    padding-bottom: 4rem;
-  }
-
-  @include max-width('sm') {
-    padding: 2rem 1rem;
-    min-height: calc(100vh - 4rem);
+  &::after {
+    inset: 0;
+    opacity: .18;
+    background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: linear-gradient(to right, transparent, black 55%);
   }
 }
 
-/* Hero Content */
-.hero__content {
-  flex: 1;
-  max-width: 600px;
-  margin-left: 2rem;
-  margin-right: 4rem;
+.atelier-threshold .atelier-kicker,
+.atelier-artifacts .atelier-kicker { color: var(--atelier-brass); }
+
+.atelier-threshold__grid {
   position: relative;
-  z-index: 3;
-  color: $background-cream;
-
-  @include max-width('lg') {
-    margin: 2rem 0 0 0;
-    text-align: center;
-    max-width: 100%;
-  }
-
-  @include max-width('sm') {
-    margin: 1.5rem 0 0 0;
-  }
-}
-
-.hero__title {
-  font-size: 3.5rem;
-  margin-bottom: 0.5rem;
-  color: $background-cream;
-  font-weight: 700;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-
-  @include max-width('sm') {
-    font-size: 2.5rem;
-  }
-}
-
-.hero__subtitle {
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  color: var(--ff-gold);
-  font-family: 'Nothing You Could Do', cursive;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-
-  @include max-width('sm') {
-    font-size: 1.5rem;
-  }
-}
-
-.hero__description {
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
-  line-height: 1.6;
-  color: $pastel-blue;
-}
-
-.hero-trademark {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  display: flex;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(300px, .7fr);
+  gap: clamp(2.5rem, calc(1.5rem + 3vw), 5rem);
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
-  color: rgba($pastel-purple, 0.8);
-  font-family: 'Nothing You Could Do', cursive;
-  text-shadow: 0 0 10px rgba($pastel-purple, 0.3);
-  z-index: 10;
-
-  &__copyright {
-    font-size: 1.1rem;
-  }
-
-  &__year {
-    font-weight: 300;
-  }
-
-  &__name {
-    font-weight: 500;
-  }
-
-  @include max-width('sm') {
-    bottom: 1.5rem;
-    right: 1.5rem;
-    font-size: 0.8rem;
-  }
 }
 
-/* Alchemy Circle */
-.alchemy-circle {
-  position: relative;
-  width: 480px;
-  height: 480px;
-  margin: 0 auto;
-  z-index: 2;
-  cursor: pointer;
-  display: flex;
+.atelier-threshold h1 {
+  max-width: 760px;
+  margin: 0 0 1.75rem;
+  color: #fbf5e8;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(3rem, calc(2rem + 2.5vw), 4.5rem);
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -.035em;
+}
+
+.atelier-threshold__tagline {
+  max-width: 650px;
+  margin: 0;
+  color: #c9c5d4;
+  font-size: clamp(1rem, calc(.94rem + .2vw), 1.1rem);
+  line-height: 1.62;
+}
+
+.atelier-actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem; }
+
+.atelier-button {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  min-height: 46px;
+  padding: .65rem 1.15rem;
+  border: 1px solid currentColor;
+  color: inherit;
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
 
-  @include max-width('lg') {
-    width: 300px;
-    height: 300px;
-    margin: 0 0 2rem 0;
-  }
-
-  @include max-width('sm') {
-    width: 250px;
-    height: 250px;
-    margin: 4rem 0 1.5rem 0;
-  }
-
-  @include max-width('xs') {
-    width: 220px;
-    height: 220px;
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    background: radial-gradient(
-      circle at var(--glow-x, 50%),
-      var(--glow-y, 50%),
-      rgba(205, 180, 219, 0.5) 0%,
-      transparent 70%
-    );
-    opacity: var(--glow-strength, 0);
-    transition: opacity 0.3s ease;
-    z-index: -1;
-  }
-
-  &.interacting {
-    cursor: grabbing;
-  }
+  &:hover { color: var(--atelier-brass); }
+  &--primary { border-color: var(--atelier-brass); background: var(--atelier-brass); color: var(--atelier-night); }
+  &--primary:hover { background: #d1a765; color: var(--atelier-night); }
 }
 
-.alchemy-circle__inner {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background: radial-gradient(circle, $pastel-purple, #6A5687);
-  box-shadow: 0 0 25px rgba(205, 180, 219, 0.7);
-  z-index: 2;
+.atelier-socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  padding: 0;
+  margin: 2rem 0 0;
+  list-style: none;
 
-  @include max-width('sm') {
-    width: 70px;
-    height: 70px;
-  }
-
-  @include max-width('xs') {
-    width: 60px;
-    height: 60px;
-  }
+  a { display: inline-flex; gap: .45rem; align-items: center; color: #bdb8c9; font-size: .82rem; }
+  a:hover { color: #fff; }
 }
 
-.alchemy-circle__ring {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  border-radius: 50%;
-  border: 1.5px solid var(--ring-color, rgba(205, 180, 219, 0.3));
-  transform: translate(-50%, -50%) rotate(var(--settle-angle, 0deg));
+.atelier-plate { position: relative; margin: 0; text-align: center; }
+.atelier-plate img { position: relative; z-index: 1; width: min(100%, 430px); height: auto; filter: sepia(.5) saturate(.7) brightness(1.3) drop-shadow(0 0 30px rgba(189,139,71,.15)); }
+.atelier-plate__orbit { position: absolute; inset: 3%; border: 1px solid rgba(189,139,71,.3); border-radius: 50%; }
+.atelier-plate__orbit::before { content: ""; position: absolute; inset: 10%; border: 1px dashed rgba(189,139,71,.2); border-radius: inherit; }
+.atelier-plate figcaption { max-width: 28rem; margin: 1rem auto 0; color: #9994a8; font-family: 'Nothing You Could Do', cursive; font-size: .92rem; }
 
-  // AC-031 / Story 4.5: was `rotate 40s|60s|80s linear infinite` -- ALL THREE
-  // conditions of WCAG 2.2.2 held (auto-starts on load, presented in
-  // parallel with the hero name/subtitle/tagline/social row, and a single
-  // rotation already took 40-80s, let alone forever). research-ui-a11y.md
-  // §3.2's cheapest reconciliation: make the loop finite and it "does not
-  // apply at all, and you owe no pause button" -- a circle that inscribes,
-  // flares, and settles is also better theater than an idle spin. Each ring
-  // settles at a fixed --settle-angle (held via `forwards`) instead of
-  // spinning forever; re-triggers naturally on every full page load, since
-  // this is a static multi-page site with no client-side routing to
-  // re-trigger against.
-  &--1 {
-    width: 180px;
+.atelier-section { position: relative; padding: clamp(5rem, calc(3.5rem + 4vw), 8rem) 0; }
+.atelier-section__heading { max-width: 690px; margin-bottom: 3rem; }
+.atelier-section__heading h2,
+.atelier-now h2 { margin: 0 0 1rem; color: inherit; font-family: Georgia, 'Times New Roman', serif; font-size: clamp(2.4rem, calc(1.35rem + 3.3vw), 4.5rem); font-weight: 400; line-height: 1.05; letter-spacing: -.035em; }
+.atelier-section__heading > p:last-child { color: #615954; font-size: 1.08rem; }
 
-    height: 180px;
-    animation: circle-settle 2.2s cubic-bezier(0.22, 1, 0.36, 1) 1 forwards;
-    --ring-color: rgba(205, 180, 219, 0.4);
-    --settle-angle: 35deg;
-  }
+.atelier-transformations { background: var(--atelier-parchment); }
+.atelier-transformations::before { content: ""; position: absolute; inset: 0; opacity: .13; background-image: radial-gradient(#594d40 1px, transparent 1px); background-size: 18px 18px; pointer-events: none; }
+.atelier-transformations .atelier-shell { position: relative; }
 
-  &--2 {
-    width: 300px;
-    height: 300px;
-    animation: circle-settle 3.1s cubic-bezier(0.22, 1, 0.36, 1) 0.3s 1 forwards;
-    --ring-color: rgba(185, 201, 230, 0.4);
-    --settle-angle: -50deg;
-  }
+.atelier-constellation { display: grid; grid-template-columns: minmax(220px, .42fr) minmax(0, 1fr); gap: clamp(2rem, calc(1rem + 4vw), 5rem); }
+.atelier-constellation__tabs { position: relative; display: grid; align-content: start; }
+.atelier-constellation__tabs::before { content: ""; position: absolute; top: 1.7rem; bottom: 1.7rem; left: 1.05rem; border-left: 1px solid rgba(71,110,87,.45); }
+.atelier-era-tab { position: relative; display: flex; gap: 1rem; align-items: center; width: 100%; padding: .85rem 0; border: 0; background: none; color: #635c54; cursor: pointer; font: inherit; text-align: left; }
+.atelier-era-tab__index { z-index: 1; display: grid; place-items: center; width: 2.15rem; height: 2.15rem; flex: 0 0 auto; border: 1px solid var(--atelier-leaf); border-radius: 50%; background: var(--atelier-parchment); color: var(--atelier-leaf); font-size: .68rem; }
+.atelier-era-tab.is-current { color: var(--atelier-ember); font-weight: 700; }
+.atelier-era-tab.is-current .atelier-era-tab__index { background: var(--atelier-ember); border-color: var(--atelier-ember); color: #fff; }
 
-  &--3 {
-    width: 420px;
-    height: 420px;
-    animation: circle-settle 3.8s cubic-bezier(0.22, 1, 0.36, 1) 0.6s 1 forwards;
-    --ring-color: rgba(248, 209, 224, 0.4);
-    --settle-angle: 70deg;
-  }
+.atelier-constellation__panels { min-width: 0; }
+.atelier-era-panel { margin-bottom: 1rem; padding: clamp(2rem, calc(1rem + 3vw), 4rem); border: 1px solid rgba(74,58,43,.22); background: rgba(250,245,233,.72); box-shadow: 14px 14px 0 rgba(71,110,87,.08); }
+.atelier-constellation.is-enhanced .atelier-era-panel { margin-bottom: 0; }
+.atelier-era-panel__period { margin: 0 0 .8rem; color: var(--atelier-ember); font-size: .72rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+.atelier-era-panel h3 { margin: 0 0 1.25rem; color: var(--atelier-ink); font-family: Georgia, 'Times New Roman', serif; font-size: clamp(2rem, calc(1.2rem + 2.5vw), 3.5rem); font-weight: 400; line-height: 1.08; }
+.atelier-era-panel > p:not([class]) { max-width: 650px; font-size: 1.08rem; }
+.atelier-era-panel__trace { display: inline-block; margin: 1rem 0 0; padding-top: .7rem; border-top: 1px solid var(--atelier-brass); color: var(--atelier-leaf); font-size: .78rem; letter-spacing: .08em; }
 
-  @include max-width('lg') {
-    &--1 {
-      width: 120px;
-      height: 120px;
+.atelier-artifacts { color: #eee8dd; background: #202033; }
+.atelier-artifacts .atelier-section__heading > p:last-child { color: #bbb7c3; }
+.atelier-artifact-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 1px; border: 1px solid rgba(189,139,71,.35); background: rgba(189,139,71,.35); }
+.atelier-artifact { position: relative; grid-column: span 2; min-height: 310px; padding: clamp(1.7rem, calc(1rem + 2vw), 3rem); overflow: hidden; background: #202033; }
+.atelier-artifact::before { content: ""; position: absolute; width: 9rem; height: 9rem; top: -5rem; right: -4rem; border: 1px solid currentColor; border-radius: 50%; opacity: .14; }
+.atelier-artifact--flagship { grid-column: 1 / -1; min-height: 390px; padding-right: clamp(4rem, calc(3rem + 5vw), 10rem); background: radial-gradient(circle at 88% 20%, rgba(183,77,53,.18), transparent 22rem), linear-gradient(135deg, #29233c, #1b1b2c); }
+.atelier-artifact--satellite { grid-column: span 3; min-height: 220px; }
+.atelier-artifact--ember { color: #d96f55; }
+.atelier-artifact--leaf { color: #75a487; }
+.atelier-artifact--brass { color: #d6ad71; }
+.atelier-artifact--indigo { color: #9e96cf; }
+.atelier-artifact__meta { display: flex; flex-wrap: wrap; gap: .75rem 1.5rem; align-items: center; justify-content: space-between; margin-bottom: clamp(1.5rem, calc(1rem + 2vw), 3.5rem); }
+.atelier-artifact__role { margin: 0; color: currentColor; font-size: .7rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+.atelier-artifact__status { padding: .35rem .55rem; border: 1px solid currentColor; color: #ddd6ca; font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.atelier-artifact h3 { margin: 0 0 1rem; color: #fff; font-family: Georgia, 'Times New Roman', serif; font-size: clamp(2rem, calc(1.6rem + 1.2vw), 3rem); font-weight: 400; }
+.atelier-artifact--flagship h3 { font-size: clamp(3rem, calc(1.4rem + 5vw), 6rem); line-height: .95; }
+.atelier-artifact h3 a { color: inherit; }
+.atelier-artifact h3 a:hover { color: var(--atelier-brass); }
+.atelier-artifact h3 span { font-family: sans-serif; font-size: .45em; vertical-align: top; }
+.atelier-artifact__story { max-width: 710px; color: #c9c4cf; font-size: 1rem; }
+.atelier-artifact--flagship .atelier-artifact__story { font-size: clamp(1.05rem, calc(.95rem + .35vw), 1.25rem); }
+.atelier-artifact__proof { max-width: 650px; margin: 1.5rem 0 0; color: #aaa4b3; font-size: .87rem; }
+.atelier-artifact__proof span { display: block; margin-bottom: .35rem; color: currentColor; font-size: .65rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+
+.atelier-notes { background: var(--atelier-paper); }
+.atelier-notes__grid {
+  --atelier-note-paper: #fffaf0;
+  --atelier-note-ink: #302a27;
+  --atelier-note-muted: #685f57;
+  --atelier-note-rule: #c7bca9;
+  --atelier-note-accent: #342f59;
+  --atelier-note-eidolon: #4a3d70;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  align-items: stretch;
+}
+
+// The shared journal entry is a horizontal ledger row in the Notebook. Here it
+// becomes a compact editorial card without changing its reusable semantics.
+.atelier-home .atelier-notes__grid .journal-entry {
+  position: relative;
+  min-width: 0;
+  display: grid;
+  grid-template: auto 1fr auto / minmax(0, 1fr);
+  gap: 1.15rem;
+  padding: clamp(1.35rem, calc(1rem + 1vw), 2rem);
+  color: var(--atelier-note-ink);
+  background: var(--atelier-note-paper);
+  border: 1px solid var(--atelier-note-rule);
+  box-shadow: 8px 8px 0 rgba(71, 110, 87, .09);
+}
+
+.atelier-home .atelier-notes__grid .journal-entry__date {
+  display: flex;
+  flex-direction: row;
+  gap: .45rem;
+  color: var(--atelier-note-muted);
+}
+
+.atelier-home .atelier-notes__grid .journal-entry__date time { color: var(--atelier-note-accent); }
+.atelier-home .atelier-notes__grid .journal-entry__body { min-width: 0; }
+.atelier-home .atelier-notes__grid .journal-entry__meta { align-content: start; color: var(--atelier-note-muted); }
+.atelier-home .atelier-notes__grid .journal-entry__title { margin-top: .85rem; font-size: clamp(1.45rem, calc(1.2rem + .55vw), 1.8rem); }
+.atelier-home .atelier-notes__grid .journal-entry__title a,
+.atelier-home .atelier-notes__grid .journal-entry__arrow { color: var(--atelier-note-accent); }
+.atelier-home .atelier-notes__grid .journal-entry__excerpt { color: var(--atelier-note-muted); }
+.atelier-home .atelier-notes__grid .journal-entry__tags { color: var(--atelier-note-muted); }
+.atelier-home .atelier-notes__grid .journal-entry__tags li::before { color: var(--atelier-brass-ink); }
+.atelier-home .atelier-notes__grid .journal-entry__arrow { justify-self: end; align-self: end; padding: .55rem; margin: -.55rem; }
+
+.atelier-home .atelier-notes__grid .authorship-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  max-width: 100%;
+  padding: .2rem .5rem;
+  color: var(--atelier-note-muted);
+  border: 1px solid #807267;
+  border-radius: 999px;
+  letter-spacing: .03em;
+  text-transform: none;
+}
+
+.atelier-home .atelier-notes__grid .authorship-mark__kind { font-weight: 700; }
+.atelier-home .atelier-notes__grid .authorship-mark__name::before { content: "·"; margin-right: .35rem; }
+.atelier-home .atelier-notes__grid .authorship-mark--eidolon { color: var(--atelier-note-eidolon); border-color: #77669e; background: #f1ebfa; }
+.atelier-home .atelier-notes__grid .authorship-mark--unknown { border-style: dashed; }
+.atelier-home .atelier-notes__grid .post-assay-label { color: #4e342e; background: #f9f3e6; border-color: #4e342e; }
+
+// Modern browsers let the three notes share editorial tracks without forcing
+// card heights. Browsers without subgrid retain the natural card flow above.
+@supports (grid-template-rows: subgrid) {
+  @media (min-width: 768px) {
+    .atelier-home .atelier-notes__grid .journal-entry {
+      grid-row: span 6;
+      grid-template-rows: subgrid;
     }
 
-    &--2 {
-      width: 200px;
-      height: 200px;
-    }
-
-    &--3 {
-      width: 280px;
-      height: 280px;
-    }
-  }
-
-  @include max-width('sm') {
-    &--1 {
-      width: 100px;
-      height: 100px;
-    }
-
-    &--2 {
-      width: 170px;
-      height: 170px;
-    }
-
-    &--3 {
-      width: 230px;
-      height: 230px;
-    }
-  }
-
-  @include max-width('xs') {
-    &--1 {
-      width: 90px;
-      height: 90px;
-    }
-
-    &--2 {
-      width: 150px;
-      height: 150px;
-    }
-
-    &--3 {
-      width: 210px;
-      height: 210px;
+    .atelier-home .atelier-notes__grid .journal-entry__body {
+      display: grid;
+      grid-row: span 4;
+      grid-template-rows: subgrid;
     }
   }
 }
 
-// AC-031 / Story 4.5: "inscribes, flares, and settles" -- opacity fades in,
-// a brief scale overshoot around 65% reads as the "flare," and the ring
-// comes to rest at its own --settle-angle (held via `forwards`). Every ring
-// finishes well inside 5s (see the per-ring delay+duration above); 2.2.2
-// "does not apply at all" once the loop is finite, per research-ui-a11y.md.
-@keyframes circle-settle {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) rotate(calc(var(--settle-angle, 0deg) - 90deg)) scale(0.7);
-  }
-  65% {
-    opacity: 1;
-    transform: translate(-50%, -50%) rotate(calc(var(--settle-angle, 0deg) * 0.85)) scale(1.06);
-  }
-  100% {
-    opacity: 1;
-    transform: translate(-50%, -50%) rotate(var(--settle-angle, 0deg)) scale(1);
-  }
+.atelier-section__link { margin: 2.5rem 0 0; text-align: right; }
+.atelier-section__link a { color: var(--atelier-leaf); font-weight: 700; }
+
+.atelier-now { color: #f5eee0; background: #9f3c29; }
+.atelier-now__grid { display: grid; grid-template-columns: .8fr 1.25fr auto; gap: clamp(2rem, calc(1rem + 3vw), 5rem); align-items: center; }
+.atelier-now .atelier-kicker { color: #f3d09d; }
+.atelier-now h2 { margin: 0; font-size: clamp(2.3rem, calc(1.5rem + 2.5vw), 3.8rem); }
+.atelier-now p { margin: 0; }
+
+.atelier-marginalia { background: var(--atelier-parchment); }
+.atelier-marginalia ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 3rem; padding: 0; margin: 0 0 4rem; list-style: none; }
+.atelier-marginalia li { display: flex; gap: .8rem; padding: 1rem 0; border-bottom: 1px solid rgba(48,42,39,.18); }
+.atelier-marginalia li span { color: var(--atelier-leaf); }
+.atelier-invitation { display: flex; gap: 2rem; align-items: center; justify-content: space-between; padding: clamp(1.5rem, calc(.8rem + 2vw), 3rem); border: 1px solid var(--atelier-brass); background: var(--atelier-paper); }
+.atelier-invitation p { max-width: 760px; margin: 0; font-family: Georgia, 'Times New Roman', serif; font-size: clamp(1.2rem, calc(.95rem + .8vw), 1.7rem); }
+
+.atelier-home a:focus-visible,
+.atelier-home button:focus-visible { outline: 3px solid #f1bd68; outline-offset: 4px; }
+
+@media (max-width: 767px) {
+  .atelier-shell { width: min(100% - 2rem, 38rem); }
+  .atelier-threshold { min-height: auto; padding: 8rem 0 4rem; }
+  .atelier-threshold::before { inset: .65rem; }
+  .atelier-threshold__grid, .atelier-constellation, .atelier-now__grid { grid-template-columns: 1fr; }
+  .atelier-threshold__grid { gap: 3rem; }
+  .atelier-threshold h1 { font-size: clamp(2.8rem, calc(1.6rem + 5.5vw), 4.4rem); }
+  .atelier-plate { max-width: 320px; margin-inline: auto; }
+  .atelier-constellation { gap: 2rem; }
+  .atelier-constellation__tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .35rem; }
+  .atelier-constellation__tabs::before { display: none; }
+  .atelier-era-tab { padding: .55rem; border: 1px solid rgba(71,110,87,.28); }
+  .atelier-era-tab__index { background: transparent; }
+  .atelier-artifact-grid, .atelier-notes__grid, .atelier-marginalia ul { grid-template-columns: 1fr; }
+  .atelier-home .atelier-notes__grid .journal-entry { grid-template: auto 1fr auto / minmax(0, 1fr); }
+  .atelier-artifact, .atelier-artifact--flagship, .atelier-artifact--satellite { grid-column: 1; }
+  .atelier-artifact { min-height: 0; }
+  .atelier-artifact__meta { align-items: flex-start; flex-direction: column; margin-bottom: 1.5rem; }
+  .atelier-now__grid { gap: 1.25rem; align-items: start; }
+  .atelier-now .atelier-button { justify-self: start; }
+  .atelier-invitation { align-items: flex-start; flex-direction: column; }
 }
 
-/* Alchemy Symbols & Runes */
-.alchemy-symbol, .rune {
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  color: var(--symbol-color, $pastel-purple);
-  filter: drop-shadow(0 0 8px var(--symbol-color, rgba(205, 180, 219, 0.5)));
-  transition: all 0.3s ease;
-  z-index: 3;
-  transform: translateY(0);
-  // AC-031: was `float 3s ease-in-out infinite` (undefined locally -- see
-  // _sass/_base.scss's drift-settle note for the cross-partial `float`
-  // keyframe collision this rode on). assets/js/home.js overrides this
-  // inline on load with a finite (2-iteration) version of `float-glyphs`;
-  // this is the no-JS / pre-hydration fallback, now finite too.
-  animation: float-glyphs 1.8s ease-in-out 2;
-
-  svg {
-    width: 100%;
-    height: 100%;
-  }
-
-  &.activated {
-    filter: brightness(2) drop-shadow(0 0 20px var(--symbol-color));
-    animation: pulse-activate 1s ease-out;
-  }
-
-  @include max-width('sm') {
-    width: 35px;
-    height: 35px;
-  }
-
-  @include max-width('xs') {
-    width: 30px;
-    height: 30px;
-  }
-}
-
-.alchemy-symbol.hovered, .rune.hovered {
-  filter: brightness(1.5) drop-shadow(0 0 12px var(--symbol-color));
-  transform: translateY(-10px) scale(1.3);
-  z-index: 5;
-  animation: none;
-
-  &::after {
-    content: attr(title);
-    position: absolute;
-    bottom: -30px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(33, 28, 48, 0.85);
-    color: var(--symbol-color);
-    padding: 0.35rem 0.75rem;
-    border-radius: $radius-4;
-    font-size: 0.8rem;
-    white-space: nowrap;
-    opacity: 1;
-    visibility: visible;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    z-index: 10;
-    animation: nameAppear 0.3s ease-out;
-    border: 1px solid rgba(205, 180, 219, 0.2);
-    text-shadow: 0 0 8px var(--symbol-color);
-  }
-}
-
-@keyframes float-glyphs {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  25% {
-    transform: translateY(-8px);
-  }
-  50% {
-    transform: translateY(-12px);
-  }
-  75% {
-    transform: translateY(-8px);
-  }
-}
-
-@keyframes pulse-activate {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.5);
-    opacity: 0.8;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes nameAppear {
-  from {
-    opacity: 0;
-    transform: translateX(-50%) translateY(5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-}
-
-/* Position symbols with fixed classes instead of direct positioning */
-.alchemy-symbol--fire {
-  top: 15%;
-  left: 25%;
-}
-
-.alchemy-symbol--water {
-  bottom: 20%;
-  left: 20%;
-}
-
-.alchemy-symbol--air {
-  top: 20%;
-  right: 20%;
-}
-
-.alchemy-symbol--earth {
-  bottom: 25%;
-  right: 25%;
-}
-
-.alchemy-symbol--quintessence {
-  top: 50%;
-  left: 15%;
-}
-
-/* Position runes */
-.rune--ansuz {
-  top: 15%;
-  right: 15%;
-}
-
-.rune--kenaz {
-  bottom: 15%;
-  right: 15%;
-}
-
-.rune--raidho {
-  left: 50%;
-  bottom: 15%;
-}
-
-.rune--laguz {
-  top: 50%;
-  right: 15%;
-}
-
-/* Ripple effect on click */
-.alchemy-ripple {
-  position: absolute;
-  border-radius: 50%;
-  transform: scale(0);
-  background: radial-gradient(circle,
-    rgba(255, 255, 255, 0.9) 0%,
-    rgba(255, 255, 255, 0.3) 50%,
-    transparent 70%);
-  width: 200px;
-  height: 200px;
-  margin-left: -100px;
-  margin-top: -100px;
-  opacity: 0;
-  animation: ripple 1s ease-out forwards;
-  pointer-events: none;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-}
-
-@keyframes ripple {
-  0% {
-    transform: scale(0);
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.8;
-  }
-  100% {
-    transform: scale(1.5);
-    opacity: 0;
-  }
-}
-
-/* Accessibility improvements */
 @media (prefers-reduced-motion: reduce) {
-  .alchemy-circle__ring {
-    animation: none;
-  }
-
-  .alchemy-circle {
-    transition: none;
-  }
-
-  .alchemy-symbol, .rune {
-    transition: none;
-    animation: none;
-  }
-}
-
-html, body {
-  overflow-x: hidden;
-}
-
-/* Particle effects */
-.alchemy-particle {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  background: white;
-  border-radius: 50%;
-  pointer-events: none;
-  animation: particle-fade 1s ease-out forwards;
-  box-shadow: 0 0 10px white;
-}
-
-@keyframes particle-fade {
-  0% {
-    transform: translate(0, 0) scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(var(--tx, 0), var(--ty, 0)) scale(0);
-    opacity: 0;
-  }
+  .atelier-home *, .atelier-home *::before, .atelier-home *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
 }

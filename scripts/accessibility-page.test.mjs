@@ -2,15 +2,12 @@
 // scripts/accessibility-page.test.mjs
 //
 // AC-040: "THEN the site SHALL publish an `/accessibility` page stating the
-// conformance target and the known gaps." VERIFY: `_site/accessibility/`
+// accessibility target and the known gaps." VERIFY: `_site/accessibility/`
 // renders and names WCAG 2.2 AA, the automated axe check, and a contact
 // route for reports.
 //
-// Story 4.11 / spec.yaml: ships LAST in Phase 4, after 4a and both CI checks
-// (palette contrast + pa11y-ci) are green -- a conformance claim the site
-// does not meet is worse than no page. This script only asserts the page's
-// mechanical content; it does not certify the claim itself (that's the rest
-// of Phase 4a/4b's test suite + the manual milestone checklist).
+// This script verifies the published target and evidence language. It does
+// not turn those checks into a claim of complete conformance.
 
 import { readFileSync, existsSync } from 'node:fs';
 
@@ -39,6 +36,19 @@ else fail('does not provide a mailto: contact route');
 
 if (/known gaps|not yet|hasn't happened|not fixed/i.test(html)) ok('names at least one known gap (not a bare compliance claim)');
 else fail('does not appear to name any known gap -- a page claiming perfection is the exact D&D Beyond failure mode this page exists to avoid');
+
+if (/not a claim|does not constitute|cannot verify|cannot guarantee/i.test(html)) ok('explicitly distinguishes the target and evidence from full conformance');
+else fail('does not explicitly distinguish its target or evidence from a conformance claim');
+
+for (const [label, expression] of [
+  ['HP/MP/ST/EXP', /HP\/MP\/ST\/EXP/i],
+  ['rarity', /rarity/i],
+  ['ultimate ability', /ultimate ability/i],
+  ['screen-reader testing on every change', /screen.reader.{0,80}every change|every change.{0,80}screen.reader/i],
+]) {
+  if (expression.test(html)) fail(`retains stale ${label} claim`);
+  else ok(`does not retain stale ${label} claim`);
+}
 
 console.log(failures === 0 ? '\nPASS (AC-040).' : `\nFAIL: ${failures} failure(s) (AC-040).`);
 process.exit(failures === 0 ? 0 : 1);

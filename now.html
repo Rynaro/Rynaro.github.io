@@ -1,66 +1,16 @@
 ---
 layout: default
 title: Now
+description: "Henrique Lavezzo's current work, experiments, and grounding rituals."
 permalink: /now/
-resume: "What the Code Alchemist is brewing right now"
-last_updated: 2026-07-16
 ---
-
-<!--
-  /now -- "The Alchemist's Current Brew" (Story 2.3, AC-014). Derek Sivers' /now pattern:
-  what you'd tell a friend you hadn't seen in a year. `last_updated` (front matter above)
-  is a living value -- update it whenever this page's content changes; that date is what
-  AC-014 checks for.
-
-  Seed content below is grounded only in what the site already establishes elsewhere
-  (character_build.yml's job title, traits.yml's hobbies, the LLM post's subject matter)
-  rather than invented specifics. The owner should personalize this on the next real update.
--->
-<section class="rpg-hero">
-  <div class="container">
-    <div class="hero__content">
-      <h1 class="hero__title fade-in">The Alchemist's Current Brew</h1>
-      <h2 class="hero__subtitle fade-in">/now</h2>
-      <p class="hero__description">What I'd tell you over coffee if we hadn't talked in a year</p>
-      <p class="now-last-updated">
-        <i class="fas fa-clock" aria-hidden="true"></i>
-        Last updated: <time datetime="{{ page.last_updated }}">{{ page.last_updated | date: "%B %-d, %Y" }}</time>
-      </p>
-    </div>
+{% assign field_note = site.data.now %}
+<article class="now-page">
+  <header class="now-hero"><div class="now-shell now-hero__layout"><div><p class="now-kicker">{{ field_note.hero.eyebrow }}</p><h1>{{ field_note.hero.title }}</h1><p class="now-hero__intro">{{ field_note.hero.introduction }}</p></div><p class="now-revision"><span>{{ field_note.hero.date_label }}</span><time datetime="{{ field_note.updated_at }}">{{ field_note.updated_at | date: "%B %-d, %Y" }}</time></p></div></header>
+  <div class="now-shell now-map">
+    <section class="now-quests" aria-labelledby="now-focus-title"><header class="now-section-heading"><p class="now-kicker">Quest ledger</p><h2 id="now-focus-title">{{ field_note.focus.title }}</h2><p>{{ field_note.focus.introduction }}</p></header><ol class="now-ledger">{% for item in field_note.focus.items %}{% assign project = nil %}{% if item.project_key %}{% assign project_matches = site.data.projects.projects | where: "key", item.project_key %}{% assign project = project_matches | first %}{% endif %}<li class="now-quest"><p class="now-quest__marker"><span>0{{ forloop.index }}</span>{{ item.marker }}</p><div>{% if project %}<h3>{{ project.title }}</h3><p class="now-quest__status">{{ project.status_label }} · {{ project.role }}</p><p>{{ item.note }}</p><p class="now-quest__proof">{{ project.summary }}</p><p class="now-quest__links"><a href="{{ '/laboratory/' | append: '#project-' | append: project.key | relative_url }}">Open in the Laboratory <span aria-hidden="true">→</span></a><a href="{{ project.repository_url }}" target="_blank" rel="noopener">Examine source <span aria-hidden="true">↗</span></a></p>{% else %}<h3>{{ item.title }}</h3><p>{{ item.text }}</p>{% if item.link_url and item.link_label %}<a href="{{ item.link_url | relative_url }}">{{ item.link_label }} <span aria-hidden="true">→</span></a>{% endif %}{% endif %}</div></li>{% endfor %}</ol></section>
+    <aside class="now-side-paths" aria-labelledby="now-side-title"><p class="now-kicker">{{ field_note.side_paths.eyebrow }}</p><h2 id="now-side-title">{{ field_note.side_paths.title }}</h2><p>{{ field_note.side_paths.introduction }}</p><ul>{% for item in field_note.side_paths.items %}<li><span aria-hidden="true">✦</span>{{ item }}</li>{% endfor %}</ul></aside>
   </div>
-</section>
-
-<section class="rpg-scrolls">
-  <div class="container">
-    {% include components/section-title.html icon="fas fa-flask" title="What's Bubbling" %}
-
-    <div class="now-content">
-      <p>
-        Still {{ site.data.character_build.character.job }} by trade — shipping systems,
-        keeping teams unstuck, and trying not to let the character sheet's HP bar dip too low
-        ({{ site.data.character_build.character.status.hp.current }}/{{ site.data.character_build.character.status.hp.max }},
-        for anyone keeping score).
-      </p>
-      <p>
-        Lately most of the interesting work is at the seam between "write the code myself" and
-        "conduct an AI familiar while it writes the code" — routing between Claude, GPT, and
-        local models depending on how much the task actually needs, instead of reaching for the
-        biggest hammer by default. If that sounds interesting, the
-        <a href="{{ '/notebook/llm/' | relative_url }}">AI/LLM notebook</a> is where that
-        thinking gets written down properly; <a href="{{ '/uses/' | relative_url }}">/uses</a>
-        has the toolchain itself.
-      </p>
-      <p>
-        Off the clock: still tending a small home ecosystem of 5 cats and 2 fish (a
-        surprisingly effective focus-testing environment), still chipping away at Chinese the
-        same stubborn way I picked up English — through the games, not the textbook — and
-        still treating gardening as the one debugging loop that doesn't have a stack trace.
-      </p>
-      <p class="now-disclaimer">
-        <em>(This is a <a href="https://sive.rs/nowff" target="_blank" rel="noopener">now page</a> —
-        it's supposed to go stale and then get updated, not stay accurate forever. If it's been
-        a while since {{ page.last_updated | date: "%B %Y" }}, assume some of this has drifted.)</em>
-      </p>
-    </div>
-  </div>
-</section>
+  <section class="now-threshold" aria-labelledby="now-threshold-title"><div class="now-shell now-threshold__layout"><div><p class="now-kicker">{{ field_note.threshold.eyebrow }}</p><h2 id="now-threshold-title">{{ field_note.threshold.title }}</h2><p>{{ field_note.threshold.text }}</p></div><nav aria-label="Continue through the atelier">{% for link in field_note.threshold.links %}<a href="{{ link.url | relative_url }}">{{ link.label }} <span aria-hidden="true">→</span></a>{% endfor %}</nav></div></section>
+  <footer class="now-stale now-shell"><p>{{ field_note.stale_note }} <a href="{{ field_note.stale_link_url }}" target="_blank" rel="noopener">{{ field_note.stale_link_label }} <span aria-hidden="true">↗</span></a></p></footer>
+</article>

@@ -1,0 +1,39 @@
+hero:
+  eyebrow: "Portrait · Henrique A. Lavezzo"
+  title: "An engineer who leads, and a leader who still builds."
+  introduction: >-
+    I'm an engineering leader born and living in Brazil, working across software
+    architecture, developer tools, and AI-assisted engineering. I turn ambiguous
+    problems into systems people can understand, change, and trust.
+  note: >-
+    Code Alchemist is the playful name. The practical work is architecture,
+    technical direction, team clarity, and careful experimentation.
+  portrait_caption: "Henrique A. Lavezzo · Brazil"
+
+principles:
+  title: "How I work"
+  items:
+    - number: "01"
+      title: "Make the system legible"
+      text: "Map constraints, boundaries, and decisions until the next useful move is clear."
+    - number: "02"
+      title: "Stay close to the material"
+      text: "Keep leadership in contact with code, tools, incidents, and friction."
+    - number: "03"
+      title: "Design for change"
+      text: "Leave room to evolve without making every decision expensive."
+    - number: "04"
+      title: "Keep judgment human"
+      text: "AI extends attention and reduces repetition; evidence, responsibility, and final decisions remain with people."
+
+marginalia:
+  - "Final Fantasy VII taught me English."
+  - "Games are where I study systems, feedback, and world-building."
+  - "Home is shared with cats, a fish, plants, terrariums, and small ecosystems."
+  - "I am learning Chinese."
+
+threshold:
+  title: "Compare notes?"
+  text: >-
+    If you are untangling a difficult system, shaping an engineering team, or
+    experimenting with AI without surrendering judgment, write to me.

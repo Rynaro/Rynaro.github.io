@@ -81,20 +81,39 @@
 
 // Footer
 .footer {
-  padding: 2rem 0;
+  position: relative;
+  padding: clamp(3rem, calc(2rem + 4vw), 5rem) 1.5rem;
   text-align: center;
-  background-color: $pastel-lavender;
+  color: #ded8cd;
+  background: linear-gradient(rgba(209, 167, 101, .05) 1px, transparent 1px), linear-gradient(90deg, rgba(209, 167, 101, .05) 1px, transparent 1px), #181727;
+  background-size: 40px 40px;
+
+  .container {
+    box-sizing: border-box;
+    max-width: 68rem;
+    padding: 2rem;
+    border: 1px solid rgba(209, 167, 101, .28);
+  }
 
   &__copyright {
     font-size: 0.875rem;
-    color: $text-medium;
+    color: #aaa6b1;
   }
 
   &__signature {
     font-family: 'Nothing You Could Do', cursive;
     font-size: 1.5rem;
     margin-top: 0.5rem;
-    color: $pastel-purple-ink;
+    color: #d1a765;
+  }
+
+  &__bearing {
+    margin: 1.5rem 0 0;
+    color: #d1a765;
+    font-size: .65rem;
+    font-weight: 700;
+    letter-spacing: .16em;
+    text-transform: uppercase;
   }
 
   &__links {
@@ -106,13 +125,16 @@
   }
 
   &__link {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
     font-size: 0.875rem;
-    color: $text-medium;
+    color: #ded8cd;
     text-decoration: none;
 
     &:hover,
     &:focus-visible {
-      color: $pastel-purple-ink;
+      color: #d1a765;
       text-decoration: underline;
     }
   }
@@ -122,13 +144,14 @@
     align-items: center;
     gap: 0.4rem;
     margin-top: 0.75rem;
+    min-height: 44px;
     font-size: 0.875rem;
-    color: $text-medium;
+    color: #ded8cd;
     text-decoration: none;
 
     &:hover,
     &:focus-visible {
-      color: $pastel-purple-ink;
+      color: #d1a765;
       text-decoration: underline;
     }
   }
@@ -140,15 +163,15 @@
     margin: 1rem auto 0;
     font-size: 0.8rem;
     line-height: 1.5;
-    color: $text-light;
+    color: #aaa6b1;
 
     a {
-      color: $text-light;
+      color: #c5c0ca;
       text-decoration: underline;
 
       &:hover,
       &:focus-visible {
-        color: $pastel-purple-ink;
+        color: #d1a765;
       }
     }
   }

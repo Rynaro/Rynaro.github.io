@@ -1,45 +1,49 @@
-# Curated routes for /start-here -- "The Grimoire's Best Pages" (Story 2.4, AC-016).
-# Larson's /featured pattern, curated by theme rather than chronology. Data-driven so the
-# curation can change without touching start-here.html. `url` values are hand-matched to
-# the site's `permalink: /:year/:month/:day/:title` pattern (_config.yml) -- if a post's
-# filename/date ever changes, update the matching entry here.
-sections:
-  - title: "New to the Codex?"
-    icon: "fas fa-user-astronaut"
-    entries:
-      - title: "About — the character sheet"
-        description: "Who I am, in RPG stat-block form. Start here if you want the whole picture."
-        url: /about
-      - title: "Now — the current brew"
-        description: "What I'm actually working on and thinking about, right now."
-        url: /now
+intro: >-
+  You do not need to read this place in order. Choose the trail closest
+  to what brought you here.
 
-  - title: "For the Architects"
-    icon: "fas fa-cubes"
-    entries:
-      - title: "Taming your App with Domains"
-        description: "Applying DDD concepts, not just quoting the Blue Book."
-        url: /2023/02/16/taming-your-app-with-domains
-      - title: "Why implementing proper use cases brought joy into my code"
-        description: "The pattern that keeps business logic from turning into spaghetti."
-        url: /2023/02/10/why-implementing-proper-use-cases-brought-joy-into-my-code
-
-  - title: "For the AI-Curious"
-    icon: "fas fa-robot"
-    entries:
-      - title: "LLM Model Routing — Claude"
-        description: "The newest scroll: routing between Claude tiers for AI coding workflows."
-        url: /2026/02/18/llm-model-routing-claude
-      - title: "Uses — reagents & familiars"
-        description: "The actual toolchain, including which AI familiars do what."
-        url: /uses
-
-  - title: "See the Work"
-    icon: "fas fa-flask"
-    entries:
-      - title: "Laboratory"
-        description: "Crafted artifacts and transmuted code — the project shelf."
-        url: /laboratory
-      - title: "Magical Correspondence"
-        description: "Send a quest invitation."
-        url: /letter
+trails:
+  - key: maker
+    mark: "01"
+    title: Meet the maker
+    description: "Henrique's path from hands-on engineering into leadership, systems work, and AI orchestration."
+    destinations:
+      - label: Portrait
+        url: /about/
+        note: "The person, practice, transformations, and career behind the work."
+      - label: Current Quests
+        url: /now/
+        note: "What currently has Henrique's attention, without pretending to be a roadmap."
+  - key: notes
+    mark: "02"
+    title: Read from the field
+    description: "Essays, experiments, and observations written by Henrique or clearly attributed Eidolon collaborators."
+    destinations:
+      - label: Field Notes
+        url: /notebook/
+        note: "The complete journal, with visible authorship and evidence labels."
+      - label: Vivi's first dispatch
+        url: /2026/08/27/rebranding-the-atelier-as-a-party-quest
+        note: "How specialist roles and verified handoffs shaped this rebrand."
+  - key: work
+    mark: "03"
+    title: Inspect the workbench
+    description: "Public systems, research experiments, and the instruments used to make them."
+    destinations:
+      - label: Laboratory
+        url: /laboratory/
+        note: "Current projects and earlier artifacts, organized by purpose rather than hype."
+      - label: Workbench Inventory
+        url: /uses/
+        note: "Languages, practices, tools, and Eidolon collaborators in the active loadout."
+  - key: correspondence
+    mark: "04"
+    title: Open a channel
+    description: "Start with the living context, then write when there is something worth comparing."
+    destinations:
+      - label: Current Quests
+        url: /now/
+        note: "Useful context before proposing a collaboration or conversation."
+      - label: Send a Letter
+        url: /letter/
+        note: "A direct route for collaborations, technical discussion, or a simple hello."

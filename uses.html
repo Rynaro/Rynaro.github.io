@@ -1,78 +1,22 @@
 ---
 layout: default
 title: Uses
+description: "The languages, patterns, instruments, and specialist companions in Henrique Lavezzo's working loadout."
 permalink: /uses/
-resume: "The Code Alchemist's reagents, familiars, and daily-driver kit"
 ---
+{% assign inventory = site.data.uses %}
+<article class="uses-page">
+  <header class="uses-hero"><div class="uses-shell uses-hero__layout"><div><p class="uses-kicker">{{ inventory.hero.eyebrow }}</p><h1>{{ inventory.hero.title }}</h1><p class="uses-hero__intro">{{ inventory.hero.introduction }}</p></div><p class="uses-revision"><span>{{ inventory.hero.date_label }}</span><time datetime="{{ inventory.updated_at }}">{{ inventory.updated_at | date: "%B %-d, %Y" }}</time></p></div></header>
 
-<!--
-  /uses -- "The Alchemist's Reagents & Familiars" (Story 2.3, AC-015). Wes Bos's /uses
-  convention: editor/terminal/hardware/config, and -- per research-personal-site.md --
-  "a natural, hype-free home for your actual AI toolchain." The AI familiars list below is
-  sourced directly from _data/traits.yml's "Symbiotic Technomancer" trait (the one place
-  the toolchain is already canonical); languages from _data/skills.yml. Specific
-  hardware/editor picks are seed content -- the owner should confirm/adjust on review.
--->
-<section class="rpg-hero">
-  <div class="container">
-    <div class="hero__content">
-      <h1 class="hero__title fade-in">The Alchemist's Reagents &amp; Familiars</h1>
-      <h2 class="hero__subtitle fade-in">/uses</h2>
-      <p class="hero__description">The toolchain, hype-free — hardware, editor, and the AI familiars actually in the loop</p>
-    </div>
-  </div>
-</section>
+  <div class="uses-shell uses-craft"><header class="uses-heading"><p class="uses-kicker">{{ inventory.craft.eyebrow }}</p><h2>{{ inventory.craft.title }}</h2></header><div class="uses-craft__groups">{% for group in inventory.craft.groups %}<section class="uses-craft__group" aria-labelledby="uses-craft-{{ forloop.index }}"><p class="uses-marker">{{ group.marker }}</p><h3 id="uses-craft-{{ forloop.index }}">{{ group.marker }}</h3><ul>{% for item in group.items %}<li><strong>{{ item.name }}</strong><span>{{ item.note }}</span></li>{% endfor %}</ul></section>{% endfor %}</div></div>
 
-<section class="rpg-scrolls">
-  <div class="container">
-    {% include components/section-title.html icon="fas fa-toolbox" title="Daily-Driver Kit" %}
+  <section class="uses-workshop" aria-labelledby="uses-workshop-title"><div class="uses-shell"><header class="uses-heading"><p class="uses-kicker">{{ inventory.workshop.eyebrow }}</p><h2 id="uses-workshop-title">{{ inventory.workshop.title }}</h2></header><ul class="uses-projects">{% for key in inventory.workshop.project_keys %}{% assign matches = site.data.projects.projects | where: "key", key %}{% assign project = matches | first %}{% if project %}<li id="uses-project-{{ project.key }}"><p>{{ project.role }}</p><h3>{{ project.title }}</h3><span>{{ project.summary }}</span><a href="{{ project.repository_url }}" target="_blank" rel="noopener">Examine source <span aria-hidden="true">↗</span></a></li>{% endif %}{% endfor %}</ul></div></section>
 
-    <div class="uses-grid">
-      <div class="uses-category">
-        <h3><i class="fas fa-desktop" aria-hidden="true"></i> Hardware</h3>
-        <ul>
-          <li>A laptop that runs Ruby, Elixir, and a terminal emulator without complaint (the alchemy doesn't need much more than that)</li>
-          <li>A second monitor, mostly for keeping the docs open next to the code that ignores them</li>
-        </ul>
-      </div>
+  <section class="uses-platforms" aria-labelledby="uses-platforms-title"><div class="uses-shell uses-platforms__layout"><header class="uses-heading"><p class="uses-kicker">{{ inventory.platforms.eyebrow }}</p><h2 id="uses-platforms-title">{{ inventory.platforms.title }}</h2></header><dl>{% for item in inventory.platforms.items %}<div><dt>{{ item.name }}</dt><dd>{{ item.note }}</dd></div>{% endfor %}</dl></div></section>
 
-      <div class="uses-category">
-        <h3><i class="fas fa-keyboard" aria-hidden="true"></i> Editor &amp; Terminal</h3>
-        <ul>
-          <li>Whichever editor survives the week — the honest answer changes more often than this page does (don't make me commit to just one)</li>
-          <li>A terminal multiplexer, tab completion turned all the way up, and a prompt that tells me which git branch I'm about to regret</li>
-        </ul>
-      </div>
+  {% assign eidolons = site.data.projects.projects | where: "key", inventory.familiars.project_key | first %}
+  <section class="uses-familiars" aria-labelledby="uses-familiars-title"><div class="uses-shell uses-familiars__layout"><div class="uses-familiars__intro"><p class="uses-kicker">{{ inventory.familiars.eyebrow }}</p><h2 id="uses-familiars-title">{{ inventory.familiars.title }}</h2><p>{{ inventory.familiars.introduction }}</p>{% if eidolons %}<a href="{{ eidolons.repository_url }}" target="_blank" rel="noopener">{{ eidolons.title }} · {{ eidolons.status_label }} <span aria-hidden="true">↗</span></a>{% endif %}</div><ul class="uses-party">{% for member in inventory.familiars.members %}{% assign author = site.data.notebook_authors[member.author_id] %}{% if author %}<li><span aria-hidden="true">0{{ forloop.index }}</span><div><h3>{{ author.name }}</h3><p>{{ member.duty }}</p></div></li>{% endif %}{% endfor %}</ul></div></section>
 
-      <div class="uses-category">
-        <h3><i class="fas fa-code" aria-hidden="true"></i> Languages &amp; Craft</h3>
-        <ul>
-          {% for category in site.data.skills.categories %}
-            {% for skill in category.skills %}
-              <li><i class="{{ skill.icon }}" aria-hidden="true"></i> {{ skill.name }}</li>
-            {% endfor %}
-          {% endfor %}
-        </ul>
-      </div>
-
-      <div class="uses-category uses-category--familiars">
-        <h3><i class="fas fa-robot" aria-hidden="true"></i> AI Familiars</h3>
-        <p class="uses-familiars-intro">
-          {% assign technomancer = site.data.traits.traits | where: "name", "Symbiotic Technomancer" | first %}
-          {{ technomancer.description }}
-        </p>
-        <ul>
-          <li><strong>Claude</strong> — the default familiar for anything that needs to read a lot of code before touching it</li>
-          <li><strong>GPT</strong> — the second opinion, especially when a plan needs stress-testing</li>
-          <li><strong>Perplexity</strong> — research and citation-chasing, before anything gets written down</li>
-          <li><strong>Local models</strong> — the offline, no-telemetry option for the things that don't leave the machine</li>
-        </ul>
-        <p class="uses-familiars-note">
-          No hype here — just the routing logic. The reasoning behind picking one familiar over
-          another lives in the <a href="{{ '/notebook/llm/' | relative_url }}">AI/LLM notebook</a>,
-          starting with <a href="{{ site.posts.first.url | relative_url }}">{{ site.posts.first.title }}</a>.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
+  <section class="uses-threshold" aria-labelledby="uses-threshold-title"><div class="uses-shell uses-threshold__layout"><div><p class="uses-kicker">{{ inventory.threshold.eyebrow }}</p><h2 id="uses-threshold-title">{{ inventory.threshold.title }}</h2><p>{{ inventory.threshold.text }}</p></div><nav aria-label="Continue through the atelier">{% for link in inventory.threshold.links %}<a href="{{ link.url | relative_url }}">{{ link.label }} <span aria-hidden="true">→</span></a>{% endfor %}</nav></div></section>
+  <footer class="uses-stale uses-shell"><p>{{ inventory.stale_note }}</p></footer>
+</article>

@@ -1,78 +1,21 @@
 ---
+layout: default
+title: Off the Map
 permalink: /404.html
-layout: page
-resume: "The requested scroll could not be located in the archives"
+resume: "This route is not on the current chart. Find a reliable path back into the Atelier."
+sitemap: false
 ---
 
-<!--
-  Story 2.4, AC-016. The unstyled minima remnant (a bare inline <style> block + plain
-  text, off-brand against the fantasy theme) is replaced with the same rpg-hero pattern
-  every other page uses. `layout: page` -> `_layouts/page.html` -> `layout: default`
-  already supplies the site chrome (sigil nav, footer, main.css); Phase 1 wired that
-  wrapper for build health, this is where the page's own content becomes on-brand.
--->
-<section class="rpg-hero">
-  <div class="container">
-    <div class="hero__content">
-      <h1 class="hero__title fade-in">A Blank Page in the Grimoire</h1>
-      <h2 class="hero__subtitle fade-in">404 — Scroll Not Found</h2>
-      <p class="hero__description">
-        Whatever spell you were reaching for isn't bound to this page. Maybe it was
-        rewritten, maybe it never existed — either way, no scroll here.
-      </p>
-    </div>
-  </div>
-</section>
-
-<section class="rpg-scrolls">
-  <div class="container text-center">
-    {% include components/section-title.html icon="fas fa-compass" title="Try One of These Instead" %}
-
-    <div class="related-scrolls">
-      <div class="related-scroll-item">
-        <div class="related-scroll-card">
-          <div class="related-scroll-rarity common"></div>
-          <div class="related-scroll-header">
-            <h3 class="related-scroll-title">Home</h3>
-          </div>
-          <div class="related-scroll-content">
-            <p class="related-scroll-excerpt">Back to the alchemy circle and the recent scrolls.</p>
-          </div>
-          <div class="related-scroll-footer">
-            <a href="{{ '/' | relative_url }}" class="related-scroll-link">Go home</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="related-scroll-item">
-        <div class="related-scroll-card">
-          <div class="related-scroll-rarity rare"></div>
-          <div class="related-scroll-header">
-            <h3 class="related-scroll-title">Start Here</h3>
-          </div>
-          <div class="related-scroll-content">
-            <p class="related-scroll-excerpt">The Grimoire's best pages, curated by theme.</p>
-          </div>
-          <div class="related-scroll-footer">
-            <a href="{{ '/start-here/' | relative_url }}" class="related-scroll-link">Browse</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="related-scroll-item">
-        <div class="related-scroll-card">
-          <div class="related-scroll-rarity epic"></div>
-          <div class="related-scroll-header">
-            <h3 class="related-scroll-title">Notebook</h3>
-          </div>
-          <div class="related-scroll-content">
-            <p class="related-scroll-excerpt">All the scrolls, filed by archive.</p>
-          </div>
-          <div class="related-scroll-footer">
-            <a href="{{ '/notebook/' | relative_url }}" class="related-scroll-link">Read scrolls</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<article class="antechamber antechamber--lost">
+  <header class="antechamber__header"><div class="container antechamber__header-inner"><p class="antechamber__eyebrow">Error 404</p><h1>Off the Map</h1><p class="antechamber__lead">The route you followed is not on the current chart. It may have moved, changed its name, or never belonged to this map.</p></div></header>
+  <div class="antechamber__body"><div class="container antechamber__body-inner antechamber__body-inner--wide">
+    <p class="antechamber__opening">Nothing is broken on your side. Choose a known bearing and continue from there.</p>
+    <nav aria-label="Recover from this missing page"><ul class="antechamber__routes antechamber__routes--recovery">
+      <li class="antechamber__route"><span class="antechamber__route-mark" aria-hidden="true">01</span><h2 class="antechamber__route-title"><a class="antechamber__route-link" href="{{ '/' | relative_url }}">Threshold</a></h2><p class="antechamber__route-description">Return to the Atelier’s entrance.</p></li>
+      <li class="antechamber__route"><span class="antechamber__route-mark" aria-hidden="true">02</span><h2 class="antechamber__route-title"><a class="antechamber__route-link" href="{{ '/start-here/' | relative_url }}">First Bearings</a></h2><p class="antechamber__route-description">Choose a route by what brought you here.</p></li>
+      <li class="antechamber__route"><span class="antechamber__route-mark" aria-hidden="true">03</span><h2 class="antechamber__route-title"><a class="antechamber__route-link" href="{{ '/notebook/' | relative_url }}">Field Notes</a></h2><p class="antechamber__route-description">Read essays, experiments, and Eidolon dispatches.</p></li>
+      <li class="antechamber__route"><span class="antechamber__route-mark" aria-hidden="true">04</span><h2 class="antechamber__route-title"><a class="antechamber__route-link" href="{{ '/laboratory/' | relative_url }}">Laboratory</a></h2><p class="antechamber__route-description">Inspect systems, tools, and current research.</p></li>
+      <li class="antechamber__route"><span class="antechamber__route-mark" aria-hidden="true">05</span><h2 class="antechamber__route-title"><a class="antechamber__route-link" href="{{ '/letter/' | relative_url }}">Send a Letter</a></h2><p class="antechamber__route-description">Report a broken link or open a conversation.</p></li>
+    </ul></nav>
+  </div></div>
+</article>

@@ -1,122 +1,34 @@
-document.addEventListener('DOMContentLoaded', () => {
-  // Initialize animations
-  animateAttributeBars();
-  animateOrbs();
+(() => {
+  const list = document.querySelector('[data-career-list]');
+  const controls = document.querySelector('[data-career-controls]');
+  const toggle = controls?.querySelector('[data-career-toggle]');
+  const status = controls?.querySelector('[data-career-status]');
+  const entries = list ? [...list.querySelectorAll('[data-career-entry]')] : [];
+  const initialCount = 5;
 
-  // Initialize quest toggling
-  initQuestToggle();
+  if (!list || !controls || !toggle || !status || entries.length <= initialCount) return;
 
-  // Initialize ability cards
-  initAbilityCards();
+  const setExpanded = (expanded, announce = false) => {
+    entries.slice(initialCount).forEach((entry) => { entry.hidden = !expanded; });
+    toggle.setAttribute('aria-expanded', String(expanded));
+    toggle.textContent = expanded ? 'Close the complete chronicle' : 'Open the complete chronicle';
+    if (announce) {
+      status.textContent = expanded
+        ? `Complete quest chronicle shown: ${entries.length} roles.`
+        : `Quest chronicle shortened to the ${initialCount} most recent roles.`;
+    }
+  };
 
-  // Initialize timeline hover effects
-  initTimelineHover();
+  setExpanded(false);
+  controls.hidden = false;
 
-  // Initialize fade-in animations
-  initFadeInAnimations();
-});
-
-/**
- * Animate attribute bars with a smooth transition
- */
-function animateAttributeBars() {
-  const bars = document.querySelectorAll('.attribute-fill');
-  bars.forEach(bar => {
-    const width = bar.style.width;
-    bar.style.width = '0';
-    setTimeout(() => {
-      bar.style.transition = 'width 1.2s cubic-bezier(0.12, 0.89, 0.32, 1.27)';
-      bar.style.width = width;
-    }, 300);
+  toggle.addEventListener('click', () => {
+    const expanded = toggle.getAttribute('aria-expanded') !== 'true';
+    list.classList.toggle('is-revealing', expanded);
+    setExpanded(expanded, true);
+    if (!expanded) {
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      list.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+    }
   });
-}
-
-/**
- * Initialize quest history toggle functionality
- */
-function initQuestToggle() {
-  const toggleButton = document.querySelector('.toggle-button');
-  const hiddenQuests = document.querySelectorAll('.timeline-item.hidden');
-  const toggleMore = document.querySelector('.toggle-more');
-
-  if (toggleButton) {
-    toggleButton.addEventListener('click', function() {
-      hiddenQuests.forEach(quest => {
-        quest.classList.toggle('show');
-      });
-
-      if (this.textContent === 'Show more adventures') {
-        this.textContent = 'Hide adventures';
-        toggleMore.querySelector('.timeline-marker i').classList.replace('fa-chevron-down', 'fa-chevron-up');
-      } else {
-        this.textContent = 'Show more adventures';
-        toggleMore.querySelector('.timeline-marker i').classList.replace('fa-chevron-up', 'fa-chevron-down');
-      }
-    });
-  }
-}
-
-/**
- * Initialize floating effect for ability cards
- */
-function initAbilityCards() {
-  const abilityCards = document.querySelectorAll('.ability-card');
-  abilityCards.forEach((card, index) => {
-    card.style.animationDelay = (index * 0.2) + 's';
-  });
-}
-
-/**
- * Initialize hover effects for timeline items
- */
-function initTimelineHover() {
-  const timelineItems = document.querySelectorAll('.timeline-item:not(.toggle-more)');
-  timelineItems.forEach(item => {
-    item.addEventListener('mouseenter', function() {
-      this.classList.add('hovered');
-    });
-
-    item.addEventListener('mouseleave', function() {
-      this.classList.remove('hovered');
-    });
-  });
-}
-
-/**
- * Initialize fade-in animations using Intersection Observer
- */
-function initFadeInAnimations() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('fade-in-visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll('.sheet-block, .attribute-card, .ability-card, .trait-card').forEach(el => {
-    el.classList.add('fade-in-element');
-    observer.observe(el);
-  });
-}
-
-/**
- * Animate the avatar orbs with orbital motion
- */
-function animateOrbs() {
-  // AC-024: no script-created animated node under a reduced-motion preference.
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    return;
-  }
-
-  // AC-031: finite (one orbit, then rest at the home position), not an
-  // infinite loop -- the avatar orbs auto-start on load in parallel with the
-  // hero name/level/status bars. delay(<=1s) + duration(<=3.2s) stays <= 5s.
-  const orbs = document.querySelectorAll('.avatar-orbs__orb');
-  orbs.forEach((orb, index) => {
-    orb.style.animation = `orbit ${2.4 + index * 0.4}s ease-out 1`;
-    orb.style.animationDelay = `${index * 0.5}s`;
-    orb.style.animationFillMode = 'forwards';
-  });
-}
+})();

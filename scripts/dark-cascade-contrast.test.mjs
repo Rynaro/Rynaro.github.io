@@ -4,17 +4,10 @@
 // AC-106: "each enumerated selector SHALL reach a computed contrast ratio of
 // at least 4.5 against its cascade-resolved background in every theme it
 // renders in." Runs getComputedStyle (Playwright) on the BUILT
-// `_site/about.html` (dark) and `_site/notebook.html` (light + dark) for the
-// selectors AC-106 names -- `.attribute-card__name`, `.category-title`,
-// `.quest__title`, `.ability-card__name` (about, dark only -- the surface never
-// rendered in light before or after P1) and `.scroll-seal`/`.scroll-seal i`
+// `_site/about/index.html` (dark) and `_site/notebook/index.html` (light + dark)
+// for representative editorial text on solid surfaces.
 // (notebook, both themes -- the gold ground never flips) -- and asserts every
 // value >= 4.5, computed with `scripts/lib/color-math.mjs` (never rounded).
-//
-// AC-107: ".item-rarity-label's dark-mode computed contrast SHALL remain at
-// least 4.5" with "a computed color equal to the consolidated flipped token
-// value (no per-selector dark literal introduced)". Runs the same check on
-// built `_site/laboratory.html` (dark).
 //
 // Never inspects a source partial -- every ratio here is measured against
 // what a real browser actually renders for the compiled cascade (the R1
@@ -69,15 +62,30 @@ function rgbToHex(rgbStr) {
 // not a source-partial guess).
 async function effectiveBackgroundHex(page, selector) {
   const rgb = await page.evaluate((sel) => {
-    let el = document.querySelector(sel);
-    while (el) {
-      const bg = getComputedStyle(el).backgroundColor;
-      if (bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') return bg;
-      el = el.parentElement;
+    const target = document.querySelector(sel);
+    if (!target) return null;
+
+    const layers = [];
+    for (let el = target; el; el = el.parentElement) {
+      const match = getComputedStyle(el).backgroundColor.match(/rgba?\(([^)]+)\)/);
+      if (!match) continue;
+      const [r, g, b, a = 1] = match[1].split(',').map(Number);
+      if (a > 0) layers.push({ r, g, b, a });
     }
-    return 'rgb(255, 255, 255)';
+
+    // Composite translucent element backgrounds over their ancestors instead
+    // of treating an rgba declaration as an opaque color.
+    let result = { r: 255, g: 255, b: 255 };
+    for (const layer of layers.reverse()) {
+      result = {
+        r: layer.r * layer.a + result.r * (1 - layer.a),
+        g: layer.g * layer.a + result.g * (1 - layer.a),
+        b: layer.b * layer.a + result.b * (1 - layer.a),
+      };
+    }
+    return `rgb(${result.r}, ${result.g}, ${result.b})`;
   }, selector);
-  return rgbToHex(rgb);
+  return rgb ? rgbToHex(rgb) : null;
 }
 
 async function ownColorHex(page, selector) {
@@ -119,48 +127,26 @@ async function checkSelector(page, label, selector, { walkBg = true } = {}) {
 }
 
 // ---------------------------------------------------------------------
-// AC-106(a): /about, dark cascade -- the four enumerated selectors.
+// About editorial surfaces, dark browser preference.
 // ---------------------------------------------------------------------
 {
   const page = await newPage('dark');
-  await page.goto(`${base}/about.html`, { waitUntil: 'networkidle' });
-  for (const sel of ['.attribute-card__name', '.category-title', '.quest__title', '.ability-card__name']) {
-    await checkSelector(page, 'about.html (dark)', sel);
+  await page.goto(`${base}/about/`, { waitUntil: 'networkidle' });
+  for (const sel of ['.about-principles h3', '.about-principles li p', '.about-career__list h3', '.about-career__period']) {
+    await checkSelector(page, 'about/ (dark)', sel);
   }
   await page.close();
 }
 
 // ---------------------------------------------------------------------
-// AC-106(b): notebook.html, .scroll-seal / .scroll-seal i -- BOTH themes
-// (the gold ground never flips, so both the shipping-light failure and the
-// dark failure must be repaired).
+// Notebook editorial cards in both themes.
 // ---------------------------------------------------------------------
 for (const scheme of ['light', 'dark']) {
   const page = await newPage(scheme);
   await page.goto(`${base}/notebook/`, { waitUntil: 'networkidle' });
-  await checkSelector(page, `notebook/ (${scheme})`, '.scroll-seal');
-  await checkSelector(page, `notebook/ (${scheme})`, '.scroll-seal i');
-  await page.close();
-}
-
-// ---------------------------------------------------------------------
-// AC-107: .item-rarity-label, dark cascade -- must remain >= 4.5 AND its
-// computed color must equal the consolidated flipped --dnd-brown value
-// (#e0e0e0 / rgb(224, 224, 224)) -- i.e. no per-selector dark literal was
-// (re)introduced to "fix" a pair that was never broken.
-// ---------------------------------------------------------------------
-{
-  const page = await newPage('dark');
-  await page.goto(`${base}/laboratory.html`, { waitUntil: 'networkidle' });
-  const result = await checkSelector(page, 'laboratory.html (dark)', '.item-rarity-label');
-  if (result) {
-    const expected = '#e0e0e0';
-    if (result.fg.toLowerCase() === expected) {
-      ok(`laboratory.html (dark): ".item-rarity-label" computed color ${result.fg} equals the consolidated flipped --dnd-brown value ${expected} (no per-selector dark literal introduced)`);
-    } else {
-      fail(`laboratory.html (dark): ".item-rarity-label" computed color ${result.fg} does NOT equal the consolidated flipped --dnd-brown value ${expected} -- a per-selector dark literal may have been (re)introduced`);
-    }
-  }
+  await checkSelector(page, `notebook/ (${scheme})`, '.journal-entry__title a');
+  await checkSelector(page, `notebook/ (${scheme})`, '.journal-entry__excerpt');
+  await checkSelector(page, `notebook/ featured Eidolon (${scheme})`, '.journal-feature .authorship-mark--eidolon');
   await page.close();
 }
 

@@ -24,9 +24,7 @@
 // operationalized as scss-scan.mjs's isLogotypeContext(), not by a
 // manifest-level role=logotype label (see palette-manifest.test.mjs for why
 // no token in this repo is purely logotype-only). A short, individually
-// justified exemption list in the manifest (usage_exemptions) covers the
-// remaining narrow, non-vacuous carve-outs -- documented with the same
-// discipline as the logotype selector set, never a blanket escape hatch.
+// No usage exemptions are active: every scanned usage must bind directly.
 
 import { readFileSync } from 'node:fs';
 import yaml from 'js-yaml';
@@ -58,7 +56,7 @@ function usageMatchesExemption(u, e) {
   return u.selectorStack.some((sel) => classHints.some((hint) => sel.includes(hint)));
 }
 
-const exemptions = manifest.usage_exemptions || [];
+const exemptions = [];
 
 // AC-202: strengthened anti-vacuity guard. The pre-existing check below
 // (`usages.length === 0`) only fires on a TOTAL wipeout; it would stay green
@@ -97,11 +95,9 @@ for (const u of usages) {
 
   const row = roleByToken.get(u.token);
   if (!row) {
-    // Token not in manifest at all (e.g. --symbol-color, --ring-color,
-    // --post-text -- see _data/palette-manifest.yml's not_manifest_scope).
-    // Not a manifest violation (AC-048 scopes the manifest to
-    // _sass/_variables.scss-declared tokens); flagged separately as info.
-    console.log(`info: ${key} uses ${u.token} (${u.property}), which is outside manifest scope (not declared in _sass/_variables.scss) -- see not_manifest_scope in the manifest.`);
+    // Page-scoped custom properties are intentionally outside this manifest,
+    // which covers only tokens declared in the settings layer.
+    console.log(`info: ${key} uses ${u.token} (${u.property}), which is outside manifest scope (not declared in the settings layer).`);
     continue;
   }
 

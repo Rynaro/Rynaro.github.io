@@ -1,0 +1,40 @@
+primary:
+  - key: threshold
+    label: Threshold
+    description: Return to the beginning
+    url: /
+    mark: "01"
+  - key: portrait
+    label: Portrait
+    description: The alchemist behind the work
+    url: /about/
+    mark: "02"
+  - key: notes
+    label: Field Notes
+    description: Essays, experiments, and observations
+    url: /notebook/
+    mark: "03"
+  - key: laboratory
+    label: Laboratory
+    description: Systems and artifacts made real
+    url: /laboratory/
+    mark: "04"
+  - key: letter
+    label: Send a Letter
+    description: Open a channel
+    url: /letter/
+    mark: "05"
+
+secondary:
+  - label: Start Here
+    url: /start-here/
+  - label: Now
+    url: /now/
+  - label: Uses
+    url: /uses/
+  - label: Workshop Log
+    url: /log/
+  - label: Workshop Covenant
+    url: /codex/
+  - label: Accessibility
+    url: /accessibility/

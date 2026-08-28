@@ -1,0 +1,65 @@
+{% assign current_route = page.url %}
+{% if page.layout == 'post' or page.date %}
+  {% assign current_route = '/notebook/' %}
+{% elsif page.layout == 'project' or page.url contains '/laboratory/' %}
+  {% assign current_route = '/laboratory/' %}
+{% endif %}
+
+<nav class="wayfinder" aria-label="Primary navigation">
+  <a class="wayfinder__trigger" href="#astrolabe-chart" aria-label="Wayfinder — Open the chart">
+    <span class="wayfinder__seal" aria-hidden="true">
+      <span class="wayfinder__seal-orbit"></span>
+      <span class="wayfinder__seal-star">✦</span>
+    </span>
+    <span class="wayfinder__trigger-copy">
+      <span class="wayfinder__trigger-kicker">Wayfinder</span>
+      <span class="wayfinder__trigger-label">Open the chart</span>
+    </span>
+  </a>
+
+  <section class="astrolabe" id="astrolabe-chart" aria-labelledby="astrolabe-title">
+    <div class="astrolabe__frame">
+      <header class="astrolabe__header">
+        <p class="astrolabe__eyebrow">Cartographer's index · {{ site.title }}</p>
+        <h2 id="astrolabe-title">Choose a bearing</h2>
+        <p>Every mark is a route through the atelier.</p>
+      </header>
+
+      <button class="astrolabe__close" type="button" aria-label="Close navigation chart">
+        <span aria-hidden="true">×</span>
+      </button>
+
+      <div class="astrolabe__instrument" aria-hidden="true">
+        <span class="astrolabe__ring astrolabe__ring--outer"></span>
+        <span class="astrolabe__ring astrolabe__ring--inner"></span>
+        <span class="astrolabe__axis astrolabe__axis--horizontal"></span>
+        <span class="astrolabe__axis astrolabe__axis--vertical"></span>
+        <span class="astrolabe__north">N</span>
+        <span class="astrolabe__center">✦</span>
+      </div>
+
+      <ol class="astrolabe__routes">
+        {% for item in site.data.navigation.primary %}
+          {% assign is_current = false %}
+          {% if current_route == item.url %}
+            {% assign is_current = true %}
+          {% endif %}
+          <li class="astrolabe__route astrolabe__route--{{ item.key }}">
+            <a href="{{ item.url | relative_url }}"{% if is_current %} aria-current="page"{% endif %}>
+              <span class="astrolabe__route-mark" aria-hidden="true">{{ item.mark }}</span>
+              <span class="astrolabe__route-copy">
+                <span class="astrolabe__route-label">
+                  {{ item.label }}
+                  {% if item.short_label %}<span class="astrolabe__route-alias">{{ item.short_label }}</span>{% endif %}
+                </span>
+                <span class="astrolabe__route-description">{{ item.description }}</span>
+              </span>
+            </a>
+          </li>
+        {% endfor %}
+      </ol>
+
+      <p class="astrolabe__hint">Esc closes the chart · Tab follows its bearings</p>
+    </div>
+  </section>
+</nav>

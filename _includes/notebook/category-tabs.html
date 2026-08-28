@@ -10,22 +10,21 @@
 
   Param: include.active -- "all" or the current category key, for the active/aria-current state.
 -->
-<div class="scroll-categories">
-  <div class="categories-title">Archives:</div>
+<nav class="journal-categories" aria-label="Notebook sections">
+  <span class="journal-categories__label">Filed under</span>
   <div class="category-tabs">
     <a href="{{ '/notebook/' | relative_url }}"
        class="category-tab{% if include.active == 'all' %} active{% endif %}"
        data-category="all"
        {% if include.active == 'all' %}aria-current="page"{% endif %}>
-      <i class="fas fa-scroll"></i>
-      <span>All</span>
+      <span>{{ site.data.notebook.categories.all.label | default: "All notes" }}</span>
     </a>
 
     {% assign rendered_categories = "," %}
     {% for cat in site.data.notebook_categories.order %}
       {% if site.categories[cat].size > 0 %}
         {% assign rendered_categories = rendered_categories | append: cat | append: "," %}
-        {% assign cat_label = site.data.notebook_categories.labels[cat] %}
+        {% assign cat_label = site.data.notebook.categories[cat].label | default: site.data.notebook_categories.labels[cat] %}
         {% unless cat_label %}
           {% assign cat_label = cat | capitalize %}
         {% endunless %}
@@ -33,7 +32,6 @@
            class="category-tab{% if include.active == cat %} active{% endif %}"
            data-category="{{ cat }}"
            {% if include.active == cat %}aria-current="page"{% endif %}>
-          <i class="{{ site.data.notebook_categories.icons[cat] | default: 'fas fa-scroll' }}"></i>
           <span>{{ cat_label }}</span>
         </a>
       {% endif %}
@@ -46,10 +44,9 @@
            class="category-tab{% if include.active == cat[0] %} active{% endif %}"
            data-category="{{ cat[0] }}"
            {% if include.active == cat[0] %}aria-current="page"{% endif %}>
-          <i class="fas fa-scroll"></i>
           <span>{{ cat[0] | capitalize }}</span>
         </a>
       {% endunless %}
     {% endfor %}
   </div>
-</div>
+</nav>

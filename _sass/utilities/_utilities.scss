@@ -4,16 +4,6 @@
 
 @use "../settings/variables" as *;
 
-// Layout utilities
-.text-center {
-  text-align: center;
-}
-
-// Margin utilities
-.mt-3 {
-  margin-top: 1.5rem;
-}
-
 // Visibility utilities
 .hidden {
   display: none;
@@ -29,11 +19,6 @@
   clip: rect(0, 0, 0, 0) !important;
   white-space: nowrap !important;
   border: 0 !important;
-}
-
-.focus-visible:focus-visible {
-  outline: 2px solid $pastel-purple;
-  outline-offset: 2px;
 }
 
 // Print utilities
@@ -82,44 +67,6 @@
     orphans: 3;
     widows: 3;
   }
-}
-
-// Animation utilities
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.fade-in {
-  animation: fadeIn 0.5s ease-in-out forwards;
-}
-
-@keyframes slideUp {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.slide-up {
-  animation: slideUp 0.5s ease-in-out forwards;
-}
-
-// Dark mode utilities
-.force-light-mode {
-  filter: invert(1) hue-rotate(180deg);
-}
-
-.force-dark-mode {
-  filter: invert(1) hue-rotate(180deg);
 }
 
 // Skip to main content link for keyboard navigation

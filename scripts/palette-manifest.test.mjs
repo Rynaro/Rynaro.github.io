@@ -11,9 +11,9 @@
 // _sass/_variables.scss with exactly one role and one obligation each; zero
 // tokens are unclassified; a script asserts that role `content` holds if and
 // only if obligation `ink` for every row, and asserts that every
-// `logotype`-role token is referenced only by rules inside the wordmark
-// selector set (`.hero-subtitle` in _home.scss and _about.scss) and by no
-// rule that renders body text.
+// `logotype`-role token is referenced only by rules inside the declared
+// wordmark selector set and by no rule that renders body text. The current
+// rebrand declares no wordmark selector exemption.
 
 import { readFileSync, readdirSync } from 'node:fs';
 import yaml from 'js-yaml';
@@ -28,6 +28,11 @@ const ok = (msg) => console.log(`ok: ${msg}`);
 
 const manifest = yaml.load(readFileSync(manifestPath, 'utf8'));
 const rows = manifest.tokens;
+
+const manifestLogotypeSelectors = manifest.meta.logotype_selectors || [];
+if (JSON.stringify(manifestLogotypeSelectors) !== JSON.stringify(LOGOTYPE_SELECTORS)) {
+  fail(`meta.logotype_selectors must match scss-scan.mjs LOGOTYPE_SELECTORS exactly; manifest=${JSON.stringify(manifestLogotypeSelectors)} scanner=${JSON.stringify(LOGOTYPE_SELECTORS)}`);
+}
 
 // AC-203 (normalize-p2, Story 2.1): `meta.source` is a LIST of literal paths
 // and/or `dir/*.scss`-style globs naming the settings layer (see
@@ -92,11 +97,9 @@ if (consistencyFailures === 0) ok('role "content" holds if and only if obligatio
 // path, so this stays correct once the settings layer splits. ---
 const varsSrc = sourceFiles.map((f) => readFileSync(f, 'utf8')).join('\n');
 const NON_PALETTE_SASS_VARS = new Set([
-  '$sidebar-width', '$content-max-width', '$tablet-breakpoint', '$mobile-breakpoint',
-  '$radius-3', '$radius-4', '$radius-5', '$radius-6', '$radius-8', '$radius-10',
-  '$radius-12', '$radius-20', '$radius-24', '$radius-30', '$radius-40',
+  '$content-max-width', '$tablet-breakpoint',
 ]);
-const ALIAS_VARS = new Set(['$soft-pink', '$soft-purple', '$soft-blue', '$background-white']); // aliases of already-manifested tokens
+const ALIAS_VARS = new Set();
 
 const declaredSassVars = [...varsSrc.matchAll(/^\$([a-zA-Z0-9-]+):/gm)].map((m) => `$${m[1]}`)
   .filter((v) => !NON_PALETTE_SASS_VARS.has(v) && !ALIAS_VARS.has(v));
@@ -124,7 +127,7 @@ if (dangling.length > 0) {
 // outside the logotype selector context). ---
 const logotypeTokens = rows.filter((r) => r.role === 'logotype').map((r) => r.name);
 if (logotypeTokens.length === 0) {
-  console.log('note: no token is currently classified role=logotype in the manifest (the wordmark usage -- .hero-subtitle color: var(--ff-gold) -- is carried by an ORNAMENT-role token whose other 42 usages are decorative; the logotype selector-set carve-out is enforced structurally by scanTokenUsages()\'s isLogotypeContext(), exercised by token-usage.test.mjs, rather than by a dedicated logotype-role row). See AC-047 test for the binding.');
+  console.log('note: no token is currently classified role=logotype and the rebranded pages declare no wordmark selector exemption. Any future exemption must be added to LOGOTYPE_SELECTORS and bind to a real selector.');
 } else {
   const usages = scanTokenUsages();
   for (const tokenName of logotypeTokens) {
@@ -133,7 +136,7 @@ if (logotypeTokens.length === 0) {
       fail(`${tokenName} is role=logotype but is used outside the wordmark selector set: ${nonLogotypeUsages.map((u) => `${u.file}:${u.line}`).join(', ')}`);
     }
   }
-  if (failures === 0) ok(`every logotype-role token is referenced only inside .hero-subtitle`);
+  if (failures === 0) ok('every logotype-role token is referenced only inside the declared wordmark selector set');
 }
 
 // --- 5. anti-vacuity: the manifest must not be all-ornament or all-content. ---
@@ -155,8 +158,8 @@ else ok(coverage.message);
 // LOGOTYPE_SELECTORS must match at least one selector actually present
 // anywhere under _sass/ (recursively, via listScssFiles()/listAllSelectors()
 // -- structure-agnostic exactly like AC-201). A stale entry (e.g. left
-// behind after a future BEM rename touches `.hero-subtitle` without
-// updating this list) would otherwise silently reclassify which token
+// behind after a future rename without updating this list) would otherwise
+// silently reclassify which token
 // usages isLogotypeContext() -- and therefore AC-047's ink-obligation
 // check -- treats as logotype, with no error. "Matches" uses the SAME
 // substring semantics isLogotypeContext() itself uses (sel.includes(wm)),
@@ -171,7 +174,9 @@ for (const wm of LOGOTYPE_SELECTORS) {
   }
 }
 if (staleLogotypeSelectors === 0) {
-  ok(`every LOGOTYPE_SELECTORS entry (${LOGOTYPE_SELECTORS.length}) matches at least one real selector in _sass/ (AC-205)`);
+  ok(LOGOTYPE_SELECTORS.length === 0
+    ? 'LOGOTYPE_SELECTORS is empty: no usage-based logotype exemption is active (AC-205)'
+    : `every LOGOTYPE_SELECTORS entry (${LOGOTYPE_SELECTORS.length}) matches at least one real selector in _sass/ (AC-205)`);
 }
 
 console.log(failures === 0 ? `\nPASS (AC-048): ${rows.length} tokens, 0 failures.` : `\nFAIL (AC-048): ${failures} failure(s).`);

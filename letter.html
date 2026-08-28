@@ -1,173 +1,42 @@
 ---
 layout: default
 title: Send a Letter
+permalink: /letter/
+description: Open a correspondence with Henrique about engineering leadership, software architecture, developer tools, and AI-assisted engineering.
 ---
-
-<section class="rpg-hero letter-hero">
-  <div class="container">
-    <div class="hero__content">
-      <h1 class="hero__title fade-in">Magical Correspondence</h1>
-      <h2 class="hero__subtitle fade-in">Send a Letter</h2>
-      <p class="hero__description">Request an audience, propose a quest, or simply exchange knowledge</p>
-    </div>
-    <div class="hero__letter">
-      <div class="letter-frame">
-        <i class="fas fa-envelope-open-text letter-icon"></i>
-        <div class="letter-seal"></div>
-        <div class="letter-particles">
-          <div class="letter-glyph letter-glyph--1">✧</div>
-          <div class="letter-glyph letter-glyph--2">✦</div>
-          <div class="letter-glyph letter-glyph--3">✯</div>
+{% assign letter = site.data.letter %}
+<div class="correspondence">
+  <header class="correspondence-hero"><div class="correspondence-shell correspondence-hero__layout">
+    <div><p class="correspondence-kicker">{{ letter.hero.eyebrow }}</p><h1>{{ letter.hero.title }}</h1><p class="correspondence-hero__intro">{{ letter.hero.intro }}</p></div>
+    <p class="correspondence-ledger"><span aria-hidden="true"></span>{{ letter.hero.marginalia }}</p>
+  </div></header>
+  <div class="correspondence-shell correspondence-desk">
+    <section class="correspondence-form" aria-labelledby="compose-title">
+      <div class="correspondence-form__heading"><span class="correspondence-seal" aria-hidden="true">H</span><div><p class="correspondence-kicker">Dispatch 05</p><h2 id="compose-title">{{ letter.form.heading }}</h2><p>{{ letter.form.intro }}</p></div></div>
+      <form action="{{ letter.form.endpoint }}" method="post" data-letter-form>
+        <div class="correspondence-field"><label for="letter-name">{{ letter.form.labels.name }}</label><input id="letter-name" name="name" type="text" autocomplete="name" required></div>
+        <div class="correspondence-field"><label for="letter-email">{{ letter.form.labels.email }}</label><input id="letter-email" name="email" type="email" autocomplete="email" required></div>
+        <div class="correspondence-field correspondence-field--wide"><label for="letter-subject">{{ letter.form.labels.subject }}</label><input id="letter-subject" name="subject" type="text" autocomplete="off" required></div>
+        <div class="correspondence-field correspondence-field--wide"><label for="letter-message">{{ letter.form.labels.message }}</label><textarea id="letter-message" name="message" rows="{{ letter.form.rows }}" required></textarea></div>
+        <div class="correspondence-trap" aria-hidden="true"><label for="letter-company">Leave this field empty</label><input id="letter-company" name="_gotcha" type="text" tabindex="-1" autocomplete="off"></div>
+        <div class="correspondence-form__dispatch correspondence-field--wide">
+          <button type="submit" data-letter-submit data-idle-label="{{ letter.form.submit }}" data-busy-label="{{ letter.form.submitting }}"><span data-letter-submit-label>{{ letter.form.submit }}</span><span aria-hidden="true">→</span></button>
+          <p class="correspondence-privacy">{{ letter.form.privacy | replace: 'Email me directly instead.', '' }}<a href="mailto:{{ site.email }}">Email me directly instead.</a></p>
         </div>
-      </div>
-    </div>
+        <div class="correspondence-status correspondence-status--success correspondence-field--wide" data-letter-success hidden tabindex="-1"><strong>{{ letter.form.success.title }}</strong><span>{{ letter.form.success.text }}</span></div>
+        <div class="correspondence-status correspondence-status--error correspondence-field--wide" data-letter-error hidden tabindex="-1"><strong>{{ letter.form.error.title }}</strong><span>{{ letter.form.error.text }} <a href="mailto:{{ site.email }}">{{ letter.channels.email_label }}</a>.</span></div>
+        <p class="visually-hidden" data-letter-live aria-live="polite" aria-atomic="true"></p>
+      </form>
+    </section>
+    <aside class="correspondence-aside" aria-label="Correspondence notes">
+      <section aria-labelledby="letter-prompts-title"><p class="correspondence-kicker">Desk notes</p><h2 id="letter-prompts-title">{{ letter.prompts.heading }}</h2><p>{{ letter.prompts.intro }}</p><ol class="correspondence-prompts">
+        {% for prompt in letter.prompts.items %}<li><span aria-hidden="true">0{{ forloop.index }}</span><div><h3>{{ prompt.title }}</h3><p>{{ prompt.text }}</p></div></li>{% endfor %}
+      </ol></section>
+      <section class="correspondence-routes" aria-labelledby="letter-routes-title"><p class="correspondence-kicker">Alternate paths</p><h2 id="letter-routes-title">{{ letter.channels.heading }}</h2><p>{{ letter.channels.intro }}</p><ul>
+        <li><a href="mailto:{{ site.email }}">{{ letter.channels.email_label }}<span aria-hidden="true"> ↗</span></a></li>
+        {% for key in letter.channels.social_keys %}{% assign social = site.data.profile.social_links | where: 'name', key | first %}{% if social %}<li><a href="{{ social.url }}" rel="me noopener" target="_blank">{{ social.name }}<span aria-hidden="true"> ↗</span></a></li>{% endif %}{% endfor %}
+      </ul></section>
+    </aside>
   </div>
-</section>
-
-<section class="rpg-correspondence">
-  <div class="container">
-    {% include components/section-title.html icon="fas fa-feather-alt" title="Ways to Reach Me" %}
-
-    <div class="correspondence-grid">
-      <!-- Left column: Contact info cards -->
-      <div class="contact-info">
-        <div class="info-scroll">
-          <div class="scroll-header">
-            <div class="header-icon">
-              <i class="fas fa-comments"></i>
-            </div>
-            <h3 class="scroll-title">Let's Chat</h3>
-          </div>
-          <div class="scroll-content">
-            <p>I'm open to discussing new opportunities, projects, and technologies. Feel free to reach out with any questions!</p>
-          </div>
-        </div>
-
-        <div class="info-scroll">
-          <div class="scroll-header">
-            <div class="header-icon">
-              <i class="fas fa-code-branch"></i>
-            </div>
-            <h3 class="scroll-title">Collaborate</h3>
-          </div>
-          <div class="scroll-content">
-            <p>Interested in working together on a project? Share your ideas and let's see what we can build.</p>
-          </div>
-        </div>
-
-        <div class="info-scroll">
-          <div class="scroll-header">
-            <div class="header-icon">
-              <i class="fas fa-coffee"></i>
-            </div>
-            <h3 class="scroll-title">Connect</h3>
-          </div>
-          <div class="scroll-content">
-            <p>Find me on social media or just drop me an email. I'd love to expand my network with like-minded individuals.</p>
-          </div>
-        </div>
-
-        <div class="social-grimoire">
-          <h3 class="grimoire-title">Magical Network</h3>
-          <div class="grimoire-links">
-            {% for link in site.data.profile.social_links %}
-            <a href="{{ link.url }}" target="_blank" rel="noopener" aria-label="{{ link.label }}" class="grimoire-link">
-              <div class="grimoire-icon {{ link.icon }}">
-                <i class="{{ link.icon_class }}"></i>
-              </div>
-              <span class="grimoire-text">{{ link.text }}</span>
-            </a>
-            {% endfor %}
-          </div>
-        </div>
-      </div>
-
-      <!-- Right column: Letter form -->
-      <div class="letter-form-container">
-        <div class="magical-parchment">
-          <div class="magical-parchment__header">
-            <div class="magical-parchment__seal">
-              <i class="fas fa-envelope"></i>
-            </div>
-            <h3 class="magical-parchment__title">Compose a Letter</h3>
-          </div>
-
-          <!-- Formspree form-hash ID supplied by the owner (2026-07-16); UNVERIFIED --
-               owner said "I think the ID is this one." A safe GET to this endpoint
-               returns Formspree's own "Form should POST" page (HTTP 405), which confirms
-               the form-hash ID EXISTS -- it does not confirm submissions reach the
-               owner's inbox. No test POST was sent (would create a real submission).
-               The owner must send ONE real test submission through the live site to
-               confirm end-to-end delivery (D9). -->
-          <form action="https://formspree.io/f/xjvapdgb" method="POST" id="contact-form" class="magical-form">
-            <div class="magical-form__group">
-              <label for="name" class="magical-form__label">Your Name</label>
-              <div class="magical-form__input-container">
-                <i class="fas fa-user-circle magical-form__input-icon"></i>
-                <input type="text" id="name" name="name" class="form-input" required>
-              </div>
-            </div>
-
-            <div class="magical-form__group">
-              <label for="email" class="magical-form__label">Your Magical Address</label>
-              <div class="magical-form__input-container">
-                <i class="fas fa-at magical-form__input-icon"></i>
-                <input type="email" id="email" name="_replyto" class="form-input" required>
-              </div>
-            </div>
-
-            <div class="magical-form__group">
-              <label for="subject" class="magical-form__label">Subject of Inquiry</label>
-              <div class="magical-form__input-container">
-                <i class="fas fa-scroll magical-form__input-icon"></i>
-                <input type="text" id="subject" name="subject" class="form-input" required>
-              </div>
-            </div>
-
-            <div class="magical-form__group">
-              <label for="message" class="magical-form__label">Your Message</label>
-              <div class="magical-form__input-container magical-form__textarea-container">
-                <i class="fas fa-feather-alt magical-form__input-icon"></i>
-                <textarea id="message" name="message" class="form-textarea" rows="6" required></textarea>
-              </div>
-            </div>
-
-            <div class="form-actions">
-              <button type="submit" class="submit-button">
-                <span class="button-text">Send Letter</span>
-                <div class="button-icon">
-                  <i class="fas fa-paper-plane"></i>
-                </div>
-              </button>
-            </div>
-
-            <!-- Honeypot field to prevent spam -->
-            <input type="text" name="_gotcha" style="display: none;">
-          </form>
-
-          <div id="success-message" class="form-message form-message--success" style="display: none;">
-            <div class="form-message__icon">
-              <i class="fas fa-check-circle"></i>
-            </div>
-            <div class="form-message__content">
-              <h4 class="form-message__title">Letter Sent!</h4>
-              <p>Your message has been sent successfully! I'll get back to you soon.</p>
-            </div>
-          </div>
-
-          <div id="error-message" class="form-message form-message--error" style="display: none;">
-            <div class="form-message__icon">
-              <i class="fas fa-exclamation-circle"></i>
-            </div>
-            <div class="form-message__content">
-              <h4 class="form-message__title">Magical Interference!</h4>
-              <p>Oops! Something went wrong. Please try again later or contact me directly via email.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<script src="{{ '/assets/js/letter.js' | relative_url }}" defer></script>
+</div>
+<script src="{{ '/assets/js/letter.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>

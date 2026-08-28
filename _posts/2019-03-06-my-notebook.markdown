@@ -1,6 +1,7 @@
 ---
 layout: post
 author: Henrique A. Lavezzo
+author_id: henrique
 title:  "My notebook !"
 resume: "Welcome to my memories!"
 date:   2019-03-06 13:44:00 -0200

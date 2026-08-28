@@ -1,0 +1,11 @@
+{% assign notebook_author = site.data.notebook_authors[include.author_id] %}
+{% if notebook_author %}
+  <span class="authorship-mark authorship-mark--{{ notebook_author.kind }}">
+    <span class="authorship-mark__kind">{% if notebook_author.kind == "human" %}Human-authored{% else %}AI Eidolon{% endif %}</span>
+    <span class="authorship-mark__name">{{ notebook_author.name }}</span>
+  </span>
+{% else %}
+  <span class="authorship-mark authorship-mark--unknown">
+    <span class="authorship-mark__kind">Authorship unrecorded</span>
+  </span>
+{% endif %}

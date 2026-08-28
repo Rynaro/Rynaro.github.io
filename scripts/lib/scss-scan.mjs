@@ -15,10 +15,10 @@ import { join } from 'node:path';
 
 export const SASS_DIR = new URL('../../_sass/', import.meta.url).pathname;
 
-// The wordmark / logotype selector set (AC-048's VERIFY names these two exactly).
-// A token used ONLY inside declarations whose selector stack includes one of
-// these is eligible for `role: logotype`.
-export const LOGOTYPE_SELECTORS = ['.hero__subtitle'];
+// The wordmark / logotype selector set. The current rebrand has no shared
+// wordmark rule, so there is no usage-based exemption. If one is introduced,
+// it must name a real selector; palette-manifest.test.mjs enforces that bind.
+export const LOGOTYPE_SELECTORS = [];
 
 // AC-201 (normalize-p2, Story 2.1): recurses into subdirectories instead of
 // the old flat `readdirSync(dir).filter(...)`. `_sass/` is flat today (this

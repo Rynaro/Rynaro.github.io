@@ -1,0 +1,77 @@
+{% comment %}
+  Shared social-preview selection. `social_image` is deliberately separate from
+  editorial `image`, so an in-article illustration never becomes metadata by accident.
+{% endcomment %}
+{% assign social_is_post = false %}
+{% if page.layout == "post" or page.collection == "posts" %}{% assign social_is_post = true %}{% endif %}
+{% assign resolved_author = include.author %}
+{% assign social_image = page.social_image %}
+{% assign social_alt = page.social_image_alt %}
+{% assign social_notebook_prefix = page.url | slice: 0, 10 %}
+
+{% unless social_image %}
+  {% if social_is_post and resolved_author.kind == "eidolon" %}
+    {% assign social_image = "/assets/images/social/eidolon-dispatch.png" %}
+    {% assign social_alt = social_alt | default: "Eidolon Dispatch from Henrique's AI party" %}
+  {% elsif social_is_post %}
+    {% assign social_image = "/assets/images/social/human-note.png" %}
+    {% assign social_alt = social_alt | default: "Field Note by Henrique A. Lavezzo" %}
+  {% elsif page.url == "/laboratory/" %}
+    {% assign social_image = "/assets/images/social/laboratory.png" %}
+    {% assign social_alt = social_alt | default: "Laboratory — artifacts from Henrique's workbench" %}
+  {% elsif social_notebook_prefix == "/notebook/" %}
+    {% assign social_image = "/assets/images/social/notebook.png" %}
+    {% assign social_alt = social_alt | default: "Notebook — human field notes and Eidolon dispatches" %}
+  {% else %}
+    {% assign social_image = "/assets/images/social/atelier.png" %}
+    {% assign social_alt = social_alt | default: "Henrique A. Lavezzo — Code Alchemist" %}
+  {% endif %}
+{% endunless %}
+{% unless social_alt %}
+  {% if social_is_post and resolved_author.kind == "eidolon" %}
+    {% assign social_alt = "Eidolon Dispatch from Henrique's AI party" %}
+  {% elsif social_is_post %}
+    {% assign social_alt = "Field Note by Henrique A. Lavezzo" %}
+  {% elsif page.url == "/laboratory/" %}
+    {% assign social_alt = "Laboratory — artifacts from Henrique's workbench" %}
+  {% elsif social_notebook_prefix == "/notebook/" %}
+    {% assign social_alt = "Notebook — human field notes and Eidolon dispatches" %}
+  {% else %}
+    {% assign social_alt = "Henrique A. Lavezzo — Code Alchemist" %}
+  {% endif %}
+{% endunless %}
+{% assign social_alt = social_alt | default: site.title %}
+{% capture social_title %}{% if page.title %}{{ page.title }} | Henrique A. Lavezzo{% else %}{{ site.title }}{% endif %}{% endcapture %}
+{% assign social_title = social_title | strip_html | strip_newlines | strip %}
+{% assign social_description = include.description | strip_html | strip_newlines | truncate: 160 %}
+{% assign social_url = page.url | replace: "index.html", "" | absolute_url %}
+{% assign social_image_url = social_image | absolute_url %}
+
+<!-- Open Graph -->
+<meta property="og:type" content="{% if social_is_post %}article{% else %}website{% endif %}">
+<meta property="og:url" content="{{ social_url | escape }}">
+<meta property="og:site_name" content="{{ site.title | escape }}">
+<meta property="og:title" content="{{ social_title | escape }}">
+<meta property="og:description" content="{{ social_description | escape }}">
+<meta property="og:image" content="{{ social_image_url | escape }}">
+<meta property="og:image:secure_url" content="{{ social_image_url | escape }}">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{{ social_alt | escape }}">
+<meta property="og:locale" content="en_US">
+{% if social_is_post %}
+<meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}">
+<meta property="article:author" content="{{ resolved_author.name | default: page.author | default: site.author | escape }}">
+{% assign social_category = page.categories | first %}
+{% if social_category %}<meta property="article:section" content="{{ site.data.notebook_categories.labels[social_category] | default: social_category | escape }}">{% endif %}
+{% for tag in page.tags %}<meta property="article:tag" content="{{ tag | escape }}">
+{% endfor %}{% endif %}
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="{{ social_url | escape }}">
+<meta name="twitter:title" content="{{ social_title | escape }}">
+<meta name="twitter:description" content="{{ social_description | escape }}">
+<meta name="twitter:image" content="{{ social_image_url | escape }}">
+<meta name="twitter:image:alt" content="{{ social_alt | escape }}">

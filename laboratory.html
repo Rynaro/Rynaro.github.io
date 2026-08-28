@@ -1,158 +1,33 @@
 ---
 layout: default
 title: Laboratory
+description: "Henrique Lavezzo's active research, developer tools, personal software, and earlier experiments."
+permalink: /laboratory/
 ---
+{% assign catalogue = site.data.projects %}
+<article class="laboratory" data-laboratory>
+  <header class="laboratory-hero"><div class="laboratory-shell laboratory-hero__grid"><div><p class="laboratory-kicker">The Code Alchemist's working archive</p><h1>Laboratory</h1><p class="laboratory-hero__intro">{{ catalogue.intro }}</p></div><nav class="laboratory-index" aria-label="Laboratory sections"><p>Specimen index</p><ol>{% for category in catalogue.categories %}<li><a href="#{{ category.key }}"><span>0{{ forloop.index }}</span>{{ category.label }}</a></li>{% endfor %}</ol></nav></div></header>
 
-<section class="rpg-hero laboratory-hero">
-  <div class="container">
-    <div class="hero__content">
-      <h1 class="hero__title fade-in">Laboratory</h1>
-      <h2 class="hero__subtitle fade-in">Alchemical Experiments</h2>
-      <p class="hero__description">A collection of crafted artifacts, magical repositories, and transmuted code</p>
+  <div class="laboratory-shell">
+    <div class="laboratory-controls" data-laboratory-controls hidden>
+      <div class="laboratory-filter" role="group" aria-label="Filter projects by collection"><button type="button" data-filter="all" aria-pressed="true">All</button>{% for category in catalogue.categories %}<button type="button" data-filter="{{ category.key }}" aria-pressed="false">{{ category.label }}</button>{% endfor %}</div>
+      <label class="laboratory-search" for="laboratory-search"><span>Search the catalogue</span><input id="laboratory-search" type="search" autocomplete="off" placeholder="Name, purpose, or material…" data-project-search></label>
+      <p class="laboratory-results" aria-live="polite" aria-atomic="true" data-result-count>{{ catalogue.projects | size }} artifacts charted</p>
     </div>
-    <div class="hero__emblem">
-      <div class="emblem-frame">
-        <i class="fas fa-flask emblem-icon"></i>
-        <div class="emblem-particles">
-          <div class="particle particle-1"></div>
-          <div class="particle particle-2"></div>
-          <div class="particle particle-3"></div>
-          <div class="particle particle-4"></div>
+
+    <div class="laboratory-catalogue" data-project-list>{% for category in catalogue.categories %}{% assign category_projects = catalogue.projects | where: "category", category.key %}
+      <section class="laboratory-collection laboratory-collection--{{ category.key }}" id="{{ category.key }}" data-project-section="{{ category.key }}" aria-labelledby="{{ category.key }}-title">
+        <header class="laboratory-collection__heading"><p class="laboratory-kicker">{{ category.eyebrow }}</p><h2 id="{{ category.key }}-title">{{ category.label }}</h2><p>{{ category.description }}</p></header>
+        <div class="laboratory-grid">{% for project in category_projects %}{% capture search_text %}{{ project.title }} {{ project.role }} {{ project.summary }} {{ project.story }} {{ project.tags | join: ' ' }} {{ project.language }}{% endcapture %}
+          <article class="laboratory-card laboratory-card--{{ project.featured }} laboratory-card--{{ project.tone }}" id="project-{{ project.key }}" data-project data-project-key="{{ project.key }}" data-category="{{ project.category }}" data-search="{{ search_text | strip | downcase | escape }}">
+            <div class="laboratory-card__meta"><p>{{ project.role }}</p><span>{{ project.status_label }}</span></div><h3>{{ project.title }}</h3><p class="laboratory-card__summary">{{ project.summary }}</p>
+            {% unless project.featured == "archive" %}<p class="laboratory-card__story">{{ project.story }}</p><p class="laboratory-card__proof"><span>What exists</span>{{ project.proof }}</p>{% endunless %}
+            <ul class="laboratory-card__tags" aria-label="Materials">{% for tag in project.tags %}<li>{{ tag }}</li>{% endfor %}{% if project.language %}<li>{{ project.language | downcase }}</li>{% endif %}</ul>
+            <div class="laboratory-card__links">{% if project.project_url %}<a href="{{ project.project_url }}">Visit project <span aria-hidden="true">→</span></a>{% endif %}<a href="{{ project.repository_url }}" target="_blank" rel="noopener">Examine source <span aria-hidden="true">↗</span></a></div>
+          </article>{% endfor %}
         </div>
-      </div>
-    </div>
+      </section>{% endfor %}</div>
+    <section class="laboratory-empty" data-empty-state hidden aria-labelledby="laboratory-empty-title"><p class="laboratory-kicker">No matching coordinates</p><h2 id="laboratory-empty-title">Nothing on this shelf.</h2><p>Try another term or restore the complete catalogue.</p><button type="button" data-reset-laboratory>Clear the instruments</button></section>
   </div>
-</section>
-
-<section class="rpg-inventory">
-  <div class="container">
-    {% include components/section-title.html icon="fas fa-vials" title="Research Table" %}
-
-    <div class="inventory-controls">
-      <div class="inventory-filter">
-        <div class="filter-title">Archives:</div>
-        <div class="filter-buttons" role="tablist" aria-label="Filter projects by type">
-          <button class="filter-button active" data-filter="all" role="tab" aria-selected="true">
-            <i class="fas fa-scroll"></i>
-            <span>All</span>
-          </button>
-          <button class="filter-button" data-filter="library" role="tab" aria-selected="false">
-            <i class="fas fa-code"></i>
-            <span>Libraries</span>
-          </button>
-          <button class="filter-button" data-filter="tool" role="tab" aria-selected="false">
-            <i class="fas fa-tools"></i>
-            <span>Tools</span>
-          </button>
-          <button class="filter-button" data-filter="game" role="tab" aria-selected="false">
-            <i class="fas fa-gamepad"></i>
-            <span>Games</span>
-          </button>
-        </div>
-      </div>
-
-      <div class="inventory-search">
-        <input type="text" id="project-search" placeholder="Search projects..." aria-label="Search projects">
-        <i class="fas fa-search"></i>
-      </div>
-    </div>
-
-    <div class="project-grid">
-      {% for project in site.data.projects %}
-        <div class="project-item"
-          {% if project.type %}data-type="{{ project.type }}"{% else %}data-type="library"{% endif %}>
-          <div class="item-card">
-            {% assign project_rarity = project.rarity | default: "common" %}
-            <div class="item-rarity-indicator"
-                 data-rarity="{{ project_rarity }}"
-                 aria-hidden="true">
-            </div>
-            <div class="item-header">
-              <div class="item-header-top">
-                <h3 class="item-name">{{ project.title }}</h3>
-                <div class="item-actions">
-                  <a href="{{ project.url }}" class="item-action" target="_blank" rel="noopener" aria-label="View on GitHub">
-                    <i class="fab fa-github"></i>
-                  </a>
-                </div>
-              </div>
-              <!-- AC-030 / D20: rarity SHALL be conveyed by a visible text label,
-                   never by chip colour alone (1.4.1). Rendered by Liquid at build
-                   time from project_rarity directly -- independent of whichever
-                   CSS class laboratory.js does or doesn't add, so the label holds
-                   with JS disabled too. The `.item-rarity-indicator` strip above is
-                   now aria-hidden (redundant with this label; one accessible
-                   source of truth). -->
-              <span class="item-rarity-label item-rarity-label--{{ project_rarity }}">{{ project_rarity | capitalize }}</span>
-            </div>
-
-            <div class="item-description">
-              <p>{{ project.description }}</p>
-            </div>
-
-            <div class="item-stats">
-              {% if project.language %}
-                <div class="item-stat">
-                  <div class="stat-icon" style="background-color: {% include language-color.html language=project.language %}">
-                    {% case project.language %}
-                      {% when 'ruby' %}<i class="fas fa-gem"></i>
-                      {% when 'javascript' %}<i class="fab fa-js"></i>
-                      {% when 'html' %}<i class="fab fa-html5"></i>
-                      {% when 'css' %}<i class="fab fa-css3-alt"></i>
-                      {% when 'python' %}<i class="fab fa-python"></i>
-                      {% when 'java' %}<i class="fab fa-java"></i>
-                      {% when 'clojure' %}<i class="fas fa-circle-notch"></i>
-                      {% else %}<i class="fas fa-code"></i>
-                    {% endcase %}
-                  </div>
-                  <span class="stat-name">{{ project.language }}</span>
-                </div>
-              {% endif %}
-
-              {% if project.stars %}
-                <div class="item-stat">
-                  <div class="stat-icon">
-                    <i class="fas fa-star"></i>
-                  </div>
-                  <span class="stat-value">{{ project.stars }}</span>
-                </div>
-              {% endif %}
-
-              {% if project.forks %}
-                <div class="item-stat">
-                  <div class="stat-icon">
-                    <i class="fas fa-code-branch"></i>
-                  </div>
-                  <span class="stat-value">{{ project.forks }}</span>
-                </div>
-              {% endif %}
-            </div>
-
-            <div class="item-footer">
-              <a href="{{ project.url }}" class="item-link" target="_blank" rel="noopener">
-                Examine <i class="fas fa-arrow-right"></i>
-              </a>
-
-              {% if project.type %}
-                <div class="item-type-badge">{{ project.type }}</div>
-              {% else %}
-                <div class="item-type-badge">library</div>
-              {% endif %}
-            </div>
-          </div>
-        </div>
-      {% endfor %}
-    </div>
-
-    <div class="empty-state" style="display: none;">
-      <div class="empty-state-icon">
-        <i class="fas fa-scroll"></i>
-      </div>
-      <h3 class="empty-state-title">No Scrolls Found</h3>
-      <p class="empty-state-text">No artifacts matching your search criteria were found in the archives.</p>
-      <button class="reset-search-button">Clear Search</button>
-    </div>
-  </div>
-</section>
-
-<script src="{{ '/assets/js/laboratory.js' | relative_url }}" defer></script>
+</article>
+<script src="{{ '/assets/js/laboratory.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>

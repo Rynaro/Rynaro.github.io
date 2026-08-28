@@ -1,0 +1,40 @@
+hero:
+  eyebrow: The correspondence desk
+  title: Bring a question, an idea, or a strange little problem.
+  intro: If you are thinking about engineering leadership, software architecture, developer tools, AI-assisted engineering, or something worth making together, leave a note at the desk.
+  marginalia: Correspondence ledger · open
+prompts:
+  heading: What belongs here
+  intro: "A few good reasons to write:"
+  items:
+    - title: Compare notes
+      text: Trade observations about teams, systems, tools, or experiments in AI-assisted engineering.
+    - title: Propose a collaboration
+      text: Share a project, open-source idea, talk, or piece of work where our crafts might meet.
+    - title: Say hello
+      text: No elaborate quest is required. A thoughtful introduction is reason enough.
+channels:
+  heading: Other routes
+  intro: Prefer another channel? You can also find me here.
+  email_label: Email directly
+  social_keys: [GitHub, LinkedIn, Dev.to]
+form:
+  heading: Compose a letter
+  intro: Write plainly. The useful details matter more than ceremony.
+  endpoint: https://formspree.io/f/xjvapdgb
+  labels:
+    name: Your name
+    email: Your email
+    subject: Subject
+    message: Your message
+  rows: 8
+  submit: Send letter
+  submitting: Sealing letter…
+  privacy: This form sends your name, email address, subject, and message through Formspree so I can receive and reply to it. Prefer not to use a third-party form? Email me directly instead.
+  success:
+    title: The letter is on its way.
+    text: Thank you for writing. Your message was sent.
+  error:
+    title: The courier lost the trail.
+    text: Your message was not sent. Try again, or use the direct email route below.
+  validation: Check the marked fields and try again.

@@ -16,12 +16,9 @@
 // requires checking pseudo-states (:hover/:focus) where the selector has one,
 // not just the base state.
 //
-// The thirteen literals named by the P1 spec (5 notebook + 5 laboratory + 3
-// letter) were all attempted; two (`.inventory-search input`,
-// `.form-input`/`.form-textarea`) have no explicit base-rule `color` to prove
-// a token match from source alone, so this script -- not a manual reading --
-// is the actual gate for those two. Anything this script fails must be
-// reinstated in source, not left deleted.
+// This legacy regression now retains only candidates whose surfaces still
+// exist. Notebook's former scroll/inventory selectors were retired by its
+// editorial rebrand; testing absent nodes would not prove a computed no-op.
 
 import { chromium } from 'playwright';
 import { createServer } from 'node:http';
@@ -64,16 +61,6 @@ const ok = (msg) => console.log(`ok: ${msg}`);
 // { url, selector, property, oldValue, pseudo?: 'focus' } -- pseudo is only
 // set for form controls whose interactive state N4 requires re-checking.
 const CANDIDATES = [
-  { file: '_sass/_notebook.scss', url: '/notebook/', selector: '.section-title', property: 'color', oldValue: '#e0e0e0' },
-  { file: '_sass/_notebook.scss', url: '/notebook/', selector: '.categories-title', property: 'color', oldValue: '#e0e0e0' },
-  { file: '_sass/_notebook.scss', url: '/notebook/', selector: '.scroll-search input', property: 'color', oldValue: '#e0e0e0', pseudo: 'focus' },
-  { file: '_sass/_notebook.scss', url: '/notebook/', selector: '.scroll-title', property: 'color', oldValue: '#e0e0e0' },
-  { file: '_sass/_notebook.scss', url: '/notebook/', selector: '.empty-archive-title', property: 'color', oldValue: '#e0e0e0' },
-  { file: '_sass/_laboratory.scss', url: '/laboratory.html', selector: '.section-title', property: 'color', oldValue: '#e0e0e0' },
-  { file: '_sass/_laboratory.scss', url: '/laboratory.html', selector: '.filter-title', property: 'color', oldValue: '#e0e0e0' },
-  { file: '_sass/_laboratory.scss', url: '/laboratory.html', selector: '.inventory-search input', property: 'color', oldValue: '#e0e0e0', pseudo: 'focus' },
-  { file: '_sass/_laboratory.scss', url: '/laboratory.html', selector: '.item-name', property: 'color', oldValue: '#e0e0e0' },
-  { file: '_sass/_laboratory.scss', url: '/laboratory.html', selector: '.empty-state-title', property: 'color', oldValue: '#e0e0e0' },
   { file: '_sass/_letter.scss', url: '/letter.html', selector: '.section-title', property: 'color', oldValue: '#e0e0e0' },
   { file: '_sass/_letter.scss', url: '/letter.html', selector: '.grimoire-text', property: 'color', oldValue: '#e0e0e0' },
   { file: '_sass/_letter.scss', url: '/letter.html', selector: '.form-input, .form-textarea', property: 'color', oldValue: '#e0e0e0', pseudo: 'focus' },

@@ -1,25 +1,17 @@
 #!/usr/bin/env node
 // scripts/visual-baseline.mjs
 //
-// Phase P0 of front-end normalization (branch normalize/tokens): the safety
-// net later SCSS-refactor phases pixel-diff against. Builds against _site/
-// (bundle exec jekyll build first, same contract as scripts/axe-audit.mjs),
-// serves it over the same in-process node:http static server, and uses
-// Playwright/chromium to capture full-page screenshots across a page x
-// viewport x theme matrix, storing them as committed baselines under
-// scripts/baselines/.
+// Captures deterministic full-page screenshots from a built _site/ across the
+// site's route, viewport, theme, and interaction-state matrix.
 //
 // Two modes:
 //   node scripts/visual-baseline.mjs           -- compare mode (default):
-//     capture fresh screenshots, diff against the committed baselines,
+//     capture fresh screenshots, diff against the local baselines,
 //     exit non-zero if any target exceeds the tolerance.
 //   node scripts/visual-baseline.mjs --update  -- write/refresh baselines.
 //
-// No new dependency: PNG decode + pixel diff below is hand-rolled on top of
-// node:zlib (inflateSync) -- Playwright screenshots are always 8-bit,
-// non-interlaced PNGs, so a full PNG library (pixelmatch/pngjs) would be
-// meaningfully more code than this file's ~80 decode/diff lines while
-// pulling in a new devDependency for something this narrow.
+// PNG decoding and pixel comparison use node:zlib; Playwright screenshots are
+// 8-bit, non-interlaced PNGs.
 //
 // Determinism (see the brief this script was built against -- flaky
 // baselines are worse than none):
@@ -28,46 +20,15 @@
 //     assets/js/{home,about,laboratory,notebook,letter,sigil-navigation}.js
 //     short-circuits BEFORE any JS-driven inline `animation` style is set --
 //     this is the primary defense, not an afterthought.
-//   - a forced full scroll-through (top -> bottom -> top, settling on
-//     requestAnimationFrame between steps) before every capture. Several
-//     content grids (About's `.fade-in-element`/`.sheet-block` etc.,
-//     Notebook's `.scroll-item`, Laboratory's `.project-item`) reveal via
-//     IntersectionObserver on real scroll (`entry.isIntersecting` ->
-//     `classList.add('animate-in'|'fade-in-visible'|'fade-in')`).
-//     Playwright's fullPage screenshot does NOT fire real scroll events, so
-//     without this every below-the-fold instance of that pattern is
-//     captured stuck at its pre-reveal opacity:0 state -- verified
-//     empirically while building this script (see the completion report).
-//     Scrolling through in steps guarantees every such element crosses the
-//     observer's rootMargin/threshold at some point, exactly once (each
-//     observer calls `unobserve` after firing), before we return to the top
-//     for the actual screenshot.
 //   - a stylesheet that collapses animation/transition duration+delay to
-//     ~0 and iteration-count to 1 (injected post-load, before the scroll
-//     pass), instead of a blunt `animation: none`. This matters: the reveal
-//     above is itself CSS-`animation`-driven in two places
-//     (`.fade-in`/_sass/_utilities.scss, `.scroll-item.animate-in`/
-//     _sass/_notebook.scss, both `forwards`-filled keyframes, NOT gated by
-//     prefers-reduced-motion) -- an earlier draft of this script used a
-//     blanket `animation: none !important`, which silently defeated those
-//     same reveal animations (no keyframe ever ran, so the class landed but
-//     the `to` frame's opacity:1 never applied) and reproduced the exact
-//     blank-content bug this scroll-pass exists to fix. Collapsing
-//     duration/delay instead lets every one-shot reveal still play (and
-//     land on its correct final frame) in an imperceptible fraction of a
-//     millisecond -- deterministic and complete, not just "not broken".
+//     ~0 and iteration-count to 1 instead of a blunt `animation: none`, so
+//     every finite animation deterministically reaches its final frame.
 //   - a frozen `Date` (see installFixedClock below) injected before any
-//     page script runs. Discovered while building this script: About's
-//     assets/js/exp-bar.js computes the EXP bar width/text from
-//     `new Date()` (progress through the calendar year) -- unmocked, the
-//     About baseline would silently drift by real elapsed time and produce
-//     false-positive diffs on any day other than capture day. Freezing
-//     `Date` (multi-arg calls still delegate to the real constructor, so
-//     `new Date(year, 0, 1)` math is untouched) removes that whole class of
-//     flakiness without touching any site source file.
+//     page script runs. Keeping the clock deterministic prevents future
+//     date-sensitive content or scripts from making baselines drift.
 //   - a hardened render-stability barrier (waitForStableRender), not just
 //     `document.fonts.ready`. Empirically, `fonts.ready` + `networkidle`
-//     was NOT sufficient under this script's own load (87 sequential
+//     was NOT sufficient under this script's own full-matrix load (many sequential
 //     browser contexts in one long-running process): repeated full-suite
 //     runs with zero source changes reproduced both scattered few-pixel
 //     diffs (About) and a genuine document-height DIMENSION MISMATCH
@@ -82,9 +43,9 @@
 //   - fullPage: true, deviceScaleFactor: 1, pinned per the brief.
 //
 // Known residual (post target) + fix, root-caused after the font
-// self-hosting change made the other 13/14 targets bit-exact:
-//   Every target except "post" (the representative blog post) is
-//   pixel-perfect (0.0000%) run over run. "post" alone was bistable: on
+// self-hosting change made the other targets bit-exact:
+//   Every target except the representative blog post was pixel-perfect
+//   (0.0000%) run over run. That post alone was bistable: on
 //   mobile/tablet its document height alternated between two values
 //   (e.g. mobile 3163<->3165, tablet 2481<->2506) between the
 //   baseline-writing capture and the compare capture; on desktop the
@@ -175,20 +136,35 @@ import {
   mkdirSync,
   writeFileSync,
   readdirSync,
+  rmSync,
 } from 'node:fs';
-import { extname, join, dirname, relative } from 'node:path';
+import { extname, join, dirname, relative, resolve } from 'node:path';
 import { inflateSync } from 'node:zlib';
 
 const root = new URL('../', import.meta.url).pathname;
 const siteDir = root + '_site';
-const baselineDir = join(root, 'scripts', 'baselines');
+function option(name, fallback) {
+  const equals = process.argv.find((arg) => arg.startsWith(`${name}=`));
+  if (equals) return equals.slice(name.length + 1);
+  const index = process.argv.indexOf(name);
+  return index >= 0 && process.argv[index + 1] && !process.argv[index + 1].startsWith('--')
+    ? process.argv[index + 1]
+    : fallback;
+}
 
+const baselineDir = resolve(root, option('--baseline-dir', 'scripts/baselines'));
+const outputDir = resolve(root, option('--output-dir', '.visual/candidate'));
+const reportPath = resolve(root, option('--report', '.visual/report.json'));
+
+const UPDATE = process.argv.includes('--update');
+if (baselineDir === outputDir) {
+  console.error('FAIL: --baseline-dir and --output-dir must resolve to different directories.');
+  process.exit(1);
+}
 if (!existsSync(siteDir)) {
   console.error('FAIL: _site/ does not exist -- run `bundle exec jekyll build` first.');
   process.exit(1);
 }
-
-const UPDATE = process.argv.includes('--update');
 const toleranceArg = process.argv.find((a) => a.startsWith('--tolerance='));
 // Percentage of pixels allowed to differ (per-pixel color delta beyond
 // CHANNEL_THRESHOLD below) before a target is reported as a failure. 0.1%
@@ -253,6 +229,7 @@ const ROOT_PAGE_NAMES = ['index', 'about', 'laboratory', 'notebook', 'letter', '
 
 function resolveRootPage(name) {
   if (name === 'index' && existsSync(join(siteDir, 'index.html'))) return { name, url: '/' };
+  if (name === 'laboratory' && existsSync(join(siteDir, 'laboratory', 'index.html'))) return { name, url: '/laboratory/' };
   const flat = join(siteDir, `${name}.html`);
   if (existsSync(flat)) return { name, url: `/${name}.html` };
   const dirIndex = join(siteDir, name, 'index.html');
@@ -264,19 +241,43 @@ function resolveRootPage(name) {
 // (pick a real post from _posts/, derive its date-based permalink, verify
 // it actually built), sorted for determinism (fs.readdirSync order is not
 // contractually stable across platforms).
-function resolveRepresentativePost() {
+function postTargetForFile(filename, name) {
+  const m = filename.match(/^(\d{4})-(\d{2})-(\d{2})-(.+)\.(markdown|md)$/);
+  if (!m) return null;
+  const [, y, mo, d, slug] = m;
+  const flatPath = join(siteDir, y, mo, d, `${slug}.html`);
+  const dirPath = join(siteDir, y, mo, d, slug, 'index.html');
+  return existsSync(flatPath) || existsSync(dirPath)
+    ? { name, url: `/${y}/${mo}/${d}/${slug}/` }
+    : null;
+}
+
+function resolveRepresentativeHumanPost() {
   const postFiles = readdirSync(join(root, '_posts'))
     .filter((f) => f.endsWith('.markdown') || f.endsWith('.md'))
     .sort();
   for (const f of postFiles) {
-    const m = f.match(/^(\d{4})-(\d{2})-(\d{2})-(.+)\.(markdown|md)$/);
-    if (!m) continue;
-    const [, y, mo, d, slug] = m;
-    const flatPath = join(siteDir, y, mo, d, `${slug}.html`);
-    const dirPath = join(siteDir, y, mo, d, slug, 'index.html');
-    if (existsSync(flatPath) || existsSync(dirPath)) {
-      return { name: 'post', url: `/${y}/${mo}/${d}/${slug}/` };
-    }
+    const source = readFileSync(join(root, '_posts', f), 'utf8');
+    if (/^author_id:\s*["']?(vivi|ramza|atlas|forge|gilgamesh|idg|kupo)["']?\s*$/mi.test(source)) continue;
+    const target = postTargetForFile(f, 'post-human');
+    if (target) return target;
+  }
+  return null;
+}
+
+function resolveViviPost() {
+  const preferred = '2026-08-27-rebranding-the-atelier-as-a-party-quest.md';
+  const postFiles = readdirSync(join(root, '_posts'))
+    .filter((f) => f.endsWith('.markdown') || f.endsWith('.md'))
+    .sort();
+  const ordered = postFiles.includes(preferred)
+    ? [preferred, ...postFiles.filter((f) => f !== preferred)]
+    : postFiles;
+  for (const f of ordered) {
+    const source = readFileSync(join(root, '_posts', f), 'utf8');
+    if (!/^author_id:\s*["']?vivi["']?\s*$/mi.test(source)) continue;
+    const target = postTargetForFile(f, 'post-eidolon-vivi');
+    if (target) return target;
   }
   return null;
 }
@@ -304,12 +305,22 @@ for (const name of ROOT_PAGE_NAMES) {
   if (t) targets.push(t);
   else fail(`expected root page "${name}" not found in built _site/ (checked ${name}.html and ${name}/index.html)`);
 }
-const post = resolveRepresentativePost();
-if (post) targets.push(post);
-else fail('no representative post permalink resolved from _posts/ against the built _site/ tree');
+const humanPost = resolveRepresentativeHumanPost();
+if (humanPost) targets.push(humanPost);
+else fail('no representative human post permalink resolved from _posts/ against the built _site/ tree');
+const viviPost = resolveViviPost();
+if (viviPost) targets.push(viviPost);
+else fail('no published Vivi post permalink resolved from _posts/ against the built _site/ tree');
 const notebookSub = resolveNotebookSubpage();
 if (notebookSub) targets.push(notebookSub);
 else fail('no representative notebook/ category subpage found under built _site/notebook/');
+
+targets.push({
+  name: 'index-wayfinder-open',
+  url: '/',
+  state: 'wayfinder-open',
+  viewportNames: ['mobile', 'desktop'],
+});
 
 if (failures > 0) {
   console.error(`\nFAIL: ${failures} target-resolution failure(s) -- aborting before any capture.`);
@@ -333,7 +344,7 @@ const VIEWPORTS = [
 // `body.dark-mode` class (_layouts/post.html:308-322), which is a plain
 // class selector independent of the OS color-scheme preference.
 function themesFor(target) {
-  return target.name === 'post' ? ['light', 'dark', 'dark-class'] : ['light', 'dark'];
+  return target.name.startsWith('post-') ? ['light', 'dark', 'dark-class'] : ['light', 'dark'];
 }
 
 // Collapses (not disables -- see the header comment above) animation and
@@ -349,7 +360,7 @@ const KILL_ANIMATIONS_CSS = `*, *::before, *::after {
 }`;
 
 // document.fonts.ready + networkidle turned out not to be a sufficient
-// readiness barrier under this script's own load (87 sequential contexts in
+// readiness barrier under this script's own full-matrix load (many sequential contexts in
 // one browser process): repeated full-suite runs with zero source changes
 // occasionally reproduced (a) scattered few-pixel diffs on About and (b) a
 // genuine document-height DIMENSION MISMATCH on Accessibility/mobile-dark
@@ -378,32 +389,10 @@ async function waitForStableRender(page) {
   });
 }
 
-// Scrolls the full document top -> bottom -> top in steps, settling on two
-// rAF ticks between each (past IntersectionObserver's microtask-queued
-// callback) so every scroll-triggered reveal observer fires exactly once,
-// then returns to the top for the actual screenshot.
-async function forceScrollReveal(page) {
-  await page.evaluate(async () => {
-    const settle = () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-    const step = 300;
-    let y = 0;
-    while (y < document.documentElement.scrollHeight) {
-      window.scrollTo(0, y);
-      await settle();
-      y += step;
-    }
-    window.scrollTo(0, document.documentElement.scrollHeight);
-    await settle();
-    window.scrollTo(0, 0);
-    await settle();
-  });
-}
-
 // Injected via context.addInitScript -- runs before any page script, on
 // every navigation. Multi-arg / string / timestamp Date construction still
 // delegates to the real constructor; only the no-arg "current instant" form
-// is pinned, which is exactly what assets/js/exp-bar.js's `new Date()` call
-// uses.
+// is pinned.
 function installFixedClock() {
   const FIXED_TIME = new Date('2026-01-01T12:00:00Z').getTime();
   const RealDate = Date;
@@ -442,14 +431,19 @@ async function captureScreenshot(browser, base, target, viewport, theme) {
     await page.evaluate(() => document.body.classList.add('dark-mode'));
   }
   await page.addStyleTag({ content: KILL_ANIMATIONS_CSS });
-  await forceScrollReveal(page);
+  if (target.state === 'wayfinder-open') {
+    const trigger = page.locator('button.wayfinder__trigger');
+    await trigger.waitFor({ state: 'visible' });
+    await trigger.click();
+    await page.locator('#astrolabe-chart.is-open').waitFor({ state: 'visible' });
+  }
   await waitForStableRender(page);
   const buffer = await captureStableScreenshot(page);
   await context.close();
   return buffer;
 }
 
-// Even with waitForStableRender passing, a full 87-capture run (one
+// Even with waitForStableRender passing, a full-matrix run (one
 // long-lived browser process, ~80+ prior contexts) reproduced a residual
 // paint/compositor-level lag that a layout-height poll doesn't catch: the
 // "post" target intermittently differed by 2px of document height and up
@@ -615,23 +609,50 @@ const FONT_DETERMINISM_ARGS = [
   '--disable-skia-runtime-opts',
   '--force-color-profile=srgb',
 ];
-const browser = await chromium.launch({ args: FONT_DETERMINISM_ARGS });
+let browser;
+try {
+  browser = await chromium.launch({ args: FONT_DETERMINISM_ARGS });
+} catch (error) {
+  await new Promise((resolveClose) => server.close(resolveClose));
+  throw error;
+}
 
 let capturedCount = 0;
+const results = [];
 
-console.log(`${UPDATE ? 'UPDATE' : 'COMPARE'} mode -- ${targets.length} target(s) x ${VIEWPORTS.length} viewport(s), tolerance ${TOLERANCE_PERCENT}% (channel threshold ${CHANNEL_THRESHOLD}/255).\n`);
+const capturePlan = targets.flatMap((target) => {
+  const viewports = target.viewportNames
+    ? VIEWPORTS.filter(([name]) => target.viewportNames.includes(name))
+    : VIEWPORTS;
+  return viewports.flatMap(([viewportName, viewport]) => (
+    themesFor(target).map((theme) => ({ target, viewportName, viewport, theme }))
+  ));
+});
 
-for (const target of targets) {
-  const themes = themesFor(target);
-  for (const [viewportName, viewport] of VIEWPORTS) {
-    for (const theme of themes) {
+console.log(`${UPDATE ? 'UPDATE' : 'COMPARE'} mode -- ${targets.length} target(s), ${capturePlan.length} planned screenshot(s), tolerance ${TOLERANCE_PERCENT}% (channel threshold ${CHANNEL_THRESHOLD}/255).\n`);
+
+if (capturePlan.length !== 100) {
+  fail(`capture inventory changed: expected exactly 100 planned screenshots, found ${capturePlan.length}; review the matrix before accepting a new reference`);
+}
+
+if (UPDATE) {
+  mkdirSync(baselineDir, { recursive: true });
+} else {
+  rmSync(outputDir, { recursive: true, force: true });
+  mkdirSync(outputDir, { recursive: true });
+}
+
+try {
+for (const { target, viewportName, viewport, theme } of capturePlan) {
       const relPath = `${target.name}/${viewportName}-${theme}.png`;
       const outPath = join(baselineDir, target.name, `${viewportName}-${theme}.png`);
+      const candidatePath = join(outputDir, target.name, `${viewportName}-${theme}.png`);
       let buffer;
       try {
         buffer = await captureScreenshot(browser, base, target, viewport, theme);
       } catch (err) {
         fail(`${relPath}: capture error -- ${err.message}`);
+        results.push({ path: relPath, status: 'capture-error', error: err.message });
         continue;
       }
       capturedCount++;
@@ -640,11 +661,16 @@ for (const target of targets) {
         mkdirSync(dirname(outPath), { recursive: true });
         writeFileSync(outPath, buffer);
         ok(`wrote ${relPath} (${buffer.length} bytes)`);
+        results.push({ path: relPath, status: 'updated', actual: relative(root, outPath) });
         continue;
       }
 
+      mkdirSync(dirname(candidatePath), { recursive: true });
+      writeFileSync(candidatePath, buffer);
+
       if (!existsSync(outPath)) {
-        fail(`${relPath}: no baseline found -- run \`npm run test:visual:update\` first`);
+        fail(`${relPath}: no reference found at ${relative(root, outPath)}; seed a successful master visual-reference artifact first`);
+        results.push({ path: relPath, status: 'missing-reference', expected: relative(root, outPath), actual: relative(root, candidatePath) });
         continue;
       }
       let baselineImg, currentImg;
@@ -653,27 +679,61 @@ for (const target of targets) {
         currentImg = decodePNG(buffer);
       } catch (err) {
         fail(`${relPath}: PNG decode error -- ${err.message}`);
+        results.push({ path: relPath, status: 'decode-error', error: err.message, expected: relative(root, outPath), actual: relative(root, candidatePath) });
         continue;
       }
       const diff = diffImages(baselineImg, currentImg);
       if (diff.dimensionMismatch) {
         fail(`${relPath}: dimension mismatch (baseline ${baselineImg.width}x${baselineImg.height} vs current ${currentImg.width}x${currentImg.height})`);
+        results.push({ path: relPath, status: 'dimension-mismatch', expected: relative(root, outPath), actual: relative(root, candidatePath), dimensions: { expected: [baselineImg.width, baselineImg.height], actual: [currentImg.width, currentImg.height] }, diff });
       } else if (diff.diffPercent > TOLERANCE_PERCENT) {
         fail(`${relPath}: ${diff.diffPercent.toFixed(4)}% pixels differ (${diff.diffPixels}/${diff.totalPixels}) -- exceeds ${TOLERANCE_PERCENT}% tolerance`);
+        results.push({ path: relPath, status: 'different', expected: relative(root, outPath), actual: relative(root, candidatePath), dimensions: { expected: [baselineImg.width, baselineImg.height], actual: [currentImg.width, currentImg.height] }, diff });
       } else {
         ok(`${relPath}: ${diff.diffPercent.toFixed(4)}% pixels differ (${diff.diffPixels}/${diff.totalPixels})`);
+        results.push({ path: relPath, status: 'matched', expected: relative(root, outPath), actual: relative(root, candidatePath), dimensions: { expected: [baselineImg.width, baselineImg.height], actual: [currentImg.width, currentImg.height] }, diff });
       }
-    }
-  }
+}
+} finally {
+  await browser.close();
+  await new Promise((resolveClose) => server.close(resolveClose));
 }
 
-await browser.close();
-server.close();
+const pngInventory = (dir) => existsSync(dir)
+  ? readdirSync(dir, { recursive: true, withFileTypes: true }).filter((entry) => entry.isFile() && entry.name.endsWith('.png')).length
+  : 0;
+const inventoryDir = UPDATE ? baselineDir : outputDir;
+const inventoryCount = pngInventory(inventoryDir);
+if (inventoryCount !== capturePlan.length) {
+  fail(`${UPDATE ? 'reference' : 'candidate'} inventory mismatch: expected ${capturePlan.length} PNGs, found ${inventoryCount} in ${relative(root, inventoryDir)}`);
+}
+
+if (UPDATE && failures === 0) {
+  writeFileSync(join(baselineDir, 'source.json'), JSON.stringify({
+    sha: process.env.GITHUB_SHA || null,
+    runId: process.env.GITHUB_RUN_ID || null,
+    runAttempt: process.env.GITHUB_RUN_ATTEMPT || null,
+    generatedAt: new Date().toISOString(),
+    screenshots: capturePlan.length,
+  }, null, 2) + '\n');
+}
+
+const report = {
+  status: failures === 0 ? 'passed' : 'failed',
+  mode: UPDATE ? 'update' : 'compare',
+  matrix: capturePlan.map(({ target, viewportName, viewport, theme }) => ({ target: target.name, url: target.url, viewport: viewportName, dimensions: viewport, theme, state: target.state || null })),
+  config: { baselineDir: relative(root, baselineDir), outputDir: relative(root, outputDir), tolerancePercent: TOLERANCE_PERCENT, channelThreshold: CHANNEL_THRESHOLD },
+  totals: { planned: capturePlan.length, captured: capturedCount, inventory: inventoryCount, failures, matched: results.filter((r) => r.status === 'matched').length },
+  results,
+};
+mkdirSync(dirname(reportPath), { recursive: true });
+writeFileSync(reportPath, JSON.stringify(report, null, 2) + '\n');
 
 console.log(`\n${capturedCount} screenshot(s) captured across ${targets.length} target(s): ${targets.map((t) => t.name).join(', ')}.`);
 if (existsSync(baselineDir)) {
   console.log(`Baseline tree ${relative(root, baselineDir)}/: ${humanSize(dirSizeBytes(baselineDir))} total.`);
 }
+console.log(`Report: ${relative(root, reportPath)}.`);
 
 console.log(failures === 0 ? '\nPASS (visual-baseline).' : `\nFAIL: ${failures} failure(s).`);
 process.exit(failures === 0 ? 0 : 1);

@@ -1,0 +1,33 @@
+updated_at: 2026-08-28 # Manual editorial date: revise whenever this field note changes.
+hero:
+  eyebrow: "Living record · Current quests"
+  title: "What is on the workbench now."
+  introduction: "A short field note on the systems I am shaping, the experiments I am following, and the quieter things keeping the work grounded."
+  date_label: "Field note revised"
+focus:
+  title: "Current quests"
+  introduction: "The few threads receiving most of my attention. This is a snapshot, not a roadmap or a promise of progress."
+  items:
+    - { kind: practice, marker: Practice, title: "Leading without leaving the craft", text: "Helping teams turn ambiguity into clear systems while staying close to architecture, tools, incidents, and the code itself.", link_label: "Read the portrait", link_url: /about/ }
+    - { kind: project, project_key: eidolons, marker: Flagship, note: "Exploring specialist roles, explicit routing, and verifiable hand-offs as a more legible way to work with AI in software engineering." }
+    - { kind: project, project_key: ariramba, marker: Research, note: "Investigating how local, evidence-driven agentic systems can choose how to think without hiding the reasoning behind spectacle." }
+    - { kind: project, project_key: magicite, marker: Research, note: "Testing how compact capabilities can stay useful, inspectable, and governed while their shape is still being discovered." }
+    - { kind: project, project_key: crystalium, marker: Research, note: "Exploring how specialist agents can carry useful memory across sessions without weakening provenance, trust boundaries, or deliberate forgetting." }
+side_paths:
+  eyebrow: "Beyond the terminal"
+  title: "Grounding rituals"
+  introduction: "Work is only one part of the map. These slower quests keep the rest of it inhabitable."
+  items:
+    - "Learning Chinese with the same stubbornness games once recruited for English."
+    - "Tending a home shared with cats, a fish, plants, terrariums, and small isolated ecosystems."
+    - "Returning to games for systems, feedback, and the quiet pleasure of inhabiting a well-built world."
+threshold:
+  eyebrow: "Next bearing"
+  title: "Follow the work as it changes."
+  text: "The Laboratory holds the artifacts; the Field Journal keeps the lessons, experiments, and unfinished maps gathered along the way."
+  links:
+    - { label: "Enter the Laboratory", url: /laboratory/ }
+    - { label: "Read the Field Journal", url: /notebook/ }
+stale_note: "A now page is meant to drift. If this date is old, read it as a record of where my attention last rested—not a claim that nothing has changed."
+stale_link_label: "What is a now page?"
+stale_link_url: https://sive.rs/nowff

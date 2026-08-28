@@ -1,139 +1,42 @@
 ---
 layout: default
 ---
-
-<div class="alchemist-hero">
-  <div class="alchemy-circle">
-    <!-- Central circle -->
-    <div class="alchemy-circle__inner"></div>
-
-    <!-- Orbital rings -->
-    <div class="alchemy-circle__ring alchemy-circle__ring--1"></div>
-    <div class="alchemy-circle__ring alchemy-circle__ring--2"></div>
-    <div class="alchemy-circle__ring alchemy-circle__ring--3"></div>
-
-    <!-- Add a subtle glow -->
-    <div class="alchemy-circle__glow"></div>
-
-    <!-- Alchemical symbols -->
-    <div class="alchemy-symbol alchemy-symbol--fire" title="Fire (Creativity)" style="--symbol-color: #FF5E5B;">
-      <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-        <path d="M25,5 L25,45 M15,15 L35,35 M15,35 L35,15" stroke="currentColor" stroke-width="2" />
-      </svg>
+{% assign home = site.data.homepage %}
+<article class="atelier-home">
+  <section class="atelier-threshold" aria-labelledby="threshold-title">
+    <div class="atelier-shell atelier-threshold__grid">
+      <div class="atelier-threshold__copy">
+        <p class="atelier-kicker">{{ home.hero.eyebrow }}</p>
+        <h1 id="threshold-title">{{ home.hero.credo }}</h1>
+        <p class="atelier-threshold__tagline">{{ home.hero.introduction }}</p>
+        <div class="atelier-actions"><a class="atelier-button atelier-button--primary" href="#field-notes">Enter the notebook</a><a class="atelier-button" href="#artifacts">Inspect the work</a></div>
+        <ul class="atelier-socials" aria-label="Henrique elsewhere">{% for social in site.data.profile.social_links %}<li><a href="{{ social.url }}" target="_blank" rel="noopener" aria-label="{{ social.name }}"><span>{{ social.name }}</span></a></li>{% endfor %}</ul>
+      </div>
+      <figure class="atelier-plate" aria-labelledby="plate-caption"><span class="atelier-plate__orbit" aria-hidden="true"></span><img src="{{ '/assets/images/code-alchemist.svg' | relative_url }}" alt="" width="480" height="480"><figcaption id="plate-caption">{{ home.hero.plate_caption }}</figcaption></figure>
     </div>
-    <div class="alchemy-symbol alchemy-symbol--water" title="Water (Adaptability)" style="--symbol-color: #5B8CFF;">
-      <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15,25 L35,25 M15,15 L35,15 M15,35 L35,35" stroke="currentColor" stroke-width="2" />
-      </svg>
-    </div>
-    <div class="alchemy-symbol alchemy-symbol--air" title="Air (Intellect)" style="--symbol-color: #FFDE59;">
-      <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-        <path d="M25,5 L25,45 M15,15 L35,15" stroke="currentColor" stroke-width="2" />
-      </svg>
-    </div>
-    <div class="alchemy-symbol alchemy-symbol--earth" title="Earth (Stability)" style="--symbol-color: #7ED957;">
-      <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15,15 L35,15 M25,15 L25,35 M15,35 L35,35" stroke="currentColor" stroke-width="2" />
-      </svg>
-    </div>
-    <div class="alchemy-symbol alchemy-symbol--quintessence" title="Quintessence (Excellence)" style="--symbol-color: #C77DFF;">
-      <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="25" cy="25" r="15" fill="none" stroke="currentColor" stroke-width="2" />
-        <path d="M25,10 L25,40 M10,25 L40,25" stroke="currentColor" stroke-width="2" />
-      </svg>
-    </div>
+  </section>
 
-    <!-- Nordic runes -->
-    <div class="rune rune--ansuz" title="Ansuz (Communication)" style="--symbol-color: #FF9E7D;">
-      <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-        <path d="M20,10 L30,10 L20,40" stroke="currentColor" stroke-width="2" fill="none" />
-      </svg>
+  <section class="atelier-section atelier-transformations" aria-labelledby="transformations-title"><div class="atelier-shell">
+    <header class="atelier-section__heading"><p class="atelier-kicker">Chart I · A personal cosmology</p><h2 id="transformations-title">Four transformations</h2><p>{{ home.transformations_intro }}</p></header>
+    <div class="atelier-constellation" data-constellation>
+      <div class="atelier-constellation__tabs" data-era-tabs role="group" aria-label="Choose a transformation">{% for era in home.eras %}<button class="atelier-era-tab{% if forloop.first %} is-current{% endif %}" type="button" data-era-tab="era-{{ forloop.index }}"><span class="atelier-era-tab__index">0{{ forloop.index }}</span><span>{{ era.name }}</span></button>{% endfor %}</div>
+      <div class="atelier-constellation__panels">{% for era in home.eras %}<section class="atelier-era-panel{% if forloop.first %} is-current{% endif %}" id="era-{{ forloop.index }}" data-era-panel><p class="atelier-era-panel__period">{{ era.period }}</p><h3>{{ era.title }}</h3><p>{{ era.story }}</p><p class="atelier-era-panel__trace">{{ era.trace }}</p></section>{% endfor %}</div>
     </div>
-    <div class="rune rune--kenaz" title="Kenaz (Knowledge)" style="--symbol-color: #FF7D7D;">
-      <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-        <path d="M20,10 L30,25 L20,40" stroke="currentColor" stroke-width="2" fill="none" />
-      </svg>
-    </div>
-    <div class="rune rune--raidho" title="Raidho (Journey)" style="--symbol-color: #7DFFB9;">
-      <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-        <path d="M20,10 L20,40 M20,10 L30,25 L20,25" stroke="currentColor" stroke-width="2" fill="none" />
-      </svg>
-    </div>
-    <div class="rune rune--laguz" title="Laguz (Flow)" style="--symbol-color: #7DCAFF;">
-      <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-        <path d="M25,10 L25,40 L35,20" stroke="currentColor" stroke-width="2" fill="none" />
-      </svg>
-    </div>
-  </div>
+  </div></section>
 
-  <div class="hero__content">
-    <h1 class="hero__title fade-in">Henrique A. Lavezzo</h1>
-    <h2 class="hero__subtitle fade-in">Code Alchemist</h2>
-    <p class="hero__description fade-in">{{ site.data.identity.tagline }}</p>
+  <section class="atelier-section atelier-artifacts" id="artifacts" aria-labelledby="artifacts-title"><div class="atelier-shell">
+    <header class="atelier-section__heading"><p class="atelier-kicker">Chart II · Made tangible</p><h2 id="artifacts-title">Artifacts from the workbench</h2><p>{{ home.artifacts_intro }}</p></header>
+    <div class="atelier-artifact-grid">{% for artifact_key in home.artifact_keys %}{% assign artifact = site.data.projects.projects | where: "key", artifact_key | first %}{% if artifact %}<article class="atelier-artifact atelier-artifact--{{ artifact.featured }} atelier-artifact--{{ artifact.tone }}"><div class="atelier-artifact__meta"><p class="atelier-artifact__role">{{ artifact.role }}</p><span class="atelier-artifact__status">{{ artifact.status_label }}</span></div><h3><a href="{{ artifact.repository_url }}" target="_blank" rel="noopener">{{ artifact.title }} <span aria-hidden="true">↗</span></a></h3><p class="atelier-artifact__story">{{ artifact.story }}</p><p class="atelier-artifact__proof"><span>Proof</span>{{ artifact.proof }}</p></article>{% endif %}{% endfor %}</div>
+  </div></section>
 
-    <div class="hero-trademark fade-in">
-      <span class="hero-trademark__copyright">&copy;</span>
-      <span class="hero-trademark__year">{{ site.time | date: '%Y' }}</span>
-      <span class="hero-trademark__name">Henrique A. Lavezzo</span>
-    </div>
+  <section class="atelier-section atelier-notes" id="field-notes" aria-labelledby="notes-title"><div class="atelier-shell">
+    <header class="atelier-section__heading"><p class="atelier-kicker">Chart III · Observations</p><h2 id="notes-title">Field notes</h2><p>{{ home.notes_intro }}</p></header>
+    {% assign featured_posts = site.posts | where: "featured", true %}<div class="atelier-notes__grid">{% for post in featured_posts limit: 2 %}{% include notebook/scroll-item.html post=post index=forloop.index %}{% endfor %}{% assign recent = site.posts | first %}{% unless recent.featured %}{% include notebook/scroll-item.html post=recent index=3 %}{% endunless %}</div>
+    <p class="atelier-section__link"><a href="{{ '/notebook/' | relative_url }}">Open the full notebook <span aria-hidden="true">→</span></a></p>
+  </div></section>
 
-    <div class="social-icons fade-in">
-      <a href="https://www.linkedin.com/in/hlavezzo" target="_blank" rel="noopener" aria-label="LinkedIn Profile" class="social-icon social-icon--linkedin">
-        <i class="fab fa-linkedin-in"></i>
-      </a>
-      <a href="https://github.com/Rynaro" target="_blank" rel="noopener" aria-label="GitHub Profile" class="social-icon social-icon--github">
-        <i class="fab fa-github"></i>
-      </a>
-      <a href="https://dev.to/rynaro" target="_blank" rel="noopener" aria-label="Dev.to Profile" class="social-icon social-icon--dev">
-        <i class="fab fa-dev"></i>
-      </a>
-    </div>
-  </div>
-</div>
+  <section class="atelier-section atelier-now" aria-labelledby="now-title"><div class="atelier-shell atelier-now__grid"><div><p class="atelier-kicker">Present coordinates</p><h2 id="now-title">Currently brewing</h2></div><p>{{ home.now }}</p><a class="atelier-button" href="{{ '/now/' | relative_url }}">Read the field update</a></div></section>
 
-<!-- Reader-facing content below the hero (Story 2.1, AC-012). The homepage was a
-     hero-only landing (FINDING-008); this surfaces recent scrolls plus a curated
-     "best of" set via the `featured: true` front-matter flag, Larson's /featured
-     pattern, rather than hardcoding a post list. -->
-<section class="rpg-scrolls home-scrolls">
-  <div class="container">
-    {% include components/section-title.html icon="fas fa-scroll" title="Recent Scrolls" %}
-
-    <div class="scrolls-collection">
-      {% for post in site.posts limit: 3 %}
-        {% include notebook/scroll-item.html post=post index=forloop.index %}
-      {% endfor %}
-    </div>
-
-    <p class="text-center mt-3">
-      <a href="{{ '/notebook/' | relative_url }}" class="scroll-link">
-        <span>Browse the full Notebook</span>
-        <i class="fas fa-arrow-right"></i>
-      </a>
-    </p>
-  </div>
-</section>
-
-{% assign featured_posts = site.posts | where: "featured", true %}
-{% if featured_posts.size > 0 %}
-<section class="rpg-scrolls home-scrolls home-scrolls--featured">
-  <div class="container">
-    {% include components/section-title.html icon="fas fa-award" title="Favorites from the Grimoire" %}
-
-    <div class="scrolls-collection">
-      {% for post in featured_posts %}
-        {% include notebook/scroll-item.html post=post index=forloop.index %}
-      {% endfor %}
-    </div>
-
-    <p class="text-center mt-3">
-      <a href="{{ '/start-here/' | relative_url }}" class="scroll-link">
-        <span>Not sure where to start? Try the Grimoire's Best Pages</span>
-        <i class="fas fa-arrow-right"></i>
-      </a>
-    </p>
-  </div>
-</section>
-{% endif %}
-
-<script src="{{ "/assets/js/home.js" | relative_url }}" defer></script>
+  <section class="atelier-section atelier-marginalia" aria-labelledby="marginalia-title"><div class="atelier-shell"><header class="atelier-section__heading"><p class="atelier-kicker">Notes in the margin</p><h2 id="marginalia-title">The human behind the systems</h2></header><ul>{% for note in home.marginalia %}<li><span aria-hidden="true">✦</span>{{ note }}</li>{% endfor %}</ul><div class="atelier-invitation"><p>{{ home.invitation }}</p><a class="atelier-button atelier-button--primary" href="{{ '/letter/' | relative_url }}">Send a letter</a></div></div></section>
+</article>
+<script src="{{ '/assets/js/home.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>

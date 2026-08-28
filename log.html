@@ -1,56 +1,49 @@
 ---
 layout: default
-title: "Alchemist's Log"
+title: Workshop Log
 permalink: /log/
-resume: "The cadence-anchor stream — short, frequent journal entries between the long-form Scrolls"
+resume: "Brief field entries for observations worth preserving before they become essays."
 ---
 
-<!--
-  /log -- "The Alchemist's Log" (Story 3.4, AC-022). The cadence-anchor stream: a
-  `type: log` entry is meant to be cheap enough to write that busy periods produce a
-  quick Log entry instead of silence (the site's own posting-cadence gap is exactly
-  the problem this exists to soften -- scout-report.md FINDING-024). GitHub Pages runs
-  Jekyll in safe mode (no custom generators/plugins) -- this is a plain static page
-  filtering `site.posts` by front matter at build time, same pattern Story 2.2 used for
-  the `/notebook/<category>/` pages (`site.categories`), just keyed on `type` instead
-  of `categories` since `type` is a separate closed-vocabulary field (CONVENTIONS.md),
-  not a Jekyll category.
--->
-<section class="rpg-hero notebook-hero">
-  <div class="container">
-    <div class="hero__content">
-      <h1 class="hero__title fade-in">Alchemist's Log</h1>
-      <h2 class="hero__subtitle fade-in">The cadence anchor</h2>
-      <p class="hero__description">Short entries, written often — the notebook that survives busy weeks</p>
+<article class="antechamber antechamber--log">
+  <header class="antechamber__header">
+    <div class="container antechamber__header-inner">
+      <p class="antechamber__eyebrow">Short-form field notes</p>
+      <h1>Workshop Log</h1>
+      <p class="antechamber__lead">Small observations, decisions, and traces from the workbench—kept brief enough to survive busy weeks.</p>
+    </div>
+  </header>
+
+  <div class="antechamber__body">
+    <div class="container antechamber__body-inner">
+      <section class="antechamber__section antechamber__section--log" aria-labelledby="workshop-log-entries">
+        <h2 id="workshop-log-entries" class="antechamber__section-heading">Entries between expeditions</h2>
+        <p>The <a href="{{ '/now/' | relative_url }}">Current Quests</a> page records what has my attention. The <a href="{{ '/notebook/' | relative_url }}">Notebook</a> holds the complete journal. This is one path through it: short entries made when an observation is worth keeping, but does not need to become a full essay.</p>
+      </section>
+
+      {% assign log_posts = site.posts | where: "type", "log" %}
+      {% if log_posts.size > 0 %}
+        <section class="antechamber__logbook" aria-label="Workshop log entries">
+          {% for post in log_posts %}
+            <article class="journal-entry">
+              <div class="journal-entry__date"><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%d %b" }}</time><span>{{ post.date | date: "%Y" }}</span></div>
+              <div class="journal-entry__body">
+                <div class="journal-entry__meta"><span>Short entry</span>{% include notebook/authorship.html author_id=post.author_id %}</div>
+                <h3 class="journal-entry__title"><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+                <p class="journal-entry__excerpt">{{ post.resume | default: post.excerpt | strip_html | truncate: 180 }}</p>
+              </div>
+              <a class="journal-entry__arrow" href="{{ post.url | relative_url }}" aria-label="Read {{ post.title | escape }}"><span aria-hidden="true">↗</span></a>
+            </article>
+          {% endfor %}
+        </section>
+      {% else %}
+        <section class="antechamber__note" aria-labelledby="workshop-log-empty">
+          <h2 id="workshop-log-empty" class="antechamber__section-heading">The next page is blank</h2>
+          <p>No short entries are filed yet. The rest of the <a href="{{ '/notebook/' | relative_url }}">Notebook</a> remains open.</p>
+        </section>
+      {% endif %}
+
+      <p class="antechamber__closing">Looking for the longer trail? Continue into the <a href="{{ '/notebook/' | relative_url }}">Field Notes</a>.</p>
     </div>
   </div>
-</section>
-
-<section class="rpg-scrolls">
-  <div class="container">
-    {% include components/section-title.html icon="fas fa-feather-alt" title="Log Entries" %}
-
-    <p class="log-content">
-      A Scroll is a considered essay; a Log entry is whatever's worth writing down today,
-      kept short on purpose. When there isn't time for a full Scroll, there's usually time
-      for a Log — that's the point of having both.
-    </p>
-
-    {% assign log_posts = site.posts | where: "type", "log" %}
-    {% if log_posts.size > 0 %}
-      <div class="scrolls-collection">
-        {% for post in log_posts %}
-          {% include notebook/scroll-item.html post=post index=forloop.index %}
-        {% endfor %}
-      </div>
-    {% else %}
-      <div class="empty-archive">
-        <div class="empty-archive-icon">
-          <i class="fas fa-feather-alt"></i>
-        </div>
-        <h3 class="empty-archive-title">No Log Entries Yet</h3>
-        <p class="empty-archive-text">The Alchemist's Log is warming up. Check back soon.</p>
-      </div>
-    {% endif %}
-  </div>
-</section>
+</article>

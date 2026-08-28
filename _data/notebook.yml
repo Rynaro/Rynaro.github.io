@@ -1,0 +1,14 @@
+eyebrow: "Code Alchemist’s field journal"
+title: "Notes from the workbench"
+intro: >-
+  Working notes on software architecture, tools, AI, and the side paths that
+  keep the craft interesting. Written to preserve what I learned and make the
+  next experiment easier to begin.
+archive_title: "Journal entries"
+search_label: "Search the notebook"
+search_placeholder: "Search titles, notes, or tags…"
+categories:
+  all: { label: "All notes", description: "Everything currently on the workbench." }
+  tech: { label: "Engineering", description: "Architecture, code, and the systems around them." }
+  llm: { label: "AI fieldwork", description: "Experiments and observations from working with AI systems." }
+  hobby: { label: "Side paths", description: "Curiosities, stories, and work done for the joy of it." }

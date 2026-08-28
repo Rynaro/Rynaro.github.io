@@ -1,0 +1,69 @@
+updated_at: 2026-08-27
+
+hero:
+  eyebrow: Workbench inventory
+  title: The tools I keep within reach.
+  introduction: >-
+    A practical inventory of the languages, patterns, instruments, and specialist
+    companions that help me shape systems. This is a working loadout, not a list
+    of endorsements—and no single tool belongs in every quest.
+  date_label: Loadout reviewed
+
+craft:
+  eyebrow: Core materials
+  title: Languages and ways of shaping systems
+  groups:
+    - marker: Reagents
+      items:
+        - { name: Ruby, note: "A familiar, expressive material for applications and libraries." }
+        - { name: Rust, note: "Systems work with explicit boundaries and dependable performance." }
+        - { name: JavaScript, note: "Progressive, dependency-light behavior for the browser." }
+        - { name: Clojure, note: "Data, composition, and a functional lens for reframing a problem." }
+    - marker: Formulae
+      items:
+        - { name: Clean Architecture, note: "Keeping business decisions independent from delivery details." }
+        - { name: Domain-Driven Design, note: "Using language and boundaries that match the problem being solved." }
+        - { name: Monolithic systems, note: "Choosing cohesion and operational simplicity when they serve the work." }
+        - { name: Agentic Orchestration, note: "Giving specialist roles explicit routes, hand-offs, and validation." }
+
+workshop:
+  eyebrow: Working instruments
+  title: Tools made and used in the workshop
+  project_keys: [cardboard-box, potions, jex, this-site]
+
+platforms:
+  eyebrow: Supporting apparatus
+  title: The small stack beneath the work
+  items:
+    - { name: Docker, note: "A repeatable container boundary for local tools and services." }
+    - { name: JEX, note: "A predictable local loop for Jekyll work." }
+    - { name: Jekyll, note: "Liquid, Markdown, and Sass for a durable static site." }
+    - { name: GitHub Pages, note: "A simple public host for the finished artifact." }
+
+familiars:
+  eyebrow: Eidolon party
+  title: Specialists, not a single oracle
+  introduction: >-
+    When AI joins the work, I route the task to a role with a clear responsibility.
+    These are workflow boundaries—not rankings, decoration, or claims of model superiority.
+  project_key: eidolons
+  members:
+    - { author_id: atlas, duty: "Scouts the terrain and returns evidence before a plan is drawn." }
+    - { author_id: ramza, duty: "Turns intent and constraints into a decision-ready plan." }
+    - { author_id: vivi, duty: "Implements an agreed shape and proves the result works." }
+    - { author_id: forge, duty: "Examines trade-offs when the right path is not yet obvious." }
+    - { author_id: vigil, duty: "Finds root causes when a system behaves against its design." }
+    - { author_id: kupo, duty: "Handles bounded, mechanical work with a light touch." }
+
+threshold:
+  eyebrow: Artifacts over inventory
+  title: The inventory matters when it leaves a trace.
+  text: >-
+    Tools earn their place through the systems they help build and the notes they
+    help preserve. The useful evidence lives beyond this shelf.
+  links:
+    - { label: Examine the Laboratory, url: /laboratory/ }
+    - { label: Read the Notebook, url: /notebook/ }
+
+stale_note: >-
+  This is a manually maintained snapshot. The loadout changes as the work changes.

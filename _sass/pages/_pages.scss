@@ -1,119 +1,205 @@
-/* Shared styling for the small utility pages added in Phase 2 (Story 2.3/2.4):
-   /now, /uses, /start-here. Deliberately minimal -- these reuse .rpg-hero,
-   .rpg-scrolls, .section-title, and (on /start-here) the .related-scroll-* card
-   from _post.scss rather than introducing a parallel component set. */
-
-@use "../settings/variables" as *;
-
-/* /now -- last-updated badge (AC-014 requires it be visible, not just present) */
-.now-last-updated {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 1rem;
-  padding: 0.4rem 1rem;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: $radius-20;
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.95);
+.antechamber {
+  --antechamber-night: #191923;
+  --antechamber-paper: #f3ecdf;
+  --antechamber-ink: #302b29;
+  --antechamber-muted: #625a55;
+  --antechamber-brass: #b17d3e;
+  --antechamber-link: #70491f;
+  --antechamber-rule: rgba(57, 47, 42, 0.24);
+  color: var(--antechamber-ink);
+  background: var(--antechamber-paper);
+  overflow-wrap: anywhere;
 }
 
-.now-content,
-.uses-familiars-intro,
-.uses-familiars-note,
-.codex-content,
-.log-content {
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-  color: var(--text-secondary, #5a5a5a);
+.antechamber__header {
+  padding: clamp(5.5rem, calc(4.4rem + 2vw), 7rem) 0 clamp(2.75rem, calc(2rem + 2vw), 4rem);
+  color: #f7f0e5;
+  border-bottom: 1px solid rgba(221, 169, 97, 0.38);
+  background:
+    linear-gradient(115deg, transparent 0 60%, rgba(177, 125, 62, 0.08) 60% 61%, transparent 61%),
+    radial-gradient(circle at 82% 24%, rgba(119, 100, 169, 0.14), transparent 22rem),
+    linear-gradient(135deg, #15161e, var(--antechamber-night));
+}
+
+.antechamber__header-inner,
+.antechamber__body-inner {
+  width: min(46rem, calc(100% - 2rem));
+  margin-inline: auto;
+}
+
+.antechamber__body-inner--wide {
+  width: min(68rem, calc(100% - 2rem));
+}
+
+.antechamber__eyebrow {
+  margin: 0 0 0.65rem;
+  color: #e4b676;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.antechamber__header h1 {
+  max-width: 18ch;
+  margin: 0;
+  color: inherit;
+  font: 500 clamp(2.5rem, calc(1.9rem + 2.5vw), 3.75rem)/1.03 Georgia, serif;
+  letter-spacing: -0.035em;
+}
+
+.antechamber__lead {
+  max-width: 42rem;
+  margin: 1rem 0 0;
+  color: #d6ced1;
+  font-size: clamp(1rem, calc(0.94rem + 0.2vw), 1.12rem);
   line-height: 1.7;
-
-  p {
-    margin-bottom: 1.25rem;
-  }
-
-  // AC-039-adjacent (1.4.1 Use of Color / axe `link-in-text-block`): a
-  // hover/focus-only underline is invisible to axe's static analysis (and
-  // to a sighted mouse user who never hovers this exact link) -- the
-  // default, unfocused state is what "distinguishable by more than color
-  // alone" actually binds. Underlined by default now; kept subtly lighter
-  // via text-decoration-color so it doesn't read as heavier than the
-  // themed nav's intentionally-underline-free links.
-  a {
-    color: var(--ff-purple-ink);
-    text-decoration: underline;
-    text-decoration-color: rgba(120, 60, 180, 0.35);
-    text-underline-offset: 2px;
-
-    &:hover,
-    &:focus-visible {
-      text-decoration-color: currentColor;
-    }
-  }
 }
 
-.now-disclaimer {
-  font-size: 0.9rem;
-  opacity: 0.85;
+.antechamber__body {
+  min-height: 22rem;
+  padding-block: clamp(3rem, calc(2rem + 3vw), 5.5rem);
+  background:
+    linear-gradient(rgba(95, 75, 53, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(95, 75, 53, 0.025) 1px, transparent 1px),
+    var(--antechamber-paper);
+  background-size: 3rem 3rem;
 }
 
-/* /uses -- daily-driver grid */
-.uses-grid {
+.antechamber__section {
+  padding: 0 0 2.35rem;
+  margin: 0 0 2.35rem;
+  border-bottom: 1px solid var(--antechamber-rule);
+}
+
+.antechamber__section-heading,
+.antechamber__route-title {
+  margin: 0 0 0.8rem;
+  color: var(--antechamber-ink);
+  font: 600 clamp(1.35rem, calc(1.15rem + 0.6vw), 1.75rem)/1.2 Georgia, serif;
+}
+
+.antechamber__section p,
+.antechamber__opening,
+.antechamber__closing,
+.antechamber__ledger {
+  color: var(--antechamber-muted);
+  line-height: 1.75;
+}
+
+.antechamber__section p {
+  margin: 0 0 1rem;
+}
+
+.antechamber a {
+  color: var(--antechamber-link);
+  text-decoration-line: underline;
+  text-decoration-color: rgba(112, 73, 31, 0.5);
+  text-underline-offset: 0.2em;
+}
+
+.antechamber a:hover { text-decoration-color: currentColor; }
+.antechamber a:focus-visible { outline: 3px solid #9c5e24; outline-offset: 4px; }
+
+.antechamber__note {
+  padding: 1rem 1.2rem;
+  border-left: 3px solid var(--antechamber-brass);
+  background: rgba(255, 250, 239, 0.7);
+}
+
+.antechamber__routes {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
 
-.uses-category {
-  background: var(--parchment-light, #f8f5e6);
-  border-radius: $radius-10;
-  padding: 1.5rem;
-  box-shadow: var(--scroll-shadow, 0 5px 20px rgba(58, 41, 33, 0.1));
+.antechamber__route {
+  min-width: 0;
+  padding: clamp(1.25rem, calc(1rem + 1vw), 1.8rem);
+  border: 1px solid var(--antechamber-rule);
+  background: rgba(255, 250, 239, 0.7);
+  box-shadow: 7px 7px 0 rgba(66, 76, 92, 0.06);
+}
 
-  h3 {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    color: var(--dnd-brown);
-    margin-bottom: 1rem;
+.antechamber__route-mark {
+  display: block;
+  margin-bottom: 1rem;
+  color: #77531f;
+  font: 700 0.72rem/1 monospace;
+  letter-spacing: 0.12em;
+}
 
-    i {
-      color: var(--ff-purple-ink);
-    }
+.antechamber__route-description {
+  margin: 0;
+  color: var(--antechamber-muted);
+  line-height: 1.65;
+}
+
+.antechamber__destinations {
+  padding: 0;
+  margin: 1.35rem 0 0;
+  list-style: none;
+}
+
+.antechamber__destinations li {
+  padding: 1rem 0;
+  border-top: 1px solid var(--antechamber-rule);
+}
+
+.antechamber__route-link {
+  display: inline-block;
+  min-height: 44px;
+  padding-block: 0.65rem 0.25rem;
+  font-weight: 700;
+}
+
+.antechamber__destinations span {
+  display: block;
+  color: var(--antechamber-muted);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.antechamber__routes--recovery {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.antechamber__routes--recovery .antechamber__route:last-child { grid-column: span 2; }
+.antechamber__routes--recovery .antechamber__route-link { padding-block: 0; }
+.antechamber__opening { margin: 0 0 2rem; }
+.antechamber__closing { padding: 1.25rem; margin: 0; border: 1px solid var(--antechamber-rule); }
+.antechamber__ledger { padding-left: 1.35rem; }
+.antechamber__ledger li + li { margin-top: 0.65rem; }
+.antechamber__reviewed { color: var(--antechamber-muted); font: 0.78rem/1.5 monospace; }
+
+.antechamber__section--log { margin-bottom: 0; }
+.antechamber__logbook { border-top: 1px solid var(--antechamber-rule); }
+.antechamber__logbook + .antechamber__closing { margin-top: 2.5rem; }
+.antechamber--log .journal-entry { border-color: var(--antechamber-rule); }
+.antechamber--log .journal-entry__title a { color: var(--antechamber-ink); }
+.antechamber--log .journal-entry__excerpt,
+.antechamber--log .journal-entry__date { color: var(--antechamber-muted); }
+.antechamber--log .authorship-mark--eidolon .authorship-mark__kind,
+.antechamber--log .authorship-mark--eidolon .authorship-mark__name { color: #f2eafa; }
+
+@media (max-width: 48rem) {
+  .antechamber__routes,
+  .antechamber__routes--recovery { grid-template-columns: 1fr; }
+  .antechamber__routes--recovery .antechamber__route:last-child { grid-column: auto; }
+}
+
+@media (prefers-color-scheme: dark) {
+  .antechamber {
+    --antechamber-paper: #1f1e23;
+    --antechamber-ink: #eee7dd;
+    --antechamber-muted: #c9c0b5;
+    --antechamber-link: #efbe7d;
+    --antechamber-rule: rgba(232, 211, 184, 0.22);
   }
-
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-
-    li {
-      padding: 0.4rem 0;
-      color: var(--text-secondary, #5a5a5a);
-      line-height: 1.5;
-
-      i {
-        width: 1.25rem;
-        color: var(--ff-purple-ink);
-      }
-    }
-  }
-}
-
-.uses-category--familiars {
-  grid-column: 1 / -1;
-}
-
-.uses-familiars-intro,
-.uses-familiars-note {
-  margin-left: 0;
-  margin-right: 0;
-  max-width: none;
-}
-
-/* /start-here -- section rhythm when multiple curated groups stack */
-.start-here-scrolls {
-  margin-bottom: 3rem;
+  .antechamber__route,
+  .antechamber__note { background: rgba(44, 41, 47, 0.88); }
+  .antechamber__route-mark { color: #e4b676; }
 }

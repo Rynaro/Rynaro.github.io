@@ -1,163 +1,40 @@
-document.addEventListener('DOMContentLoaded', function() {
-  // Filter functionality
-  const filterButtons = document.querySelectorAll('.filter-button');
-  const projectItems = document.querySelectorAll('.project-item');
-  const searchInput = document.getElementById('project-search');
-  const emptyState = document.querySelector('.empty-state');
-  const resetButton = document.querySelector('.reset-search-button');
-
-  // Animate particles (AC-024: no script-created animated node under reduced motion;
-  // AC-031: finite drift-settle, not an infinite loop -- see _sass/_base.scss for the
-  // keyframe and the collision it replaced. Delay is capped so total run time
-  // (delay + duration) stays <= 5s regardless of particle count.)
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const particles = document.querySelectorAll('.particle');
-  particles.forEach((particle, index) => {
-    if (prefersReducedMotion) return;
-    const delay = Math.min(index * 0.15, 1.2);
-    particle.style.animation = `drift-settle ${1.8 + (index % 2) * 0.5}s ease-out ${delay}s 1 forwards`;
-  });
-
-  // Add rarity classes based on project properties
-  projectItems.forEach(item => {
-    // You can modify this to determine rarity based on other factors
-    const rarityIndicator = item.querySelector('.item-rarity-indicator');
-
-    if (rarityIndicator.getAttribute('data-rarity') === 'legendary') {
-      rarityIndicator.classList.add('legendary');
-    } else if (rarityIndicator.getAttribute('data-rarity') === 'epic') {
-      rarityIndicator.classList.add('epic');
-    } else if (rarityIndicator.getAttribute('data-rarity') === 'rare') {
-      rarityIndicator.classList.add('rare');
-    } else {
-      rarityIndicator.classList.add('common');
-    }
-  });
-
-  // Filter projects by type and search term
-  function filterProjects() {
-    const activeFilter = document.querySelector('.filter-button.active').getAttribute('data-filter');
-    const searchTerm = searchInput.value.toLowerCase();
-
-    let visibleCount = 0;
-
-    projectItems.forEach(item => {
-      const type = item.getAttribute('data-type');
-      const title = item.querySelector('.item-name').textContent.toLowerCase();
-      const description = item.querySelector('.item-description').textContent.toLowerCase();
-
-      const matchesFilter = activeFilter === 'all' || type === activeFilter;
-      const matchesSearch = searchTerm === '' ||
-                            title.includes(searchTerm) ||
-                            description.includes(searchTerm);
-
-      if (matchesFilter && matchesSearch) {
-        item.style.display = 'block';
-        visibleCount++;
-
-        // Add fade-in animation
-        setTimeout(() => {
-          item.classList.add('visible');
-        }, 50 * visibleCount); // Stagger the animations
-      } else {
-        item.style.display = 'none';
-        item.classList.remove('visible');
-      }
+document.addEventListener('DOMContentLoaded', () => {
+  const laboratory = document.querySelector('[data-laboratory]');
+  if (!laboratory) return;
+  const controls = laboratory.querySelector('[data-laboratory-controls]');
+  const search = laboratory.querySelector('[data-project-search]');
+  const buttons = [...laboratory.querySelectorAll('[data-filter]')];
+  const projects = [...laboratory.querySelectorAll('[data-project]')];
+  const sections = [...laboratory.querySelectorAll('[data-project-section]')];
+  const count = laboratory.querySelector('[data-result-count]');
+  const empty = laboratory.querySelector('[data-empty-state]');
+  const reset = laboratory.querySelector('[data-reset-laboratory]');
+  if (!controls || !search || !buttons.length || !projects.length || !count || !empty) return;
+  let activeCategory = 'all';
+  controls.hidden = false;
+  const update = () => {
+    const term = search.value.trim().toLocaleLowerCase();
+    let visible = 0;
+    projects.forEach((project) => {
+      const matchesCategory = activeCategory === 'all' || project.dataset.category === activeCategory;
+      const matchesSearch = !term || project.dataset.search.includes(term);
+      project.hidden = !(matchesCategory && matchesSearch);
+      if (!project.hidden) visible += 1;
     });
-
-    // Show empty state if no results
-    emptyState.style.display = visibleCount === 0 ? 'flex' : 'none';
-  }
-
-  // Filter button click event
-  filterButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      // Update active filter
-      filterButtons.forEach(btn => btn.classList.remove('active'));
-      button.classList.add('active');
-
-      // Reset visible state for animation
-      projectItems.forEach(item => {
-        item.classList.remove('visible');
-      });
-
-      // Filter projects
-      filterProjects();
-    });
-  });
-
-  // Search input event
-  searchInput.addEventListener('input', filterProjects);
-
-  // Reset search button
-  if (resetButton) {
-    resetButton.addEventListener('click', () => {
-      searchInput.value = '';
-      filterButtons.forEach(btn => {
-        if (btn.getAttribute('data-filter') === 'all') {
-          btn.classList.add('active');
-        } else {
-          btn.classList.remove('active');
-        }
-      });
-      filterProjects();
-    });
-  }
-
-  // Initialize with all projects visible
-  filterProjects();
-
-  // Add hover effects
-  const itemCards = document.querySelectorAll('.item-card');
-  itemCards.forEach(card => {
-    card.addEventListener('mouseenter', function() {
-      // Add particle effects
-      const particleCount = 3;
-      for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'item-particle';
-
-        // Randomize particle properties
-        const size = 3 + Math.random() * 4;
-        const posX = Math.random() * 100;
-        const delay = Math.random() * 0.5;
-        const duration = 0.5 + Math.random() * 1;
-        const color = getComputedStyle(document.documentElement).getPropertyValue('--ff-gold');
-
-        particle.style.width = `${size}px`;
-        particle.style.height = `${size}px`;
-        particle.style.left = `${posX}%`;
-        particle.style.animationDelay = `${delay}s`;
-        particle.style.animationDuration = `${duration}s`;
-        particle.style.backgroundColor = color;
-
-        this.appendChild(particle);
-
-        // Remove particle after animation
-        setTimeout(() => {
-          particle.remove();
-        }, (delay + duration) * 1000);
-      }
-    });
-  });
-
-  // Intersection Observer for animations
-  const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
+    sections.forEach((section) => { section.hidden = !section.querySelector('[data-project]:not([hidden])'); });
+    count.textContent = `${visible} ${visible === 1 ? 'artifact' : 'artifacts'} charted`;
+    empty.hidden = visible !== 0;
   };
-
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('animate-in');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, observerOptions);
-
-  // Observe all project items
-  projectItems.forEach(item => {
-    observer.observe(item);
+  buttons.forEach((button) => button.addEventListener('click', () => {
+    activeCategory = button.dataset.filter;
+    buttons.forEach((candidate) => candidate.setAttribute('aria-pressed', String(candidate === button)));
+    update();
+  }));
+  search.addEventListener('input', update);
+  reset?.addEventListener('click', () => {
+    activeCategory = 'all'; search.value = '';
+    buttons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.filter === 'all')));
+    update(); search.focus();
   });
+  update();
 });

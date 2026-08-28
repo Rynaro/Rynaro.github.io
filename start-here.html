@@ -1,54 +1,28 @@
 ---
 layout: default
-title: Start Here
+title: First Bearings
 permalink: /start-here/
-resume: "A curated route through the Grimoire, by theme instead of by date"
+resume: "A short orientation to Henrique's work, writing, and current quests."
 ---
 
-<!--
-  /start-here -- "The Grimoire's Best Pages" (Story 2.4, AC-016). Larson's /featured
-  pattern, curated by theme (_data/start_here.yml) rather than a raw chronological dump.
-  Linked from the homepage's "Favorites from the Grimoire" section and the 404 page.
--->
-<section class="rpg-hero">
-  <div class="container">
-    <div class="hero__content">
-      <h1 class="hero__title fade-in">The Grimoire's Best Pages</h1>
-      <h2 class="hero__subtitle fade-in">Start Here</h2>
-      <p class="hero__description">Not sure where to begin? Pick a theme instead of scrolling the archives</p>
-    </div>
-  </div>
-</section>
-
-<section class="rpg-scrolls">
-  <div class="container">
-    {% for section in site.data.start_here.sections %}
-      {% include components/section-title.html icon=section.icon title=section.title %}
-
-      <div class="related-scrolls start-here-scrolls">
-        {% for entry in section.entries %}
-          <div class="related-scroll-item">
-            <div class="related-scroll-card">
-              <div class="related-scroll-rarity
-                {% assign mod = forloop.index | modulo: 3 %}
-                {% if mod == 1 %}rare{% elsif mod == 2 %}epic{% else %}common{% endif %}
-              "></div>
-
-              <div class="related-scroll-header">
-                <h3 class="related-scroll-title">{{ entry.title }}</h3>
-              </div>
-
-              <div class="related-scroll-content">
-                <p class="related-scroll-excerpt">{{ entry.description }}</p>
-              </div>
-
-              <div class="related-scroll-footer">
-                <a href="{{ entry.url | relative_url }}" class="related-scroll-link">Read on</a>
-              </div>
-            </div>
-          </div>
-        {% endfor %}
-      </div>
-    {% endfor %}
-  </div>
-</section>
+<article class="antechamber antechamber--bearings">
+  <header class="antechamber__header"><div class="container antechamber__header-inner">
+    <p class="antechamber__eyebrow">A map for first-time visitors</p><h1>First Bearings</h1>
+    <p class="antechamber__lead">{{ site.data.start_here.intro }}</p>
+  </div></header>
+  <nav class="antechamber__body" aria-label="Choose a route through the Atelier">
+    <div class="container antechamber__body-inner antechamber__body-inner--wide"><ol class="antechamber__routes">
+      {% for trail in site.data.start_here.trails %}
+        <li class="antechamber__route antechamber__route--{{ trail.key }}">
+          <span class="antechamber__route-mark" aria-hidden="true">{{ trail.mark }}</span>
+          <h2 class="antechamber__route-title">{{ trail.title }}</h2>
+          <p class="antechamber__route-description">{{ trail.description }}</p>
+          <ul class="antechamber__destinations">{% for destination in trail.destinations %}<li>
+            <a class="antechamber__route-link" href="{{ destination.url | relative_url }}">{{ destination.label }}</a>
+            <span>{{ destination.note }}</span>
+          </li>{% endfor %}</ul>
+        </li>
+      {% endfor %}
+    </ol></div>
+  </nav>
+</article>

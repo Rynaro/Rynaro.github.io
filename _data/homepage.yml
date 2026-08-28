@@ -1,0 +1,52 @@
+hero:
+  eyebrow: "Henrique A. Lavezzo · Brazilian engineering leader & systems cartographer"
+  credo: "I lead the guild, shape the systems, and still craft the tools."
+  introduction: >-
+    I'm Henrique, an engineering leader born and living in Brazil, working across
+    software architecture, developer tools, and AI-assisted engineering. My craft
+    is turning ambiguity into clear systems, helping teams move with confidence,
+    and running experiments that never claim more than the evidence allows.
+  plate_caption: "The Code Alchemist's seal — a compass for systems, teams, and strange new tools."
+
+transformations_intro: >-
+  A career is less a ladder than a map redrawn in motion. These are the four
+  forms that still shape how I lead, build, and learn.
+eras:
+  - name: Apprentice
+    period: "Origins · curiosity before credentials"
+    title: "Learning the language of machines"
+    story: "Delphi opened the first door. Final Fantasy VII quietly taught me English, and games taught me that every complicated world can become legible through rules, feedback, and a little wonder."
+    trace: "Curiosity · games · first programs"
+  - name: Artificer
+    period: "Craft · code as a material"
+    title: "Making boundaries you can hold"
+    story: "Ruby became my favorite workbench. I learned architecture by untangling real businesses, then made small, dependency-light tools such as Fluxus so the useful patterns could travel."
+    trace: "Ruby · architecture · open source"
+  - name: Guildmaster
+    period: "Leadership · systems made of people"
+    title: "Helping teams stay in motion"
+    story: "Engineering leadership expanded the system boundary. Clarity, trust, and healthy constraints matter as much as good interfaces; the work is creating conditions where people can make good decisions together."
+    trace: "Teams · strategy · sociotechnical systems"
+  - name: Technomancer
+    period: "Now · intelligence as a collaborator"
+    title: "Conducting a party of familiars"
+    story: "I am exploring AI-assisted engineering as orchestration, not spectacle: routing the right model to the right problem, keeping judgment human, and publishing what survives contact with real work."
+    trace: "AI agents · model routing · experiments"
+
+artifacts_intro: "The newest work starts where ordinary tooling stops: agents that need a mythology, experiments that need a shape, and small companions made to keep the strange parts useful."
+artifact_keys:
+  - eidolons
+  - ariramba
+  - cardboard-box
+  - magicite
+  - lararium
+  - alchemists-orchid
+
+notes_intro: "Tested ideas, work-in-progress maps, and lessons recovered from the field."
+now: "Working at the seam between writing code and conducting AI familiars; keeping teams unstuck; and testing which parts of software craft become more human when the machine can carry more of the repetition."
+marginalia:
+  - "Born and living in Brazil; perpetually curious by temperament."
+  - "Home is shared with cats, a fish, plants, terrariums, and small ecosystems."
+  - "Learning Chinese with the same stubbornness games once recruited for English."
+  - "Still interested in making games, growing things, and finding joy in small tools."
+invitation: "If you are mapping a difficult system, shaping an engineering organization, or experimenting with AI without surrendering judgment, we should compare notes."

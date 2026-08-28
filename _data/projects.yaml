@@ -1,76 +1,188 @@
-- title: This Site!
-  url: https://github.com/Rynaro/Rynaro.github.io
-  type: "tool"
-  rarity: "legendary"
-  language: "html"
-  description: This wonderful site!
+intro: >-
+  A field guide to the systems, experiments, and small companions I build.
+  Active work comes first; older artifacts remain as a record of the path.
 
-- title: Potions
-  url: https://github.com/Rynaro/Potions
-  type: "tool"
-  rarity: "epic"
-  language: "shell"
-  description: It's dotfiles but not boring.
+categories:
+  - { key: flagship, label: "Flagship work", eyebrow: "Central constellation", description: "Where my current thinking about agents, roles, and engineering practice converges." }
+  - { key: research, label: "Research", eyebrow: "Open enquiries", description: "Experiments in how agentic systems choose, learn, and stay honest about their evidence." }
+  - { key: tools, label: "Tools", eyebrow: "Working instruments", description: "Practical software for removing friction and making repeatable work easier to hold." }
+  - { key: personal, label: "Personal artifacts", eyebrow: "Made to inhabit daily life", description: "Playful, visual, and domestic software whose value is not measured by scale." }
+  - { key: archive, label: "Earlier work", eyebrow: "The lower shelves", description: "Older libraries, games, and utilities kept as an honest record of learning in public." }
 
-- title: Fluxus
-  url: https://github.com/Rynaro/fluxus
-  type: "library"
-  rarity: "epic"
-  language: "ruby"
-  description: Fluxus is a simple, dependencyless, and extensible use-case wrapper for your Ruby code.
-
-- title: JEX
-  url: https://github.com/Rynaro/jex
-  type: "tool"
-  rarity: "uncommon"
-  language: "shell"
-  description: A command-line utility to streamline Jekyll development using Docker.
-
-- title: drun
-  url: https://github.com/Rynaro/drun
-  type: "tool"
-  rarity: "epic"
-  language: "shell"
-  description: Quick Rails setup with docker composer.
-
-- title: FipExtractor
-  url: https://github.com/Rynaro/FipExtractor
-  type: "library"
-  rarity: "common"
-  language: "ruby"
-  description: FipExtractor is a easy-to-use translator of the FIPE API.
-
-- title: Estratto
-  url: https://github.com/Rynaro/Estratto
-  type: "library"
-  rarity: "uncommon"
-  language: "ruby"
-  description: Parsing fixed width files content made easy.
-
-- title: postmon-clj
-  url: https://github.com/Rynaro/postmon-clj
-  type: "library"
-  rarity: "uncommon"
-  language: "clojure"
-  description: Simple wrapper for PostmonAPI written in Clojure.
-
-- title: Snowflakes
-  url: https://github.com/Rynaro/Snowflakes
-  type: "game"
-  rarity: "common"
-  language: "processing"
-  description: A simple snow simulator.
-
-- title: Flappy Ball
-  url: https://github.com/Rynaro/FlappyBall
-  type: "game"
-  rarity: "common"
-  language: "processing"
-  description: Just because we need another Flappy Bird clone.
-
-- title: Pong Clone
-  url: https://github.com/Rynaro/Pong
-  type: "game"
-  rarity: "common"
-  language: "processing"
-  description: A Pong clone.
+projects:
+  - key: eidolons
+    title: Eidolons
+    category: flagship
+    repository_url: https://github.com/Rynaro/eidolons
+    role: Agentic engineering system
+    status_label: Released v3.2.0
+    summary: "A portable team of named AI specialists, routed by task and joined by verifiable hand-offs."
+    story: "One assistant should not have to scout, plan, build, debug, and document in the same breath. Eidolons gives each craft to a bounded specialist, then lets a deterministic kernel assemble the party for the work at hand."
+    proof: "Nine named specialists across seven roles, a shared memory substrate, a deterministic routing CLI, integrity-checked releases, and committed evaluation scorecards."
+    tags: [agents, orchestration, verification]
+    featured: flagship
+    tone: ember
+    language: Shell
+  - key: ariramba
+    title: Ariramba
+    category: research
+    repository_url: https://github.com/Rynaro/ariramba
+    role: Local agentic coding harness
+    status_label: Research prototype
+    summary: "A local-first harness for running and auditing GPT-OSS-20B coding work on consumer hardware."
+    story: "Ariramba treats every model action as a proposal, not permission. A finite-state controller validates paths, hashes, schemas, and commands, runs the work in confinement, records the trace, and can return the tree byte-clean."
+    proof: "The MOCK lane exercises the full controller without model weights; CPU and GPU oracle lanes are documented, and one real-model fixture repair proves the wiring—not general coding ability."
+    tags: [local-first, agents, evidence]
+    featured: primary
+    tone: leaf
+    language: Python
+  - key: magicite
+    title: Magicite
+    category: research
+    repository_url: https://github.com/Rynaro/magicite
+    role: Local skill registry · MCP server
+    status_label: Experimental v0.3.1
+    summary: "A local-first MCP server that routes portable agent skills and turns outcomes into reviewable evidence."
+    story: "Magicite keeps skills as inspectable engrams instead of burying them in a hosted recommendation service. It ranks intent and contraindications, records outcomes, and lets a governed Dream cycle propose durable improvements."
+    proof: "A 16-tool MCP surface, 30 first-party engrams, rebuildable local storage, approval-gated lifecycle changes, and unit, integration, acceptance, and crash-recovery tests."
+    tags: [skills, mcp, evidence]
+    featured: primary
+    tone: indigo
+    language: Python
+  - key: crystalium
+    title: Crystalium
+    category: research
+    repository_url: https://github.com/Rynaro/crystalium
+    role: Shared memory · MCP server
+    status_label: Released v2.2.0
+    summary: "A local-first memory substrate where Eidolons preserve, retrieve, consolidate, and deliberately forget context."
+    story: "Crystalium gives specialists shared memory without making memory another agent. Four bounded layers separate episodes, facts, procedures, and execution state; trust-aware writes and hybrid recall keep the lattice useful."
+    proof: "Nine MCP tools, BM25, vector, and graph retrieval, SHA-256 provenance, tier-gated writes, a blocking conformance suite, and more than 1,000 repository tests."
+    tags: [memory, mcp, retrieval]
+    featured: primary
+    tone: brass
+    language: Python
+  - key: cardboard-box
+    title: Cardboard Box
+    category: tools
+    repository_url: https://github.com/Rynaro/cardboard-box
+    role: Distrobox environment manager
+    status_label: Released v0.16.0
+    summary: "A Rust CLI and terminal cockpit for declarative, repeatable distrobox environments."
+    story: "Cardboard Box replaces remembered flags and repeated setup with one Boxfile. It keeps distrobox visible underneath, while making lifecycle, isolation, Docker access, and provisioning legible from either the CLI or TUI."
+    proof: "A static Rust binary with shared CLI/TUI core logic, idempotent provisioning, built-in diagnostics, and more than 400 tests that run without a real distrobox."
+    tags: [distrobox, developer-experience, provisioning]
+    featured: primary
+    tone: brass
+    language: Rust
+  - key: sunforge
+    title: Sunforge
+    category: tools
+    repository_url: https://github.com/Rynaro/sunforge
+    role: Headless game-streaming host
+    status_label: Released v1.2.0
+    summary: "A reproducible Fedora and Sunshine setup for a headless, low-latency game-streaming host."
+    story: "Sunforge gives an awkward machine a dependable ritual: boot into a real Plasma Wayland session without a monitor, keep one stable 4K source, and let Moonlight clients choose their own stream."
+    proof: "Provisioning, service definitions, launchers, diagnostics, encrypted identity backup, publication safeguards, and CI checks live together as reproducible source."
+    tags: [game-streaming, fedora, automation]
+    featured: supporting
+    tone: ember
+    language: Shell
+  - key: termaup
+    title: termaup
+    category: tools
+    repository_url: https://github.com/Rynaro/termaup
+    role: ClickUp terminal client
+    status_label: Work in progress
+    summary: "A Rust CLI and TUI for browsing ClickUp workspaces, tasks, and rich descriptions from the terminal."
+    story: "termaup brings the work board into the shell without flattening it into raw API output. Quick commands and a keyboard-driven TUI share one async client while tokens stay in the operating system keychain when available."
+    proof: "A three-crate Cargo workspace provides the API client, CLI, and TUI, with table, JSON, and Markdown output plus container-based development commands."
+    tags: [clickup, terminal, tui]
+    featured: supporting
+    tone: leaf
+    language: Rust
+  - key: fluxus
+    title: Fluxus
+    category: tools
+    repository_url: https://github.com/Rynaro/fluxus
+    role: Ruby library
+    status_label: Maintained artifact
+    summary: "A simple, dependency-free, extensible use-case wrapper for Ruby code."
+    story: "Fluxus packages a useful architectural boundary without asking an application to inherit a framework."
+    proof: "A small public Ruby library with a deliberately narrow dependency surface."
+    tags: [architecture, library]
+    featured: supporting
+    tone: ember
+    language: Ruby
+  - key: potions
+    title: Potions
+    category: tools
+    repository_url: https://github.com/Rynaro/Potions
+    role: Workstation toolkit
+    status_label: Living configuration
+    summary: "Dotfiles, but not boring."
+    story: "A collection of repeatable workstation rituals, packaged with more care than a loose folder of incantations."
+    proof: "Used as a living configuration rather than presented as a finished product."
+    tags: [dotfiles, automation]
+    featured: supporting
+    tone: indigo
+    language: Shell
+  - key: jex
+    title: JEX
+    category: tools
+    repository_url: https://github.com/Rynaro/jex
+    role: Jekyll utility
+    status_label: Useful artifact
+    summary: "A command-line utility for running Jekyll development with containers."
+    story: "JEX makes the local loop for static-site work predictable without turning the site into an infrastructure project."
+    proof: "This site's preferred container-based development workflow uses it."
+    tags: [jekyll, containers]
+    featured: supporting
+    tone: brass
+    language: Shell
+  - key: lararium
+    title: Lararium
+    category: personal
+    repository_url: https://github.com/Rynaro/lararium
+    role: Guilt-free coding companion
+    status_label: Living companion · v1.8
+    summary: "A tamagotchi-like companion for Claude Code that lives quietly in the terminal statusline."
+    story: "Lararium keeps the warmth of a virtual pet and removes the obligation. Its mood follows the coding session, its growth only moves forward, and every interaction can be ignored forever without penalty."
+    proof: "A standard-library Python state engine with 268 unit tests, 25 shell tests, and a 6,859-step invariant sweep enforcing no decay, harm, guilt, or blocking hooks."
+    tags: [companion, terminal, playful]
+    featured: primary
+    tone: leaf
+    language: Python
+  - key: alchemists-orchid
+    title: Alchemist's Orchid
+    category: personal
+    repository_url: https://github.com/Rynaro/alchemists-orchid
+    role: Visual language
+    status_label: Visual system v2.2
+    summary: "A cross-platform visual expression of the Code Alchemist identity."
+    story: "Where the code alchemist's symbols, color, and atmosphere are cultivated as a system."
+    proof: "A mature, versioned expression of the alchemical identity behind the work."
+    tags: [design-system, identity, visual]
+    featured: primary
+    tone: ember
+  - key: this-site
+    title: This Site
+    category: personal
+    repository_url: https://github.com/Rynaro/Rynaro.github.io
+    project_url: https://hlavezzo.me
+    role: Personal field guide
+    status_label: Continually remade
+    summary: "The evolving home for my work, notes, and experiments."
+    story: "A personal website should be a living argument, not a frozen résumé. This is where the systems and the person meet."
+    proof: "Built in public with Jekyll, Liquid, Sass, and dependency-free browser JavaScript."
+    tags: [jekyll, design, writing]
+    featured: supporting
+    tone: brass
+    language: HTML
+  - { key: drun, title: drun, category: archive, repository_url: "https://github.com/Rynaro/drun", role: "Rails utility", status_label: "Archived work", summary: "A quick Rails setup using Docker Compose.", story: "An earlier attempt to turn repeated Rails environment setup into a command.", proof: "Retained as part of the public learning record.", tags: [rails, docker], featured: archive, tone: brass, language: Shell }
+  - { key: fip-extractor, title: FipExtractor, category: archive, repository_url: "https://github.com/Rynaro/FipExtractor", role: "Ruby library", status_label: "Archived work", summary: "An easy-to-use translator for the FIPE API.", story: "A compact integration library from an earlier chapter of Ruby work.", proof: "Retained as part of the public learning record.", tags: [api, library], featured: archive, tone: ember, language: Ruby }
+  - { key: estratto, title: Estratto, category: archive, repository_url: "https://github.com/Rynaro/Estratto", role: "Ruby library", status_label: "Archived work", summary: "Parsing fixed-width file content made easier.", story: "A small library made to give an awkward data format a clearer interface.", proof: "Retained as part of the public learning record.", tags: [parsing, library], featured: archive, tone: leaf, language: Ruby }
+  - { key: postmon-clj, title: postmon-clj, category: archive, repository_url: "https://github.com/Rynaro/postmon-clj", role: "Clojure library", status_label: "Archived work", summary: "A simple Clojure wrapper for the Postmon API.", story: "An exploration of a different language through a practical API wrapper.", proof: "Retained as part of the public learning record.", tags: [api, library], featured: archive, tone: indigo, language: Clojure }
+  - { key: snowflakes, title: Snowflakes, category: archive, repository_url: "https://github.com/Rynaro/Snowflakes", role: "Creative coding study", status_label: "Archived work", summary: "A simple snow simulator made with Processing.", story: "A small exercise in movement, systems, and visual play.", proof: "Retained as part of the public learning record.", tags: [simulation, game], featured: archive, tone: leaf, language: Processing }
+  - { key: flappy-ball, title: "Flappy Ball", category: archive, repository_url: "https://github.com/Rynaro/FlappyBall", role: "Game study", status_label: "Archived work", summary: "A compact Flappy Bird-style game made with Processing.", story: "A playful implementation exercise from the game-making shelf.", proof: "Retained as part of the public learning record.", tags: [game], featured: archive, tone: ember, language: Processing }
+  - { key: pong, title: "Pong Clone", category: archive, repository_url: "https://github.com/Rynaro/Pong", role: "Game study", status_label: "Archived work", summary: "A Pong clone made as a programming exercise.", story: "A familiar rule set used to practice loops, input, motion, and feedback.", proof: "Retained as part of the public learning record.", tags: [game], featured: archive, tone: brass, language: Processing }

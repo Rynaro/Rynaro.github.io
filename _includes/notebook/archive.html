@@ -1,0 +1,39 @@
+{% assign journal_posts = include.posts | default: site.posts %}
+{% assign active_category = include.active | default: "all" %}
+{% assign latest_post = journal_posts.first %}
+<div class="field-journal" data-notebook>
+  <header class="journal-hero">
+    <div class="journal-shell journal-hero__grid">
+      <div>
+        <p class="journal-eyebrow">{{ site.data.notebook.eyebrow }}</p>
+        <h1>{{ site.data.notebook.title }}</h1>
+        <p class="journal-intro">{{ site.data.notebook.intro }}</p>
+      </div>
+      <div class="journal-hero__mark" aria-hidden="true"><span>FIELD</span><strong>№ {{ site.posts.size }}</strong><span>JOURNAL</span></div>
+    </div>
+  </header>
+  <section class="journal-archive" aria-labelledby="journal-archive-title">
+    <div class="journal-shell">
+      <div class="journal-archive__heading">
+        <div><p class="journal-kicker">Current folio</p><h2 id="journal-archive-title">{{ site.data.notebook.archive_title }}</h2><p>{{ site.data.notebook.categories[active_category].description }}</p></div>
+        <p class="journal-count"><span data-journal-count>{{ journal_posts.size }}</span> entries</p>
+      </div>
+      {% include notebook/category-tabs.html active=active_category %}
+      <div class="journal-tools" data-journal-tools hidden>
+        <label for="journal-search">{{ site.data.notebook.search_label }}</label>
+        <div class="journal-search"><input id="journal-search" type="search" placeholder="{{ site.data.notebook.search_placeholder }}" autocomplete="off" data-journal-search><button type="button" data-journal-reset>Clear</button></div>
+        <p class="visually-hidden" aria-live="polite" data-journal-status></p>
+      </div>
+      {% if latest_post %}
+        {% assign latest_author = site.data.notebook_authors[latest_post.author_id] %}
+        <article class="journal-feature" data-journal-entry data-search-text="{{ latest_post.title | append: ' ' | append: latest_post.resume | append: ' ' | append: latest_post.tags | append: ' ' | append: latest_author.name | strip_html | escape | downcase }}">
+          <div class="journal-feature__label"><span>Latest entry</span><time datetime="{{ latest_post.date | date_to_xmlschema }}">{{ latest_post.date | date: "%d %B %Y" }}</time></div>
+          <div class="journal-feature__content"><p>{{ site.data.notebook.categories[latest_post.categories.first].label | default: latest_post.categories.first | capitalize }}</p>{% include notebook/authorship.html author_id=latest_post.author_id %}<h3><a href="{{ latest_post.url | relative_url }}">{{ latest_post.title }}</a></h3><div>{{ latest_post.resume | default: latest_post.excerpt | strip_html | truncate: 240 }}</div><a class="journal-feature__link" href="{{ latest_post.url | relative_url }}">Open the latest note <span aria-hidden="true">→</span></a></div>
+        </article>
+      {% endif %}
+      <div class="journal-ledger" data-journal-list>{% for post in journal_posts offset:1 %}{% include notebook/scroll-item.html post=post index=forloop.index %}{% endfor %}</div>
+      <div class="journal-empty" data-journal-empty hidden><p>No notes match that phrase.</p><button type="button" data-journal-reset>Return to the full journal</button></div>
+    </div>
+  </section>
+</div>
+<script src="{{ '/assets/js/notebook.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>

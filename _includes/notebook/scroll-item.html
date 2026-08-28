@@ -1,38 +1,11 @@
-<!--
-  Shared "scroll" card partial (extracted from notebook.html so the same card renders
-  identically on the All view, the per-category pages, and the homepage's surfaced
-  content -- Story 2.1/2.2, AC-012/AC-013). Params: include.post, include.index (1-based,
-  drives the rarity-stripe modulo, matching the previous inline behavior byte-for-byte).
--->
-<div class="scroll-item" data-category="{{ include.post.categories | first }}">
-  <div class="scroll-card">
-    <div class="scroll-rarity
-      {% assign mod = include.index | modulo: 5 %}
-      {% if mod == 1 %}rare{% elsif mod == 3 %}epic{% else %}common{% endif %}
-    "></div>
-
-    <div class="scroll-header">
-      <div class="scroll-metadata">
-        <span class="scroll-date">{{ include.post.date | date: "%b %-d, %Y" }}</span>
-        <span class="scroll-category">{{ include.post.categories | first | capitalize }}</span>
-      </div>
-      <h3 class="scroll-title">{{ include.post.title }}</h3>
-    </div>
-
-    <div class="scroll-content">
-      <p class="scroll-excerpt">{{ include.post.resume | default: include.post.excerpt | strip_html | truncate: 120 }}</p>
-    </div>
-
-    <div class="scroll-footer">
-      <div class="scroll-tags">
-        {% for tag in include.post.tags limit:3 %}
-          <span class="scroll-tag">#{{ tag }}</span>
-        {% endfor %}
-      </div>
-      <a href="{{ include.post.url }}" class="scroll-link">
-        <span>Read scroll</span>
-        <i class="fas fa-scroll"></i>
-      </a>
-    </div>
+{% assign entry_author = site.data.notebook_authors[include.post.author_id] %}
+<article class="journal-entry" data-journal-entry data-search-text="{{ include.post.title | append: ' ' | append: include.post.resume | append: ' ' | append: include.post.tags | append: ' ' | append: entry_author.name | strip_html | escape | downcase }}">
+  <div class="journal-entry__date"><time datetime="{{ include.post.date | date_to_xmlschema }}">{{ include.post.date | date: "%d %b" }}</time><span>{{ include.post.date | date: "%Y" }}</span></div>
+  <div class="journal-entry__body">
+    <div class="journal-entry__meta"><span>{{ site.data.notebook.categories[include.post.categories.first].label | default: include.post.categories.first | capitalize }}</span>{% include post-type-badge.html type=include.post.type %}{% include post-assay-label.html assay=include.post.assay %}{% include notebook/authorship.html author_id=include.post.author_id %}</div>
+    <h3 class="journal-entry__title"><a href="{{ include.post.url | relative_url }}">{{ include.post.title }}</a></h3>
+    <p class="journal-entry__excerpt">{{ include.post.resume | default: include.post.excerpt | strip_html | truncate: 180 }}</p>
+    {% if include.post.tags.size > 0 %}<ul class="journal-entry__tags" aria-label="Tags">{% for tag in include.post.tags limit:4 %}<li>{{ tag }}</li>{% endfor %}</ul>{% endif %}
   </div>
-</div>
+  <a class="journal-entry__arrow" href="{{ include.post.url | relative_url }}" aria-label="Read {{ include.post.title | escape }}"><span aria-hidden="true">↗</span></a>
+</article>

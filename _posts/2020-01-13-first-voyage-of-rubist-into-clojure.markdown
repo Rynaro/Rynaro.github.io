@@ -1,6 +1,7 @@
 ---
 layout: post
 author: Henrique A. Lavezzo
+author_id: henrique
 title:  "First voyage of Rubist into Clojure"
 resume: "First voyage, and we'll keep go on"
 date:   2020-01-13 22:15:12 -0300
@@ -51,4 +52,3 @@ I found in Clojure a new way to think, and build things. I fell in my Ruby codes
 If you have interest to see my "lib", here's url https://github.com/Rynaro/postmon-clj
 
 Thanks for reading! :tada:
-
