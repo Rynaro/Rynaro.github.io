@@ -12,6 +12,7 @@ description: >-
   chaos into scalable systems, now conducting AI familiars in the open.
 baseurl: ""
 url: "https://hlavezzo.me"
+timezone: America/Sao_Paulo
 github_username: Rynaro
 # Plausible Analytics (cookie-free, no consent banner) -- replaces the retired
 # UA-135917274-1 Universal Analytics property (sunset 2023, D8/AC-009). The owner must
