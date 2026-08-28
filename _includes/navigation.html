@@ -19,15 +19,23 @@
 
   <section class="astrolabe" id="astrolabe-chart" aria-labelledby="astrolabe-title">
     <div class="astrolabe__frame">
+      <div class="astrolabe__utility">
+        <button class="astrolabe__close" type="button" aria-label="Close navigation chart">
+          <span aria-hidden="true">×</span>
+        </button>
+
+        <div class="astrolabe__constellation-controls">
+          <p class="astrolabe__constellation-status" data-constellation-status aria-live="polite">Visible constellations · São Paulo fallback</p>
+          <button class="astrolabe__locate" type="button" data-constellation-locate>Use my location</button>
+          <p class="astrolabe__privacy">This site's code does not send or store your coordinates.</p>
+        </div>
+      </div>
+
       <header class="astrolabe__header">
         <p class="astrolabe__eyebrow">Cartographer's index · {{ site.title }}</p>
         <h2 id="astrolabe-title">Choose a bearing</h2>
         <p>Every mark is a route through the atelier.</p>
       </header>
-
-      <button class="astrolabe__close" type="button" aria-label="Close navigation chart">
-        <span aria-hidden="true">×</span>
-      </button>
 
       <div class="astrolabe__instrument" aria-hidden="true">
         <canvas class="astrolabe__constellations" data-wayfinder-constellations data-catalog-url="{{ '/assets/data/wayfinder-constellations.json' | relative_url }}"></canvas>
@@ -37,12 +45,6 @@
         <span class="astrolabe__axis astrolabe__axis--vertical"></span>
         <span class="astrolabe__north">N</span>
         <span class="astrolabe__center">✦</span>
-      </div>
-
-      <div class="astrolabe__constellation-controls">
-        <p class="astrolabe__constellation-status" data-constellation-status aria-live="polite">Visible constellations · São Paulo fallback</p>
-        <button class="astrolabe__locate" type="button" data-constellation-locate>Use my location</button>
-        <p class="astrolabe__privacy">This site's code does not send or store your coordinates.</p>
       </div>
 
       <ol class="astrolabe__routes">

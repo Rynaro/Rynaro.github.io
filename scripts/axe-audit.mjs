@@ -274,6 +274,68 @@ async function newPage() {
   await page.close();
 }
 
+// Dynamic constellation copy lives in a compact utility strip beside the close
+// control and must never cover chart content at supported viewports.
+{
+  const viewports = [
+    { width: 1280, height: 800 },
+    { width: 900, height: 700 },
+    { width: 768, height: 1024 },
+    { width: 390, height: 844 },
+  ];
+  const intersects = (a, b) => !!a && !!b && a.x < b.x + b.width && a.x + a.width > b.x && a.y < b.y + b.height && a.y + a.height > b.y;
+  const contains = (outer, inner, tolerance = 1) => !!outer && !!inner
+    && inner.x >= outer.x - tolerance
+    && inner.y >= outer.y - tolerance
+    && inner.x + inner.width <= outer.x + outer.width + tolerance
+    && inner.y + inner.height <= outer.y + outer.height + tolerance;
+  for (const viewport of viewports) {
+    const context = await browser.newContext({ viewport });
+    const page = await context.newPage();
+    await page.goto(`${base}/index.html`, { waitUntil: 'networkidle' });
+    await page.locator('.wayfinder__trigger').click();
+    await page.locator('.astrolabe.are-constellations-ready.is-open').waitFor();
+    await page.locator('[data-constellation-status]').evaluate((status) => {
+      status.textContent = 'Location could not be determined after waiting for permission · the constellation chart continues using the São Paulo fallback sky';
+    });
+
+    const utility = await page.locator('.astrolabe__utility').boundingBox();
+    const controls = await page.locator('.astrolabe__constellation-controls').boundingBox();
+    const close = await page.locator('.astrolabe__close').boundingBox();
+    const instrument = await page.locator('.astrolabe__instrument').boundingBox();
+    const header = await page.locator('.astrolabe__header').boundingBox();
+    const status = await page.locator('.astrolabe__constellation-status').boundingBox();
+    const locate = await page.locator('.astrolabe__locate').boundingBox();
+    const privacy = await page.locator('.astrolabe__privacy').boundingBox();
+    const routes = await page.locator('.astrolabe__route').evaluateAll((items) => items.map((item) => {
+      const box = item.getBoundingClientRect();
+      return { x: box.x, y: box.y, width: box.width, height: box.height };
+    }));
+    const routeOverlap = routes.some((route) => intersects(controls, route));
+    if (!routeOverlap) ok(`Wayfinder controls clear every route at ${viewport.width}x${viewport.height}`);
+    else fail(`Wayfinder controls overlap a route at ${viewport.width}x${viewport.height}`);
+    if (!intersects(controls, instrument)) ok(`Wayfinder controls clear the instrument at ${viewport.width}x${viewport.height}`);
+    else fail(`Wayfinder controls overlap the instrument at ${viewport.width}x${viewport.height}`);
+    if (!intersects(controls, header)) ok(`Wayfinder controls clear the header at ${viewport.width}x${viewport.height}`);
+    else fail(`Wayfinder controls overlap the header at ${viewport.width}x${viewport.height}`);
+
+    const childrenContained = [status, locate, privacy].every((child) => contains(controls, child));
+    if (childrenContained) ok(`Wayfinder status, locate button, and privacy copy stay inside their strip at ${viewport.width}x${viewport.height}`);
+    else fail(`A Wayfinder control child escapes its strip at ${viewport.width}x${viewport.height}`);
+    const childrenOverlap = intersects(status, locate) || intersects(status, privacy) || intersects(locate, privacy);
+    if (!childrenOverlap) ok(`Wayfinder control children do not overlap at ${viewport.width}x${viewport.height}`);
+    else fail(`Wayfinder control children overlap at ${viewport.width}x${viewport.height}`);
+
+    if (contains(utility, controls) && contains(utility, close)) ok(`Wayfinder utility contains its strip and close control at ${viewport.width}x${viewport.height}`);
+    else fail(`Wayfinder utility loses a child at ${viewport.width}x${viewport.height}`);
+    if (!intersects(controls, close) && controls.x + controls.width <= close.x + 1) ok(`Wayfinder strip stays left of the close control at ${viewport.width}x${viewport.height}`);
+    else fail(`Wayfinder strip does not stay left of the close control at ${viewport.width}x${viewport.height}`);
+    if (viewport.width <= 1024 && header.y >= utility.y + utility.height - 1) ok(`Wayfinder heading follows its utility zone at ${viewport.width}x${viewport.height}`);
+    else if (viewport.width <= 1024) fail(`Wayfinder utility zone does not reserve space above the heading at ${viewport.width}x${viewport.height}`);
+    await context.close();
+  }
+}
+
 // ---------------------------------------------------------------------
 // AC-032: every ornament SVG root carries aria-hidden="true", and none
 // carries both aria-hidden and an empty alt (alt only applies to <img>, so
