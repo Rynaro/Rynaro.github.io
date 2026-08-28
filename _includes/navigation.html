@@ -30,12 +30,19 @@
       </button>
 
       <div class="astrolabe__instrument" aria-hidden="true">
+        <canvas class="astrolabe__constellations" data-wayfinder-constellations data-catalog-url="{{ '/assets/data/wayfinder-constellations.json' | relative_url }}"></canvas>
         <span class="astrolabe__ring astrolabe__ring--outer"></span>
         <span class="astrolabe__ring astrolabe__ring--inner"></span>
         <span class="astrolabe__axis astrolabe__axis--horizontal"></span>
         <span class="astrolabe__axis astrolabe__axis--vertical"></span>
         <span class="astrolabe__north">N</span>
         <span class="astrolabe__center">✦</span>
+      </div>
+
+      <div class="astrolabe__constellation-controls">
+        <p class="astrolabe__constellation-status" data-constellation-status aria-live="polite">Visible constellations · São Paulo fallback</p>
+        <button class="astrolabe__locate" type="button" data-constellation-locate>Use my location</button>
+        <p class="astrolabe__privacy">This site's code does not send or store your coordinates.</p>
       </div>
 
       <ol class="astrolabe__routes">

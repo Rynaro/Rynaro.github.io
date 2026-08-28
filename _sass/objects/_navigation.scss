@@ -61,6 +61,7 @@ button.wayfinder__trigger { font: inherit; cursor: pointer; }
 .astrolabe__close:focus-visible, .astrolabe__routes a:focus-visible { outline: 3px solid #fff; outline-offset: 4px; }
 
 .astrolabe__instrument { position: absolute; z-index: 1; width: min(35rem,58vw); aspect-ratio: 1; top: 52%; left: 50%; transform: translate(-50%,-42%); }
+.astrolabe__constellations { position: absolute; inset: 2%; width: 96%; height: 96%; border-radius: 50%; opacity: .9; }
 .astrolabe__ring { position: absolute; border: 1px solid rgba(209,167,101,.28); border-radius: 50%; }
 .astrolabe__ring--outer { inset: 0; box-shadow: inset 0 0 0 .6rem rgba(209,167,101,.025),0 0 0 .6rem rgba(209,167,101,.025); }
 .astrolabe__ring--inner { inset: 19%; border-style: dashed; transform: rotate(22deg); }
@@ -86,6 +87,14 @@ button.wayfinder__trigger { font: inherit; cursor: pointer; }
 .astrolabe__route-alias { display: block; margin-top: .16rem; color: var(--wayfinder-brass); font-family: sans-serif; font-size: .55rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
 .astrolabe__route-description { margin-top: .2rem; color: #aaa6b1; font-size: .7rem; line-height: 1.35; }
 .astrolabe__hint { position: absolute; z-index: 2; right: 2rem; bottom: 1.2rem; margin: 0; color: #aaa6b1; font-size: .65rem; letter-spacing: .08em; }
+.astrolabe__constellation-controls { display: none; position: absolute; z-index: 4; top: 11.5rem; left: 2.5rem; max-width: 17rem; }
+.astrolabe.are-constellations-ready .astrolabe__constellation-controls { display: block; }
+.astrolabe__constellation-status, .astrolabe__privacy { margin: 0; color: #aaa6b1; font-size: .62rem; line-height: 1.4; }
+.astrolabe__constellation-status { color: #d9caad; letter-spacing: .06em; }
+.astrolabe__locate { min-height: 44px; margin: .35rem 0 .2rem; padding: .35rem .7rem; border: 1px solid rgba(209,167,101,.5); border-radius: 999px; color: #fff8ea; background: rgba(21,21,38,.78); font: 700 .58rem/1 sans-serif; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; }
+.astrolabe__locate:hover { border-color: var(--wayfinder-brass); }
+.astrolabe__locate:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.astrolabe__locate:disabled { cursor: wait; opacity: .65; }
 
 // Progressive enhancement turns the same chart into a modal.
 .wayfinder-ready .astrolabe { position: fixed; z-index: 1200; inset: 0; display: grid; place-items: center; padding: clamp(.75rem,calc(.5rem + 1vw),1.5rem); overflow: auto; overscroll-behavior: contain; opacity: 0; visibility: hidden; transition: opacity .25s ease,visibility 0s linear .25s; }
@@ -108,6 +117,8 @@ button.wayfinder__trigger { font: inherit; cursor: pointer; }
   .astrolabe__route { position: static; width: 100%; }
   .astrolabe__route a { min-height: 58px; padding: .25rem; background: rgba(21,21,38,.45); }
   .astrolabe__hint { right: auto; left: 1.75rem; }
+  .astrolabe__constellation-controls { position: relative; top: auto; left: auto; z-index: 4; margin: 0 1.5rem 1rem; }
+  .astrolabe__hint { display: none; }
 }
 
 @media (max-width: 360px) {
@@ -122,5 +133,5 @@ button.wayfinder__trigger { font: inherit; cursor: pointer; }
 
 @media (forced-colors: active) {
   .wayfinder__trigger, .astrolabe__close, .astrolabe__route-mark { border: 2px solid ButtonText; }
-  .astrolabe__instrument { display: none; }
+  .astrolabe__constellations { display: none; }
 }

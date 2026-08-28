@@ -46,6 +46,10 @@ for (const contract of ['aria-modal', 'aria-hidden', 'Escape', 'inert', 'returnF
   if (script.includes(contract)) ok(`modal behavior includes ${contract}`);
   else fail(`modal behavior is missing ${contract}`);
 }
+for (const contract of ['WayfinderConstellations', 'getCurrentPosition', 'São Paulo', 'toISOString']) {
+  if (script.includes(contract)) ok(`live constellations include ${contract}`);
+  else fail(`live constellations are missing ${contract}`);
+}
 if (/anchor\.getAttribute\(['"]aria-label['"]\)/.test(script) && /trigger\.setAttribute\(['"]aria-label['"], triggerLabel\)/.test(script)) ok('enhanced trigger preserves the fallback accessible name');
 else fail('enhanced trigger does not preserve the fallback accessible name');
 
