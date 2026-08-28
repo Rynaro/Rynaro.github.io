@@ -33,9 +33,9 @@ for (const path of canonicalPosts) {
 }
 
 const shiftedPosts = [
-  '_site/2020/01/12/first-voyage-of-rubist-into-clojure.html',
-  '_site/2023/02/09/why-implementing-proper-use-cases-brought-joy-into-my-code.html',
-  '_site/2023/02/15/taming-your-app-with-domains.html',
+  '_site/2020/01/14/first-voyage-of-rubist-into-clojure.html',
+  '_site/2023/02/11/why-implementing-proper-use-cases-brought-joy-into-my-code.html',
+  '_site/2023/02/17/taming-your-app-with-domains.html',
 ];
 
 for (const path of shiftedPosts) {
