@@ -1,0 +1,17 @@
+{
+  "baseSha": "02a0755c9294d13c22ec8cfb554fee67d91c3157",
+  "approvals": [
+    {
+      "path": "index-wayfinder-open/mobile-light.png",
+      "sha256": "6df4b44e7c9dadd810d48a99cb14888ba8705c9f45e63c99f34a87a7e9c39070",
+      "fromDimensions": [320, 10866],
+      "toDimensions": [320, 10866]
+    },
+    {
+      "path": "index-wayfinder-open/mobile-dark.png",
+      "sha256": "6df4b44e7c9dadd810d48a99cb14888ba8705c9f45e63c99f34a87a7e9c39070",
+      "fromDimensions": [320, 10866],
+      "toDimensions": [320, 10866]
+    }
+  ]
+}

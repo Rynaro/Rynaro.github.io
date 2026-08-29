@@ -140,6 +140,7 @@ import {
 } from 'node:fs';
 import { extname, join, dirname, relative, resolve } from 'node:path';
 import { inflateSync } from 'node:zlib';
+import { loadVisualApprovals, selectVisualReference, validateVisualApprovalDimensions } from './visual-approval.mjs';
 
 const root = new URL('../', import.meta.url).pathname;
 const siteDir = root + '_site';
@@ -155,6 +156,8 @@ function option(name, fallback) {
 const baselineDir = resolve(root, option('--baseline-dir', 'scripts/baselines'));
 const outputDir = resolve(root, option('--output-dir', '.visual/candidate'));
 const reportPath = resolve(root, option('--report', '.visual/report.json'));
+const approvalDirOption = option('--approval-dir', null);
+const approvalDir = approvalDirOption ? resolve(root, approvalDirOption) : null;
 
 const UPDATE = process.argv.includes('--update');
 if (baselineDir === outputDir) {
@@ -629,6 +632,20 @@ const capturePlan = targets.flatMap((target) => {
   ));
 });
 
+let visualApprovals = null;
+if (!UPDATE && approvalDir) {
+  try {
+    visualApprovals = loadVisualApprovals({
+      approvalDir,
+      baselineDir,
+      plannedPaths: capturePlan.map(({ target, viewportName, theme }) => `${target.name}/${viewportName}-${theme}.png`),
+    });
+    console.log(`Visual approvals: ${visualApprovals.approved.size} exact path(s) from ${relative(root, visualApprovals.manifestPath)}, bound to master ${visualApprovals.baseSha}.`);
+  } catch (error) {
+    fail(error.message);
+  }
+}
+
 console.log(`${UPDATE ? 'UPDATE' : 'COMPARE'} mode -- ${targets.length} target(s), ${capturePlan.length} planned screenshot(s), tolerance ${TOLERANCE_PERCENT}% (channel threshold ${CHANNEL_THRESHOLD}/255).\n`);
 
 if (capturePlan.length !== 100) {
@@ -673,25 +690,37 @@ for (const { target, viewportName, viewport, theme } of capturePlan) {
         results.push({ path: relPath, status: 'missing-reference', expected: relative(root, outPath), actual: relative(root, candidatePath) });
         continue;
       }
+      const reference = selectVisualReference(relPath, outPath, visualApprovals);
+      const referencePath = reference.path;
       let baselineImg, currentImg;
       try {
-        baselineImg = decodePNG(readFileSync(outPath));
+        baselineImg = decodePNG(readFileSync(referencePath));
         currentImg = decodePNG(buffer);
       } catch (err) {
         fail(`${relPath}: PNG decode error -- ${err.message}`);
-        results.push({ path: relPath, status: 'decode-error', error: err.message, expected: relative(root, outPath), actual: relative(root, candidatePath) });
+        results.push({ path: relPath, status: 'decode-error', referenceKind: reference.referenceKind, error: err.message, expected: relative(root, referencePath), actual: relative(root, candidatePath) });
         continue;
+      }
+      if (reference.referenceKind === 'approved') {
+        try {
+          const masterImg = decodePNG(readFileSync(outPath));
+          validateVisualApprovalDimensions(reference, { master: masterImg, approved: baselineImg, candidate: currentImg });
+        } catch (err) {
+          fail(`${relPath}: approval validation error -- ${err.message}`);
+          results.push({ path: relPath, status: 'invalid-approval', referenceKind: reference.referenceKind, error: err.message, expected: relative(root, referencePath), master: relative(root, outPath), actual: relative(root, candidatePath) });
+          continue;
+        }
       }
       const diff = diffImages(baselineImg, currentImg);
       if (diff.dimensionMismatch) {
-        fail(`${relPath}: dimension mismatch (baseline ${baselineImg.width}x${baselineImg.height} vs current ${currentImg.width}x${currentImg.height})`);
-        results.push({ path: relPath, status: 'dimension-mismatch', expected: relative(root, outPath), actual: relative(root, candidatePath), dimensions: { expected: [baselineImg.width, baselineImg.height], actual: [currentImg.width, currentImg.height] }, diff });
+        fail(`${relPath} [${reference.referenceKind}]: dimension mismatch (baseline ${baselineImg.width}x${baselineImg.height} vs current ${currentImg.width}x${currentImg.height})`);
+        results.push({ path: relPath, status: 'dimension-mismatch', referenceKind: reference.referenceKind, expected: relative(root, referencePath), actual: relative(root, candidatePath), dimensions: { expected: [baselineImg.width, baselineImg.height], actual: [currentImg.width, currentImg.height] }, diff });
       } else if (diff.diffPercent > TOLERANCE_PERCENT) {
-        fail(`${relPath}: ${diff.diffPercent.toFixed(4)}% pixels differ (${diff.diffPixels}/${diff.totalPixels}) -- exceeds ${TOLERANCE_PERCENT}% tolerance`);
-        results.push({ path: relPath, status: 'different', expected: relative(root, outPath), actual: relative(root, candidatePath), dimensions: { expected: [baselineImg.width, baselineImg.height], actual: [currentImg.width, currentImg.height] }, diff });
+        fail(`${relPath} [${reference.referenceKind}]: ${diff.diffPercent.toFixed(4)}% pixels differ (${diff.diffPixels}/${diff.totalPixels}) -- exceeds ${TOLERANCE_PERCENT}% tolerance`);
+        results.push({ path: relPath, status: 'different', referenceKind: reference.referenceKind, expected: relative(root, referencePath), actual: relative(root, candidatePath), dimensions: { expected: [baselineImg.width, baselineImg.height], actual: [currentImg.width, currentImg.height] }, diff });
       } else {
-        ok(`${relPath}: ${diff.diffPercent.toFixed(4)}% pixels differ (${diff.diffPixels}/${diff.totalPixels})`);
-        results.push({ path: relPath, status: 'matched', expected: relative(root, outPath), actual: relative(root, candidatePath), dimensions: { expected: [baselineImg.width, baselineImg.height], actual: [currentImg.width, currentImg.height] }, diff });
+        ok(`${relPath} [${reference.referenceKind}]: ${diff.diffPercent.toFixed(4)}% pixels differ (${diff.diffPixels}/${diff.totalPixels})`);
+        results.push({ path: relPath, status: 'matched', referenceKind: reference.referenceKind, expected: relative(root, referencePath), actual: relative(root, candidatePath), dimensions: { expected: [baselineImg.width, baselineImg.height], actual: [currentImg.width, currentImg.height] }, diff });
       }
 }
 } finally {
@@ -722,7 +751,7 @@ const report = {
   status: failures === 0 ? 'passed' : 'failed',
   mode: UPDATE ? 'update' : 'compare',
   matrix: capturePlan.map(({ target, viewportName, viewport, theme }) => ({ target: target.name, url: target.url, viewport: viewportName, dimensions: viewport, theme, state: target.state || null })),
-  config: { baselineDir: relative(root, baselineDir), outputDir: relative(root, outputDir), tolerancePercent: TOLERANCE_PERCENT, channelThreshold: CHANNEL_THRESHOLD },
+  config: { baselineDir: relative(root, baselineDir), outputDir: relative(root, outputDir), approvalDir: approvalDir ? relative(root, approvalDir) : null, tolerancePercent: TOLERANCE_PERCENT, channelThreshold: CHANNEL_THRESHOLD },
   totals: { planned: capturePlan.length, captured: capturedCount, inventory: inventoryCount, failures, matched: results.filter((r) => r.status === 'matched').length },
   results,
 };
