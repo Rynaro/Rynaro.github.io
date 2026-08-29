@@ -3,11 +3,15 @@
   "approvals": [
     {
       "path": "index-wayfinder-open/mobile-light.png",
-      "sha256": "013eb908d01db75677104f4a9c440d225ae7b5b7c5b3237a5c8e62966e790f9f"
+      "sha256": "013eb908d01db75677104f4a9c440d225ae7b5b7c5b3237a5c8e62966e790f9f",
+      "fromDimensions": [320, 10866],
+      "toDimensions": [320, 11035]
     },
     {
       "path": "index-wayfinder-open/mobile-dark.png",
-      "sha256": "013eb908d01db75677104f4a9c440d225ae7b5b7c5b3237a5c8e62966e790f9f"
+      "sha256": "013eb908d01db75677104f4a9c440d225ae7b5b7c5b3237a5c8e62966e790f9f",
+      "fromDimensions": [320, 10866],
+      "toDimensions": [320, 11035]
     }
   ]
 }

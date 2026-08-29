@@ -140,7 +140,7 @@ import {
 } from 'node:fs';
 import { extname, join, dirname, relative, resolve } from 'node:path';
 import { inflateSync } from 'node:zlib';
-import { loadVisualApprovals, selectVisualReference } from './visual-approval.mjs';
+import { loadVisualApprovals, selectVisualReference, validateVisualApprovalDimensions } from './visual-approval.mjs';
 
 const root = new URL('../', import.meta.url).pathname;
 const siteDir = root + '_site';
@@ -704,14 +704,10 @@ for (const { target, viewportName, viewport, theme } of capturePlan) {
       if (reference.referenceKind === 'approved') {
         try {
           const masterImg = decodePNG(readFileSync(outPath));
-          if (baselineImg.width !== masterImg.width || baselineImg.height !== masterImg.height) {
-            fail(`${relPath}: approved reference dimensions ${baselineImg.width}x${baselineImg.height} do not match master ${masterImg.width}x${masterImg.height}`);
-            results.push({ path: relPath, status: 'invalid-approval-dimensions', referenceKind: reference.referenceKind, expected: relative(root, referencePath), master: relative(root, outPath), actual: relative(root, candidatePath), dimensions: { approved: [baselineImg.width, baselineImg.height], master: [masterImg.width, masterImg.height] } });
-            continue;
-          }
+          validateVisualApprovalDimensions(reference, { master: masterImg, approved: baselineImg, candidate: currentImg });
         } catch (err) {
-          fail(`${relPath}: master PNG validation error -- ${err.message}`);
-          results.push({ path: relPath, status: 'decode-error', referenceKind: reference.referenceKind, error: err.message, expected: relative(root, referencePath), master: relative(root, outPath), actual: relative(root, candidatePath) });
+          fail(`${relPath}: approval validation error -- ${err.message}`);
+          results.push({ path: relPath, status: 'invalid-approval', referenceKind: reference.referenceKind, error: err.message, expected: relative(root, referencePath), master: relative(root, outPath), actual: relative(root, candidatePath) });
           continue;
         }
       }

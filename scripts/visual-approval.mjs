@@ -4,6 +4,12 @@ import { createHash } from 'node:crypto';
 
 const MANIFEST = 'manifest.json';
 
+function isDimensions(value) {
+  return Array.isArray(value)
+    && value.length === 2
+    && value.every((dimension) => Number.isInteger(dimension) && dimension > 0);
+}
+
 function readJson(path, label) {
   let value;
   try {
@@ -42,6 +48,9 @@ export function loadVisualApprovals({ approvalDir, baselineDir, plannedPaths }) 
     if (typeof entry.sha256 !== 'string' || !/^[a-f0-9]{64}$/.test(entry.sha256)) {
       throw new Error(`visual approval must include a lowercase SHA-256 digest: ${relPath}`);
     }
+    if (!isDimensions(entry.fromDimensions) || !isDimensions(entry.toDimensions)) {
+      throw new Error(`visual approval must declare positive integer fromDimensions and toDimensions: ${relPath}`);
+    }
     const safePath = normalize(relPath);
     if (safePath !== relPath || safePath === '..' || safePath.startsWith(`..${sep}`)) {
       throw new Error(`visual approval path must be a normalized repository-relative PNG path: ${relPath}`);
@@ -60,15 +69,42 @@ export function loadVisualApprovals({ approvalDir, baselineDir, plannedPaths }) 
     if (actualSha !== entry.sha256) {
       throw new Error(`approved visual digest mismatch for ${relPath}: expected ${entry.sha256}, found ${actualSha}`);
     }
-    approved.set(relPath, path);
+    approved.set(relPath, {
+      path,
+      fromDimensions: entry.fromDimensions,
+      toDimensions: entry.toDimensions,
+    });
   }
 
   return { baseSha: manifest.baseSha, manifestPath, approved };
 }
 
 export function selectVisualReference(relPath, masterPath, approvals) {
-  const approvedPath = approvals?.approved.get(relPath);
-  return approvedPath
-    ? { path: approvedPath, referenceKind: 'approved' }
+  const approval = approvals?.approved.get(relPath);
+  return approval
+    ? { ...approval, referenceKind: 'approved' }
     : { path: masterPath, referenceKind: 'master' };
+}
+
+function dimensionsOf(image) {
+  return [image.width, image.height];
+}
+
+function sameDimensions(actual, expected) {
+  return actual[0] === expected[0] && actual[1] === expected[1];
+}
+
+export function validateVisualApprovalDimensions(reference, { master, approved, candidate }) {
+  if (reference.referenceKind !== 'approved') return;
+
+  const checks = [
+    ['master', dimensionsOf(master), reference.fromDimensions],
+    ['approved', dimensionsOf(approved), reference.toDimensions],
+    ['candidate', dimensionsOf(candidate), reference.toDimensions],
+  ];
+  for (const [label, actual, expected] of checks) {
+    if (!sameDimensions(actual, expected)) {
+      throw new Error(`${label} dimensions ${actual.join('x')} do not match declared ${expected.join('x')}`);
+    }
+  }
 }

@@ -5,7 +5,7 @@ import test from 'node:test';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { mkdtempSync } from 'node:fs';
-import { loadVisualApprovals, selectVisualReference } from './visual-approval.mjs';
+import { loadVisualApprovals, selectVisualReference, validateVisualApprovalDimensions } from './visual-approval.mjs';
 import { createHash } from 'node:crypto';
 
 const source = readFileSync(new URL('./visual-baseline.mjs', import.meta.url), 'utf8');
@@ -28,7 +28,12 @@ function approvalFixture(baseSha = 'accepted-master') {
   const reviewed = 'reviewed';
   const digest = createHash('sha256').update(reviewed).digest('hex');
   writeFileSync(join(baselineDir, 'source.json'), JSON.stringify({ sha: 'accepted-master' }));
-  writeFileSync(join(approvalDir, 'manifest.json'), JSON.stringify({ baseSha, approvals: [{ path: 'wayfinder/mobile-light.png', sha256: digest }] }));
+  writeFileSync(join(approvalDir, 'manifest.json'), JSON.stringify({ baseSha, approvals: [{
+    path: 'wayfinder/mobile-light.png',
+    sha256: digest,
+    fromDimensions: [320, 10866],
+    toDimensions: [320, 11035],
+  }] }));
   writeFileSync(join(approvalDir, 'wayfinder/mobile-light.png'), reviewed);
   return { approvalDir, baselineDir };
 }
@@ -36,7 +41,12 @@ function approvalFixture(baseSha = 'accepted-master') {
 test('only exact manifest paths select an approved reference', () => {
   const fixture = approvalFixture();
   const approvals = loadVisualApprovals({ ...fixture, plannedPaths: ['wayfinder/mobile-light.png', 'wayfinder/desktop-light.png'] });
-  assert.equal(selectVisualReference('wayfinder/mobile-light.png', '/master/mobile.png', approvals).referenceKind, 'approved');
+  assert.deepEqual(selectVisualReference('wayfinder/mobile-light.png', '/master/mobile.png', approvals), {
+    path: join(fixture.approvalDir, 'wayfinder/mobile-light.png'),
+    referenceKind: 'approved',
+    fromDimensions: [320, 10866],
+    toDimensions: [320, 11035],
+  });
   assert.deepEqual(selectVisualReference('wayfinder/desktop-light.png', '/master/desktop.png', approvals), {
     path: '/master/desktop.png', referenceKind: 'master',
   });
@@ -66,6 +76,42 @@ test('a perturbed approved image fails its reviewed digest', () => {
     /digest mismatch/,
   );
 });
+
+test('missing declared dimensions fail closed at manifest load', () => {
+  const fixture = approvalFixture();
+  const manifestPath = join(fixture.approvalDir, 'manifest.json');
+  const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
+  delete manifest.approvals[0].fromDimensions;
+  writeFileSync(manifestPath, JSON.stringify(manifest));
+  assert.throws(
+    () => loadVisualApprovals({ ...fixture, plannedPaths: ['wayfinder/mobile-light.png'] }),
+    /must declare positive integer fromDimensions and toDimensions/,
+  );
+});
+
+test('an explicitly declared dimension change validates old, approved, and candidate images', () => {
+  const fixture = approvalFixture();
+  const approvals = loadVisualApprovals({ ...fixture, plannedPaths: ['wayfinder/mobile-light.png'] });
+  const reference = selectVisualReference('wayfinder/mobile-light.png', '/master/mobile.png', approvals);
+  assert.doesNotThrow(() => validateVisualApprovalDimensions(reference, {
+    master: { width: 320, height: 10866 },
+    approved: { width: 320, height: 11035 },
+    candidate: { width: 320, height: 11035 },
+  }));
+});
+
+for (const [label, images, error] of [
+  ['old master', { master: { width: 320, height: 10865 }, approved: { width: 320, height: 11035 }, candidate: { width: 320, height: 11035 } }, /master dimensions/],
+  ['approved image', { master: { width: 320, height: 10866 }, approved: { width: 320, height: 11034 }, candidate: { width: 320, height: 11035 } }, /approved dimensions/],
+  ['candidate image', { master: { width: 320, height: 10866 }, approved: { width: 320, height: 11035 }, candidate: { width: 320, height: 11036 } }, /candidate dimensions/],
+]) {
+  test(`a wrong ${label} dimension fails closed`, () => {
+    const fixture = approvalFixture();
+    const approvals = loadVisualApprovals({ ...fixture, plannedPaths: ['wayfinder/mobile-light.png'] });
+    const reference = selectVisualReference('wayfinder/mobile-light.png', '/master/mobile.png', approvals);
+    assert.throws(() => validateVisualApprovalDimensions(reference, images), error);
+  });
+}
 
 test('visual CLI rejects a shared reference and candidate directory', () => {
   const result = spawnSync(process.execPath, [
