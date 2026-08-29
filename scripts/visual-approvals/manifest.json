@@ -1,0 +1,13 @@
+{
+  "baseSha": "02a0755c9294d13c22ec8cfb554fee67d91c3157",
+  "approvals": [
+    {
+      "path": "index-wayfinder-open/mobile-light.png",
+      "sha256": "013eb908d01db75677104f4a9c440d225ae7b5b7c5b3237a5c8e62966e790f9f"
+    },
+    {
+      "path": "index-wayfinder-open/mobile-dark.png",
+      "sha256": "013eb908d01db75677104f4a9c440d225ae7b5b7c5b3237a5c8e62966e790f9f"
+    }
+  ]
+}
