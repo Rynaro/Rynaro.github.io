@@ -122,24 +122,135 @@ button.wayfinder__trigger { font: inherit; cursor: pointer; }
 // its own space above the heading, instrument, and routes.
 @media (max-width: 64rem) {
   .astrolabe { padding: 1rem; }
-  .astrolabe__frame, .wayfinder-ready .astrolabe__frame { min-height: 0; }
-  .astrolabe__utility { position: relative; top: auto; right: auto; max-width: none; margin: 1rem 1rem 0; }
-  .astrolabe__header { position: relative; top: auto; left: auto; padding: 1.25rem 1.5rem 1rem; }
+  .astrolabe__frame, .wayfinder-ready .astrolabe__frame {
+    box-sizing: border-box;
+    display: grid;
+    width: 100%;
+    grid-template-columns: minmax(15rem,.8fr) minmax(17rem,1fr);
+    grid-template-rows: auto auto 1fr;
+    min-height: min(46rem,calc(100dvh - 2rem));
+    padding: 1rem;
+  }
+  .astrolabe__utility { position: relative; top: auto; right: auto; grid-column: 1 / -1; grid-row: 1; max-width: none; margin: 0; }
+  .astrolabe__header { position: relative; top: auto; left: auto; grid-column: 1; grid-row: 2; align-self: end; padding: 1.25rem 1.5rem 1rem; }
   .astrolabe__header h2 { font-size: 2.4rem; }
   .astrolabe__instrument {
     position: relative;
     top: auto;
     left: auto;
-    width: min(24rem,calc(100vw - 5rem));
-    margin: .5rem auto 1.25rem;
+    grid-column: 1;
+    grid-row: 3;
+    width: min(20rem,36vw);
+    align-self: center;
+    justify-self: center;
+    margin: 0;
     transform: none;
   }
-  .astrolabe__routes { position: relative; inset: auto; display: grid; gap: .25rem; padding: .75rem 1.25rem 3.5rem; }
+  .astrolabe__routes { position: relative; inset: auto; display: grid; grid-column: 2; grid-row: 2 / 4; align-content: center; gap: .25rem; padding: 1rem 1.25rem; }
   .astrolabe__route { position: static; width: 100%; }
   .astrolabe__route a { min-height: 58px; padding: .25rem; background: rgba(21,21,38,.45); }
   .astrolabe__hint { right: auto; left: 1.75rem; }
   .astrolabe__constellation-controls { width: auto; flex: 1 1 auto; flex-wrap: wrap; }
   .astrolabe__hint { display: none; }
+}
+
+// On phones the sky becomes ambient cartography rather than a block in the
+// document flow. The sticky utility remains reachable while the compact route
+// index fits within the viewport.
+@media (max-width: 36rem) {
+  .astrolabe { padding: 0; }
+  .wayfinder-ready .astrolabe { place-items: start center; overflow: hidden; }
+  .astrolabe__frame, .wayfinder-ready .astrolabe__frame {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    height: 100dvh;
+    min-height: 0;
+    padding: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  .astrolabe__utility {
+    position: sticky;
+    z-index: 6;
+    top: 0;
+    min-height: 56px;
+    align-items: center;
+    gap: .4rem;
+    margin: 0;
+    padding: .35rem .65rem;
+    background: rgba(21,21,38,.97);
+    box-shadow: 0 .35rem 1rem rgba(10,9,20,.3);
+  }
+  .astrolabe:not(.are-constellations-ready) .astrolabe__utility { display: none; }
+  .astrolabe__constellation-controls {
+    width: auto;
+    min-width: 0;
+    min-height: 44px;
+    flex: 1 1 auto;
+    flex-wrap: nowrap;
+    gap: .35rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+  .astrolabe__constellation-status {
+    flex: 1 1 auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .astrolabe__privacy,
+  .astrolabe__route-description {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .astrolabe__locate { min-width: 44px; padding-inline: .55rem; }
+  .astrolabe__header {
+    position: relative;
+    z-index: 2;
+    padding: .55rem .9rem .35rem;
+  }
+  .astrolabe__eyebrow { margin-bottom: .25rem; font-size: .55rem; }
+  .astrolabe__header h2 { font-size: 1.7rem; }
+  .astrolabe__header > p:last-child { margin-top: .25rem; font-size: .72rem; }
+  .astrolabe__instrument {
+    position: absolute;
+    z-index: 1;
+    top: 4.25rem;
+    right: 1.5rem;
+    left: auto;
+    width: min(25dvh,12rem);
+    max-height: 25dvh;
+    margin: 0;
+    opacity: .42;
+    pointer-events: none;
+  }
+  .astrolabe__routes {
+    position: relative;
+    z-index: 3;
+    display: grid;
+    gap: 0;
+    padding: .25rem .65rem .65rem;
+  }
+  .astrolabe__route a {
+    box-sizing: border-box;
+    min-height: 52px;
+    max-height: 56px;
+    padding: .2rem .35rem;
+    background: linear-gradient(90deg,rgba(21,21,38,.82),rgba(21,21,38,.48));
+  }
+  .astrolabe__route-mark { width: 2.5rem; height: 2.5rem; }
+  .astrolabe__route-label { font-size: 1.05rem; }
 }
 
 @media (max-width: $tablet-breakpoint) {
@@ -149,11 +260,10 @@ button.wayfinder__trigger { font: inherit; cursor: pointer; }
 }
 
 @media (max-width: 360px) {
-  .astrolabe__utility { margin-inline: .75rem; gap: .4rem; }
-  .astrolabe__constellation-controls { padding-left: .5rem; }
-  .astrolabe__constellation-status, .astrolabe__privacy { flex-basis: 100%; }
+  .astrolabe__utility { gap: .3rem; padding-inline: .45rem; }
+  .astrolabe__locate { padding-inline: .4rem; font-size: .5rem; }
   .astrolabe__header { padding-inline: 1rem; }
-  .astrolabe__routes { padding-inline: .75rem; }
+  .astrolabe__routes { padding-inline: .55rem; }
   .astrolabe__route-label { font-size: 1.05rem; }
 }
 

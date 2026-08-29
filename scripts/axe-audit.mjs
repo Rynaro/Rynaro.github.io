@@ -277,11 +277,29 @@ async function newPage() {
 // Dynamic constellation copy lives in a compact utility strip beside the close
 // control and must never cover chart content at supported viewports.
 {
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 }, javaScriptEnabled: false });
+  const page = await context.newPage();
+  await page.goto(`${base}/index.html#astrolabe-chart`, { waitUntil: 'networkidle' });
+  const fallback = await page.locator('#astrolabe-chart').evaluate((chart) => ({
+    visible: getComputedStyle(chart).display !== 'none',
+    routes: chart.querySelectorAll('.astrolabe__route').length,
+    overflow: chart.scrollWidth - chart.clientWidth,
+  }));
+  if (fallback.visible && fallback.routes === 5 && fallback.overflow <= 0) ok('Wayfinder no-JavaScript phone chart keeps all routes and no horizontal overflow');
+  else fail(`Wayfinder no-JavaScript phone chart regressed: ${JSON.stringify(fallback)}`);
+  await context.close();
+}
+
+{
   const viewports = [
     { width: 1280, height: 800 },
     { width: 900, height: 700 },
     { width: 768, height: 1024 },
+    { width: 568, height: 800 },
+    { width: 481, height: 800 },
+    { width: 430, height: 932 },
     { width: 390, height: 844 },
+    { width: 320, height: 800 },
   ];
   const intersects = (a, b) => !!a && !!b && a.x < b.x + b.width && a.x + a.width > b.x && a.y < b.y + b.height && a.y + a.height > b.y;
   const contains = (outer, inner, tolerance = 1) => !!outer && !!inner
@@ -311,6 +329,15 @@ async function newPage() {
       const box = item.getBoundingClientRect();
       return { x: box.x, y: box.y, width: box.width, height: box.height };
     }));
+    const horizontalOverflow = await page.locator('.astrolabe').evaluate((overlay) => {
+      const frame = overlay.querySelector('.astrolabe__frame');
+      return {
+        overlay: overlay.scrollWidth - overlay.clientWidth,
+        frame: frame.scrollWidth - frame.clientWidth,
+      };
+    });
+    if (viewport.width <= 1024 && horizontalOverflow.overlay <= 0 && horizontalOverflow.frame <= 0) ok(`Wayfinder overlay and frame have no horizontal overflow at ${viewport.width}x${viewport.height}`);
+    else if (viewport.width <= 1024) fail(`Wayfinder horizontal overflow at ${viewport.width}x${viewport.height}: ${JSON.stringify(horizontalOverflow)}`);
     const routeOverlap = routes.some((route) => intersects(controls, route));
     if (!routeOverlap) ok(`Wayfinder controls clear every route at ${viewport.width}x${viewport.height}`);
     else fail(`Wayfinder controls overlap a route at ${viewport.width}x${viewport.height}`);
@@ -332,6 +359,67 @@ async function newPage() {
     else fail(`Wayfinder strip does not stay left of the close control at ${viewport.width}x${viewport.height}`);
     if (viewport.width <= 1024 && header.y >= utility.y + utility.height - 1) ok(`Wayfinder heading follows its utility zone at ${viewport.width}x${viewport.height}`);
     else if (viewport.width <= 1024) fail(`Wayfinder utility zone does not reserve space above the heading at ${viewport.width}x${viewport.height}`);
+
+    if (viewport.width > 576 && viewport.width <= 1024) {
+      const tabletLayout = await page.locator('.astrolabe__frame').evaluate((frame) => ({
+        ratio: frame.scrollHeight / frame.clientHeight,
+        columns: getComputedStyle(frame).gridTemplateColumns.split(' ').filter(Boolean).length,
+      }));
+      if (tabletLayout.columns === 2) ok(`Wayfinder uses two balanced tablet regions at ${viewport.width}x${viewport.height}`);
+      else fail(`Wayfinder tablet layout collapsed into ${tabletLayout.columns} region(s) at ${viewport.width}x${viewport.height}`);
+      if (!intersects(instrument, routes[0]) && routes.every((route) => !intersects(instrument, route))) ok(`Wayfinder tablet instrument stays beside the route region at ${viewport.width}x${viewport.height}`);
+      else fail(`Wayfinder tablet instrument overlaps its route region at ${viewport.width}x${viewport.height}`);
+      if (tabletLayout.ratio <= 1.15) ok(`Wayfinder tablet scroll ratio ${tabletLayout.ratio.toFixed(3)} <= 1.15 at ${viewport.width}x${viewport.height}`);
+      else fail(`Wayfinder tablet scroll ratio ${tabletLayout.ratio.toFixed(3)} exceeds 1.15 at ${viewport.width}x${viewport.height}`);
+    }
+
+    if (viewport.width <= 576) {
+      const layout = await page.locator('.astrolabe__frame').evaluate((frame) => {
+        const routeElements = [...frame.querySelectorAll('.astrolabe__route')];
+        const first = routeElements[0].getBoundingClientRect();
+        const last = routeElements.at(-1).getBoundingClientRect();
+        return {
+          clientHeight: frame.clientHeight,
+          scrollHeight: frame.scrollHeight,
+          frameTop: frame.getBoundingClientRect().top,
+          firstTop: first.top,
+          firstBottom: first.bottom,
+          lastBottom: last.bottom,
+          routeHeights: routeElements.map((route) => route.getBoundingClientRect().height),
+        };
+      });
+      const allowedRatio = viewport.width === 320 ? 1.15 : 1;
+      const ratio = layout.scrollHeight / layout.clientHeight;
+      if (ratio <= allowedRatio + .001) ok(`Wayfinder phone scroll ratio ${ratio.toFixed(3)} <= ${allowedRatio} at ${viewport.width}x${viewport.height}`);
+      else fail(`Wayfinder phone scroll ratio ${ratio.toFixed(3)} exceeds ${allowedRatio} at ${viewport.width}x${viewport.height}`);
+      if (layout.firstTop >= layout.frameTop - 1 && layout.firstBottom <= viewport.height + 1) ok(`First Wayfinder route is visible without scroll at ${viewport.width}x${viewport.height}`);
+      else fail(`First Wayfinder route is not initially visible at ${viewport.width}x${viewport.height}`);
+      if (layout.lastBottom <= viewport.height * allowedRatio + 1) ok(`All Wayfinder routes fit the phone budget at ${viewport.width}x${viewport.height}`);
+      else fail(`Wayfinder routes exceed the phone budget at ${viewport.width}x${viewport.height}`);
+      if (layout.routeHeights.every((height) => height >= 52 && height <= 56)) ok(`Wayfinder route rows stay 52–56px at ${viewport.width}x${viewport.height}`);
+      else fail(`Wayfinder route row height escaped 52–56px at ${viewport.width}x${viewport.height}: ${layout.routeHeights.join(', ')}`);
+      const descriptions = await page.locator('.astrolabe__route-description').evaluateAll((items) => items.map((item) => ({
+        text: item.textContent.trim(),
+        width: item.getBoundingClientRect().width,
+        height: item.getBoundingClientRect().height,
+      })));
+      if (descriptions.every((item) => item.text && item.width <= 1 && item.height <= 1)) ok(`Wayfinder route descriptions stay accessible but visually compact at ${viewport.width}x${viewport.height}`);
+      else fail(`Wayfinder route descriptions lost text or visible space at ${viewport.width}x${viewport.height}`);
+
+      const sticky = await page.locator('.astrolabe__frame').evaluate((frame) => {
+        const close = frame.querySelector('.astrolabe__close');
+        const before = close.getBoundingClientRect().top;
+        const spacer = document.createElement('div');
+        spacer.style.height = '1000px';
+        spacer.setAttribute('aria-hidden', 'true');
+        frame.append(spacer);
+        frame.scrollTop = 240;
+        const after = close.getBoundingClientRect().top;
+        return { before, after, scrollTop: frame.scrollTop };
+      });
+      if (sticky.scrollTop > 0 && Math.abs(sticky.after - sticky.before) <= 1) ok(`Wayfinder close remains sticky after scroll at ${viewport.width}x${viewport.height}`);
+      else fail(`Wayfinder close moved after scroll at ${viewport.width}x${viewport.height}`);
+    }
     await context.close();
   }
 }
