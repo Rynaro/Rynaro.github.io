@@ -9,6 +9,7 @@ import { loadVisualApprovals, selectVisualReference, validateVisualApprovalDimen
 import { createHash } from 'node:crypto';
 
 const source = readFileSync(new URL('./visual-baseline.mjs', import.meta.url), 'utf8');
+const packageJson = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
 
 test('visual CLI exposes isolated reference, candidate, and report paths', () => {
   for (const contract of ['--baseline-dir', '--output-dir', '--report', '--approval-dir']) {
@@ -17,6 +18,7 @@ test('visual CLI exposes isolated reference, candidate, and report paths', () =>
   assert.match(source, /capturePlan\.length !== 100/);
   assert.match(source, /inventory mismatch/);
   assert.match(source, /source\.json/);
+  assert.match(source, /dataset\.renderProfile/, 'Wayfinder captures wait for the catalog-backed sky render');
 });
 
 function approvalFixture(baseSha = 'accepted-master') {
@@ -37,6 +39,15 @@ function approvalFixture(baseSha = 'accepted-master') {
   writeFileSync(join(approvalDir, 'wayfinder/mobile-light.png'), reviewed);
   return { approvalDir, baselineDir };
 }
+
+test('an omitted approval directory selects every visual from master', () => {
+  assert.doesNotMatch(packageJson.scripts['ci:visual:compare'], /--approval-dir/, 'CI compares all 100 paths to master when no approvals are active');
+  const approvals = loadVisualApprovals({ approvalDir: null, baselineDir: '/unused', plannedPaths: ['wayfinder/mobile-light.png'] });
+  assert.equal(approvals, null);
+  assert.deepEqual(selectVisualReference('wayfinder/mobile-light.png', '/master/mobile.png', approvals), {
+    path: '/master/mobile.png', referenceKind: 'master',
+  });
+});
 
 test('only exact manifest paths select an approved reference', () => {
   const fixture = approvalFixture();

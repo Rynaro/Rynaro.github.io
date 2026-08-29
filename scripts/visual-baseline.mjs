@@ -439,6 +439,7 @@ async function captureScreenshot(browser, base, target, viewport, theme) {
     await trigger.waitFor({ state: 'visible' });
     await trigger.click();
     await page.locator('#astrolabe-chart.is-open').waitFor({ state: 'visible' });
+    await page.waitForFunction(() => document.querySelector('[data-wayfinder-constellations]')?.dataset.renderProfile);
   }
   await waitForStableRender(page);
   const buffer = await captureStableScreenshot(page);

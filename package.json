@@ -50,7 +50,7 @@
     "test:visual:update": "bundle exec jekyll build && node scripts/visual-baseline.mjs --update",
     "test:visual-cli": "node --test scripts/visual-baseline.test.mjs",
     "ci:visual:reference": "node scripts/visual-baseline.mjs --update --baseline-dir .visual/reference --report .visual/reference-report.json",
-    "ci:visual:compare": "node scripts/visual-baseline.mjs --baseline-dir .visual/reference --approval-dir scripts/visual-approvals --output-dir .visual/candidate --report .visual/report.json"
+    "ci:visual:compare": "node scripts/visual-baseline.mjs --baseline-dir .visual/reference --output-dir .visual/candidate --report .visual/report.json"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",

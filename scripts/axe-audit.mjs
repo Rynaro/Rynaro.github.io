@@ -313,6 +313,7 @@ async function newPage() {
     await page.goto(`${base}/index.html`, { waitUntil: 'networkidle' });
     await page.locator('.wayfinder__trigger').click();
     await page.locator('.astrolabe.are-constellations-ready.is-open').waitFor();
+    await page.waitForFunction(() => document.querySelector('[data-wayfinder-constellations]')?.dataset.renderProfile);
     await page.locator('[data-constellation-status]').evaluate((status) => {
       status.textContent = 'Location could not be determined after waiting for permission · the constellation chart continues using the São Paulo fallback sky';
     });
@@ -329,6 +330,30 @@ async function newPage() {
       const box = item.getBoundingClientRect();
       return { x: box.x, y: box.y, width: box.width, height: box.height };
     }));
+    const skyMetrics = await page.locator('[data-wayfinder-constellations]').evaluate((canvas) => ({
+      profile: canvas.dataset.renderProfile,
+      figures: Number(canvas.dataset.renderFigures),
+      eligibleFigures: Number(canvas.dataset.renderEligibleFigures),
+      stars: Number(canvas.dataset.renderStars),
+      labels: Number(canvas.dataset.renderLabels),
+      renderMs: Number(canvas.dataset.renderMs),
+      labelBoxes: JSON.parse(canvas.dataset.labelBoxes || '[]'),
+    }));
+    const expectedProfile = viewport.width <= 576 ? 'compact' : viewport.width <= 1024 ? 'tablet' : 'desktop';
+    if (skyMetrics.profile === expectedProfile) ok(`Wayfinder uses ${expectedProfile} sky profile at ${viewport.width}x${viewport.height}`);
+    else fail(`Wayfinder used ${skyMetrics.profile} instead of ${expectedProfile} at ${viewport.width}x${viewport.height}`);
+    if (expectedProfile === 'compact' && skyMetrics.figures <= 6 && skyMetrics.stars <= 28 && skyMetrics.labels === 0) ok(`Compact sky renders ${skyMetrics.figures} figures / ${skyMetrics.stars} stars / no labels in ${skyMetrics.renderMs.toFixed(2)}ms at ${viewport.width}x${viewport.height}`);
+    else if (expectedProfile === 'compact') fail(`Compact sky exceeded its budget at ${viewport.width}x${viewport.height}: ${JSON.stringify(skyMetrics)}`);
+    if (expectedProfile === 'tablet' && skyMetrics.eligibleFigures === 18 && skyMetrics.labels <= 4) ok(`Tablet sky keeps all figures eligible, renders ${skyMetrics.stars} stars / ${skyMetrics.labels} labels in ${skyMetrics.renderMs.toFixed(2)}ms at ${viewport.width}x${viewport.height}`);
+    else if (expectedProfile === 'tablet') fail(`Tablet sky profile budget regressed at ${viewport.width}x${viewport.height}: ${JSON.stringify(skyMetrics)}`);
+    if (expectedProfile === 'desktop' && skyMetrics.eligibleFigures === 18 && skyMetrics.labels <= 7) ok(`Desktop sky keeps all figures eligible, renders ${skyMetrics.stars} stars / ${skyMetrics.labels} labels in ${skyMetrics.renderMs.toFixed(2)}ms at ${viewport.width}x${viewport.height}`);
+    else if (expectedProfile === 'desktop') fail(`Desktop sky profile budget regressed at ${viewport.width}x${viewport.height}: ${JSON.stringify(skyMetrics)}`);
+    const acceptedLabelsOverlap = skyMetrics.labelBoxes.some((box, index) => skyMetrics.labelBoxes.slice(index + 1).some((other) => intersects(
+      { x: box.left, y: box.top, width: box.right - box.left, height: box.bottom - box.top },
+      { x: other.left, y: other.top, width: other.right - other.left, height: other.bottom - other.top },
+    )));
+    if (!acceptedLabelsOverlap) ok(`Accepted sky labels do not overlap at ${viewport.width}x${viewport.height}`);
+    else fail(`Accepted sky labels overlap at ${viewport.width}x${viewport.height}`);
     const horizontalOverflow = await page.locator('.astrolabe').evaluate((overlay) => {
       const frame = overlay.querySelector('.astrolabe__frame');
       return {
@@ -338,6 +363,18 @@ async function newPage() {
     });
     if (viewport.width <= 1024 && horizontalOverflow.overlay <= 0 && horizontalOverflow.frame <= 0) ok(`Wayfinder overlay and frame have no horizontal overflow at ${viewport.width}x${viewport.height}`);
     else if (viewport.width <= 1024) fail(`Wayfinder horizontal overflow at ${viewport.width}x${viewport.height}: ${JSON.stringify(horizontalOverflow)}`);
+    if (viewport.width === 390) {
+      const resizeDraws = await page.locator('[data-wayfinder-constellations]').evaluate(async (canvas) => {
+        const before = Number(canvas.dataset.renderCount);
+        window.dispatchEvent(new Event('resize'));
+        window.dispatchEvent(new Event('resize'));
+        window.dispatchEvent(new Event('resize'));
+        await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+        return Number(canvas.dataset.renderCount) - before;
+      });
+      if (resizeDraws === 1) ok('Wayfinder coalesces resize bursts into one animation-frame redraw');
+      else fail(`Wayfinder used ${resizeDraws} redraws for one resize burst`);
+    }
     const routeOverlap = routes.some((route) => intersects(controls, route));
     if (!routeOverlap) ok(`Wayfinder controls clear every route at ${viewport.width}x${viewport.height}`);
     else fail(`Wayfinder controls overlap a route at ${viewport.width}x${viewport.height}`);
