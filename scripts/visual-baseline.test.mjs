@@ -17,6 +17,7 @@ test('visual CLI exposes isolated reference, candidate, and report paths', () =>
   assert.match(source, /capturePlan\.length !== 100/);
   assert.match(source, /inventory mismatch/);
   assert.match(source, /source\.json/);
+  assert.match(source, /dataset\.renderProfile/, 'Wayfinder captures wait for the catalog-backed sky render');
 });
 
 function approvalFixture(baseSha = 'accepted-master') {
