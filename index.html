@@ -2,6 +2,7 @@
 layout: default
 ---
 {% assign home = site.data.homepage %}
+{% assign fallback_plate = home.hero.plates | first %}
 <article class="atelier-home">
   <section class="atelier-threshold" aria-labelledby="threshold-title">
     <div class="atelier-shell atelier-threshold__grid">
@@ -12,7 +13,7 @@ layout: default
         <div class="atelier-actions"><a class="atelier-button atelier-button--primary" href="#field-notes">Enter the notebook</a><a class="atelier-button" href="#artifacts">Inspect the work</a></div>
         <ul class="atelier-socials" aria-label="Henrique elsewhere">{% for social in site.data.profile.social_links %}<li><a href="{{ social.url }}" target="_blank" rel="noopener" aria-label="{{ social.name }}"><span>{{ social.name }}</span></a></li>{% endfor %}</ul>
       </div>
-      <figure class="atelier-plate" aria-labelledby="plate-caption"><span class="atelier-plate__orbit" aria-hidden="true"></span><img src="{{ '/assets/images/code-alchemist.svg' | relative_url }}" alt="" width="480" height="480"><figcaption id="plate-caption">{{ home.hero.plate_caption }}</figcaption></figure>
+      <figure class="atelier-plate" aria-labelledby="plate-caption" data-home-plate><img src="{{ fallback_plate.src | relative_url }}" alt="" width="860" height="860" decoding="async" data-home-plate-image><figcaption id="plate-caption" data-home-plate-caption>{{ fallback_plate.caption }}</figcaption><template data-home-plate-options>[{% for plate in home.hero.plates %}{"src":{{ plate.src | relative_url | jsonify }},"caption":{{ plate.caption | jsonify }}}{% unless forloop.last %},{% endunless %}{% endfor %}]</template></figure>
     </div>
   </section>
 

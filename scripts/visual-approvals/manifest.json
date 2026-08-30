@@ -1,0 +1,53 @@
+{
+  "baseSha": "d2abe6881b2526b8553b24f58f0aa0cf1f13ec41",
+  "approvals": [
+    {
+      "path": "index/mobile-light.png",
+      "sha256": "b4c949c7a3109ce2cb82d3b168a95dcd1c74f5d2029a5e9d0b2d1a4674cb39ab",
+      "fromDimensions": [320, 10866],
+      "toDimensions": [320, 10842]
+    },
+    {
+      "path": "index/mobile-dark.png",
+      "sha256": "4e0a3387d34ce4328f1218eab916998627d5f1c01193849f977b55ac6fd3221e",
+      "fromDimensions": [320, 10866],
+      "toDimensions": [320, 10842]
+    },
+    {
+      "path": "index/tablet-light.png",
+      "sha256": "2bc416980f3d93e09799b0f5f680f3f5cb1a90f689e90d4ba958e019377595b7",
+      "fromDimensions": [768, 6834],
+      "toDimensions": [768, 6834]
+    },
+    {
+      "path": "index/tablet-dark.png",
+      "sha256": "2bc416980f3d93e09799b0f5f680f3f5cb1a90f689e90d4ba958e019377595b7",
+      "fromDimensions": [768, 6834],
+      "toDimensions": [768, 6834]
+    },
+    {
+      "path": "index/desktop-light.png",
+      "sha256": "d42970b95cf56cd3f8f0357411622d4d4f3017050d8d131b843de6518a2c36ea",
+      "fromDimensions": [1280, 6663],
+      "toDimensions": [1280, 6663]
+    },
+    {
+      "path": "index/desktop-dark.png",
+      "sha256": "d42970b95cf56cd3f8f0357411622d4d4f3017050d8d131b843de6518a2c36ea",
+      "fromDimensions": [1280, 6663],
+      "toDimensions": [1280, 6663]
+    },
+    {
+      "path": "index-wayfinder-open/mobile-light.png",
+      "sha256": "a2e0195490068840467cfe1227d54e12d0a5e6916995805cf1e23b13380e2c72",
+      "fromDimensions": [320, 10866],
+      "toDimensions": [320, 10842]
+    },
+    {
+      "path": "index-wayfinder-open/mobile-dark.png",
+      "sha256": "a2e0195490068840467cfe1227d54e12d0a5e6916995805cf1e23b13380e2c72",
+      "fromDimensions": [320, 10866],
+      "toDimensions": [320, 10842]
+    }
+  ]
+}

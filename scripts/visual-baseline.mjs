@@ -415,6 +415,13 @@ function installFixedClock() {
   window.Date = FixedDate;
 }
 
+// The homepage intentionally chooses one plate per page load. Pin randomness
+// in visual captures so the accepted arrival fallback is compared every time,
+// rather than letting screenshot references alternate between valid plates.
+function installFixedRandom() {
+  Math.random = () => 0;
+}
+
 async function captureScreenshot(browser, base, target, viewport, theme) {
   const context = await browser.newContext({
     viewport,
@@ -423,6 +430,7 @@ async function captureScreenshot(browser, base, target, viewport, theme) {
     colorScheme: theme === 'dark' ? 'dark' : 'light',
   });
   await context.addInitScript(installFixedClock);
+  await context.addInitScript(installFixedRandom);
   const page = await context.newPage();
   await page.goto(base + target.url, { waitUntil: 'networkidle' });
   if (theme === 'dark-class') {

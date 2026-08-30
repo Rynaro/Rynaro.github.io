@@ -67,6 +67,7 @@ exclude:
   - node_modules
   - vendor
   - .git
+  - .archive
   - README.md
   - CONVENTIONS.md
   - package.json

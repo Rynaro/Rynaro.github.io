@@ -1,5 +1,37 @@
 (function () {
   'use strict';
+
+  var plate = document.querySelector('[data-home-plate]');
+  if (plate) {
+    var plateImage = plate.querySelector('[data-home-plate-image]');
+    var plateCaption = plate.querySelector('[data-home-plate-caption]');
+    var plateOptions = plate.querySelector('[data-home-plate-options]');
+    if (plateImage && plateCaption && plateOptions) {
+      var fallbackSrc = plateImage.getAttribute('src');
+      var fallbackCaption = plateCaption.textContent;
+      var optionsText = plateOptions.content ? plateOptions.content.textContent : plateOptions.textContent;
+      var options = [];
+      try {
+        options = JSON.parse(optionsText);
+      } catch (error) {
+        options = [];
+      }
+      options = options.filter(function (option) {
+        return option && typeof option.src === 'string' && typeof option.caption === 'string';
+      });
+      if (options.length) {
+        var selectedPlate = options[Math.floor(Math.random() * options.length)];
+        plateImage.addEventListener('error', function restoreFallback() {
+          plateImage.removeEventListener('error', restoreFallback);
+          plateImage.setAttribute('src', fallbackSrc);
+          plateCaption.textContent = fallbackCaption;
+        });
+        plateCaption.textContent = selectedPlate.caption;
+        plateImage.setAttribute('src', selectedPlate.src);
+      }
+    }
+  }
+
   var constellation = document.querySelector('[data-constellation]');
   if (!constellation) return;
   var tablist = constellation.querySelector('[data-era-tabs]');
