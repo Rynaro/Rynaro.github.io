@@ -5,6 +5,7 @@ _site
 vendor
 node_modules
 .bundle
+.DS_Store
 /scripts/baselines/
 /.visual/
 
