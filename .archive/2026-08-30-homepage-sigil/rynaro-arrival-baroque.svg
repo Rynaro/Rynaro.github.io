@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200" role="img" aria-labelledby="title desc">
+<title id="title">Diagram of Rynaro’s arrival</title><desc id="desc">A returning masked water-tyrant enters a broken engraved threshold above a living perch, marked by four stages and a quiet cross-axis.</desc>
+<defs><symbol id="registration-node" viewBox="-5 -5 10 10" overflow="visible"><circle cx="0" cy="0" r="4" fill="#E6A44A"/></symbol></defs>
+<g fill="none" stroke="#756F91" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path pathLength="100" d="M31 139A76 76 0 1 1 170 145C177 148 181 154 178 160C175 166 168 166 164 161"/><path d="M31 139C23 138 20 130 24 124C27 119 34 120 35 126"/><path pathLength="100" d="M45 135A62 62 0 1 1 157 141C163 143 166 149 163 154C160 158 154 157 152 153"/><path d="M45 135C39 133 37 127 40 123C42 120 47 121 48 125"/></g>
+<use href="#registration-node" x="48" y="62" width="10" height="10"/><use href="#registration-node" x="95" y="21" width="10" height="10"/><use href="#registration-node" x="143" y="49" width="10" height="10"/><use href="#registration-node" x="167" y="97" width="10" height="10"/>
+<path fill="none" stroke="#756F91" stroke-width="3" stroke-linecap="round" d="M101 44V151M88 76H117"/>
+<path fill="#E6A44A" d="M15 166L28 162C52 156 77 149 104 142C132 135 159 137 184 127L190 139C162 150 134 149 107 155C79 161 51 171 27 182L17 178L22 173Z"/>
+<path fill="none" stroke="#756F91" stroke-width="2.5" stroke-linecap="round" d="M29 169C55 162 81 155 107 149C134 143 157 144 181 135"/>
+<path fill="none" stroke="#756F91" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" d="M78 158C80 147 77 137 71 129C66 123 64 116 67 109"/>
+<path fill="#756F91" d="M67 112C58 109 54 102 58 95C67 98 72 105 70 112Z"/><path fill="#756F91" d="M72 132C63 132 59 128 59 122C67 121 72 125 75 130Z"/>
+<path fill="#E6A44A" d="M113 117C101 124 87 132 74 138L81 149C96 145 110 138 122 129Z"/>
+<path fill="none" stroke="#E6A44A" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" d="M112 84C126 75 146 79 157 95C168 110 163 130 148 140C134 149 115 144 107 130C99 116 100 96 112 84Z"/>
+<path fill="none" stroke="#E6A44A" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" d="M137 85C137 71 128 60 115 59C103 58 95 66 95 78L82 84L97 89C104 97 117 99 128 92"/>
+<path fill="#E6A44A" fill-rule="evenodd" d="M96 69C104 64 116 64 126 68C132 70 136 74 138 79L128 85C123 79 117 76 110 77C104 77 99 80 95 84L92 77C92 74 94 71 96 69ZM106 70A3 3 0 1 0 112 70A3 3 0 1 0 106 70Z"/>
+<path fill="#E6A44A" d="M119 93C132 89 145 96 150 108C145 123 134 134 119 137C112 126 111 108 119 93Z"/>
+<path fill="none" stroke="#756F91" stroke-width="3" stroke-linecap="round" d="M121 126C132 123 141 116 146 106"/>
+<path fill="none" stroke="#E6A44A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" d="M121 136L119 151M119 148L111 153M119 148L126 151M140 138L137 147M137 146L130 150M137 146L144 148"/>
+</svg>

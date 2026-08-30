@@ -6,7 +6,11 @@ hero:
     software architecture, developer tools, and AI-assisted engineering. My craft
     is turning ambiguity into clear systems, helping teams move with confidence,
     and running experiments that never claim more than the evidence allows.
-  plate_caption: "The Code Alchemist's seal — a compass for systems, teams, and strange new tools."
+  plates:
+    - src: "/assets/images/rynaro-arrival-baroque-860.png"
+      caption: "Rynaro comes from nowhere—and appears exactly where he is needed."
+    - src: "/assets/images/rynaro-second-stem-860.png"
+      caption: "When Henrique must become more without becoming less, Rynaro answers."
 
 transformations_intro: >-
   A career is less a ladder than a map redrawn in motion. These are the four
