@@ -42,15 +42,12 @@ function approvalFixture(baseSha = 'accepted-master') {
 }
 
 test('an omitted approval directory selects every visual from master', () => {
+  assert.doesNotMatch(packageJson.scripts['ci:visual:compare'], /--approval-dir/, 'CI compares all 100 paths to master when no approvals are active');
   const approvals = loadVisualApprovals({ approvalDir: null, baselineDir: '/unused', plannedPaths: ['wayfinder/mobile-light.png'] });
   assert.equal(approvals, null);
   assert.deepEqual(selectVisualReference('wayfinder/mobile-light.png', '/master/mobile.png', approvals), {
     path: '/master/mobile.png', referenceKind: 'master',
   });
-});
-
-test('CI enables the path-bound visual approvals under review', () => {
-  assert.match(packageJson.scripts['ci:visual:compare'], /--approval-dir scripts\/visual-approvals/);
 });
 
 test('only exact manifest paths select an approved reference', () => {
