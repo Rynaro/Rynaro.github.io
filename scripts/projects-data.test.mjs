@@ -48,7 +48,7 @@ for (const [key, expected] of Object.entries(editorialSnapshot)) {
   if (project.language !== expected.language) fail(`${key} editorial language changed`);
   if (project.category !== expected.category) fail(`${key} editorial category changed`);
 }
-const expectedHomepage = ['eidolons', 'ariramba', 'cardboard-box', 'magicite', 'lararium', 'alchemists-orchid'];
+const expectedHomepage = ['eidolons', 'ariramba', 'cardboard-box', 'magicite', 'crystalium', 'lararium', 'alchemists-orchid'];
 if (homepage.artifact_keys?.join(',') !== expectedHomepage.join(',')) fail('homepage artifact keys/order changed');
 for (const key of homepage.artifact_keys || []) if (!keys.has(key)) fail(`homepage references missing project ${key}`);
 if (catalogue.projects?.filter(({ category }) => category === 'flagship').map(({ key }) => key).join(',') !== 'eidolons') fail('Eidolons must be the sole flagship');
