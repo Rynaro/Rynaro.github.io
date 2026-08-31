@@ -9,11 +9,11 @@ let failures = 0;
 const check = (condition, message) => condition ? console.log(`ok: ${message}`) : (console.error(`FAIL: ${message}`), failures += 1);
 const plain = (value) => value.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim().replace(/&amp;/g, '&');
 
-if (!existsSync(canonicalPath) || !existsSync(legacyPath)) {
-  check(false, 'canonical and legacy Letter output exists; run bundle exec jekyll build first');
+check(!existsSync(legacyPath), 'obsolete /letter.html compatibility output stays absent');
+if (!existsSync(canonicalPath)) {
+  check(false, 'canonical Letter output exists; run bundle exec jekyll build first');
 } else {
   const html = readFileSync(canonicalPath, 'utf8');
-  const legacy = readFileSync(legacyPath, 'utf8');
   const source = readFileSync(`${root}letter.html`, 'utf8');
   const script = readFileSync(`${root}assets/js/letter.js`, 'utf8');
   const data = yaml.load(readFileSync(`${root}_data/letter.yml`, 'utf8'));
@@ -30,8 +30,6 @@ if (!existsSync(canonicalPath) || !existsSync(legacyPath)) {
   check(/if \(!form\.checkValidity\(\)\) return;\s*event\.preventDefault\(\)/.test(script), 'native submit is only intercepted after validity and capability checks');
   check(/if \(!response\.ok\)/.test(script) && /form\.reset\(\);\s*showStatus\('success'\)/.test(script), 'reset occurs only after a successful response');
   check(!/innerHTML/.test(script), 'form behavior does not inject HTML');
-  check(/rel="canonical" href="https?:\/\/[^\"]+\/letter\/"/.test(legacy), 'legacy page declares the canonical route');
-  check(/http-equiv="refresh"[^>]+\/letter\//.test(legacy), 'legacy page redirects to /letter/');
 }
 console.log(failures ? `\nFAIL: ${failures} Letter check(s).` : '\nPASS (correspondence desk).');
 process.exit(failures ? 1 : 0);

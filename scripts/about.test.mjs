@@ -9,11 +9,11 @@ let failures = 0;
 const fail = (message) => { console.error(`FAIL: ${message}`); failures += 1; };
 const check = (condition, message) => condition ? console.log(`ok: ${message}`) : fail(message);
 
-if (!existsSync(canonicalPath) || !existsSync(legacyPath)) {
-  fail('canonical or legacy About output missing; run bundle exec jekyll build first');
+check(!existsSync(legacyPath), 'obsolete /about.html compatibility output stays absent');
+if (!existsSync(canonicalPath)) {
+  fail('canonical About output missing; run bundle exec jekyll build first');
 } else {
   const html = readFileSync(canonicalPath, 'utf8');
-  const legacy = readFileSync(legacyPath, 'utf8');
   const about = yaml.load(readFileSync(`${root}_data/about.yml`, 'utf8'));
   const homepage = yaml.load(readFileSync(`${root}_data/homepage.yml`, 'utf8'));
   const jobs = yaml.load(readFileSync(`${root}_data/jobs.yaml`, 'utf8'));
@@ -44,8 +44,6 @@ if (!existsSync(canonicalPath) || !existsSync(legacyPath)) {
   check((html.match(/about-craft__proficiency/g) || []).length === skills.categories.length, 'each skill category has a proficiency label');
   check(html.includes('Field inventory'), 'marginalia uses field inventory language');
   check(!/(role="meter"|role="progressbar"|mastery-|MP Cost|exp-bar\.js)/.test(html), 'legacy stats, mastery, mana, and obsolete scripts are absent');
-  check(/rel="canonical" href="https?:\/\/[^\"]+\/about\/"/.test(legacy), 'legacy page declares the canonical route');
-  check(/http-equiv="refresh"[^>]+\/about\//.test(legacy), 'legacy page redirects to the canonical route');
 }
 
 console.log(failures ? `\nFAIL: ${failures} About check(s).` : '\nPASS (About portrait).');
