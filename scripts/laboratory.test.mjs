@@ -7,11 +7,11 @@ const legacyPath = `${root}_site/laboratory.html`;
 let failures = 0;
 const fail = (message) => { console.error(`FAIL: ${message}`); failures += 1; };
 const check = (condition, message) => condition ? console.log(`ok: ${message}`) : fail(message);
-if (!existsSync(canonicalPath) || !existsSync(legacyPath)) {
-  fail('canonical or legacy Laboratory output missing; run bundle exec jekyll build first');
+check(!existsSync(legacyPath), 'obsolete /laboratory.html compatibility output stays absent');
+if (!existsSync(canonicalPath)) {
+  fail('canonical Laboratory output missing; run bundle exec jekyll build first');
 } else {
   const html = readFileSync(canonicalPath, 'utf8');
-  const legacy = readFileSync(legacyPath, 'utf8');
   check((html.match(/ data-project data-project-key=/g) || []).length === 20, 'all 20 projects render server-side');
   check((html.match(/data-project-section=/g) || []).length === 5, 'five semantic collections render');
   check(/data-laboratory-controls hidden/.test(html), 'enhancement controls start hidden');
@@ -28,8 +28,6 @@ if (!existsSync(canonicalPath) || !existsSync(legacyPath)) {
   }
   for (const key of ['eidolons', 'ariramba', 'magicite', 'crystalium']) check(html.includes(`id="project-${key}"`), `${key} has a stable project anchor`);
   for (const category of ['flagship', 'research', 'tools', 'personal', 'archive']) check(html.includes(`id="${category}"`), `${category} collection has an anchor`);
-  check(/rel="canonical" href="https?:\/\/[^\"]+\/laboratory\/"/.test(legacy), 'legacy page declares the canonical route');
-  check(/http-equiv="refresh"[^>]+\/laboratory\//.test(legacy), 'legacy page redirects to the canonical route');
 }
 const script = readFileSync(`${root}assets/js/laboratory.js`, 'utf8');
 for (const contract of ['aria-pressed', 'dataset.search', 'hidden']) check(script.includes(contract), `enhancement script includes ${contract}`);
