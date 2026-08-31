@@ -27,6 +27,7 @@
   {% include footer.html %}
 
   <!-- Custom scripts -->
+  {% if page.url == "/" %}<script src="{{ "/assets/js/harmonic-seal.js" | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>{% endif %}
   <script src="{{ "/assets/js/sigil-navigation.js" | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
 </body>
 </html>

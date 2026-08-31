@@ -17,10 +17,10 @@
     </span>
   </a>
 
-  <section class="astrolabe" id="astrolabe-chart" aria-labelledby="astrolabe-title">
+  <section class="astrolabe" id="astrolabe-chart" aria-labelledby="astrolabe-title" data-wayfinder-view-current="chart">
     <div class="astrolabe__frame">
       <div class="astrolabe__utility">
-        <button class="astrolabe__close" type="button" aria-label="Close navigation chart">
+        <button class="astrolabe__close" type="button" aria-label="Close navigation chart" data-wayfinder-close>
           <span aria-hidden="true">×</span>
         </button>
 
@@ -31,6 +31,7 @@
         </div>
       </div>
 
+      <div class="astrolabe__view astrolabe__view--chart" data-wayfinder-view="chart">
       <header class="astrolabe__header">
         <p class="astrolabe__eyebrow">Cartographer's index · {{ site.title }}</p>
         <h2 id="astrolabe-title">Choose a bearing</h2>
@@ -69,6 +70,79 @@
       </ol>
 
       <p class="astrolabe__hint">Esc closes the chart · Tab follows its bearings</p>
+      </div>
+
+      {% if page.url == "/" %}
+      <section class="harmonic-seal" data-wayfinder-view="harmonic-seal" data-harmonic-seal hidden aria-labelledby="harmonic-seal-title">
+        <header class="harmonic-seal__header">
+          <div>
+            <p class="harmonic-seal__eyebrow">{{ site.data.harmonic_seal.eyebrow }}</p>
+            <h2 id="harmonic-seal-title">{{ site.data.harmonic_seal.title }}</h2>
+          </div>
+          <button class="harmonic-seal__back" type="button" data-harmonic-seal-back>Back to chart</button>
+        </header>
+
+        <div class="harmonic-seal__screen" data-harmonic-seal-screen="folio">
+          <div class="harmonic-seal__folio-copy">
+            <p class="harmonic-seal__folio-number" data-harmonic-seal-folio-number></p>
+            <h3 data-harmonic-seal-folio-name></h3>
+            <p class="harmonic-seal__rule">{{ site.data.harmonic_seal.rule }}</p>
+            <p class="harmonic-seal__instruction" data-harmonic-seal-instruction></p>
+          </div>
+
+          <section class="harmonic-seal__current" aria-labelledby="harmonic-current-label">
+            <h4 id="harmonic-current-label">Current chord</h4>
+            <div class="harmonic-seal__grid" role="grid" aria-labelledby="harmonic-current-label" data-harmonic-seal-grid></div>
+          </section>
+
+          <section class="harmonic-seal__target" aria-labelledby="harmonic-target-label">
+            <h4 id="harmonic-target-label">Target chord</h4>
+            <div class="harmonic-seal__target-grid" role="img" aria-describedby="harmonic-target-description" data-harmonic-seal-target></div>
+            <p class="harmonic-seal__target-description" id="harmonic-target-description" data-harmonic-seal-target-description></p>
+          </section>
+
+          <div class="harmonic-seal__controls">
+            <button type="button" data-harmonic-seal-undo>Undo pulse</button>
+            <button type="button" data-harmonic-seal-restart>Restart folio</button>
+            <button type="button" data-harmonic-seal-end>End session</button>
+          </div>
+
+          <div class="harmonic-seal__completion" data-harmonic-seal-completion hidden>
+            <p>The chord is in concordance.</p>
+            <button type="button" data-harmonic-seal-next></button>
+          </div>
+        </div>
+
+        <section class="harmonic-seal__reflection" data-harmonic-seal-screen="reflection" hidden aria-labelledby="harmonic-reflection-title">
+          <p class="harmonic-seal__eyebrow">Session complete</p>
+          <h3 id="harmonic-reflection-title">{{ site.data.harmonic_seal.reflection.title }}</h3>
+          <fieldset>
+            <legend>{{ site.data.harmonic_seal.reflection.prompt }}</legend>
+            <label><input type="radio" name="harmonic-interest" value="yes"> Yes</label>
+            <label><input type="radio" name="harmonic-interest" value="maybe"> Maybe</label>
+            <label><input type="radio" name="harmonic-interest" value="no"> No</label>
+          </fieldset>
+          <label for="harmonic-reflection-note">{{ site.data.harmonic_seal.reflection.note_label }}</label>
+          <textarea id="harmonic-reflection-note" rows="3" data-harmonic-seal-note></textarea>
+          <div class="harmonic-seal__reflection-actions">
+            <button type="button" data-harmonic-seal-finish>Finish session</button>
+            <button type="button" data-harmonic-seal-resume>Return to folio</button>
+            <button type="button" data-harmonic-seal-restart-session>Restart session</button>
+          </div>
+        </section>
+
+        <section class="harmonic-seal__reflection-complete" data-harmonic-seal-screen="reflection-complete" hidden aria-labelledby="harmonic-thanks-title">
+          <p class="harmonic-seal__eyebrow">The folio rests</p>
+          <h3 id="harmonic-thanks-title">Thank you for playing.</h3>
+          <p>{{ site.data.harmonic_seal.reflection.thanks }}</p>
+          <button type="button" data-harmonic-seal-restart-session>Restart session</button>
+          <button type="button" data-harmonic-seal-complete-back>Back to chart</button>
+        </section>
+
+        <p class="harmonic-seal__status" data-harmonic-seal-status aria-live="polite" aria-atomic="true"></p>
+        <script type="application/json" data-harmonic-seal-data>{{ site.data.harmonic_seal | jsonify }}</script>
+      </section>
+      {% endif %}
     </div>
   </section>
 </nav>

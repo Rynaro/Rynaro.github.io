@@ -28,6 +28,13 @@ if (!existsSync(renderedHome)) {
 
   if (/Field Notes/.test(html) && !/astrolabe__route-alias[^>]*>\s*Notebook/i.test(html)) ok('Field Notes uses its current public name without a legacy Notebook alias');
   else fail('Field Notes must use its current public name without a legacy Notebook alias');
+
+  const modalCount = (html.match(/id="astrolabe-chart"/g) || []).length;
+  if (modalCount === 1 && (html.match(/data-wayfinder-view=/g) || []).length === 2) ok('one shared shell contains chart and game sibling views');
+  else fail('chart and game must share exactly one astrolabe shell');
+
+  if (/data-harmonic-seal-invitation hidden/.test(html) && /data-wayfinder-open="harmonic-seal"/.test(html)) ok('whole Play invitation is inert until successful enhancement');
+  else fail('server-rendered Play invitation must start hidden');
 }
 
 const post = `${root}_site/2026/02/18/llm-model-routing-claude/index.html`;
@@ -46,6 +53,14 @@ for (const contract of ['aria-modal', 'aria-hidden', 'Escape', 'inert', 'returnF
   if (script.includes(contract)) ok(`modal behavior includes ${contract}`);
   else fail(`modal behavior is missing ${contract}`);
 }
+for (const contract of ['setView', 'harmonic-seal', 'playTriggers', 'wayfinderViewCurrent']) {
+  if (script.includes(contract)) ok(`shared view controller includes ${contract}`);
+  else fail(`shared view controller is missing ${contract}`);
+}
+if (/gameInvitation[\s\S]*gameInvitation\.hidden\s*=\s*false/.test(script)) ok('successful game mount reveals the whole invitation');
+else fail('controller must reveal the invitation only after game mount');
+if (!/createElement\(['"](?:dialog|section)['"]\)/.test(script)) ok('controller does not create another dialog shell');
+else fail('controller must not create another dialog shell');
 for (const contract of ['WayfinderConstellations', 'getCurrentPosition', 'São Paulo', 'toISOString']) {
   if (script.includes(contract)) ok(`live constellations include ${contract}`);
   else fail(`live constellations are missing ${contract}`);

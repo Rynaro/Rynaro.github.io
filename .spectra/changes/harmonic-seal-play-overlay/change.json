@@ -1,0 +1,143 @@
+{
+  "esl_version": "1.1",
+  "change_id": "harmonic-seal-play-overlay",
+  "status": "verified",
+  "tier": "full",
+  "maker": "vivi",
+  "checker": "kupo",
+  "has_code": true,
+  "spec_ref": ".spectra/changes/harmonic-seal-play-overlay/spec.md",
+  "verification_addenda": [
+    {
+      "date": "2026-08-31",
+      "status": "passed",
+      "scope": "focused Play-trigger visual and accessibility refinement",
+      "evidence": "Independent live-browser checks at 1280x800 and 390x844 proved visible [Play] copy, accessible name Play The Harmonic Seal, explicit control resets, quiet brass tertiary hierarchy, 46px height, smaller dimensions than peer actions, no overflow, visible hover/focus, focus entry and exact Escape return, and a no-JS display:none zero-size rendered box. Focused tests, build, axe, and diff check passed."
+    },
+    {
+      "date": "2026-08-31",
+      "status": "passed",
+      "scope": "redesigned separate Play invitation",
+      "evidence": "Independent live-browser and visual checks at 1280x800 and 390x844 proved exactly two navigation links in .atelier-actions; a separate immediately following data-backed invitation; visible Play The Harmonic Seal copy as its accessible name without aria-label; successful-mount-only reveal; no-JS and failed-mount display:none zero-size behavior; desktop max-38rem three-column treatment; mobile full-width own-row button; 46px target; no overflow; hover/focus and exact focus lifecycle; no new animation or prohibited capability. Focused tests, navigation, build, axe, and diff check passed."
+    }
+  ],
+  "working_title": {
+    "value": "The Harmonic Seal",
+    "approved": true,
+    "gate": "passed by owner approval on 2026-08-31"
+  },
+  "acceptance_checks": [
+    {
+      "id": "AC-001",
+      "given": "the homepage and existing Wayfinder",
+      "when": "either trigger opens an overlay",
+      "then": "exactly one modal dialog and backdrop exist; Play selects harmonic-seal, Wayfinder selects chart, and no nested dialog or focus trap exists",
+      "verify_method": "DOM/integration test counts one modal dialog, exercises both triggers, and checks only the selected view is exposed and focusable"
+    },
+    {
+      "id": "AC-002",
+      "given": "the game view is open",
+      "when": "Back to chart, shared Close, Escape, and backdrop are used",
+      "then": "Back switches view in place; the others close using current Wayfinder behavior and restore exact invoking focus",
+      "verify_method": "browser test checks active element, inertness, visibility, and no second open/close cycle on Back"
+    },
+    {
+      "id": "AC-003",
+      "given": "a modified folio, undo history, or reflection draft",
+      "when": "chart/game switching or close/reopen occurs on the same document",
+      "then": "the draft is preserved; navigation/reload resets it; no durable storage is used",
+      "verify_method": "browser test compares state across switches/reopens, reloads for reset, and spies on localStorage, sessionStorage, and cookie writes"
+    },
+    {
+      "id": "AC-004",
+      "given": "any of the 25 cells",
+      "when": "it is pulsed",
+      "then": "only itself and existing orthogonal neighbors toggle, without diagonal or edge wrapping",
+      "verify_method": "deterministic tests assert center, edge, corner, and double-pulse behavior"
+    },
+    {
+      "id": "AC-005",
+      "given": "the four exact folios",
+      "when": "their verified sequences are applied",
+      "then": "they equal their targets in 2, 3, 4, and 5 pulses respectively",
+      "verify_method": "data test validates 25 bits, exact rows, listed sequences, and final equality"
+    },
+    {
+      "id": "AC-006",
+      "given": "untouched Folio I",
+      "when": "a pulse other than row 3 column 3 is attempted, then the guided pulse is used",
+      "then": "invalid input does not mutate; after the guide, row 2 column 4 must be inferred to complete",
+      "verify_method": "interaction test checks board, history, guide, instruction, and completion"
+    },
+    {
+      "id": "AC-007",
+      "given": "a folio reaches target",
+      "when": "completion renders",
+      "then": "pulse input stops and explicit progression appears without score, timer, move count, par, hint, or solution",
+      "verify_method": "DOM test completes every folio and scans visible and accessible text for forbidden UI"
+    },
+    {
+      "id": "AC-008",
+      "given": "any pulse history including a completed folio",
+      "when": "Undo, Restart folio, or Restart session is selected",
+      "then": "undo is unlimited; folio restart restores its initial state; session restart clears game and reflection to Folio I",
+      "verify_method": "state tests use more than 25 pulses, undo to origin, and assert reset scopes"
+    },
+    {
+      "id": "AC-009",
+      "given": "any folio or completed Folio IV",
+      "when": "End session or Share a reflection is selected",
+      "then": "reflection appears explicitly, accepts Yes/Maybe/No and optional text, and is never transmitted or persisted",
+      "verify_method": "browser/network test checks transition timing, zero network submission, preservation in memory, and reload reset"
+    },
+    {
+      "id": "AC-010",
+      "given": "the 5x5 grid",
+      "when": "inspected and operated by keyboard",
+      "then": "it exposes five rows, 25 named native buttons, one roving tabindex zero, bounded grid keys, and Enter/Space/pointer parity",
+      "verify_method": "DOM/browser test exercises keys, boundaries, names, focus after rerender, and resulting states"
+    },
+    {
+      "id": "AC-011",
+      "given": "the shared dialog is open",
+      "when": "focus, view, folio, status, or close transitions occur",
+      "then": "focus remains in visible dialog controls, page is inert, announcements are concise, and close restores invoking focus",
+      "verify_method": "browser assertions plus automated axe audit with zero serious or critical violations"
+    },
+    {
+      "id": "AC-012",
+      "given": "supported mobile viewports",
+      "when": "the game opens and dynamic viewport changes",
+      "then": "it fills the viewport, respects safe areas, prevents background scroll and horizontal clipping, and remains touch-usable",
+      "verify_method": "responsive tests at 320x568, 390x844, and 568x320 inspect bounds, overflow, scroll ownership, and activation"
+    },
+    {
+      "id": "AC-013",
+      "given": "320x568 portrait and 568x320 landscape at 100 percent zoom",
+      "when": "every patterned folio is shown",
+      "then": "complete board and target are simultaneously legible in one snapshot and essential controls are horizontally unclipped",
+      "verify_method": "checker reviews deterministic screenshots; any failure blocks for owner decision with no fallback substitution"
+    },
+    {
+      "id": "AC-014",
+      "given": "color-vision variation, muted audio, or reduced-motion preference",
+      "when": "game feedback changes",
+      "then": "state remains distinguishable through shape, text, focus, and status while nonessential motion is removed",
+      "verify_method": "stylesheet and DOM assertions, reduced-motion browser run, and grayscale screenshot review"
+    },
+    {
+      "id": "AC-015",
+      "given": "JavaScript is unavailable or a page lacks Play",
+      "when": "the site loads",
+      "then": "no dead Play or script error appears, navigation fallback remains useful, and the game module exits safely",
+      "verify_method": "no-JS check, representative console scan, production build, navigation/game tests, and npm run test:a11y-static"
+    },
+    {
+      "id": "AC-016",
+      "given": "the implementation diff and built site",
+      "when": "inspected",
+      "then": "it stays in declared boundaries and contains no prohibited modal, canvas control, dependency, audio, analytics, randomness, network game call, or persistence",
+      "verify_method": "checker diff review and targeted source/bundle scan record zero prohibited capability"
+    }
+  ]
+}
