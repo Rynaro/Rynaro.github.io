@@ -159,7 +159,7 @@
 .atelier-artifacts { color: #eee8dd; background: #202033; }
 .atelier-artifacts .atelier-section__heading > p:last-child { color: #bbb7c3; }
 .atelier-artifact-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 1px; border: 1px solid rgba(189,139,71,.35); background: rgba(189,139,71,.35); }
-.atelier-artifact { position: relative; grid-column: span 2; min-height: 310px; padding: clamp(1.7rem, calc(1rem + 2vw), 3rem); overflow: hidden; background: #202033; }
+.atelier-artifact { position: relative; grid-column: span 2; min-height: 310px; display: flex; flex-direction: column; padding: clamp(1.7rem, calc(1rem + 2vw), 3rem); overflow: hidden; background: #202033; }
 .atelier-artifact::before { content: ""; position: absolute; width: 9rem; height: 9rem; top: -5rem; right: -4rem; border: 1px solid currentColor; border-radius: 50%; opacity: .14; }
 .atelier-artifact--flagship { grid-column: 1 / -1; min-height: 390px; padding-right: clamp(4rem, calc(3rem + 5vw), 10rem); background: radial-gradient(circle at 88% 20%, rgba(183,77,53,.18), transparent 22rem), linear-gradient(135deg, #29233c, #1b1b2c); }
 .atelier-artifact--satellite { grid-column: span 3; min-height: 220px; }
@@ -177,8 +177,22 @@
 .atelier-artifact h3 span { font-family: sans-serif; font-size: .45em; vertical-align: top; }
 .atelier-artifact__story { max-width: 710px; color: #c9c4cf; font-size: 1rem; }
 .atelier-artifact--flagship .atelier-artifact__story { font-size: clamp(1.05rem, calc(.95rem + .35vw), 1.25rem); }
-.atelier-artifact__proof { max-width: 650px; margin: 1.5rem 0 0; color: #aaa4b3; font-size: .87rem; }
+.atelier-artifact__proof { max-width: 650px; margin: auto 0 0; padding-top: 1.5rem; color: #aaa4b3; font-size: .87rem; }
 .atelier-artifact__proof span { display: block; margin-bottom: .35rem; color: currentColor; font-size: .65rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+
+// Share the card tracks within each desktop row so Proof begins on the same
+// horizontal line even when titles and stories wrap by different amounts.
+@supports (grid-template-rows: subgrid) {
+  @media (min-width: 768px) {
+    .atelier-artifact {
+      grid-row: span 4;
+      display: grid;
+      grid-template-rows: subgrid;
+    }
+
+    .atelier-artifact__proof { margin-top: 0; }
+  }
+}
 
 .atelier-notes { background: var(--atelier-paper); }
 .atelier-notes__grid {

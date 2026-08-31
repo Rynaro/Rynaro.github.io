@@ -1,0 +1,65 @@
+{
+  "baseSha": "12ee486380aa8e4c10f1d6f7dc58356883bfa9c0",
+  "approvals": [
+    {
+      "path": "index/mobile-light.png",
+      "sha256": "9af5b6b096f1f18af57dbb99431bd0715320d07a90bf7ba3e717277e07de350c",
+      "fromDimensions": [320, 10842],
+      "toDimensions": [320, 11717]
+    },
+    {
+      "path": "index/mobile-dark.png",
+      "sha256": "ed131b1ba81fb17a8a9746612537af2dfa595fa99662f9697ad1971a6bb21db1",
+      "fromDimensions": [320, 10842],
+      "toDimensions": [320, 11717]
+    },
+    {
+      "path": "index/tablet-light.png",
+      "sha256": "305099024a4cf9448fb3f5a1aa10dbbbd8541e7a495b578928b9e3291f52fb17",
+      "fromDimensions": [768, 6834],
+      "toDimensions": [768, 7067]
+    },
+    {
+      "path": "index/tablet-dark.png",
+      "sha256": "305099024a4cf9448fb3f5a1aa10dbbbd8541e7a495b578928b9e3291f52fb17",
+      "fromDimensions": [768, 6834],
+      "toDimensions": [768, 7067]
+    },
+    {
+      "path": "index/desktop-light.png",
+      "sha256": "f0392667a0d5520457cd05cfb6f1a61ba108b2ece5c13185c051e9e15857b89c",
+      "fromDimensions": [1280, 6663],
+      "toDimensions": [1280, 6853]
+    },
+    {
+      "path": "index/desktop-dark.png",
+      "sha256": "f0392667a0d5520457cd05cfb6f1a61ba108b2ece5c13185c051e9e15857b89c",
+      "fromDimensions": [1280, 6663],
+      "toDimensions": [1280, 6853]
+    },
+    {
+      "path": "index-wayfinder-open/mobile-light.png",
+      "sha256": "20867c4e0cff1f343e4fff2580938bbfc1060eda80bbd9b52ce84fa45aa4e279",
+      "fromDimensions": [320, 10842],
+      "toDimensions": [320, 11717]
+    },
+    {
+      "path": "index-wayfinder-open/mobile-dark.png",
+      "sha256": "20867c4e0cff1f343e4fff2580938bbfc1060eda80bbd9b52ce84fa45aa4e279",
+      "fromDimensions": [320, 10842],
+      "toDimensions": [320, 11717]
+    },
+    {
+      "path": "index-wayfinder-open/desktop-light.png",
+      "sha256": "b20afb591d35c0153bd0508b7f0fef76f52710286fc43d075523ee2d37ecc662",
+      "fromDimensions": [1280, 6663],
+      "toDimensions": [1280, 6853]
+    },
+    {
+      "path": "index-wayfinder-open/desktop-dark.png",
+      "sha256": "b20afb591d35c0153bd0508b7f0fef76f52710286fc43d075523ee2d37ecc662",
+      "fromDimensions": [1280, 6663],
+      "toDimensions": [1280, 6853]
+    }
+  ]
+}
