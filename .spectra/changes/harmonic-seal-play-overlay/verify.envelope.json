@@ -1,0 +1,116 @@
+{
+  "envelope_version": "1.0",
+  "change_id": "harmonic-seal-play-overlay",
+  "performed_at": "2026-08-31T21:58:59Z",
+  "from": { "eidolon": "kupo", "role": "checker" },
+  "to": { "eidolon": "verified", "role": "lifecycle" },
+  "performative": "INFORM",
+  "objective": "Independently verify the Harmonic Seal implementation against AC-001 through AC-016 without modifying product implementation.",
+  "maker_checker_gate": { "maker": "vivi", "checker": "kupo", "distinct": true },
+  "result": {
+    "disposition": "passed",
+    "lifecycle_status_after_verification": "verified",
+    "verified_transition_applied": true,
+    "summary": "All 16 acceptance checks remain green. The subsequent redesigned, separate Play invitation passes independent semantic, mounted/failure-state, desktop, mobile, visual, accessibility, focus, build, axe, and diff verification."
+  },
+  "environment": {
+    "repository": "Rynaro.github.io",
+    "date": "2026-08-31",
+    "tonberry": "not installed; ESL assessment was advisory/no-op",
+    "kupo_persona_sources": ".eidolons/kupo/PERSONA.md and .eidolons/kupo/SPEC.md were not present in the working tree; verification followed the checked-in cortex/ESL contract and explicit checker brief"
+  },
+  "commands": [
+    { "command": "npm run test:harmonic-seal", "exit_code": 0, "result": "PASS; exact boards, pulse law, 2/3/4/5 solutions, tutorial events, target descriptions, prohibited capabilities, and hidden Play style contract" },
+    { "command": "npm run test:navigation", "exit_code": 0, "result": "PASS; navigation fallback and single shared shell contracts" },
+    { "command": "bundle exec jekyll build", "exit_code": 0, "result": "PASS; Jekyll 4 production artifact generated successfully" },
+    { "command": "npm run test:a11y-static", "exit_code": 0, "result": "PASS; complete existing static accessibility and regression suite" },
+    { "command": "npm run test:axe", "exit_code": 0, "result": "PASS; zero reported axe violations, no-JS Play has no rendered box, tutorial event state passed at three viewports, all four target descriptions stayed synchronized, and responsive bounds passed" },
+    { "command": "node /tmp/harmonic-seal-kupo-check.mjs", "exit_code": 0, "result": "PASS; single dialog, inertness, exact focus return, AC-006 pulse-reversal/undo/restart, AC-014 25-state equivalence, reduced motion, and eight binding screenshots" },
+    { "command": "node /tmp/harmonic-seal-kupo-integration.mjs", "exit_code": 0, "result": "PASS; no-JS Play is hidden=true/display=none/0x0, keyboard and pointer parity, bounded keys, completion lock/undo, reflection lifetime/reset, reload reset, network isolation, console safety, and non-home safety" },
+    { "command": "JSON/YAML/Markdown contract and lifecycle validation", "exit_code": 0, "result": "PASS; 16 mirrored checks, maker/checker distinct, and verified status consistent" },
+    { "command": "git diff --check and targeted diff/prohibited-capability scan", "exit_code": 0, "result": "PASS; declared boundaries respected and no prohibited game capability or new runtime dependency found" },
+    { "command": "eidolons mcp assess tonberry", "exit_code": 0, "result": "Advisory no-op because tonberry is not installed and no tonberry lock entry exists" }
+  ],
+  "post_verification_addenda": [
+    {
+      "date": "2026-08-31",
+      "scope": "focused Play-trigger visual and accessibility refinement",
+      "disposition": "passed",
+      "commands": [
+        { "command": "node /tmp/harmonic-seal-play-trigger-check.mjs", "exit_code": 0, "result": "PASS at 1280x800 and 390x844, including computed styles, hierarchy, overflow, hover/focus, game focus entry, exact Escape return, and no-JS zero box" },
+        { "command": "npm run test:harmonic-seal", "exit_code": 0, "result": "PASS" },
+        { "command": "npm run test:navigation", "exit_code": 0, "result": "PASS" },
+        { "command": "bundle exec jekyll build", "exit_code": 0, "result": "PASS" },
+        { "command": "npm run test:axe", "exit_code": 0, "result": "PASS; quiet reset tertiary treatment passed at both focused viewports and all audited pages reported zero violations" },
+        { "command": "git diff --check", "exit_code": 0, "result": "PASS" }
+      ],
+      "computed_evidence": {
+        "1280x800": { "width": 74.89, "height": 46, "peer_widths": [204.34, 183.38], "peer_heights": [68.78, 68.78], "font_size": 11.52, "peer_font_size": 12.8, "focus_outline": "3px solid", "overflow": false },
+        "390x844": { "width": 74.89, "height": 46, "peer_widths": [204.34, 183.38], "peer_heights": [68.78, 68.78], "font_size": 11.52, "peer_font_size": 12.8, "focus_outline": "3px solid", "overflow": false },
+        "accessible_name": "Play The Harmonic Seal",
+        "visible_text": "[Play]",
+        "normal_treatment": { "color": "rgb(189, 139, 71)", "background": "rgba(189, 139, 71, 0.08)", "border": "rgba(189, 139, 71, 0.62)" },
+        "hover_treatment": { "color": "rgb(241, 189, 104)", "background": "rgba(189, 139, 71, 0.17)", "border": "rgb(189, 139, 71)" },
+        "no_javascript": { "hidden": true, "display": "none", "width": 0, "height": 0 }
+      }
+    },
+    {
+      "date": "2026-08-31",
+      "scope": "redesigned separate Play invitation",
+      "disposition": "passed",
+      "commands": [
+        { "command": "node /tmp/harmonic-seal-invitation-check.mjs", "exit_code": 0, "result": "PASS at 1280x800 and 390x844, including semantics, content, layout, mount-only reveal, intentionally failed mount, no-JS, hover/focus, game focus entry, exact Escape return, and visual screenshots" },
+        { "command": "npm run test:harmonic-seal", "exit_code": 0, "result": "PASS" },
+        { "command": "npm run test:navigation", "exit_code": 0, "result": "PASS" },
+        { "command": "bundle exec jekyll build", "exit_code": 0, "result": "PASS" },
+        { "command": "npm run test:axe", "exit_code": 0, "result": "PASS; redesigned folio-slip invitation passed both focused viewports and all audited pages reported zero violations" },
+        { "command": "git diff --check and targeted animation/prohibited-capability scan", "exit_code": 0, "result": "PASS" }
+      ],
+      "computed_evidence": {
+        "1280x800": { "invitation_width": 608, "max_width": 608, "columns": 3, "button_width": 225.83, "button_height": 46, "overflow": false },
+        "390x844": { "invitation_width": 358, "columns": 2, "button_width": 325.22, "invitation_inner_width": 325.2, "button_height": 46, "own_row": true, "overflow": false },
+        "actions": { "navigation_links": 2, "buttons": 0, "invitation_immediately_follows": true },
+        "content": { "title": "The Harmonic Seal", "eyebrow": "Playable interlude · 4 folios", "description": "Match the target chord by pulsing a sigil and each direct neighbour.", "action": "Play The Harmonic Seal" },
+        "accessible_name": "Play The Harmonic Seal",
+        "aria_label_present": false,
+        "reveal": { "successful_mount": true, "failed_mount_display": "none", "failed_mount_width": 0, "failed_mount_height": 0 },
+        "no_javascript": { "hidden": true, "display": "none", "width": 0, "height": 0 },
+        "focus_outline": "3px solid",
+        "hover_background_change": "rgba(189, 139, 71, 0.08) to rgba(189, 139, 71, 0.17)"
+      }
+    }
+  ],
+  "responsive_evidence": {
+    "screenshots_reviewed": [
+      "320x568 Folio I", "320x568 Folio II", "320x568 Folio III", "320x568 Folio IV",
+      "568x320 Folio I", "568x320 Folio II", "568x320 Folio III", "568x320 Folio IV"
+    ],
+    "visual_review": "PASS; complete current and target boards remain simultaneously legible, essential controls are unclipped, and no horizontal overflow is present.",
+    "cell_geometry": { "320x568": "43.27 by 43.27 CSS pixels", "568x320": "35.27 by 35.27 CSS pixels" },
+    "touch_disposition": "PASS with a recorded residual caveat: 35.27px short-landscape cells are below the site's common 44px convention but exceed WCAG 2.2 Target Size Minimum of 24px, retain spacing, and passed pointer activation."
+  },
+  "blockers": [],
+  "residual_risks": [
+    "The 568x320 layout necessarily uses 35.27px cells; future device testing may still motivate a larger-target layout despite passing the specified gate.",
+    "Initial positive playtesting came from a small family sample and is qualitative, not representative product research.",
+    "Automated accessibility checks do not replace testing with multiple real screen readers and mobile assistive technologies."
+  ],
+  "acceptance_disposition": [
+    { "id": "AC-001", "status": "pass", "evidence": "One modal shell, sibling views, one backdrop and one focus trap." },
+    { "id": "AC-002", "status": "pass", "evidence": "Back switches in place; close paths and exact invoker focus return pass." },
+    { "id": "AC-003", "status": "pass", "evidence": "View/close preserve document memory; reload resets; no durable storage exists." },
+    { "id": "AC-004", "status": "pass", "evidence": "Center, edge, corner, and double-pulse masks pass." },
+    { "id": "AC-005", "status": "pass", "evidence": "Exact boards solve after documented 2, 3, 4, and 5 pulses." },
+    { "id": "AC-006", "status": "pass", "evidence": "Learned state survives double center pulse and undo-to-origin; restart restores guide." },
+    { "id": "AC-007", "status": "pass", "evidence": "Completion blocks pulses and exposes explicit progression without move pressure." },
+    { "id": "AC-008", "status": "pass", "evidence": "More-than-25 undo and exact folio/session reset scopes pass." },
+    { "id": "AC-009", "status": "pass", "evidence": "Reflection is explicit, local, correctly preserved/reset, and never transmitted." },
+    { "id": "AC-010", "status": "pass", "evidence": "Five rows, 25 named buttons, roving tabindex, bounded keys, and input parity pass." },
+    { "id": "AC-011", "status": "pass", "evidence": "Focus containment, inertness, status behavior, restoration, and axe pass." },
+    { "id": "AC-012", "status": "pass", "evidence": "Full-viewport layouts, scroll lock, safe-area CSS, bounds, touch geometry, and activation pass." },
+    { "id": "AC-013", "status": "pass", "evidence": "Eight reviewed screenshots retain both complete patterns and controls in one viewport." },
+    { "id": "AC-014", "status": "pass", "evidence": "Reduced-motion and non-color feedback pass; every target exposes a synchronized 25-state row description." },
+    { "id": "AC-015", "status": "pass", "evidence": "JS-disabled browser reports hidden=true/display=none/width=0/height=0; build, static, navigation, and non-home checks pass." },
+    { "id": "AC-016", "status": "pass", "evidence": "Declared boundaries and prohibited-capability scan pass with no new runtime dependency." }
+  ]
+}

@@ -170,6 +170,192 @@ async function newPage() {
   await page.close();
 }
 
+// The Harmonic Seal shares the Wayfinder dialog and keeps both comparison
+// surfaces visible at the two binding minimum viewports (plus the common
+// 390px phone width). Run every authored folio through that live layout.
+{
+  const noJsContext = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 320, height: 568 } });
+  const noJsPage = await noJsContext.newPage();
+  await noJsPage.goto(`${base}/index.html`, { waitUntil: 'networkidle' });
+  const noJsInvitation = await noJsPage.locator('[data-harmonic-seal-invitation]').evaluate((element) => {
+    const rect = element.getBoundingClientRect();
+    return {
+      display: getComputedStyle(element).display,
+      height: rect.height,
+      hidden: element.hidden,
+      width: rect.width,
+    };
+  });
+  if (noJsInvitation.hidden && noJsInvitation.display === 'none' && noJsInvitation.width === 0 && noJsInvitation.height === 0) {
+    ok('Harmonic Seal invitation has no rendered box when JavaScript is unavailable');
+  } else {
+    fail(`Harmonic Seal exposes a dead no-JavaScript invitation: ${JSON.stringify(noJsInvitation)}`);
+  }
+  await noJsContext.close();
+
+  for (const enhancedViewport of [{ width: 1280, height: 800 }, { width: 390, height: 844 }]) {
+    const enhancedContext = await browser.newContext({ viewport: enhancedViewport });
+    const enhancedPage = await enhancedContext.newPage();
+    await enhancedPage.goto(`${base}/index.html`, { waitUntil: 'networkidle' });
+    await enhancedPage.locator('[data-wayfinder-open="harmonic-seal"]').focus();
+    const enhancedPlay = await enhancedPage.locator('[data-wayfinder-open="harmonic-seal"]').evaluate((element) => {
+      const style = getComputedStyle(element);
+      const rect = element.getBoundingClientRect();
+      const invitation = element.closest('[data-harmonic-seal-invitation]');
+      const invitationRect = invitation.getBoundingClientRect();
+      const actionsRect = document.querySelector('.atelier-actions').getBoundingClientRect();
+      const copyRect = invitation.querySelector('.harmonic-seal-invitation__copy').getBoundingClientRect();
+      const invitationStyle = getComputedStyle(invitation);
+      return {
+        appearance: style.appearance,
+        background: style.backgroundColor,
+        border: style.borderColor,
+        boxSizing: style.boxSizing,
+        color: style.color,
+        cursor: style.cursor,
+        display: style.display,
+        height: rect.height,
+        invitationBelowActions: invitationRect.top >= actionsRect.bottom,
+        invitationDisplay: invitationStyle.display,
+        invitationHidden: invitation.hidden,
+        invitationWidth: invitationRect.width,
+        mobileOwnRow: innerWidth > 767 || rect.top >= copyRect.bottom,
+        noAriaLabel: !element.hasAttribute('aria-label'),
+        noOverflow: document.documentElement.scrollWidth <= innerWidth && invitationRect.left >= 0 && invitationRect.right <= innerWidth,
+        outlineStyle: style.outlineStyle,
+        outlineWidth: style.outlineWidth,
+        text: element.textContent.trim(),
+        width: rect.width,
+        mobileFullWidth: innerWidth > 767 || Math.abs(rect.width - copyRect.width - invitation.querySelector('.harmonic-seal-invitation__mark').getBoundingClientRect().width - parseFloat(invitationStyle.columnGap)) < 30,
+      };
+    });
+    const baseBackground = enhancedPlay.background;
+    await enhancedPage.locator('[data-wayfinder-open="harmonic-seal"]').hover();
+    const hoverBackground = await enhancedPage.locator('[data-wayfinder-open="harmonic-seal"]').evaluate((element) => getComputedStyle(element).backgroundColor);
+    const enhancedLabel = `${enhancedViewport.width}x${enhancedViewport.height}`;
+    if (!enhancedPlay.invitationHidden
+      && enhancedPlay.invitationDisplay === 'grid'
+      && enhancedPlay.display === 'flex'
+      && enhancedPlay.width > 0
+      && enhancedPlay.height >= 46
+      && enhancedPlay.appearance === 'none'
+      && enhancedPlay.boxSizing === 'border-box'
+      && enhancedPlay.cursor === 'pointer'
+      && enhancedPlay.background !== 'rgba(0, 0, 0, 0)'
+      && enhancedPlay.border !== enhancedPlay.color
+      && hoverBackground !== baseBackground
+      && enhancedPlay.outlineStyle !== 'none'
+      && Number.parseFloat(enhancedPlay.outlineWidth) > 0
+      && enhancedPlay.text === 'Play The Harmonic Seal'
+      && enhancedPlay.noAriaLabel
+      && enhancedPlay.invitationBelowActions
+      && enhancedPlay.invitationWidth <= 609
+      && enhancedPlay.mobileOwnRow
+      && enhancedPlay.mobileFullWidth
+      && enhancedPlay.noOverflow) {
+      ok(`enhanced Harmonic Seal invitation has the mounted folio-slip treatment at ${enhancedLabel}`);
+    } else {
+      fail(`enhanced Harmonic Seal invitation styling/name regressed at ${enhancedLabel}: ${JSON.stringify({ ...enhancedPlay, hoverBackground })}`);
+    }
+
+    await enhancedPage.locator('[data-wayfinder-open="harmonic-seal"]').click();
+    const openingFocus = await enhancedPage.evaluate(() => document.querySelector('[data-wayfinder-view="harmonic-seal"]').contains(document.activeElement));
+    await enhancedPage.keyboard.press('Escape');
+    const returnedFocus = await enhancedPage.evaluate(() => document.activeElement === document.querySelector('[data-wayfinder-open="harmonic-seal"]'));
+    if (openingFocus && returnedFocus) ok(`Harmonic Seal invitation preserves opening and exact return focus at ${enhancedLabel}`);
+    else fail(`Harmonic Seal invitation focus lifecycle regressed at ${enhancedLabel}`);
+    await enhancedContext.close();
+  }
+
+  const viewports = [
+    { width: 320, height: 568 },
+    { width: 390, height: 844 },
+    { width: 568, height: 320 },
+  ];
+  const solutions = [[12, 8], [6, 12, 18], [0, 8, 16, 24], [2, 5, 13, 19, 21]];
+
+  for (const viewport of viewports) {
+    const context = await browser.newContext({ viewport });
+    const page = await context.newPage();
+    await page.goto(`${base}/index.html`, { waitUntil: 'networkidle' });
+    const play = page.locator('[data-wayfinder-open="harmonic-seal"]');
+    await play.click();
+
+    const axeResults = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
+    if (axeResults.violations.length) {
+      axeResults.violations.forEach((violation) => fail(`axe Harmonic Seal at ${viewport.width}x${viewport.height}: ${violation.help}`));
+    } else {
+      ok(`open Harmonic Seal has zero axe violations at ${viewport.width}x${viewport.height}`);
+    }
+
+    await page.locator('[data-sigil-index="12"]').click();
+    await page.locator('[data-sigil-index="12"]').click();
+    await page.locator('[data-harmonic-seal-undo]').click();
+    await page.locator('[data-harmonic-seal-undo]').click();
+    const reversalTutorial = await page.evaluate(() => ({
+      guideMarks: document.querySelectorAll('.is-guide-center, .is-guide-neighbour').length,
+      instruction: document.querySelector('[data-harmonic-seal-instruction]').textContent,
+      board: [...document.querySelectorAll('.harmonic-seal__sigil')].map((sigil) => sigil.classList.contains('is-awake') ? '1' : '0').join(''),
+    }));
+    if (reversalTutorial.guideMarks === 0
+      && reversalTutorial.instruction.startsWith('Now compare both patterns')
+      && reversalTutorial.board === '1001101001010000111010001') {
+      ok(`Folio I at ${viewport.width}x${viewport.height} keeps the learned step after pulse reversal and undo to origin`);
+    } else {
+      fail(`Folio I at ${viewport.width}x${viewport.height} regressed its event-driven tutorial state: ${JSON.stringify(reversalTutorial)}`);
+    }
+    await page.locator('[data-harmonic-seal-restart]').click();
+    const restartedGuideMarks = await page.locator('.is-guide-center, .is-guide-neighbour').count();
+    if (restartedGuideMarks === 5) ok(`Folio I restart restores its five-cell guide at ${viewport.width}x${viewport.height}`);
+    else fail(`Folio I restart exposes ${restartedGuideMarks} guide marks at ${viewport.width}x${viewport.height}`);
+
+    for (let folio = 0; folio < solutions.length; folio++) {
+      const layout = await page.evaluate(() => {
+        const selectors = [
+          '.harmonic-seal__grid',
+          '.harmonic-seal__target-grid',
+          '.harmonic-seal__controls',
+          '.harmonic-seal__header',
+        ];
+        const boxes = selectors.map((selector) => {
+          const rect = document.querySelector(selector).getBoundingClientRect();
+          return { selector, left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom };
+        });
+        const gameData = JSON.parse(document.querySelector('[data-harmonic-seal-data]').textContent);
+        const folioName = document.querySelector('[data-harmonic-seal-folio-name]').textContent;
+        const activeFolio = gameData.folios.find((candidate) => candidate.name === folioName);
+        const expectedTargetDescription = `Target pattern by row. ${activeFolio.target.map((row, index) => (
+          `Row ${index + 1}: ${row.split('').map((value) => value === '1' ? 'awake' : 'dormant').join(', ')}`
+        )).join('; ')}.`;
+        const targetDescription = document.querySelector('[data-harmonic-seal-target-description]').textContent;
+        return {
+          boxes,
+          currentRows: document.querySelectorAll('.harmonic-seal__grid-row').length,
+          targetRows: document.querySelectorAll('.harmonic-seal__target-row').length,
+          sigils: document.querySelectorAll('.harmonic-seal__sigil').length,
+          roving: document.querySelectorAll('.harmonic-seal__sigil[tabindex="0"]').length,
+          dialogCount: document.querySelectorAll('[role="dialog"][aria-modal="true"]').length,
+          overflowX: document.documentElement.scrollWidth > innerWidth,
+          inViewport: boxes.every((box) => box.left >= 0 && box.right <= innerWidth && box.top >= 0 && box.bottom <= innerHeight),
+          targetDescriptionMatches: targetDescription === expectedTargetDescription,
+          targetDescriptionStates: (targetDescription.match(/\b(?:awake|dormant)\b/g) || []).length,
+        };
+      });
+      const label = `Folio ${folio + 1} at ${viewport.width}x${viewport.height}`;
+      if (layout.currentRows === 5 && layout.targetRows === 5 && layout.sigils === 25 && layout.roving === 1) ok(`${label} exposes both complete 5x5 patterns and one roving sigil`);
+      else fail(`${label} has incomplete grid semantics: ${JSON.stringify(layout)}`);
+      if (layout.dialogCount === 1 && layout.inViewport && !layout.overflowX) ok(`${label} comparison surfaces and controls fit one shared viewport`);
+      else fail(`${label} fails the simultaneous-legibility bounds: ${JSON.stringify(layout)}`);
+      if (layout.targetDescriptionMatches && layout.targetDescriptionStates === 25) ok(`${label} exposes its synchronized 25-state target description`);
+      else fail(`${label} target description is incomplete or stale: ${JSON.stringify(layout)}`);
+
+      for (const index of solutions[folio]) await page.locator(`[data-sigil-index="${index}"]`).click();
+      if (folio < solutions.length - 1) await page.locator('[data-harmonic-seal-next]').click();
+    }
+    await context.close();
+  }
+}
+
 // ---------------------------------------------------------------------
 // AC-035: 320px-wide render of primary pages and one post -- no horizontal scrollbar.
 // ---------------------------------------------------------------------

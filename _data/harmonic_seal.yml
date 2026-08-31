@@ -1,0 +1,32 @@
+title: The Harmonic Seal
+eyebrow: A playable folio
+introduction: Bring the living sigils into harmony with the target chord.
+invitation: Match the target chord by pulsing a sigil and each direct neighbour.
+rule: A pulse changes its sigil and each direct neighbour, forming a cross.
+tutorial:
+  guided: Begin at the marked centre. Watch how one pulse travels.
+  independent: Now compare both patterns and choose the next centre yourself.
+  invalid: Begin with the marked centre sigil at row 3, column 3.
+reflection:
+  title: A note in the margin
+  prompt: Would you open another folio now?
+  note_label: Anything you would change? (optional)
+  thanks: Thank you. This note stays only in this open page and is never sent or stored.
+folios:
+  - id: 1
+    name: How a Pulse Travels
+    initial: ["10011", "01001", "01000", "01110", "10001"]
+    target: ["10001", "01010", "00100", "01010", "10001"]
+    guided_first_pulse: [3, 3]
+  - id: 2
+    name: The Brass Compass
+    initial: ["01100", "11100", "11011", "00111", "00110"]
+    target: ["00100", "00100", "11111", "00100", "00100"]
+  - id: 3
+    name: The Ember Crown
+    initial: ["11110", "11101", "11011", "10111", "01111"]
+    target: ["00100", "01010", "10001", "01010", "00100"]
+  - id: 4
+    name: The Wayfinder's Accord
+    initial: ["10000", "01111", "00011", "11000", "10011"]
+    target: ["01110", "10001", "10101", "10001", "01110"]

@@ -1,0 +1,248 @@
+artifact: spec
+change_id: harmonic-seal-play-overlay
+tier: full
+version: 0.1.0
+title: Add the Harmonic Seal game to the shared Wayfinder dialog
+eidolon: idg
+created_at: '2026-08-31'
+esl:
+  status_at_emission: verified
+  maker: vivi
+  checker: kupo
+  has_code: true
+  spec_ref: .spectra/changes/harmonic-seal-play-overlay/spec.md
+verification_addenda:
+  - date: '2026-08-31'
+    status: passed
+    scope: focused Play-trigger visual and accessibility refinement
+    evidence: >-
+      Independent live-browser checks at 1280x800 and 390x844 proved visible [Play] copy,
+      accessible name Play The Harmonic Seal, explicit appearance/font/cursor/background resets,
+      quiet brass tertiary hierarchy, 46px height, smaller dimensions than peer actions, no
+      overflow, visible hover/focus, focus entry and exact Escape return, and a no-JS
+      display:none zero-size rendered box. Focused tests, build, axe, and diff check passed.
+  - date: '2026-08-31'
+    status: passed
+    scope: redesigned separate Play invitation
+    evidence: >-
+      Independent live-browser and visual checks at 1280x800 and 390x844 proved exactly two
+      navigation links in .atelier-actions; a separate immediately following invitation with
+      data-backed title, four-folio eyebrow, description, and Play The Harmonic Seal button;
+      visible copy as the accessible name without aria-label; successful-mount-only reveal;
+      no-JS and failed-mount display:none zero-size behavior; desktop max-38rem three-column
+      treatment; mobile full-width own-row button; 46px target; no overflow; hover/focus and
+      exact focus lifecycle; no new animation or prohibited capability. Tests, build, axe, and
+      diff check passed.
+right_size:
+  classification: full
+  rationale: >-
+    New interactive behavior crosses shared dialog state, authored game logic, responsive layout,
+    accessibility, and regression surfaces; it also contains a binding small-viewport trade-off.
+provenance:
+  planned_by: ramza
+  critically_reviewed_by: forge
+  written_by: idg
+  evidence: >-
+    A few family members gave positive qualitative responses to the complete interaction draft;
+    this is not quantified or representative research.
+working_title:
+  value: The Harmonic Seal
+  approved: true
+  gate: passed by owner approval on 2026-08-31
+scope:
+  in:
+    - homepage hero Play action
+    - chart and harmonic-seal views inside the existing Wayfinder dialog
+    - four authored 5x5 folios
+    - pulse, explicit progression, unlimited undo, folio/session restart, local reflection
+    - in-memory document-lifetime state preservation
+    - desktop overlay and full-viewport mobile presentation
+    - semantic DOM, roving grid, touch/keyboard parity, reduced-motion support
+  out:
+    - second or nested modal
+    - standalone game page or global floating Play trigger
+    - score, visible move count, par, timer, hints, procedural boards, daily challenge
+    - audio, haptics, analytics, telemetry, reflection transmission
+    - accounts, leaderboards, network gameplay, durable persistence
+    - canvas controls, framework, runtime dependency, deployment
+dialog:
+  shell: '#astrolabe-chart'
+  sole_modal: true
+  views: [chart, harmonic-seal]
+  triggers:
+    wayfinder: chart
+    homepage_play: harmonic-seal
+  back_to_chart: switches view without closing or resetting
+  close_and_escape: close and preserve game/reflection state
+  backdrop: preserve existing Wayfinder behavior
+  focus_return: exact invoking trigger
+state:
+  lifetime: current document only
+  durable_storage: forbidden
+  preserved_across: [chart_game_switch, close_reopen]
+  reset_by: [navigation, reload, restart_session]
+  fields:
+    dialog: closed_or_open
+    view: chart_or_harmonic_seal
+    game_screen: folio_or_reflection_or_reflection_complete
+    folio_index: 0_to_3
+    board: 25_binary_values
+    history: prior_board_snapshots
+    folio_complete: boolean
+    tutorial_step: guided_first_or_independent_second_or_complete
+    reflection: interest_and_note
+    return_focus: invoking_element
+    grid_cursor: 0_to_24
+rule:
+  grid: 5x5
+  pulse: toggle self and existing orthogonal neighbors only
+  completion: all 25 current values equal target
+  visible_move_count: false
+folios:
+  - id: 1
+    name: How a Pulse Travels
+    initial: ['10011', '01001', '01000', '01110', '10001']
+    target: ['10001', '01010', '00100', '01010', '10001']
+    guided_first_pulse: [3, 3]
+    verified_solution: [[3, 3], [2, 4]]
+  - id: 2
+    name: The Brass Compass
+    initial: ['01100', '11100', '11011', '00111', '00110']
+    target: ['00100', '00100', '11111', '00100', '00100']
+    verified_solution: [[2, 2], [3, 3], [4, 4]]
+  - id: 3
+    name: The Ember Crown
+    initial: ['11110', '11101', '11011', '10111', '01111']
+    target: ['00100', '01010', '10001', '01010', '00100']
+    verified_solution: [[1, 1], [2, 4], [4, 2], [5, 5]]
+  - id: 4
+    name: The Wayfinder's Accord
+    initial: ['10000', '01111', '00011', '11000', '10011']
+    target: ['01110', '10001', '10101', '10001', '01110']
+    verified_solution: [[1, 3], [2, 1], [3, 4], [4, 5], [5, 2]]
+reflection:
+  entry: explicit End session or Share a reflection action
+  interest_options: [yes, maybe, no]
+  note: optional free text
+  transmitted: false
+  persisted: false
+responsive:
+  desktop: centered instrument over dimmed page
+  mobile: full dynamic viewport with safe-area handling
+  no_horizontal_scroll: true
+  target_pattern_gate:
+    viewports: ['320x568', '568x320']
+    requirement: complete current board and target visible and legible in one viewport snapshot
+    failure: stop implementation for owner decision; no silent target substitution
+accessibility:
+  semantic_rows: 5
+  native_sigil_buttons: 25
+  roving_tabindex: exactly_one_zero
+  keys: [ArrowLeft, ArrowRight, ArrowUp, ArrowDown, Home, End, Ctrl+Home, Ctrl+End, Enter, Space]
+  no_arrow_wrap: true
+  input_parity: [keyboard, pointer, touch]
+  distinguish_without: [color, sound, motion]
+  reduced_motion: required
+file_boundaries:
+  - index.html
+  - _data/harmonic_seal.yml
+  - _includes/navigation.html
+  - _layouts/default.html
+  - assets/js/sigil-navigation.js
+  - assets/js/harmonic-seal.js
+  - _sass/objects/_navigation.scss
+  - _sass/objects/_harmonic-seal.scss
+  - assets/css/main.scss
+  - scripts/harmonic-seal.test.mjs
+  - scripts/navigation.test.mjs
+  - package.json
+rollout_gates:
+  - public title approved by owner on 2026-08-31
+  - exact board and solution tests pass
+  - single-dialog focus and inertness tests pass
+  - simultaneous-legibility gate passes at both minimum viewports
+  - accessibility and existing regression suites pass
+  - maker and checker remain distinct
+unresolved_owner_decisions:
+  - responsive/layout disposition only if patterned targets fail the simultaneous-legibility gate
+acceptance_checks:
+  - id: AC-001
+    given: the homepage and existing Wayfinder
+    when: either trigger opens an overlay
+    then: exactly one modal dialog and backdrop exist; Play selects harmonic-seal, Wayfinder selects chart, and no nested dialog or focus trap exists
+    verify_method: DOM/integration test counts one modal dialog, exercises both triggers, and checks only the selected view is exposed and focusable
+  - id: AC-002
+    given: the game view is open
+    when: Back to chart, shared Close, Escape, and backdrop are used
+    then: Back switches view in place; the others close using current Wayfinder behavior and restore exact invoking focus
+    verify_method: browser test checks active element, inertness, visibility, and no second open/close cycle on Back
+  - id: AC-003
+    given: a modified folio, undo history, or reflection draft
+    when: chart/game switching or close/reopen occurs on the same document
+    then: the draft is preserved; navigation/reload resets it; no durable storage is used
+    verify_method: browser test compares state across switches/reopens, reloads for reset, and spies on localStorage, sessionStorage, and cookie writes
+  - id: AC-004
+    given: any of the 25 cells
+    when: it is pulsed
+    then: only itself and existing orthogonal neighbors toggle, without diagonal or edge wrapping
+    verify_method: deterministic tests assert center, edge, corner, and double-pulse behavior
+  - id: AC-005
+    given: the four exact folios
+    when: their verified sequences are applied
+    then: they equal their targets in 2, 3, 4, and 5 pulses respectively
+    verify_method: data test validates 25 bits, exact rows, listed sequences, and final equality
+  - id: AC-006
+    given: untouched Folio I
+    when: a pulse other than row 3 column 3 is attempted, then the guided pulse is used
+    then: invalid input does not mutate; after the guide, row 2 column 4 must be inferred to complete
+    verify_method: interaction test checks board, history, guide, instruction, and completion
+  - id: AC-007
+    given: a folio reaches target
+    when: completion renders
+    then: pulse input stops and explicit progression appears without score, timer, move count, par, hint, or solution
+    verify_method: DOM test completes every folio and scans visible and accessible text for forbidden UI
+  - id: AC-008
+    given: any pulse history including a completed folio
+    when: Undo, Restart folio, or Restart session is selected
+    then: undo is unlimited; folio restart restores its initial state; session restart clears game and reflection to Folio I
+    verify_method: state tests use more than 25 pulses, undo to origin, and assert reset scopes
+  - id: AC-009
+    given: any folio or completed Folio IV
+    when: End session or Share a reflection is selected
+    then: reflection appears explicitly, accepts Yes/Maybe/No and optional text, and is never transmitted or persisted
+    verify_method: browser/network test checks transition timing, zero network submission, preservation in memory, and reload reset
+  - id: AC-010
+    given: the 5x5 grid
+    when: inspected and operated by keyboard
+    then: it exposes five rows, 25 named native buttons, one roving tabindex zero, bounded grid keys, and Enter/Space/pointer parity
+    verify_method: DOM/browser test exercises keys, boundaries, names, focus after rerender, and resulting states
+  - id: AC-011
+    given: the shared dialog is open
+    when: focus, view, folio, status, or close transitions occur
+    then: focus remains in visible dialog controls, page is inert, announcements are concise, and close restores invoking focus
+    verify_method: browser assertions plus automated axe audit with zero serious or critical violations
+  - id: AC-012
+    given: supported mobile viewports
+    when: the game opens and dynamic viewport changes
+    then: it fills the viewport, respects safe areas, prevents background scroll and horizontal clipping, and remains touch-usable
+    verify_method: responsive tests at 320x568, 390x844, and 568x320 inspect bounds, overflow, scroll ownership, and activation
+  - id: AC-013
+    given: 320x568 portrait and 568x320 landscape at 100 percent zoom
+    when: every patterned folio is shown
+    then: complete board and target are simultaneously legible in one snapshot and essential controls are horizontally unclipped
+    verify_method: checker reviews deterministic screenshots; any failure blocks for owner decision with no fallback substitution
+  - id: AC-014
+    given: color-vision variation, muted audio, or reduced-motion preference
+    when: game feedback changes
+    then: state remains distinguishable through shape, text, focus, and status while nonessential motion is removed
+    verify_method: stylesheet and DOM assertions, reduced-motion browser run, and grayscale screenshot review
+  - id: AC-015
+    given: JavaScript is unavailable or a page lacks Play
+    when: the site loads
+    then: no dead Play or script error appears, navigation fallback remains useful, and the game module exits safely
+    verify_method: no-JS check, representative console scan, production build, navigation/game tests, and npm run test:a11y-static
+  - id: AC-016
+    given: the implementation diff and built site
+    when: inspected
+    then: it stays in declared boundaries and contains no prohibited modal, canvas control, dependency, audio, analytics, randomness, network game call, or persistence
+    verify_method: checker diff review and targeted source/bundle scan record zero prohibited capability

@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const anchor = document.querySelector('.wayfinder__trigger');
   const chart = document.querySelector('.astrolabe');
-  const closeButton = chart?.querySelector('.astrolabe__close');
+  const closeButton = chart?.querySelector('[data-wayfinder-close]');
   if (!anchor || !chart || !closeButton) return;
 
   // The server sends a useful anchor. Only a working script promotes it to a button.
@@ -16,12 +16,23 @@ document.addEventListener('DOMContentLoaded', () => {
   trigger.setAttribute('aria-haspopup', 'dialog');
   anchor.replaceWith(trigger);
 
+  const views = new Map(
+    [...chart.querySelectorAll('[data-wayfinder-view]')].map((view) => [view.dataset.wayfinderView, view])
+  );
+  const chartView = views.get('chart');
+  const gameView = views.get('harmonic-seal');
+  if (!chartView) return;
+
   const pageRegions = [...document.body.children].filter((element) => (
     !element.matches('.wayfinder') && element.tagName !== 'SCRIPT'
   ));
   const inertBeforeOpen = new Map();
   let returnFocus = trigger;
+  let currentView = 'chart';
   const constellations = window.WayfinderConstellations?.mount(chart);
+  const game = gameView ? window.HarmonicSeal?.mount(gameView, { onBack: () => setView('chart', true) }) : null;
+  const gameInvitation = game ? document.querySelector('[data-harmonic-seal-invitation]') : null;
+  const playTriggers = game ? [...document.querySelectorAll('[data-wayfinder-open="harmonic-seal"]')] : [];
 
   chart.setAttribute('role', 'dialog');
   chart.setAttribute('aria-modal', 'true');
@@ -39,6 +50,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.documentElement.classList.add('wayfinder-ready');
 
+  if (gameInvitation) gameInvitation.hidden = false;
+  playTriggers.forEach((playTrigger) => {
+    playTrigger.setAttribute('aria-controls', chart.id);
+    playTrigger.setAttribute('aria-expanded', 'false');
+    playTrigger.setAttribute('aria-haspopup', 'dialog');
+  });
+
   const focusableSelector = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
   function setPageInert(value) {
@@ -53,24 +71,51 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!value) inertBeforeOpen.clear();
   }
 
-  function openChart() {
-    if (chart.classList.contains('is-open')) return;
-    returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : trigger;
+  function setView(viewName, moveFocus = false) {
+    if (!views.has(viewName) || (viewName === 'harmonic-seal' && !game)) return;
+    currentView = viewName;
+    views.forEach((view, name) => { view.hidden = name !== currentView; });
+    chart.dataset.wayfinderViewCurrent = currentView;
+    chart.setAttribute('aria-labelledby', currentView === 'chart' ? 'astrolabe-title' : 'harmonic-seal-title');
+    closeButton.setAttribute('aria-label', currentView === 'chart' ? 'Close navigation chart' : 'Close The Harmonic Seal');
+    if (currentView === 'chart') constellations?.render();
+    if (moveFocus) {
+      if (currentView === 'chart') chartView.querySelector('a[href], button:not([disabled])')?.focus();
+      else game.focusInitial();
+    }
+  }
+
+  function setTriggersExpanded(value) {
+    trigger.setAttribute('aria-expanded', String(value));
+    playTriggers.forEach((playTrigger) => playTrigger.setAttribute('aria-expanded', String(value)));
+  }
+
+  function openDialog(viewName, invoker) {
+    if (viewName === 'harmonic-seal' && !game) return;
+    returnFocus = invoker instanceof HTMLElement ? invoker : trigger;
+    setView(viewName);
+    if (chart.classList.contains('is-open')) {
+      if (viewName === 'harmonic-seal') game.focusInitial();
+      return;
+    }
     setPageInert(true);
     chart.classList.add('is-open');
     chart.setAttribute('aria-hidden', 'false');
-    trigger.setAttribute('aria-expanded', 'true');
+    setTriggersExpanded(true);
     trigger.tabIndex = -1;
     document.documentElement.classList.add('wayfinder-open');
-    closeButton.focus();
-    constellations?.render();
+    if (viewName === 'harmonic-seal') game.focusInitial();
+    else {
+      closeButton.focus();
+      constellations?.render();
+    }
   }
 
   function closeChart() {
     if (!chart.classList.contains('is-open')) return;
     chart.classList.remove('is-open');
     chart.setAttribute('aria-hidden', 'true');
-    trigger.setAttribute('aria-expanded', 'false');
+    setTriggersExpanded(false);
     trigger.removeAttribute('tabindex');
     document.documentElement.classList.remove('wayfinder-open');
     setPageInert(false);
@@ -98,7 +143,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  trigger.addEventListener('click', openChart);
+  trigger.addEventListener('click', () => openDialog('chart', trigger));
+  playTriggers.forEach((playTrigger) => {
+    playTrigger.addEventListener('click', () => openDialog('harmonic-seal', playTrigger));
+  });
   closeButton.addEventListener('click', closeChart);
   chart.addEventListener('keydown', trapFocus);
   chart.addEventListener('click', (event) => {
