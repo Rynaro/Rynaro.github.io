@@ -1,8 +1,12 @@
-<!-- WebMCP agent manifest: a single inert JSON block generated from the same YAML
-     sources the templates render (site.data, site.posts), so agent-facing answers
-     can never drift from the human-facing pages. Consumed by assets/js/webmcp.js,
-     which only activates when the browser exposes the WebMCP ModelContext API. -->
-<script type="application/json" data-webmcp-manifest>
+---
+layout: raw
+permalink: /webmcp.json
+sitemap: false
+---
+{% comment %}WebMCP agent manifest: JSON generated from the same YAML sources the
+templates render (site.data, site.posts), so agent-facing answers can never drift
+from the human-facing pages. Fetched lazily by assets/js/webmcp.js, which only
+activates when the browser exposes the WebMCP ModelContext API.{% endcomment %}
 {
   "site": {
     "title": {{ site.title | jsonify }},
@@ -34,4 +38,3 @@
   "projects": [{% for project in site.data.projects.projects %}{"key": {{ project.key | jsonify }},"title": {{ project.title | jsonify }},"category": {{ project.category | jsonify }},"role": {{ project.role | jsonify }},"status": {{ project.status_label | jsonify }},"summary": {{ project.summary | jsonify }},"repository_url": {{ project.repository_url | jsonify }},"tags": {{ project.tags | jsonify }}}{% unless forloop.last %},{% endunless %}{% endfor %}],
   "posts": [{% for post in site.posts %}{"title": {{ post.title | jsonify }},"url": {{ post.url | absolute_url | jsonify }},"date": {{ post.date | date_to_xmlschema | jsonify }},"resume": {{ post.resume | default: post.excerpt | strip_html | strip_newlines | truncate: 240 | jsonify }},"categories": {{ post.categories | jsonify }},"tags": {{ post.tags | jsonify }}}{% unless forloop.last %},{% endunless %}{% endfor %}]
 }
-</script>
