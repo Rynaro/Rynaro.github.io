@@ -15,6 +15,13 @@
 - Do not edit generated output such as `_site/`, `.jekyll-cache/`, or `.sass-cache/`.
 - Never commit secrets, tokens, local machine paths, or analytics credentials beyond the public site configuration already tracked in `_config.yml`.
 
+## Agent-facing surfaces (WebMCP)
+
+- The site exposes itself to in-browser AI agents via the WebMCP draft API (`navigator.modelContext` / `document.modelContext`), wired in `_layouts/default.html`.
+- `assets/js/webmcp.js` registers read-only tools (`get_site_overview`, `get_profile`, `get_current_focus`, `list_projects`, `search_notes`) that answer from `_includes/webmcp-manifest.html`, a Liquid-generated JSON block. Keep tools read-only and manifest data sourced from `_data/`/`_posts/` — never hardcode content in the script.
+- `letter.html`'s form is a declarative WebMCP tool (`toolname`/`toolparamdescription`). It deliberately omits `toolautosubmit` — a human always reviews and sends; `letter.js` answers agent-invoked submissions via `SubmitEvent.respondWith()`.
+- All of this must stay progressive enhancement: inert without the API, no console errors in unsupported browsers.
+
 ## Verification
 
 - Preferred local workflow: `./jex.sh serve`, then inspect `http://localhost:4000`.

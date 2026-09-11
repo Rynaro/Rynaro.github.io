@@ -13,11 +13,16 @@ description: Open a correspondence with Henrique about engineering leadership, s
   <div class="correspondence-shell correspondence-desk">
     <section class="correspondence-form" aria-labelledby="compose-title">
       <div class="correspondence-form__heading"><span class="correspondence-seal" aria-hidden="true">H</span><div><p class="correspondence-kicker">Dispatch 05</p><h2 id="compose-title">{{ letter.form.heading }}</h2><p>{{ letter.form.intro }}</p></div></div>
-      <form action="{{ letter.form.endpoint }}" method="post" data-letter-form>
-        <div class="correspondence-field"><label for="letter-name">{{ letter.form.labels.name }}</label><input id="letter-name" name="name" type="text" autocomplete="name" required></div>
-        <div class="correspondence-field"><label for="letter-email">{{ letter.form.labels.email }}</label><input id="letter-email" name="email" type="email" autocomplete="email" required></div>
-        <div class="correspondence-field correspondence-field--wide"><label for="letter-subject">{{ letter.form.labels.subject }}</label><input id="letter-subject" name="subject" type="text" autocomplete="off" required></div>
-        <div class="correspondence-field correspondence-field--wide"><label for="letter-message">{{ letter.form.labels.message }}</label><textarea id="letter-message" name="message" rows="{{ letter.form.rows }}" required></textarea></div>
+      <!-- WebMCP declarative tool: agent-capable browsers can fill this form on the
+           visitor's behalf. No `toolautosubmit` — a human always reviews and seals
+           the letter, matching the spec's anti-misrepresentation guidance. -->
+      <form action="{{ letter.form.endpoint }}" method="post" data-letter-form
+            toolname="send_letter"
+            tooldescription="Compose a letter to Henrique Lavezzo about engineering leadership, software architecture, developer tools, AI-assisted engineering, or a collaboration. Fill the fields for the visitor to review; the visitor submits it themselves.">
+        <div class="correspondence-field"><label for="letter-name">{{ letter.form.labels.name }}</label><input id="letter-name" name="name" type="text" autocomplete="name" required toolparamdescription="The sender's name (the visitor's, unless they ask otherwise)"></div>
+        <div class="correspondence-field"><label for="letter-email">{{ letter.form.labels.email }}</label><input id="letter-email" name="email" type="email" autocomplete="email" required toolparamdescription="The sender's email address, so Henrique can reply"></div>
+        <div class="correspondence-field correspondence-field--wide"><label for="letter-subject">{{ letter.form.labels.subject }}</label><input id="letter-subject" name="subject" type="text" autocomplete="off" required toolparamdescription="A short subject line for the letter"></div>
+        <div class="correspondence-field correspondence-field--wide"><label for="letter-message">{{ letter.form.labels.message }}</label><textarea id="letter-message" name="message" rows="{{ letter.form.rows }}" required toolparamdescription="The letter body. Plain and specific beats ceremonial."></textarea></div>
         <div class="correspondence-trap" aria-hidden="true"><label for="letter-company">Leave this field empty</label><input id="letter-company" name="_gotcha" type="text" tabindex="-1" autocomplete="off"></div>
         <div class="correspondence-form__dispatch correspondence-field--wide">
           <button type="submit" data-letter-submit data-idle-label="{{ letter.form.submit }}" data-busy-label="{{ letter.form.submitting }}"><span data-letter-submit-label>{{ letter.form.submit }}</span><span aria-hidden="true">→</span></button>

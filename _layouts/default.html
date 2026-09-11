@@ -26,7 +26,10 @@
        feed link at all. -->
   {% include footer.html %}
 
+  <!-- WebMCP: agent-facing manifest + tool registration (inert without the API) -->
+  {% include webmcp-manifest.html %}
   <!-- Custom scripts -->
+  <script src="{{ "/assets/js/webmcp.js" | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
   <script src="{{ "/assets/js/sigil-navigation.js" | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
 </body>
 </html>

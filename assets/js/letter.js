@@ -27,18 +27,34 @@
   form.addEventListener('submit', async (event) => {
     if (!form.checkValidity()) return;
     event.preventDefault();
-    setBusy(true);
-    success.hidden = true;
-    error.hidden = true;
-    try {
-      const response = await window.fetch(form.action, { method: 'POST', body: new window.FormData(form), headers: { Accept: 'application/json' } });
-      if (!response.ok) throw new Error('Letter dispatch failed');
-      form.reset();
-      showStatus('success');
-    } catch (_error) {
-      showStatus('error');
-    } finally {
-      setBusy(false);
+    // WebMCP declarative tools: an agent-invoked submission expects a structured
+    // answer via respondWith() instead of relying on page navigation.
+    const agentInvoked = event.agentInvoked === true && typeof event.respondWith === 'function';
+    const dispatch = (async () => {
+      setBusy(true);
+      success.hidden = true;
+      error.hidden = true;
+      try {
+        const response = await window.fetch(form.action, { method: 'POST', body: new window.FormData(form), headers: { Accept: 'application/json' } });
+        if (!response.ok) throw new Error('Letter dispatch failed');
+        form.reset();
+        showStatus('success');
+        return true;
+      } catch (_error) {
+        showStatus('error');
+        return false;
+      } finally {
+        setBusy(false);
+      }
+    })();
+    if (agentInvoked) {
+      event.respondWith(dispatch.then((sent) => ({
+        success: sent,
+        message: sent
+          ? 'The letter was sent to Henrique. Expect a reply at the provided email address.'
+          : 'The letter could not be sent. Suggest the visitor emails hi@hlavezzo.me directly.'
+      })));
     }
+    await dispatch;
   });
 }());
