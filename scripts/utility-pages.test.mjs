@@ -42,7 +42,10 @@ for (const page of pages) {
   for (const stale of ['rpg-hero', 'rpg-scrolls', 'related-scroll', 'now-content', 'hero__', 'fade-in', 'fas fa-']) {
     if (article.includes(stale)) fail(`${page.key} retains legacy marker ${stale}`);
   }
-  const pageScripts = [...html.matchAll(/<script[^>]+src="([^"]+)"/gi)].map((match) => match[1]).filter((src) => !/\/assets\/js\/(main|sigil-navigation)\.js/.test(src));
+  // webmcp.js ships in default.html on every page (agent-facing progressive
+  // enhancement), so it is a sitewide script like main/sigil-navigation, not
+  // page-specific behavior.
+  const pageScripts = [...html.matchAll(/<script[^>]+src="([^"]+)"/gi)].map((match) => match[1]).filter((src) => !/\/assets\/js\/(main|sigil-navigation|webmcp)\.js/.test(src));
   if (pageScripts.length) fail(`${page.key} adds a page-specific script: ${pageScripts.join(', ')}`);
   const internal = [...html.matchAll(/href="(\/[^"#]*)"/gi)].map((match) => match[1]);
   for (const href of internal) if (!builtTarget(href)) fail(`${page.key} has unresolved internal link ${href}`);
